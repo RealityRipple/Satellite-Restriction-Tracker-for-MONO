@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{338E8717-AF65-4C97-908E-27E1CB16C652}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>RestrictionTrackerGTK</RootNamespace>
+    <AssemblyName>RestrictionTracker</AssemblyName>
+    <StartupObject>RestrictionTrackerGTK.MainClass</StartupObject>
+    <ApplicationIcon>Resources\sat.ico</ApplicationIcon>
+    <ReleaseVersion>0.3</ReleaseVersion>
+    <Description>Satellite Restriction Tracker</Description>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="Mono.Posix" />
+    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gtk-sharp-2.0</Package>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gtk-sharp-2.0</Package>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>glib-sharp-2.0</Package>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>glade-sharp-2.0</Package>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gtk-sharp-2.0</Package>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gtk-sharp-2.0</Package>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="RestrictionTrackerLib">
+      <HintPath>..\RestrictionTrackerLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="appindicator-sharp, Version=0.2.0.0, Culture=neutral, PublicKeyToken=bcae265d1c7ab4c2">
+      <Private>False</Private>
+      <Package>appindicator-sharp-0.1</Package>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="gtk-gui\gui.stetic">
+      <LogicalName>gui.stetic</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\norm.ico" />
+    <EmbeddedResource Include="Resources\sat.ico" />
+    <EmbeddedResource Include="Resources\sat.icns" />
+    <EmbeddedResource Include="Resources\side.jpg" />
+    <EmbeddedResource Include="Resources\small.ico" />
+    <EmbeddedResource Include="Resources\throbber.gif" />
+    <EmbeddedResource Include="Resources\ok.png" />
+    <EmbeddedResource Include="Resources\error.png" />
+    <EmbeddedResource Include="Resources\web.png" />
+    <EmbeddedResource Include="Resources\cal1.png" />
+    <EmbeddedResource Include="Resources\cal30.png" />
+    <EmbeddedResource Include="Resources\cal60.png" />
+    <EmbeddedResource Include="Resources\calall.png" />
+    <EmbeddedResource Include="Resources\tray_16\free.ico" />
+    <EmbeddedResource Include="Resources\tray_16\norm.ico" />
+    <EmbeddedResource Include="Resources\tray_16\restricted.ico" />
+    <EmbeddedResource Include="Resources\tray_16\throbsprite\1.ico" />
+    <EmbeddedResource Include="Resources\tray_16\throbsprite\10.ico" />
+    <EmbeddedResource Include="Resources\tray_16\throbsprite\2.ico" />
+    <EmbeddedResource Include="Resources\tray_16\throbsprite\3.ico" />
+    <EmbeddedResource Include="Resources\tray_16\throbsprite\4.ico" />
+    <EmbeddedResource Include="Resources\tray_16\throbsprite\5.ico" />
+    <EmbeddedResource Include="Resources\tray_16\throbsprite\7.ico" />
+    <EmbeddedResource Include="Resources\tray_16\throbsprite\8.ico" />
+    <EmbeddedResource Include="Resources\tray_16\throbsprite\9.ico" />
+    <EmbeddedResource Include="Resources\tray_32\free.ico" />
+    <EmbeddedResource Include="Resources\tray_32\norm.ico" />
+    <EmbeddedResource Include="Resources\tray_32\restricted.ico" />
+    <EmbeddedResource Include="Resources\tray_32\throbsprite\1.ico" />
+    <EmbeddedResource Include="Resources\tray_32\throbsprite\10.ico" />
+    <EmbeddedResource Include="Resources\tray_32\throbsprite\2.ico" />
+    <EmbeddedResource Include="Resources\tray_32\throbsprite\3.ico" />
+    <EmbeddedResource Include="Resources\tray_32\throbsprite\4.ico" />
+    <EmbeddedResource Include="Resources\tray_32\throbsprite\5.ico" />
+    <EmbeddedResource Include="Resources\tray_32\throbsprite\7.ico" />
+    <EmbeddedResource Include="Resources\tray_32\throbsprite\8.ico" />
+    <EmbeddedResource Include="Resources\tray_32\throbsprite\9.ico" />
+    <EmbeddedResource Include="Resources\default_alert.png" />
+    <EmbeddedResource Include="Resources\default_close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="gtk-gui\generated.cs" />
+    <Compile Include="Main.cs" />
+    <Compile Include="Forms\frmHistory.cs" />
+    <Compile Include="Forms\frmMain.cs" />
+    <Compile Include="Classes\clsSettings.cs" />
+    <Compile Include="Modules\modFunctions.cs" />
+    <Compile Include="Modules\modDB.cs" />
+    <Compile Include="Classes\clsUpdate.cs" />
+    <Compile Include="Classes\clsBugReport.cs" />
+    <Compile Include="Classes\clsCurrentOS.cs" />
+    <Compile Include="gtk-gui\RestrictionTrackerGTK.frmAbout.cs" />
+    <Compile Include="gtk-gui\RestrictionTrackerGTK.frmHistory.cs" />
+    <Compile Include="gtk-gui\RestrictionTrackerGTK.frmMain.cs" />
+    <Compile Include="Forms\dlgConfig.cs" />
+    <Compile Include="gtk-gui\RestrictionTrackerGTK.dlgConfig.cs" />
+    <Compile Include="Forms\dlgUpdate.cs" />
+    <Compile Include="gtk-gui\RestrictionTrackerGTK.dlgUpdate.cs" />
+    <Compile Include="Forms\dlgCustomColors.cs" />
+    <Compile Include="gtk-gui\RestrictionTrackerGTK.dlgCustomColors.cs" />
+    <Compile Include="Forms\frmAbout.cs" />
+    <Compile Include="Classes\clsNotifierStyle.cs" />
+    <Compile Include="Forms\dlgAlertSelection.cs" />
+    <Compile Include="gtk-gui\RestrictionTrackerGTK.dlgAlertSelection.cs" />
+    <Compile Include="Classes\MacInterop\clsCarbon.cs" />
+    <Compile Include="Classes\MacInterop\clsApplicationEvents.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Classes\Visual Elements\clsListView.cs" />
+    <Compile Include="Classes\Visual Elements\clsTaskbarNotifier.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Forms\" />
+    <Folder Include="Classes\" />
+    <Folder Include="Modules\" />
+    <Folder Include="Classes\MacInterop\" />
+    <Folder Include="Classes\Visual Elements\" />
+  </ItemGroup>
+</Project>
