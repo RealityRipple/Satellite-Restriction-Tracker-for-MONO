@@ -9,7 +9,7 @@ namespace RestrictionTrackerGTK
   public partial class frmMain: Gtk.Window
   {
     internal modFunctions.SatHostTypes myPanel;
-  
+
     private enum LoadStates
     {
       Loading,
@@ -152,7 +152,7 @@ namespace RestrictionTrackerGTK
     private Gtk.SeparatorMenuItem mnuGraphSpace;
     private Gtk.MenuItem mnuGraphColors;
 
-#region "Server Type Determination"
+    #region "Server Type Determination"
     private class DetermineType
     {
       private class URLChecker
@@ -246,6 +246,7 @@ namespace RestrictionTrackerGTK
               }
             }
             wResponse.Close();
+            wResponse = null;
           }
           catch (Exception)
           {
@@ -463,7 +464,7 @@ namespace RestrictionTrackerGTK
               OfflineCheck(Source[1]);
             }
             break;
-          default:
+            default:
             if (e.Result)
             {
               if (TypeDetermined != null)
@@ -600,7 +601,7 @@ namespace RestrictionTrackerGTK
               DisplayUsage(false, true);
               SetStatusText(modDB.LOG_GetLast().ToString("g"), "Please connect to the Internet.", true);
               break;
-            default:
+              default:
               DisplayUsage(true, false);
               break;
           }
@@ -645,16 +646,16 @@ namespace RestrictionTrackerGTK
               MethodInvoker connectInvoker = new MethodInvoker(localData.Connect);
               connectInvoker.BeginInvoke(null, null);
               break;
-            default:
+              default:
               DisplayUsage(true, false);
               break;
           }
         }
       }
     }
-#endregion
+    #endregion
 
-#region "Form Events"
+    #region "Form Events"
     public frmMain(): base (Gtk.WindowType.Toplevel)
     {
       Gdk.Geometry minGeo = new Gdk.Geometry();
@@ -1355,9 +1356,9 @@ namespace RestrictionTrackerGTK
       Application.Quit();
       a.RetVal = true;
     }
-#endregion
+    #endregion
 
-#region "Initialization Functions"
+    #region "Initialization Functions"
     public void ReLoadSettings()
     {
       mySettings = new AppSettings();
@@ -1412,7 +1413,7 @@ namespace RestrictionTrackerGTK
       }
       tmrIcon = GLib.Timeout.Add(200, tmrIcon_Tick);
     }
-    
+
     private void StartTimer()
     {
       Gtk.Application.Invoke(null, null, Main_StartTimer);
@@ -1423,7 +1424,7 @@ namespace RestrictionTrackerGTK
       NextGrabTick = long.MinValue;
       SetTag(LoadStates.Loaded);
     }
-    
+
     private void SetTag(LoadStates Tag)
     {
       Gtk.Application.Invoke((object)Tag, null, Main_SetTag);
@@ -1433,7 +1434,7 @@ namespace RestrictionTrackerGTK
     {
       myState = (LoadStates)o;
     }
-    
+
     private void LookupProvider()
     {
       SetTag(LoadStates.Lookup);
@@ -1462,7 +1463,7 @@ namespace RestrictionTrackerGTK
         TimerInvoker.BeginInvoke(null, TimerInvoker);
       }
     }
-    
+
     private void InitAccount()
     {
       sAccount = mySettings.Account;
@@ -1488,9 +1489,9 @@ namespace RestrictionTrackerGTK
         sProvider = "";
       }
     }
-#endregion 
+    #endregion 
 
-#region "Login Functions"
+    #region "Login Functions"
     private bool tmrUpdate_Tick()
     {
       if (NextGrabTick != long.MaxValue)
@@ -1727,9 +1728,9 @@ namespace RestrictionTrackerGTK
         NextGrabTick = modFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       }
     }
-#endregion
+    #endregion
 
-#region "Local Usage Events"
+    #region "Local Usage Events"
     private void localData_ConnectionStatus(object sender, localRestrictionTracker.ConnectionStatusEventArgs e)
     {
       Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionStatus);
@@ -1744,16 +1745,16 @@ namespace RestrictionTrackerGTK
         case localRestrictionTracker.ConnectionStatusEventArgs.ConnectionStates.Authentication:
           SetStatusText(modDB.LOG_GetLast().ToString("g"), "Authenticating...", false);
           break;
-        case localRestrictionTracker.ConnectionStatusEventArgs.ConnectionStates.Login:
+          case localRestrictionTracker.ConnectionStatusEventArgs.ConnectionStates.Login:
           SetStatusText(modDB.LOG_GetLast().ToString("g"), "Logging In...", false);
           break;
-        case localRestrictionTracker.ConnectionStatusEventArgs.ConnectionStates.TableDownload:
+          case localRestrictionTracker.ConnectionStatusEventArgs.ConnectionStates.TableDownload:
           SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Usage Table...", false);
           break;
-        case localRestrictionTracker.ConnectionStatusEventArgs.ConnectionStates.TableRead:
+          case localRestrictionTracker.ConnectionStatusEventArgs.ConnectionStates.TableRead:
           SetStatusText(modDB.LOG_GetLast().ToString("g"), "Reading Usage Table...", false);
           break;
-        case localRestrictionTracker.ConnectionStatusEventArgs.ConnectionStates.UsageRead:
+          case localRestrictionTracker.ConnectionStatusEventArgs.ConnectionStates.UsageRead:
           SetStatusText(modDB.LOG_GetLast().ToString("g"), "Reading Usage...", false);
           break;
       }
@@ -1773,7 +1774,7 @@ namespace RestrictionTrackerGTK
           SetStatusText(modDB.LOG_GetLast().ToString("g"), "Connection Timed Out!", true);
           DisplayUsage(false, false);
           break;
-        case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.LoginFailure:
+          case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.LoginFailure:
           SetStatusText(modDB.LOG_GetLast().ToString("g"), e.Message, true);
           if (!string.IsNullOrEmpty(e.Fail))
           {
@@ -1781,7 +1782,7 @@ namespace RestrictionTrackerGTK
           }
           DisplayUsage(false, true);
           break;
-        case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.FatalLoginFailure:
+          case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.FatalLoginFailure:
           mySettings.AccountType = modFunctions.SatHostTypes.Other;
           SetStatusText(modDB.LOG_GetLast().ToString("g"), e.Message, true);
           if (!string.IsNullOrEmpty(e.Fail))
@@ -1790,10 +1791,10 @@ namespace RestrictionTrackerGTK
           }
           DisplayUsage(false, false);
           break;
-        case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.SSLFailureBypass:
+          case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.SSLFailureBypass:
           SetStatusText(modDB.LOG_GetLast().ToString("g"), e.Message, false);
           break;
-        case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.UnknownAccountDetails:
+          case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.UnknownAccountDetails:
           if ((this.GdkWindow.State & Gdk.WindowState.Iconified) != 0)
           {
             ShowFromTray();
@@ -1801,7 +1802,7 @@ namespace RestrictionTrackerGTK
           cmdConfig.GrabFocus();
           modFunctions.ShowMessageBox(null, "Please enter your account details in the configuration window.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Warning, Gtk.ButtonsType.Ok);
           break;
-        case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.UnknownAccountType:
+          case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.UnknownAccountType:
           SetStatusText("Analyzing Account", "Determining your account type...", false);
           TypeDetermination = new DetermineType(sProvider, "LOAD", mySettings.Timeout, mySettings.Proxy);
           break;
@@ -1929,9 +1930,9 @@ namespace RestrictionTrackerGTK
         localData = null;
       }
     }
-#endregion
+    #endregion
 
-#region "Remote Usage Events"
+    #region "Remote Usage Events"
     private void remoteData_Failure(object sender, remoteRestrictionTracker.FailureEventArgs e)
     {
       Gtk.Application.Invoke(sender, (EventArgs)e, Main_RemoteDataFailure);
@@ -1946,28 +1947,28 @@ namespace RestrictionTrackerGTK
         case remoteRestrictionTracker.FailureEventArgs.FailType.BadPassword:
           sErr = "Your Password is incorrect.";
           break;
-        case remoteRestrictionTracker.FailureEventArgs.FailType.BadProduct:
+          case remoteRestrictionTracker.FailureEventArgs.FailType.BadProduct:
           sErr = "Your Product Key has been disabled.";
           mySettings.RemoteKey = string.Empty;
           MethodInvoker UsageInvoker = GetUsage;
           UsageInvoker.BeginInvoke(null, null);
           break;
-        case remoteRestrictionTracker.FailureEventArgs.FailType.BadServer:
+          case remoteRestrictionTracker.FailureEventArgs.FailType.BadServer:
           sErr = "There was a fault double-checking the server. You may have a security issue.";
           break;
-        case remoteRestrictionTracker.FailureEventArgs.FailType.NoData:
+          case remoteRestrictionTracker.FailureEventArgs.FailType.NoData:
           sErr = "There is no usage data." + (string.IsNullOrEmpty(e.Details) ? "Please wait 15 minutes." : " " + e.Details);
           break;
-        case remoteRestrictionTracker.FailureEventArgs.FailType.NoPassword:
+          case remoteRestrictionTracker.FailureEventArgs.FailType.NoPassword:
           sErr = "Your Password has not been Registered on the Remote Service.";
           break;
-        case remoteRestrictionTracker.FailureEventArgs.FailType.NoUsername:
+          case remoteRestrictionTracker.FailureEventArgs.FailType.NoUsername:
           sErr = "Your Account is not Registered for the Remote Service.";
           mySettings.RemoteKey = string.Empty;
           MethodInvoker GetUsageInvoker = GetUsage;
           GetUsageInvoker.BeginInvoke(null, null);
           break;
-        case remoteRestrictionTracker.FailureEventArgs.FailType.Network:
+          case remoteRestrictionTracker.FailureEventArgs.FailType.Network:
           sErr = "Network Connection Error" + (string.IsNullOrEmpty(e.Details) ? "." : ": (" + e.Details + ")");
           break;
       }
@@ -2056,8 +2057,8 @@ namespace RestrictionTrackerGTK
           }
         }
         FullCheck = false;
-//        SetStatusText(LastTime, "Sorting History...", false);
-//        modDB.LOG_Sort();
+        //        SetStatusText(LastTime, "Sorting History...", false);
+        //        modDB.LOG_Sort();
         mySettings.LastSyncTime = modDB.LOG_GetLast();
         mySettings.Save();
         DisplayUsage(true, true);
@@ -2073,9 +2074,9 @@ namespace RestrictionTrackerGTK
         remoteData = null;
       }
     }
-#endregion 
+    #endregion 
 
-#region "Graphs"
+    #region "Graphs"
     private System.Threading.Timer tmrChanges;
 
     private void DisplayChangeInterval(object state)
@@ -2113,7 +2114,7 @@ namespace RestrictionTrackerGTK
             return;
           }
           break;
-        case "EXEDE":
+          case "EXEDE":
           long eDown = e_down;
           long eUp = e_up;
           long eTotal = eDown + eUp + e_over;
@@ -2133,7 +2134,7 @@ namespace RestrictionTrackerGTK
             return;
           }
           break;
-        case "WB":
+          case "WB":
           long wDown = wb_down;
           long wDLim = wb_dlim;
           long wUp = wb_up;
@@ -2288,7 +2289,7 @@ namespace RestrictionTrackerGTK
       }
     }
 
-  #region "Results"
+    #region "Results"
     private string MBorGB(long value)
     {
       if (value > 999)
@@ -2355,7 +2356,7 @@ namespace RestrictionTrackerGTK
       pctRural.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctRural.Allocation.Size, lDown, lDownLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
       sTTT = "Satellite Bandwidth Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
         "Last Updated " + sLastUpdate + "\n" +
-        "Using " + MBorGB(lDown) + " of " + MBorGB(lDownLim) + " (" + AccuratePercent((double)lDown / lDownLim) + ")";
+          "Using " + MBorGB(lDown) + " of " + MBorGB(lDownLim) + " (" + AccuratePercent((double)lDown / lDownLim) + ")";
       if (lDownLim > lDown)
       {
         sTTT += "\n" + MBorGB(lDownLim - lDown) + " Free";
@@ -2480,8 +2481,8 @@ namespace RestrictionTrackerGTK
       }
       sTTT = "Satellite Bandwidth Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
         "Last Updated " + sLastUpdate + "\n" +
-        "Anytime: " + MBorGB(lDown) + " (" + AccuratePercent((double)lDown / lDownLim) + ")" + atFree + "\n" +
-        "Off-Peak: " + MBorGB(lUp) + " (" + AccuratePercent((double)lUp / lUpLim) + ")" + opFree;
+          "Anytime: " + MBorGB(lDown) + " (" + AccuratePercent((double)lDown / lDownLim) + ")" + atFree + "\n" +
+          "Off-Peak: " + MBorGB(lUp) + " (" + AccuratePercent((double)lUp / lUpLim) + ")" + opFree;
       if (tmrIcon != 0)
       {
         GLib.Source.Remove(tmrIcon);
@@ -2598,9 +2599,9 @@ namespace RestrictionTrackerGTK
       }
       sTTT = "Satellite Bandwidth Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
         "Last Updated " + sLastUpdate + "\n" +
-        "Download: " + MBorGB(lDown) + "\n" +
-        "Upload: " + MBorGB(lUp) + "\n" +
-        "Total: " + AccuratePercent((double)lUsed / lLimit) + sFree;
+          "Download: " + MBorGB(lDown) + "\n" +
+          "Upload: " + MBorGB(lUp) + "\n" +
+          "Total: " + AccuratePercent((double)lUsed / lLimit) + sFree;
       if (tmrIcon != 0)
       {
         GLib.Source.Remove(tmrIcon);
@@ -2755,8 +2756,8 @@ namespace RestrictionTrackerGTK
       }
       sTTT = "Satellite Bandwidth Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
         "Last Updated " + sLastUpdate + "\n" +
-        "Download: " + MBorGB(lDown) + " (" + AccuratePercent((double)lDown / lDownLim) + ")" + dFree + "\n" +
-        "Upload: " + MBorGB(lUp) + " (" + AccuratePercent((double)lUp / lUpLim) + ")" + uFree;
+          "Download: " + MBorGB(lDown) + " (" + AccuratePercent((double)lDown / lDownLim) + ")" + dFree + "\n" +
+          "Upload: " + MBorGB(lUp) + " (" + AccuratePercent((double)lUp / lUpLim) + ")" + uFree;
       if (tmrIcon != 0)
       {
         GLib.Source.Remove(tmrIcon);
@@ -2821,13 +2822,13 @@ namespace RestrictionTrackerGTK
           case modFunctions.SatHostTypes.RuralPortal:
             DisplayRResults(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
             break;
-          case modFunctions.SatHostTypes.DishNet:
+            case modFunctions.SatHostTypes.DishNet:
             DisplayDResults(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
             break;
-          case modFunctions.SatHostTypes.WildBlue:
+            case modFunctions.SatHostTypes.WildBlue:
             DisplayWResults(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
             break;
-          case modFunctions.SatHostTypes.Exede:
+            case modFunctions.SatHostTypes.Exede:
             if (mySettings.HistoryInversion)
             {
               DisplayEResults(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
@@ -2837,7 +2838,7 @@ namespace RestrictionTrackerGTK
               DisplayEResults(lDown, lUpLim, lUp, lDownLim, sLastUpdate);
             }
             break;
-          default:
+            default:
             if ((lDownLim == lUpLim) | (lUpLim == 0))
             {
               if (mySettings.HistoryInversion)
@@ -2890,10 +2891,10 @@ namespace RestrictionTrackerGTK
       }
     }
 
-  #endregion
-#endregion
+    #endregion
+    #endregion
 
-#region "Buttons"
+    #region "Buttons"
     [GLib.ConnectBefore]
     protected void cmdRefresh_Click(object sender, ButtonReleaseEventArgs e)
     {
@@ -3017,7 +3018,7 @@ namespace RestrictionTrackerGTK
           MethodInvoker ReInitInvoker = ReInit;
           ReInitInvoker.BeginInvoke(null, null);
           break;
-        case ResponseType.Ok:
+          case ResponseType.Ok:
           mySettings = null;
           mySettings = new AppSettings();
           if (mySettings.Colors.MainDownA.A == 0)
@@ -3045,9 +3046,9 @@ namespace RestrictionTrackerGTK
             MainClass.fHistory.DoResize(true);
           }
           break;
-        case ResponseType.Reject:
+          case ResponseType.Reject:
           break;
-        default:
+          default:
           if (bReRun)
           {
             SetNextLoginTime();
@@ -3078,10 +3079,10 @@ namespace RestrictionTrackerGTK
       MainClass.fAbout.Show();
       MainClass.fAbout.Present();
     }
-#endregion
+    #endregion
 
-#region "Menus"
-  #region "Tray"
+    #region "Menus"
+    #region "Tray"
     protected void mnuRestore_Click(object sender, EventArgs e)
     {
       if (((Gtk.Label)mnuRestore.Child).Text == "Hide")
@@ -3113,9 +3114,9 @@ namespace RestrictionTrackerGTK
     {
       Gtk.Main.Quit();
     }
-  #endregion
+    #endregion
 
-  #region "Graph"
+    #region "Graph"
     protected void mnuGraphRefresh_Click(object sender, EventArgs e)
     {
       cmdRefresh.Click();
@@ -3152,10 +3153,10 @@ namespace RestrictionTrackerGTK
       MainClass.fCustomColors.Destroy();
       MainClass.fCustomColors = null;
     }
-  #endregion 
-#endregion
+    #endregion 
+    #endregion
 
-#region "StatusBar"
+    #region "StatusBar"
     private System.Threading.Timer tmrPulse;
 
     public void ShowProgress(string sTitle, string sSubtitle, bool withProgress)
@@ -3243,9 +3244,9 @@ namespace RestrictionTrackerGTK
       pbMainStatus.Visible = false;
       lblMainStatus.Visible = false;
     }
-#endregion
+    #endregion
 
-#region "Tray Icon"
+    #region "Tray Icon"
     int iIconItem;
 
     private bool tmrIcon_Tick()
@@ -3253,35 +3254,35 @@ namespace RestrictionTrackerGTK
       switch (iIconItem)
       {
         case 0:
-        case 6:
-        case 11:
+          case 6:
+          case 11:
           SetTrayIcon("norm");
           break;
-        case 1: 
+          case 1: 
           SetTrayIcon("throb_1");
           break;
-        case 2: 
+          case 2: 
           SetTrayIcon("throb_2");
           break;
-        case 3:
+          case 3:
           SetTrayIcon("throb_3");
           break;
-        case 4:
+          case 4:
           SetTrayIcon("throb_4");
           break;
-        case 5:
+          case 5:
           SetTrayIcon("throb_5");
           break;
-        case 7: 
+          case 7: 
           SetTrayIcon("throb_7");
           break;
-        case 8: 
+          case 8: 
           SetTrayIcon("throb_8");
           break;
-        case 9: 
+          case 9: 
           SetTrayIcon("throb_9");
           break;
-        case 10: 
+          case 10: 
           SetTrayIcon("throb_10");
           break;
       }
@@ -3365,13 +3366,13 @@ namespace RestrictionTrackerGTK
       sFailTray = "";
     }
 
-  #region "Graphs"
+    #region "Graphs"
 
     private Gdk.Pixbuf CreateTrayIcon(long lDown, long lDownLim, long lUp, long lUpLim)
     {
       Bitmap imgTray = new Bitmap(trayRes, trayRes);
       Graphics g = Graphics.FromImage(imgTray);
-      
+
       g.Clear(Color.Transparent);
       if (imSlowed)
       {
@@ -3493,10 +3494,10 @@ namespace RestrictionTrackerGTK
         mnuGraph.Popup();
       }
     }
-  #endregion 
-#endregion 
+    #endregion 
+    #endregion 
 
-#region "Useful Functions"
+    #region "Useful Functions"
     private long StrToVal(string str)
     {
       return StrToVal(str, 1);
@@ -3523,19 +3524,19 @@ namespace RestrictionTrackerGTK
       result = result.Replace("\r", "");
       result = result.Trim();
     }
-  
-  #region "Failure Reports"
+
+    #region "Failure Reports"
     private void FailFile(string sFail)
     {
       if (clsUpdate.QuickCheckVersion() == clsUpdate.CheckEventArgs.ResultType.NoUpdate)
       {
-//        if (modFunctions.ProductVersion().Split(new char[] {'.'},4)[3].ToString().Length > 1)
-//        {
-//          ParamaterizedInvoker tFTP = modFunctions.SaveToFTP;
-//          tFTP.BeginInvoke((object)sFail, null, null);
-//        }
-//        else
-//        {
+        //        if (modFunctions.ProductVersion().Split(new char[] {'.'},4)[3].ToString().Length > 1)
+        //        {
+        //          ParamaterizedInvoker tFTP = modFunctions.SaveToFTP;
+        //          tFTP.BeginInvoke((object)sFail, null, null);
+        //        }
+        //        else
+        //        {
         sFailTray = sFail;
         modFunctions.MakeNotifier(ref taskNotifier, true);
         if (taskNotifier != null)
@@ -3547,7 +3548,7 @@ namespace RestrictionTrackerGTK
       }
 
     }
-  #endregion 
+    #endregion 
 
     private class SetStatusTextEventArgs : EventArgs
     {
@@ -3733,7 +3734,7 @@ namespace RestrictionTrackerGTK
           mySettings.Colors.HistoryText = Color.Black;
           mySettings.Colors.HistoryBackground = Color.White;
           break;
-        case modFunctions.SatHostTypes.Exede:
+          case modFunctions.SatHostTypes.Exede:
           mySettings.Colors.MainDownA = Color.Orange;
           mySettings.Colors.MainDownB = Color.Transparent;
           mySettings.Colors.MainDownC = Color.Red;
@@ -3761,7 +3762,7 @@ namespace RestrictionTrackerGTK
           mySettings.Colors.HistoryText = Color.Black;
           mySettings.Colors.HistoryBackground = Color.White;
           break;
-        case modFunctions.SatHostTypes.RuralPortal:
+          case modFunctions.SatHostTypes.RuralPortal:
           mySettings.Colors.MainDownA = Color.Orange;
           mySettings.Colors.MainDownB = Color.Transparent;
           mySettings.Colors.MainDownC = Color.Red;
@@ -3789,7 +3790,7 @@ namespace RestrictionTrackerGTK
           mySettings.Colors.HistoryText = Color.Black;
           mySettings.Colors.HistoryBackground = Color.White;
           break;
-        case modFunctions.SatHostTypes.DishNet:
+          case modFunctions.SatHostTypes.DishNet:
 
           mySettings.Colors.MainDownA = Color.DarkBlue;
           mySettings.Colors.MainDownB = Color.Transparent;
@@ -3818,12 +3819,12 @@ namespace RestrictionTrackerGTK
           mySettings.Colors.HistoryText = Color.Black;
           mySettings.Colors.HistoryBackground = Color.White;
           break;
-        default:
+          default:
           break;
 
       }
     }
 
-#endregion 
+    #endregion 
   }
 }

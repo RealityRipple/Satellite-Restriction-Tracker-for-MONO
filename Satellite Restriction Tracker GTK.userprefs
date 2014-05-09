@@ -1,13 +1,12 @@
-﻿<Properties>
+﻿<Properties GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="RestrictionTrackerGTK" expanded="True">
+          <Node name="RestrictionTrackerGTK" expanded="True" selected="True">
             <Node name="Forms" expanded="True" />
             <Node name="Modules" expanded="True" />
-            <Node name="AssemblyInfo.cs" selected="True" />
           </Node>
         </State>
       </Pad>
@@ -18,11 +17,11 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/home/andy/Documents/Satellite Restriction Tracker GTK/RestrictionTrackerGTK/Classes/clsTaskbarWidget.cs" line="663" />
-      <Breakpoint file="/home/andy/Documents/Satellite Restriction Tracker GTK/RestrictionTrackerGTK/Classes/clsTaskbarWidget.cs" line="651" />
-      <Breakpoint file="/home/andy/Documents/Satellite Restriction Tracker GTK/RestrictionTrackerGTK/Classes/clsTaskbarWidget.cs" line="643" />
-      <Breakpoint file="/home/andy/Documents/Satellite Restriction Tracker GTK/RestrictionTrackerGTK/Classes/clsTaskbarWidget.cs" line="718" />
-      <Breakpoint file="/home/andy/Documents/Satellite Restriction Tracker GTK/RestrictionTrackerGTK/Classes/clsTaskbarWidget.cs" line="727" />
+      <Breakpoint file="/home/andy/Documents/Satellite Restriction Tracker GTK/RestrictionTrackerGTK/Classes/clsTaskbarWidget.cs" line="663" column="1" />
+      <Breakpoint file="/home/andy/Documents/Satellite Restriction Tracker GTK/RestrictionTrackerGTK/Classes/clsTaskbarWidget.cs" line="651" column="1" />
+      <Breakpoint file="/home/andy/Documents/Satellite Restriction Tracker GTK/RestrictionTrackerGTK/Classes/clsTaskbarWidget.cs" line="643" column="1" />
+      <Breakpoint file="/home/andy/Documents/Satellite Restriction Tracker GTK/RestrictionTrackerGTK/Classes/clsTaskbarWidget.cs" line="718" column="1" />
+      <Breakpoint file="/home/andy/Documents/Satellite Restriction Tracker GTK/RestrictionTrackerGTK/Classes/clsTaskbarWidget.cs" line="727" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

@@ -32,7 +32,7 @@ namespace RestrictionTrackerGTK
       Year
     }
 
-#region "Alert Notifier"
+    #region "Alert Notifier"
     public static NotifierStyle NOTIFIER_STYLE = null;
     public static NotifierStyle LoadAlertStyle(string Path)
     {
@@ -154,7 +154,7 @@ namespace RestrictionTrackerGTK
       taskNotifier.NormalContentColor = customStyle.ContentColor;
       taskNotifier.HoverContentColor = customStyle.ContentHoverColor;
     }
-#endregion 
+    #endregion 
 
     static string static_AppData_sTmp;
 
@@ -588,7 +588,7 @@ namespace RestrictionTrackerGTK
       sFailFile = sFailFile.Replace(":", "-");
       System.Net.WebRequest ftpSave = System.Net.FtpWebRequest.Create("ftp://realityripple.com/" + sFailFile);
       ftpSave.Proxy = new System.Net.WebProxy();
-      ftpSave.Credentials = new System.Net.NetworkCredential("FTPUSER", "FTPPASS");
+      ftpSave.Credentials = modCreds.FTPCredentials(); //Use [new System.Net.NetworkCredential("FTPUSER", "FTPPASS");] to upload failures to a FTP location.
       ftpSave.Method = System.Net.WebRequestMethods.Ftp.UploadFile;
       using (System.IO.Stream ftpStream = ftpSave.GetRequestStream())
       {
@@ -745,8 +745,8 @@ namespace RestrictionTrackerGTK
       }
     }
 
-#region "Graphs"
-  #region "History"
+    #region "Graphs"
+    #region "History"
     private static Rectangle dGraph;
     private static Rectangle uGraph;
     private static System.DateTime oldDate;
@@ -1104,7 +1104,7 @@ namespace RestrictionTrackerGTK
     }
 
     public static Image DrawEGraph(DataBase.DataRow[] Data, bool Invert, Size ImgSize, Color ColorDA, Color ColorDB, Color ColorDC, Color ColorUA, Color ColorUB, Color ColorUC, Color ColorText,
-    Color ColorBG, Color ColorMax)
+                                   Color ColorBG, Color ColorMax)
     {
       if (Data == null || Data.Length == 0)
       {
@@ -1700,9 +1700,39 @@ namespace RestrictionTrackerGTK
       return iPic;
     }
 
-  #endregion
+    #endregion
 
-  #region "Progress"
+    #region "Progress"
+    public static System.Drawing.Font MonospaceFont(float Size)
+    {
+      try
+      {
+        if (System.Drawing.FontFamily.GenericMonospace.IsStyleAvailable(FontStyle.Regular))
+          return (new Font(System.Drawing.FontFamily.GenericMonospace, Size));
+        else
+        {
+          System.Collections.Generic.List<string> fontList = new System.Collections.Generic.List<string>();
+          foreach (System.Drawing.FontFamily fam in System.Drawing.FontFamily.Families)
+          {
+            if (fam.IsStyleAvailable(FontStyle.Regular))
+              fontList.Add(fam.Name);
+          }
+          if (fontList.Contains("Courier New"))
+            return new Font("Courier New", Size);
+          else if (fontList.Contains("Consolas"))
+            return new Font("Consolas", Size);
+          else if (fontList.Contains("Lucida Console"))
+            return new Font("Lucida Console",Size);
+          else
+            return new Font(SystemFonts.DefaultFont.Name,Size);
+        }
+      }
+      catch
+      {
+        return (new Font(SystemFonts.DefaultFont.Name, Size));
+      }
+    }
+
     public static Image DisplayProgress(Gdk.Size ImgSize, long Current, long Total, int Accuracy, Color ColorA, Color ColorB, Color ColorC, Color ColorText, Color ColorBG)
     {
       if (ImgSize.IsEmpty)
@@ -1740,7 +1770,7 @@ namespace RestrictionTrackerGTK
         using (Graphics g = Graphics.FromImage(bmpTmp))
         {
           g.Clear(ColorBG);
-          Font fFont = new Font(FontFamily.GenericMonospace, fontSize);
+          Font fFont = MonospaceFont(fontSize);
           LinearGradientBrush linGrBrush = TriGradientBrush(new Point(0, 0), new Point(0, ImgSize.Height), ColorA, ColorB, ColorC);
           g.FillRectangle(linGrBrush, 0, 0, ImgSize.Width, ImgSize.Height);
           string Msg = "Loading...";
@@ -1779,7 +1809,7 @@ namespace RestrictionTrackerGTK
             fontSize = 8;
           }
         }
-        Font fFont = new Font(FontFamily.GenericMonospace, fontSize);
+        Font fFont = MonospaceFont(fontSize);
         LinearGradientBrush linGrBrush = TriGradientBrush(new Point(0, 0), new Point(0, ImgSize.Height), ColorA, ColorB, ColorC);
         if (Current < Total)
         {
@@ -1865,7 +1895,7 @@ namespace RestrictionTrackerGTK
           fontSize = 8;
         }
       }
-      Font fFont = new Font(FontFamily.GenericMonospace, fontSize);
+      Font fFont = MonospaceFont(fontSize);
       LinearGradientBrush downBrush = TriGradientBrush(new Point(0, 0), new Point(ImgSize.Width, 0), ColorDC, ColorDB, ColorDA);
       LinearGradientBrush upBrush = TriGradientBrush(new Point(0, 0), new Point(ImgSize.Width, 0), ColorUC, ColorUB, ColorUA);
       if (Down + Up + Over < Total)
@@ -1972,7 +2002,7 @@ namespace RestrictionTrackerGTK
           fontSize = 8;
         }
       }
-      Font fFont = new Font(FontFamily.GenericMonospace, fontSize);
+      Font fFont = MonospaceFont(fontSize);
       LinearGradientBrush downBrush = TriGradientBrush(new Point(0, 0), new Point(ImgSize.Width, 0), ColorC, ColorB, ColorA);
       if (Down < Total)
       {
@@ -2056,9 +2086,9 @@ namespace RestrictionTrackerGTK
       nfi.PercentGroupSizes = groupSize;
       return (val.ToString("P", nfi));
     }
-  #endregion
+    #endregion
 
-  #region "Tray"
+    #region "Tray"
     private const int Alpha = 192;
 
     public static void CreateTrayIcon_Left(ref Graphics g, long lUsed, long lLim, Color cA, Color cB, Color cC, int iSize)
@@ -2180,8 +2210,8 @@ namespace RestrictionTrackerGTK
         g.FillRectangle(upBrush, 0, yUp, iSize, iSize - yUp);
       }
     }
-  #endregion
-#endregion
+    #endregion
+    #endregion
 
     /// <summary>
     /// Attempts to see if a file is in use, waiting up to five seconds for it to be freed.
@@ -2214,8 +2244,8 @@ namespace RestrictionTrackerGTK
               }
 
               break;
-            case FileAccess.Write:
-            case FileAccess.ReadWrite:
+              case FileAccess.Write:
+              case FileAccess.ReadWrite:
               //check for ability to write
               using (FileStream fs = System.IO.File.Open(Filename, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite | FileShare.Delete))
               {
@@ -2242,23 +2272,23 @@ namespace RestrictionTrackerGTK
       {
         case DateInterval.Day:
           return dateValue.AddDays(number);
-        case DateInterval.DayOfYear:
+          case DateInterval.DayOfYear:
           return dateValue.AddDays(number);
-        case DateInterval.Hour:
+          case DateInterval.Hour:
           return dateValue.AddHours(number);
-        case DateInterval.Minute:
+          case DateInterval.Minute:
           return dateValue.AddMinutes(number);
-        case DateInterval.Month:
+          case DateInterval.Month:
           return dateValue.AddMonths((int)number);
-        case DateInterval.Quarter:
+          case DateInterval.Quarter:
           return dateValue.AddMonths((int)number * 3);
-        case DateInterval.Second:
+          case DateInterval.Second:
           return dateValue.AddSeconds(number);
-        case DateInterval.Weekday:
+          case DateInterval.Weekday:
           return dateValue;
-        case DateInterval.WeekOfYear:
+          case DateInterval.WeekOfYear:
           return dateValue;
-        default:
+          default:
           return dateValue;
       }
     }
@@ -2268,28 +2298,28 @@ namespace RestrictionTrackerGTK
       switch (interval)
       { 
         case DateInterval.Day:
-        case DateInterval.DayOfYear:
+          case DateInterval.DayOfYear:
           System.TimeSpan spanForDays = date2 - date1;
           return (long)spanForDays.TotalDays;
-        case DateInterval.Hour:
+          case DateInterval.Hour:
           System.TimeSpan spanForHours = date2 - date1;
           return (long)spanForHours.TotalHours;
-        case DateInterval.Minute:
+          case DateInterval.Minute:
           System.TimeSpan spanForMinutes = date2 - date1;
           return (long)spanForMinutes.TotalMinutes;
-        case DateInterval.Month:
+          case DateInterval.Month:
           return ((date2.Year - date1.Year) * 12) + (date2.Month - date1.Month);
-        case DateInterval.Quarter:
+          case DateInterval.Quarter:
           long dateOneQuarter = (long)System.Math.Ceiling(date1.Month / 3.0);
           long dateTwoQuarter = (long)System.Math.Ceiling(date2.Month / 3.0);
           return (4 * (date2.Year - date1.Year)) + dateTwoQuarter - dateOneQuarter;
-        case DateInterval.Second:
+          case DateInterval.Second:
           System.TimeSpan spanForSeconds = date2 - date1;
           return (long)spanForSeconds.TotalSeconds;
-        case DateInterval.Weekday:
+          case DateInterval.Weekday:
           System.TimeSpan spanForWeekdays = date2 - date1;
           return (long)(spanForWeekdays.TotalDays / 7.0);
-        case DateInterval.WeekOfYear:
+          case DateInterval.WeekOfYear:
           System.DateTime dateOneModified = date1;
           System.DateTime dateTwoModified = date2;
           while (dateTwoModified.DayOfWeek != System.Globalization.DateTimeFormatInfo.CurrentInfo.FirstDayOfWeek)
@@ -2302,9 +2332,9 @@ namespace RestrictionTrackerGTK
           }
           System.TimeSpan spanForWeekOfYear = dateTwoModified - dateOneModified;
           return (long)(spanForWeekOfYear.TotalDays / 7.0);
-        case DateInterval.Year:
+          case DateInterval.Year:
           return date2.Year - date1.Year;
-        default:
+          default:
           return 0;
       }
     }

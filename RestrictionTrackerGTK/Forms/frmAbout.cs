@@ -2,15 +2,15 @@ using System;
 
 namespace RestrictionTrackerGTK
 {
-	public partial class frmAbout : Gtk.Window
-	{
+  public partial class frmAbout : Gtk.Window
+  {
     private clsUpdate updateChecker;
     private uint tReset;
     private Gtk.Button cmdUpdate;
     private delegate void MethodInvoker();
 
-#region "Form Events"
-		public frmAbout() : base(Gtk.WindowType.Toplevel)
+    #region "Form Events"
+    public frmAbout() : base(Gtk.WindowType.Toplevel)
     {
       this.Build();
       this.WindowStateEvent += HandleWindowStateEvent;
@@ -78,21 +78,21 @@ namespace RestrictionTrackerGTK
         updateChecker = null;
       }
     }
-#endregion
+    #endregion
 
-#region "Buttons"
-		protected void cmdOK_Click(object sender, EventArgs e)
+    #region "Buttons"
+    protected void cmdOK_Click(object sender, EventArgs e)
     {
       this.Hide();
     }
 
-		protected void cmdDonate_Click(object sender, EventArgs e)
+    protected void cmdDonate_Click(object sender, EventArgs e)
     {
       System.Diagnostics.Process.Start("http://realityripple.com/donate.php?itm=Satellite+Restriction+Tracker");
     }
-#endregion
+    #endregion
 
-#region "Updates"
+    #region "Updates"
     protected void cmdUpdate_Click(object sender, EventArgs e)
     {
       if (((Gtk.Label)((Gtk.HBox)((Gtk.Alignment)cmdUpdate.Child).Child).Children[1]).Text == "Check for Updates")
@@ -115,12 +115,12 @@ namespace RestrictionTrackerGTK
             }
             tReset = GLib.Timeout.Add(3500, ResetUpdate); 
             break;
-          case 1:
+            case 1:
             SetUpdateValue("Initializing Update Check", true);
             MethodInvoker checkInvoker = BeginCheck;
             checkInvoker.BeginInvoke(null, null);
             break;
-          case 2:
+            case 2:
             SetUpdateValue("Update Skipped: Log is being saved", false);
             if (tReset != 0)
             {
@@ -129,7 +129,7 @@ namespace RestrictionTrackerGTK
             }
             tReset = GLib.Timeout.Add(3500, ResetUpdate); 
             break;
-          default:
+            default:
             SetUpdateValue("Update Skipped: Log is being edited", false);
             if (tReset != 0)
             {
@@ -300,12 +300,13 @@ namespace RestrictionTrackerGTK
       else
       {
         AppSettings mySettings = new AppSettings();
+        dlgUpdate fUpdate;
         switch (e.Result)
         {
           case clsUpdate.CheckEventArgs.ResultType.NewUpdate:
             SetUpdateValue("<a href=\"http://srt.realityripple.com/For_MONO/\">New Update Available</a>", false, "New Update Available");
             System.Threading.Thread.Sleep(0);
-            dlgUpdate fUpdate = new dlgUpdate();
+            fUpdate = new dlgUpdate();
             fUpdate.NewUpdate(e.Version, false);
             switch ((Gtk.ResponseType)fUpdate.Run())
             {
@@ -318,9 +319,9 @@ namespace RestrictionTrackerGTK
                 }
                 tReset = GLib.Timeout.Add(3500, ResetUpdate); 
                 break;
-              case Gtk.ResponseType.No:
+                case Gtk.ResponseType.No:
                 break;
-              case Gtk.ResponseType.Ok:
+                case Gtk.ResponseType.Ok:
                 System.Diagnostics.Process.Start("http://srt.realityripple.com/For_MONO/");
                 if (tReset != 0)
                 {
@@ -331,22 +332,23 @@ namespace RestrictionTrackerGTK
                 mySettings.BetaCheck = false;
                 mySettings.Save();
                 break;
-              case Gtk.ResponseType.Cancel:
+                case Gtk.ResponseType.Cancel:
                 mySettings.BetaCheck = false;
                 mySettings.Save();
                 break;
-              default:
+                default:
                 break;
             }
             fUpdate.Destroy();
             fUpdate.Dispose();
             fUpdate = null;
             break;
-          case clsUpdate.CheckEventArgs.ResultType.NewBeta:
+            case clsUpdate.CheckEventArgs.ResultType.NewBeta:
             if (mySettings.BetaCheck)
             {
               SetUpdateValue("<a href=\"http://srt.realityripple.com/For_MONO/\">New BETA Available</a>", false);
               System.Threading.Thread.Sleep(0);
+              fUpdate = new dlgUpdate();
               fUpdate.NewUpdate(e.Version, false);
               switch ((Gtk.ResponseType)fUpdate.Run())
               {
@@ -359,9 +361,9 @@ namespace RestrictionTrackerGTK
                   }
                   tReset = GLib.Timeout.Add(3500, ResetUpdate); 
                   break;
-                case Gtk.ResponseType.No:
+                  case Gtk.ResponseType.No:
                   break;
-                case Gtk.ResponseType.Ok:
+                  case Gtk.ResponseType.Ok:
                   System.Diagnostics.Process.Start("http://srt.realityripple.com/For_MONO/");
                   if (tReset != 0)
                   {
@@ -372,12 +374,12 @@ namespace RestrictionTrackerGTK
                   mySettings.BetaCheck = false;
                   mySettings.Save();
                   break;
-                case Gtk.ResponseType.Cancel:
+                  case Gtk.ResponseType.Cancel:
                   mySettings.BetaCheck = false;
                   mySettings.Save();
                   SetUpdateValue("No New Updates", false);
                   break;
-                default:
+                  default:
                   break;
               }
               fUpdate.Destroy();
@@ -389,12 +391,12 @@ namespace RestrictionTrackerGTK
               SetUpdateValue("No New Updates", false);
             }
             break;
-          case clsUpdate.CheckEventArgs.ResultType.NoUpdate:
+            case clsUpdate.CheckEventArgs.ResultType.NoUpdate:
             SetUpdateValue("No New Updates", false);
             break;
         }
       }
     }
-#endregion 
-	}
+    #endregion 
+  }
 }

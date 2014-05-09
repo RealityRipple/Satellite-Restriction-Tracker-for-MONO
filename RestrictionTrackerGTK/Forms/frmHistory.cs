@@ -12,7 +12,6 @@ namespace RestrictionTrackerGTK
     DataListView lvBandwidth;
     internal AppSettings mySettings;
     private Gdk.Rectangle lastRect;
-
     private System.Drawing.Rectangle graphSpaceD;
     private System.Drawing.Rectangle graphSpaceU;
     private System.DateTime graphMinX;
@@ -82,7 +81,7 @@ namespace RestrictionTrackerGTK
       ((Gtk.Table.TableChild)pnlAge[algnTo]).LeftAttach = 1;
       ((Gtk.Table.TableChild)pnlAge[algnTo]).TopAttach = 1;
       dtwTo.TooltipText = "Most recent date to display records from.";
-     
+
       dtwFrom.ShowAll();
       dtwTo.ShowAll();
 
@@ -90,24 +89,41 @@ namespace RestrictionTrackerGTK
       dtwFrom.Date = dtwFrom.MinDate;
       dtwTo.Date = dtwTo.MaxDate;
 
+      switch (useStyle)
+      {
+        case modFunctions.SatHostTypes.DishNet:
+          case modFunctions.SatHostTypes.Exede:
+          case modFunctions.SatHostTypes.RuralPortal:
+          ((Label)((HBox) ((Alignment) cmd30Days.Children[0]).Children[0]).Children[1]).LabelProp = "This Period";
+          ((Label)((HBox) ((Alignment) cmd60Days.Children[0]).Children[0]).Children[1]).LabelProp = "Last Period";
+          break;
+          default:
+          ((Label)((HBox) ((Alignment) cmd30Days.Children[0]).Children[0]).Children[1]).LabelProp = "30 Days";
+          ((Label)((HBox) ((Alignment) cmd60Days.Children[0]).Children[0]).Children[1]).LabelProp = "60 Days";
+          break;
+      }
+
+
+
       this.SizeAllocated += frmHistory_ResizeBegin;
       this.Hidden += frmHistory_Hidden;
+
 
       switch (mySettings.Ago)
       {
         case 1:
           cmdToday.Click();
           break;
-        case 30:
+          case 30:
           cmd30Days.Click();
           break;
-        case 60:
+          case 60:
           cmd60Days.Click();
           break;
-        case uint.MaxValue:
+          case uint.MaxValue:
           cmdAllTime.Click();
           break;
-        default:
+          default:
           if (modFunctions.DateAdd(modFunctions.DateInterval.Day, -1 * mySettings.Ago, DateTime.Now) > dtwFrom.MinDate & modFunctions.DateAdd(modFunctions.DateInterval.Day, -1 * mySettings.Ago, DateTime.Now) < dtwFrom.MaxDate)
           {
             dtwFrom.Date = modFunctions.DateAdd(modFunctions.DateInterval.Day, -1 * mySettings.Ago, DateTime.Now);
@@ -121,7 +137,7 @@ namespace RestrictionTrackerGTK
       }
     }
 
-#region "Form Events"
+    #region "Form Events"
     private uint tmrResizeCheck;
 
     private void frmHistory_ResizeBegin(object sender, SizeAllocatedArgs e)
@@ -151,7 +167,7 @@ namespace RestrictionTrackerGTK
       DoResize(true);
       return false;
     }
-  
+
     private void frmHistory_Hidden(object sender, EventArgs e)
     {
       HideProgress();
@@ -162,9 +178,9 @@ namespace RestrictionTrackerGTK
       mySettings.Save();
       MainClass.fMain.ReLoadSettings();
     }
-#endregion
+    #endregion
 
-#region "Graph"
+    #region "Graph"
     private class DidResizeEventArgs :EventArgs
     {
       public System.Drawing.Image downRet;
@@ -219,7 +235,7 @@ namespace RestrictionTrackerGTK
           }
           Gtk.Application.Invoke(null, new DidResizeEventArgs(bDown, bUp), DidResize);
           break;
-        case 1:
+          case 1:
           System.Drawing.Image bRural = modFunctions.DrawRGraph(graphData, downSize, mySettings.Colors.HistoryDownA, mySettings.Colors.HistoryDownB, mySettings.Colors.HistoryDownC, mySettings.Colors.HistoryText, mySettings.Colors.HistoryBackground, mySettings.Colors.HistoryDownMax);
           if (!this.Visible)
           {
@@ -227,9 +243,9 @@ namespace RestrictionTrackerGTK
           }
           Gtk.Application.Invoke(null, new DidResizeEventArgs(bRural, null), DidResize);
           break;
-        case 2:
+          case 2:
           System.Drawing.Image bExede = modFunctions.DrawEGraph(graphData, mySettings.HistoryInversion, downSize, mySettings.Colors.HistoryDownA, mySettings.Colors.HistoryDownB, mySettings.Colors.HistoryDownC, mySettings.Colors.HistoryUpA, mySettings.Colors.HistoryUpB, mySettings.Colors.HistoryUpC, mySettings.Colors.HistoryText,
-          mySettings.Colors.HistoryBackground, mySettings.Colors.HistoryDownMax);
+                                                                mySettings.Colors.HistoryBackground, mySettings.Colors.HistoryDownMax);
           if (!this.Visible)
           {
             return;
@@ -281,7 +297,7 @@ namespace RestrictionTrackerGTK
                   GraphInvoker.BeginInvoke(DGraphData, null, null);
                   bDisplayed = true;
                   break;
-                case modFunctions.SatHostTypes.RuralPortal:
+                  case modFunctions.SatHostTypes.RuralPortal:
                   evnUld.Visible = false;
                   pnlGraph.Homogeneous = false;
                   pnlGraph.CheckResize();
@@ -296,7 +312,7 @@ namespace RestrictionTrackerGTK
                   GraphInvoker.BeginInvoke(RGraphData, null, null);
                   bDisplayed = true;
                   break;
-                case modFunctions.SatHostTypes.Exede:
+                  case modFunctions.SatHostTypes.Exede:
                   evnUld.Visible = false;
                   pnlGraph.Homogeneous = false;
                   pnlGraph.CheckResize();
@@ -311,7 +327,7 @@ namespace RestrictionTrackerGTK
                   GraphInvoker.BeginInvoke(EGraphData, null, null);
                   bDisplayed = true;
                   break;
-                case modFunctions.SatHostTypes.WildBlue:
+                  case modFunctions.SatHostTypes.WildBlue:
                   evnUld.Visible = true;
                   pnlGraph.Homogeneous = true;
                   pnlGraph.CheckResize();
@@ -395,7 +411,7 @@ namespace RestrictionTrackerGTK
       {
         return;
       }
-      if (graphSpaceD.Contains((int) e.Event.X, (int) e.Event.Y))
+      if (graphSpaceD.Contains((int)e.Event.X, (int)e.Event.Y))
       {
         System.DateTime dNow = CalculateNow(graphSpaceD, graphMinX, graphMaxX, e.Event.X);
         DataBase.DataRow gShow = modFunctions.GetGraphData(dNow, true);
@@ -478,9 +494,9 @@ namespace RestrictionTrackerGTK
       long DateSpan = modFunctions.DateDiff(modFunctions.DateInterval.Minute, StartX, EndX);
       return modFunctions.DateAdd(modFunctions.DateInterval.Minute, ((X - GraphSpace.Left) / GraphSpace.Width) * DateSpan, StartX);
     }
-#endregion
+    #endregion
 
-#region "Buttons"
+    #region "Buttons"
     private void cmdQuery_Click(System.Object sender, System.EventArgs e)
     {
       grpAge.Sensitive = false;
@@ -584,13 +600,13 @@ namespace RestrictionTrackerGTK
                 lvBandwidth = (DataListView)new DishNetLimsView();
               }
               break;
-            case modFunctions.SatHostTypes.RuralPortal:
+              case modFunctions.SatHostTypes.RuralPortal:
               lvBandwidth = (DataListView)new RuralPortalView();
               break;
-            case modFunctions.SatHostTypes.Exede:
+              case modFunctions.SatHostTypes.Exede:
               lvBandwidth = (DataListView)new ExedeView(mySettings.HistoryInversion);
               break;
-            default:
+              default:
               if (lItems != null)
               {
                 long wbDLim = 0;
@@ -730,18 +746,62 @@ namespace RestrictionTrackerGTK
     {
       System.DateTime RightNow = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, 0);
       System.DateTime From30DaysAgo = default(System.DateTime);
-      if (modFunctions.DateAdd(modFunctions.DateInterval.Day, -30, RightNow) > dtwFrom.MaxDate)
+      if (useStyle == modFunctions.SatHostTypes.WildBlue)
       {
-        From30DaysAgo = dtwFrom.MaxDate;
-      }
-      else if (modFunctions.DateAdd(modFunctions.DateInterval.Day, -30, RightNow) < dtwFrom.MinDate)
-      {
-        From30DaysAgo = dtwFrom.MinDate;
+        if (modFunctions.DateAdd(modFunctions.DateInterval.Day, -30, RightNow) > dtwFrom.MaxDate)
+        {
+          From30DaysAgo = dtwFrom.MaxDate;
+        }
+        else if (modFunctions.DateAdd(modFunctions.DateInterval.Day, -30, RightNow) < dtwFrom.MinDate)
+        {
+          From30DaysAgo = dtwFrom.MinDate;
+        }
+        else
+        {
+          From30DaysAgo = modFunctions.DateAdd(modFunctions.DateInterval.Day, -30, RightNow);
+        }
       }
       else
       {
-        From30DaysAgo = modFunctions.DateAdd(modFunctions.DateInterval.Day, -30, RightNow);
+        if (modDB.usageDB.Count > 1)
+        {
+          for (int i = modDB.usageDB.Count - 1; i <=1; i--)
+          {
+            if ((modDB.usageDB.data[i].DOWNLOAD == 0 && modDB.usageDB.data[i].UPLOAD == 0) && (modDB.usageDB.data[i - 1].DOWNLOAD > 0 || modDB.usageDB.data[i - 1].UPLOAD > 0))
+            {
+              if (modDB.usageDB.data[i].DATETIME > dtwFrom.Date)
+              {
+                From30DaysAgo = dtwFrom.MaxDate;
+              }
+              else if (modDB.usageDB.data[i].DATETIME < dtwFrom.MinDate)
+              {
+                From30DaysAgo = dtwFrom.MinDate;
+              }
+              else
+              {
+                From30DaysAgo = modDB.usageDB.data[i].DATETIME;
+              }
+              break;
+            }
+          }
+        }
+        else
+        {
+          if (modDB.usageDB.data[0].DATETIME > dtwFrom.MaxDate)
+          {
+            From30DaysAgo = dtwFrom.MaxDate;
+          }
+          else if (modDB.usageDB.data[0].DATETIME < dtwFrom.MinDate)
+          {
+            From30DaysAgo = dtwFrom.MinDate;
+          }
+          else
+          {
+            From30DaysAgo = modDB.usageDB.data[0].DATETIME;
+          }
+        }
       }
+
       System.DateTime ToNow = default(System.DateTime);
       if (RightNow > dtwTo.MaxDate)
       {
@@ -764,17 +824,69 @@ namespace RestrictionTrackerGTK
     {
       System.DateTime RightNow = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, 0);
       System.DateTime From60DaysAgo = default(System.DateTime);
-      if (modFunctions.DateAdd(modFunctions.DateInterval.Day, -60, RightNow) > dtwFrom.MaxDate)
+      if (useStyle == modFunctions.SatHostTypes.WildBlue)
       {
-        From60DaysAgo = dtwFrom.MaxDate;
-      }
-      else if (modFunctions.DateAdd(modFunctions.DateInterval.Day, -60, RightNow) < dtwFrom.MinDate)
-      {
-        From60DaysAgo = dtwFrom.MinDate;
+        if (modFunctions.DateAdd(modFunctions.DateInterval.Day, -60, RightNow) > dtwFrom.MaxDate)
+        {
+          From60DaysAgo = dtwFrom.MaxDate;
+        }
+        else if (modFunctions.DateAdd(modFunctions.DateInterval.Day, -60, RightNow) < dtwFrom.MinDate)
+        {
+          From60DaysAgo = dtwFrom.MinDate;
+        }
+        else
+        {
+          From60DaysAgo = modFunctions.DateAdd(modFunctions.DateInterval.Day, -60, RightNow);
+        }
       }
       else
       {
-        From60DaysAgo = modFunctions.DateAdd(modFunctions.DateInterval.Day, -60, RightNow);
+        if (modDB.usageDB.Count > 1)
+        {
+          int Finds = 0;
+          for (int i = modDB.usageDB.Count - 1; i <=1; i--)
+          {
+            if ((modDB.usageDB.data[i].DOWNLOAD == 0 && modDB.usageDB.data[i].UPLOAD == 0) && (modDB.usageDB.data[i - 1].DOWNLOAD > 0 || modDB.usageDB.data[i - 1].UPLOAD > 0))
+            {
+              Finds ++;
+              if (Finds == 2)
+              {
+                if (modDB.usageDB.data[i].DATETIME > dtwFrom.Date)
+                {
+                  From60DaysAgo = dtwFrom.MaxDate;
+                }
+                else if (modDB.usageDB.data[i].DATETIME < dtwFrom.MinDate)
+                {
+                  From60DaysAgo = dtwFrom.MinDate;
+                }
+                else
+                {
+                  From60DaysAgo = modDB.usageDB.data[i].DATETIME;
+                }
+                break;
+              }
+            }
+          }
+          if (Finds < 2)
+          {
+            From60DaysAgo = dtwFrom.MinDate;
+          }
+        }
+        else
+        {
+          if (modDB.usageDB.data[0].DATETIME > dtwFrom.MaxDate)
+          {
+            From60DaysAgo = dtwFrom.MaxDate;
+          }
+          else if (modDB.usageDB.data[0].DATETIME < dtwFrom.MinDate)
+          {
+            From60DaysAgo = dtwFrom.MinDate;
+          }
+          else
+          {
+            From60DaysAgo = modDB.usageDB.data[0].DATETIME;
+          }
+        }
       }
       System.DateTime ToNow = default(System.DateTime);
       if (RightNow > dtwTo.MaxDate)
@@ -969,9 +1081,9 @@ namespace RestrictionTrackerGTK
     {
       this.Hide();
     }
-#endregion
+    #endregion
 
-#region "Date Pickers"
+    #region "Date Pickers"
     private void dtwTo_DateChanged(object sender, DateTimeWidget.DateChangedEventArgs  e)
     {
       if (dtwFrom.Date > dtwTo.Date)
@@ -1045,9 +1157,9 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-#endregion
+    #endregion
 
-#region "Notices"
+    #region "Notices"
     private Gdk.Pixbuf NoDataNote(Gdk.Size ImgSize)
     {
       if (ImgSize.Width == 0 | ImgSize.Height == 0)
@@ -1078,7 +1190,7 @@ namespace RestrictionTrackerGTK
       }
       return modFunctions.ImageToPixbuf(iPic);
     }
-#endregion
+    #endregion
 
     private void SetDefaultColors()
     {
@@ -1118,7 +1230,7 @@ namespace RestrictionTrackerGTK
           mySettings.Colors.HistoryBackground = System.Drawing.Color.White;
 
           break;
-        case modFunctions.SatHostTypes.Exede:
+          case modFunctions.SatHostTypes.Exede:
           mySettings.Colors.MainDownA = System.Drawing.Color.Orange;
           mySettings.Colors.MainDownB = System.Drawing.Color.Transparent;
           mySettings.Colors.MainDownC = System.Drawing.Color.Red;
@@ -1147,7 +1259,7 @@ namespace RestrictionTrackerGTK
           mySettings.Colors.HistoryBackground = System.Drawing.Color.White;
 
           break;
-        case modFunctions.SatHostTypes.RuralPortal:
+          case modFunctions.SatHostTypes.RuralPortal:
           mySettings.Colors.MainDownA = System.Drawing.Color.Orange;
           mySettings.Colors.MainDownB = System.Drawing.Color.Transparent;
           mySettings.Colors.MainDownC = System.Drawing.Color.Red;
@@ -1176,7 +1288,7 @@ namespace RestrictionTrackerGTK
           mySettings.Colors.HistoryBackground = System.Drawing.Color.White;
 
           break;
-        case modFunctions.SatHostTypes.DishNet:
+          case modFunctions.SatHostTypes.DishNet:
           mySettings.Colors.MainDownA = System.Drawing.Color.DarkBlue;
           mySettings.Colors.MainDownB = System.Drawing.Color.Transparent;
           mySettings.Colors.MainDownC = System.Drawing.Color.Red;
@@ -1204,13 +1316,14 @@ namespace RestrictionTrackerGTK
           mySettings.Colors.HistoryText = System.Drawing.Color.Black;
           mySettings.Colors.HistoryBackground = System.Drawing.Color.White;
           break;
-        default:
+          default:
           break;
       }
     }
 
-#region "StatusBar"
+    #region "StatusBar"
     private uint tmrPulse;
+
     public void ShowProgress(string Title, string Subtitle)
     {
       if (!String.IsNullOrEmpty(Title))
@@ -1275,9 +1388,9 @@ namespace RestrictionTrackerGTK
       pbHistoryStatus.Visible = false;
       lblHistoryStatus.Visible = false;
     }
-#endregion
+    #endregion
 
-#region "DateTime Widget"
+    #region "DateTime Widget"
     class DateTimeWidget : VBox
     {
       HBox pnlDT;
@@ -1294,13 +1407,14 @@ namespace RestrictionTrackerGTK
       public class DateChangedEventArgs : EventArgs
       {
         public DateTime date;
+
         public DateChangedEventArgs(DateTime d)
         {
-          date=d;
+          date = d;
         }
       }
 
-      public delegate void DateChangedHandler(object o,  DateChangedEventArgs date);
+      public delegate void DateChangedHandler(object o,DateChangedEventArgs date);
 
       public event DateChangedHandler DateChanged;
 
@@ -1354,7 +1468,7 @@ namespace RestrictionTrackerGTK
       public DateTimeWidget(DateTime date)
       {
         dtSelectedDate = date;
-        dtMinimumDate = new DateTime(1970,1,1);
+        dtMinimumDate = new DateTime(1970, 1, 1);
         dtMaximumDate = DateTime.Today;
         pnlDT = new HBox();
         pnlDropdown = new HBox(false, 0);
@@ -1507,14 +1621,15 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-#endregion
+    #endregion
 
-#region "List Views"
+    #region "List Views"
     class DataListView : ListView<DataBase.DataRow>
     {
       public DataListView(params string[] columnNames) : base(columnNames)
       {
       }
+
       protected override void RenderCell(CellRendererText render, int index, DataBase.DataRow item)
       {
         switch (index)
@@ -1522,7 +1637,7 @@ namespace RestrictionTrackerGTK
           case 0:
             render.Text = item.DATETIME.ToString("g");
             break;
-          default:
+            default:
             render.Text = "";
             break;
         }
@@ -1534,6 +1649,7 @@ namespace RestrictionTrackerGTK
       public WildBlueView() : base("Date and Time", "Download", "Upload")
       {
       }
+
       protected override void RenderCell(CellRendererText render, int index, DataBase.DataRow item)
       {
         switch (index)
@@ -1541,20 +1657,22 @@ namespace RestrictionTrackerGTK
           case 0:
             render.Text = item.DATETIME.ToString("g");
             break;
-          case 1:
+            case 1:
             render.Text = item.DOWNLOAD.ToString();
             break;
-          case 2:
+            case 2:
             render.Text = item.UPLOAD.ToString();
             break;
         }
       }
     }
+
     class WildBlueLimsView : DataListView
     {
       public WildBlueLimsView() : base("Date and Time", "Download / Limit", "Upload / Limit")
       {
       }
+
       protected override void RenderCell(CellRendererText render, int index, DataBase.DataRow item)
       {
         switch (index)
@@ -1562,23 +1680,25 @@ namespace RestrictionTrackerGTK
           case 0:
             render.Text = item.DATETIME.ToString("g");
             break;
-          case 1:
+            case 1:
             render.Text = item.DOWNLOAD.ToString() + " / " + item.DOWNLIM.ToString();
             break;
-          case 2:
+            case 2:
             render.Text = item.UPLOAD.ToString() + " / " + item.UPLIM.ToString();
             break;
         }
       }
     }
-    
+
     class ExedeView : DataListView
     {
       bool invert;
+
       public ExedeView(bool inversion) : base("Date and Time", "Download, Upload, & Over", "Limit")
       {
         invert = inversion;
       }
+
       protected override void RenderCell(CellRendererText render, int index, DataBase.DataRow item)
       {
         switch (index)
@@ -1586,7 +1706,7 @@ namespace RestrictionTrackerGTK
           case 0:
             render.Text = item.DATETIME.ToString("g");
             break;
-          case 1:
+            case 1:
             if (item.DOWNLIM == item.UPLIM)
             {
               render.Text = item.DOWNLOAD.ToString() + " + " + item.UPLOAD.ToString();
@@ -1617,7 +1737,7 @@ namespace RestrictionTrackerGTK
               }
             }
             break;
-          case 2:
+            case 2:
             if (invert)
             {
               render.Text = item.UPLIM.ToString();
@@ -1636,6 +1756,7 @@ namespace RestrictionTrackerGTK
       public RuralPortalView() : base("Date and Time", "Used", "Total")
       {
       }
+
       protected override void RenderCell(CellRendererText render, int index, DataBase.DataRow item)
       {
         switch (index)
@@ -1643,10 +1764,10 @@ namespace RestrictionTrackerGTK
           case 0:
             render.Text = item.DATETIME.ToString("g");
             break;
-          case 1:
+            case 1:
             render.Text = item.DOWNLOAD.ToString();
             break;
-          case 2:
+            case 2:
             render.Text = item.DOWNLIM.ToString();
             break;
         }
@@ -1658,6 +1779,7 @@ namespace RestrictionTrackerGTK
       public DishNetView() : base("Date and Time", "Anytime", "Off-Peak")
       {
       }
+
       protected override void RenderCell(CellRendererText render, int index, DataBase.DataRow item)
       {
         switch (index)
@@ -1665,20 +1787,22 @@ namespace RestrictionTrackerGTK
           case 0:
             render.Text = item.DATETIME.ToString("g");
             break;
-          case 1:
+            case 1:
             render.Text = item.DOWNLOAD.ToString();
             break;
-          case 2:
+            case 2:
             render.Text = item.UPLOAD.ToString();
             break;
         }
       }
     }
+
     class DishNetLimsView : DataListView
     {
       public DishNetLimsView() : base("Date and Time", "Anytime / Limit", "Off-Peak / Limit")
       {
       }
+
       protected override void RenderCell(CellRendererText render, int index, DataBase.DataRow item)
       {
         switch (index)
@@ -1686,16 +1810,16 @@ namespace RestrictionTrackerGTK
           case 0:
             render.Text = item.DATETIME.ToString("g");
             break;
-          case 1:
+            case 1:
             render.Text = item.DOWNLOAD.ToString() + " / " + item.DOWNLIM.ToString();
             break;
-          case 2:
+            case 2:
             render.Text = item.UPLOAD.ToString() + " / " + item.UPLIM.ToString();
             break;
         }
       }
     }
-#endregion
+    #endregion
   }
 }
 

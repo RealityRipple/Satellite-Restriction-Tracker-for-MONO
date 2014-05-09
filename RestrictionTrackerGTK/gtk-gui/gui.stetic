@@ -6,7 +6,7 @@
   </configuration>
   <import>
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <widget-library name="appindicator-sharp, Version=0.2.0.0, Culture=neutral, PublicKeyToken=bcae265d1c7ab4c2" />
+    <widget-library name="../../../../Documents/Satellite Restriction Tracker GTK/appindicator-sharp.dll" />
     <widget-library name="../bin/Debug/RestrictionTracker.exe" internal="true" />
   </import>
   <widget class="Gtk.Window" id="RestrictionTrackerGTK.frmMain" design-size="979 688">
@@ -1146,6 +1146,9 @@
         <child>
           <widget class="Gtk.Frame" id="grpAge">
             <property name="MemberName" />
+            <property name="ShadowType">Out</property>
+            <property name="LabelXalign">0.5</property>
+            <property name="LabelYalign">0</property>
             <child>
               <widget class="Gtk.Alignment" id="algnAge">
                 <property name="MemberName" />
@@ -1377,7 +1380,6 @@
                         <property name="Tooltip" translatable="yes">Display history in a line graph.</property>
                         <property name="CanFocus">True</property>
                         <property name="Label" translatable="yes">Graph</property>
-                        <property name="Active">True</property>
                         <property name="DrawIndicator">True</property>
                         <property name="HasLabel">True</property>
                         <property name="UseUnderline">True</property>
@@ -1455,6 +1457,8 @@
             <child>
               <widget class="Gtk.Label" id="GtkLabel8">
                 <property name="MemberName" />
+                <property name="WidthRequest">90</property>
+                <property name="HeightRequest">29</property>
                 <property name="LabelProp" translatable="yes">Age Parameters</property>
                 <property name="UseMarkup">True</property>
               </widget>
@@ -1534,7 +1538,6 @@
                 <property name="Icon">stock:gtk-open Button</property>
                 <property name="Label" translatable="yes">Import Database</property>
                 <property name="UseUnderline">True</property>
-                <signal name="Clicked" handler="cmdImport_Click" />
               </widget>
               <packing>
                 <property name="Position">1</property>
@@ -1552,7 +1555,6 @@
                 <property name="Icon">stock:gtk-save-as Button</property>
                 <property name="Label" translatable="yes">Export Database</property>
                 <property name="UseUnderline">True</property>
-                <signal name="Clicked" handler="cmdExport_Click" />
               </widget>
               <packing>
                 <property name="Position">2</property>
@@ -1570,7 +1572,6 @@
                 <property name="Icon">stock:gtk-close Button</property>
                 <property name="Label" translatable="yes">_Close</property>
                 <property name="UseUnderline">True</property>
-                <signal name="Clicked" handler="cmdClose_Click" />
               </widget>
               <packing>
                 <property name="PackType">End</property>

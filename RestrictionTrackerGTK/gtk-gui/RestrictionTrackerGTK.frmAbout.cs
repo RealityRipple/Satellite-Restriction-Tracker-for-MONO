@@ -18,7 +18,7 @@ namespace RestrictionTrackerGTK
 		private global::Gtk.HBox pnlButtons;
 		private global::Gtk.Button cmdDonate;
 		private global::Gtk.Button cmdOK;
-		
+
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);

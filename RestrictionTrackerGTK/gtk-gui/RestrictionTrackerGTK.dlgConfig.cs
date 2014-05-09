@@ -69,7 +69,7 @@ namespace RestrictionTrackerGTK
 		private global::Gtk.Button cmdColors;
 		private global::Gtk.Button cmdSave;
 		private global::Gtk.Button cmdClose;
-		
+
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);

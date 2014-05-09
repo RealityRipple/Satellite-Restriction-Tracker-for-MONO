@@ -11,7 +11,7 @@
     <AssemblyName>RestrictionTracker</AssemblyName>
     <StartupObject>RestrictionTrackerGTK.MainClass</StartupObject>
     <ApplicationIcon>Resources\sat.ico</ApplicationIcon>
-    <ReleaseVersion>0.3</ReleaseVersion>
+    <ReleaseVersion>0.3.1</ReleaseVersion>
     <Description>Satellite Restriction Tracker</Description>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -72,10 +72,8 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
-    <Reference Include="appindicator-sharp, Version=0.2.0.0, Culture=neutral, PublicKeyToken=bcae265d1c7ab4c2">
-      <Private>False</Private>
-      <Package>appindicator-sharp-0.1</Package>
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="appindicator-sharp">
+      <HintPath>..\..\..\Documents\Satellite Restriction Tracker GTK\appindicator-sharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +149,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Classes\Visual Elements\clsListView.cs" />
     <Compile Include="Classes\Visual Elements\clsTaskbarNotifier.cs" />
+    <Compile Include="Modules\modCreds.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -35,7 +35,7 @@ namespace RestrictionTrackerGTK
 		private global::Gtk.Statusbar sbHistoryStatus;
 		private global::Gtk.ProgressBar pbHistoryStatus;
 		private global::Gtk.Label lblHistoryStatus;
-		
+
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);
@@ -52,6 +52,9 @@ namespace RestrictionTrackerGTK
 			// Container child pnlHistory.Gtk.Box+BoxChild
 			this.grpAge = new global::Gtk.Frame ();
 			this.grpAge.Name = "grpAge";
+			this.grpAge.ShadowType = ((global::Gtk.ShadowType)(2));
+			this.grpAge.LabelXalign = 0.5F;
+			this.grpAge.LabelYalign = 0F;
 			// Container child grpAge.Gtk.Container+ContainerChild
 			this.algnAge = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
 			this.algnAge.Name = "algnAge";
@@ -256,7 +259,6 @@ namespace RestrictionTrackerGTK
 			this.optGraph.TooltipMarkup = "Display history in a line graph.";
 			this.optGraph.CanFocus = true;
 			this.optGraph.Name = "optGraph";
-			this.optGraph.Active = true;
 			this.optGraph.DrawIndicator = true;
 			this.optGraph.UseUnderline = true;
 			this.optGraph.Yalign = 0F;
@@ -300,6 +302,8 @@ namespace RestrictionTrackerGTK
 			this.algnAge.Add (this.pnlAge);
 			this.grpAge.Add (this.algnAge);
 			this.GtkLabel8 = new global::Gtk.Label ();
+			this.GtkLabel8.WidthRequest = 90;
+			this.GtkLabel8.HeightRequest = 29;
 			this.GtkLabel8.Name = "GtkLabel8";
 			this.GtkLabel8.LabelProp = global::Mono.Unix.Catalog.GetString ("Age Parameters");
 			this.GtkLabel8.UseMarkup = true;
@@ -481,9 +485,6 @@ namespace RestrictionTrackerGTK
 			this.DefaultWidth = 571;
 			this.DefaultHeight = 356;
 			this.Show ();
-			this.cmdImport.Clicked += new global::System.EventHandler (this.cmdImport_Click);
-			this.cmdExport.Clicked += new global::System.EventHandler (this.cmdExport_Click);
-			this.cmdClose.Clicked += new global::System.EventHandler (this.cmdClose_Click);
 		}
 	}
 }

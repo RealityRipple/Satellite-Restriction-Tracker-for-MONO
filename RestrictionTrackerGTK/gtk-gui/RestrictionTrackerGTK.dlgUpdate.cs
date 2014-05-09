@@ -12,7 +12,7 @@ namespace RestrictionTrackerGTK
 		private global::Gtk.CheckButton chkStopBETA;
 		private global::Gtk.Button cmdDownload;
 		private global::Gtk.Button cmdCancel;
-		
+
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);
