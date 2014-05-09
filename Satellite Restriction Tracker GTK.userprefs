@@ -1,12 +1,14 @@
 ﻿<Properties GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="RestrictionTrackerGTK/AssemblyInfo.cs">
+    <Files>
+      <File FileName="RestrictionTrackerGTK/AssemblyInfo.cs" Line="10" Column="17" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="RestrictionTrackerGTK" expanded="True" selected="True">
-            <Node name="Forms" expanded="True" />
-            <Node name="Modules" expanded="True" />
+          <Node name="RestrictionTrackerGTK" expanded="True">
+            <Node name="AssemblyInfo.cs" selected="True" />
           </Node>
         </State>
       </Pad>
