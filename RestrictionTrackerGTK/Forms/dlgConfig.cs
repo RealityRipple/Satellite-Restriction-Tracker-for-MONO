@@ -277,7 +277,7 @@ namespace RestrictionTrackerGTK
       {
         GLib.Source.Remove(pChecker);
         pChecker = 0;
-        remoteTest = new RestrictionLibrary.remoteRestrictionTracker(txtAccount.Text, "", checkKey, mySettings.Proxy, mySettings.Timeout, new DateTime(2001, 1, 1));
+        remoteTest = new RestrictionLibrary.remoteRestrictionTracker(txtAccount.Text, "", checkKey, mySettings.Proxy, mySettings.Timeout, new DateTime(2001, 1, 1), modFunctions.AppData);
         remoteTest.Failure += remoteTest_Failure;
         remoteTest.OKKey += remoteTest_OKKey;
       }
@@ -983,7 +983,7 @@ namespace RestrictionTrackerGTK
     {
       if (bRemoteAcct)
       {
-        txtInterval.Adjustment.Lower = 60;
+        txtInterval.Adjustment.Lower = 30;
       }
       else
       {

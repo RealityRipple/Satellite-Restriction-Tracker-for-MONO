@@ -16,7 +16,7 @@ namespace RestrictionTrackerGTK
     private System.DateTime graphMinX;
     private System.DateTime graphMaxX;
     private DataBase.DataRow[] extraData;
-    private modFunctions.SatHostTypes useStyle = modFunctions.SatHostTypes.Other;
+    private localRestrictionTracker.SatHostTypes useStyle = localRestrictionTracker.SatHostTypes.Other;
     private delegate void ParameterizedInvoker(object parameter);
     private delegate void ParameterizedInvoker2(object param1,object param2);
     public frmHistory() : base(Gtk.WindowType.Toplevel)
@@ -38,11 +38,7 @@ namespace RestrictionTrackerGTK
       this.ShowAll();
 
       mySettings = new AppSettings();
-      useStyle = MainClass.fMain.myPanel;
-      if (useStyle == modFunctions.SatHostTypes.Other)
-      {
-        useStyle = mySettings.AccountType;
-      }
+      useStyle = mySettings.AccountType;
 
       if (mySettings.Colors.HistoryDownA.A == 0)
       {
@@ -88,9 +84,10 @@ namespace RestrictionTrackerGTK
 
       switch (useStyle)
       {
-        case modFunctions.SatHostTypes.DishNet:
-        case modFunctions.SatHostTypes.Exede:
-        case modFunctions.SatHostTypes.RuralPortal:
+        case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
+        case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
+        case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
+        case localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION:
           ((Label)((HBox)((Alignment)cmd30Days.Children[0]).Children[0]).Children[1]).LabelProp = "This Period";
           ((Label)((HBox)((Alignment)cmd60Days.Children[0]).Children[0]).Children[1]).LabelProp = "Last Period";
           break;
@@ -271,7 +268,7 @@ namespace RestrictionTrackerGTK
               bool bDisplayed = false;
               switch (useStyle)
               {
-                case modFunctions.SatHostTypes.DishNet:
+                case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
                   evnUld.Visible = true;
                   pnlGraph.Homogeneous = true;
                   pnlGraph.CheckResize();
@@ -282,7 +279,8 @@ namespace RestrictionTrackerGTK
                   GraphInvoker.BeginInvoke(DGraphData, null, null);
                   bDisplayed = true;
                   break;
-                case modFunctions.SatHostTypes.RuralPortal:
+                case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
+                case localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION:
                   evnUld.Visible = false;
                   pnlGraph.Homogeneous = false;
                   pnlGraph.CheckResize();
@@ -292,7 +290,7 @@ namespace RestrictionTrackerGTK
                   GraphInvoker.BeginInvoke(RGraphData, null, null);
                   bDisplayed = true;
                   break;
-                case modFunctions.SatHostTypes.Exede:
+                case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
                   evnUld.Visible = false;
                   pnlGraph.Homogeneous = false;
                   pnlGraph.CheckResize();
@@ -302,7 +300,8 @@ namespace RestrictionTrackerGTK
                   GraphInvoker.BeginInvoke(EGraphData, null, null);
                   bDisplayed = true;
                   break;
-                case modFunctions.SatHostTypes.WildBlue:
+                case localRestrictionTracker.SatHostTypes.WildBlue_LEGACY:
+                case localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
                   evnUld.Visible = true;
                   pnlGraph.Homogeneous = true;
                   pnlGraph.CheckResize();
@@ -368,7 +367,7 @@ namespace RestrictionTrackerGTK
         DataBase.DataRow gShow = modFunctions.GetGraphData(dNow, true);
         string showTime = gShow.DATETIME.ToString("g");
         string Show = showTime + " : " + gShow.DOWNLOAD + " MB / " + gShow.UPLIM + " MB";
-        if (useStyle == modFunctions.SatHostTypes.Exede)
+        if (useStyle == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE || useStyle == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE)
         {
           if (mySettings.HistoryInversion)
           {
@@ -502,7 +501,7 @@ namespace RestrictionTrackerGTK
           bool SameLim = true;
           switch (useStyle)
           {
-            case modFunctions.SatHostTypes.DishNet:
+            case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
               if (lItems != null)
               {
                 long dnDLim = 0;
@@ -548,10 +547,10 @@ namespace RestrictionTrackerGTK
                 lvBandwidth = (DataListView)new DishNetLimsView();
               }
               break;
-            case modFunctions.SatHostTypes.RuralPortal:
+            case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
               lvBandwidth = (DataListView)new RuralPortalView();
               break;
-            case modFunctions.SatHostTypes.Exede:
+            case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
               lvBandwidth = (DataListView)new ExedeView(mySettings.HistoryInversion);
               break;
             default:
@@ -676,14 +675,18 @@ namespace RestrictionTrackerGTK
       {
         ToNow = dtwTo.MaxDate;
       }
-      else if (RightNow < dtwTo.MinDate)
-        {
-          ToNow = dtwTo.MinDate;
-        }
-        else
-        {
-          ToNow = RightNow;
-        }
+      else if (RightNow < dtwTo.MinDate) 
+      { 
+        ToNow = dtwTo.MinDate;
+      }
+      else
+      {
+        ToNow = RightNow;
+      } 
+      if (FromNow.Year < 2000)
+        FromNow = dtwFrom.MinDate;
+      if (ToNow.Year < 2000)
+        ToNow = dtwTo.MinDate;
       dtwFrom.Date = FromNow;
       dtwTo.Date = ToNow;
       cmdQuery.Click();
@@ -692,24 +695,24 @@ namespace RestrictionTrackerGTK
     {
       System.DateTime RightNow = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, 0);
       System.DateTime From30DaysAgo = default(System.DateTime);
-      if (useStyle == modFunctions.SatHostTypes.WildBlue)
+      if (useStyle == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY || useStyle == localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY)
       {
         if (modFunctions.DateAdd(modFunctions.DateInterval.Day, -30, RightNow) > dtwFrom.MaxDate)
         {
           From30DaysAgo = dtwFrom.MaxDate;
         }
         else if (modFunctions.DateAdd(modFunctions.DateInterval.Day, -30, RightNow) < dtwFrom.MinDate)
-          {
-            From30DaysAgo = dtwFrom.MinDate;
-          }
-          else
-          {
-            From30DaysAgo = modFunctions.DateAdd(modFunctions.DateInterval.Day, -30, RightNow);
-          }
+        {
+          From30DaysAgo = dtwFrom.MinDate;
+        }
+        else
+        {
+          From30DaysAgo = modFunctions.DateAdd(modFunctions.DateInterval.Day, -30, RightNow);
+        } 
       }
       else
       {
-        if (modDB.usageDB.Count > 1)
+        if (modDB.usageDB != null && modDB.usageDB.Count > 1)
         {
           for (int i = modDB.usageDB.Count - 1; i <=1; i--)
           {
@@ -761,6 +764,10 @@ namespace RestrictionTrackerGTK
         {
           ToNow = RightNow;
         }
+      if (From30DaysAgo.Year < 2000)
+        From30DaysAgo = dtwFrom.MinDate;
+      if (ToNow.Year < 2000)
+        ToNow = dtwTo.MinDate;
       dtwFrom.Date = From30DaysAgo;
       dtwTo.Date = ToNow;
       cmdQuery.Click();
@@ -769,7 +776,7 @@ namespace RestrictionTrackerGTK
     {
       System.DateTime RightNow = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, 0);
       System.DateTime From60DaysAgo = default(System.DateTime);
-      if (useStyle == modFunctions.SatHostTypes.WildBlue)
+      if (useStyle == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY || useStyle == localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY)
       {
         if (modFunctions.DateAdd(modFunctions.DateInterval.Day, -60, RightNow) > dtwFrom.MaxDate)
         {
@@ -786,7 +793,7 @@ namespace RestrictionTrackerGTK
       }
       else
       {
-        if (modDB.usageDB.Count > 1)
+        if (modDB.usageDB != null && modDB.usageDB.Count > 1)
         {
           int Finds = 0;
           for (int i = modDB.usageDB.Count - 1; i <=1; i--)
@@ -846,6 +853,10 @@ namespace RestrictionTrackerGTK
         {
           ToNow = RightNow;
         }
+      if (From60DaysAgo.Year < 2000)
+        From60DaysAgo = dtwFrom.MinDate;
+      if (ToNow.Year < 2000)
+        ToNow = dtwTo.MinDate;
       dtwFrom.Date = From60DaysAgo;
       dtwTo.Date = ToNow;
       cmdQuery.Click();
@@ -1066,12 +1077,12 @@ namespace RestrictionTrackerGTK
       System.DateTime dMax = default(System.DateTime);
       long nul;
       modDB.LOG_Get(0, out dMin, out nul, out nul, out nul, out nul);
-      System.DateTime fDate = new DateTime(1999, 1, 1);
+      System.DateTime fDate = new DateTime(2000, 1, 1);
       if (modFunctions.DateDiff(modFunctions.DateInterval.Year, fDate, dMin) < 0)
       {
         dMin = fDate;
       }
-      if (modFunctions.DateDiff(modFunctions.DateInterval.Minute, dMin, DateTime.Now) < 0)
+      if (modFunctions.DateDiff(modFunctions.DateInterval.Second, dMin, DateTime.Now) < 0)
       {
         pctErr.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.error.png");
         pctErr.TooltipText = "The Log history is more recent than your system clock.\nPlease update your computer's time.";
@@ -1081,7 +1092,7 @@ namespace RestrictionTrackerGTK
         dMax = DateTime.Now;
         pctErr.Pixbuf = null;
         pctErr.TooltipText = "";
-        if (modFunctions.DateDiff(modFunctions.DateInterval.Minute, dMin, dMax) > 0)
+        if (modFunctions.DateDiff(modFunctions.DateInterval.Second, dMin, dMax) > 0)
         {
           dtwFrom.MaxDate = dMax;
           dtwTo.MaxDate = dMax;
@@ -1094,6 +1105,10 @@ namespace RestrictionTrackerGTK
           pctErr.TooltipText = "The Log history is more recent than your system clock.\nPlease update your computer's time.";
         }
       }
+      if (dtwFrom.MinDate.Year < 2000)
+        dtwFrom.MinDate = new DateTime(2000,1,1);
+      if (dtwTo.MinDate.Year < 2000)
+        dtwTo.MinDate = new DateTime(2000,1,1);
     }
     #endregion
 
@@ -1137,7 +1152,8 @@ namespace RestrictionTrackerGTK
     {
       switch (useStyle)
       {
-        case modFunctions.SatHostTypes.WildBlue:
+        case localRestrictionTracker.SatHostTypes.WildBlue_LEGACY:
+        case localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
           mySettings.Colors.MainDownA = System.Drawing.Color.DarkBlue;
           mySettings.Colors.MainDownB = System.Drawing.Color.Transparent;
           mySettings.Colors.MainDownC = System.Drawing.Color.Red;
@@ -1166,7 +1182,7 @@ namespace RestrictionTrackerGTK
           mySettings.Colors.HistoryBackground = System.Drawing.Color.White;
 
           break;
-        case modFunctions.SatHostTypes.Exede:
+        case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
           mySettings.Colors.MainDownA = System.Drawing.Color.Orange;
           mySettings.Colors.MainDownB = System.Drawing.Color.Transparent;
           mySettings.Colors.MainDownC = System.Drawing.Color.Red;
@@ -1195,7 +1211,8 @@ namespace RestrictionTrackerGTK
           mySettings.Colors.HistoryBackground = System.Drawing.Color.White;
 
           break;
-        case modFunctions.SatHostTypes.RuralPortal:
+        case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
+        case localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION:
           mySettings.Colors.MainDownA = System.Drawing.Color.Orange;
           mySettings.Colors.MainDownB = System.Drawing.Color.Transparent;
           mySettings.Colors.MainDownC = System.Drawing.Color.Red;
@@ -1224,7 +1241,7 @@ namespace RestrictionTrackerGTK
           mySettings.Colors.HistoryBackground = System.Drawing.Color.White;
 
           break;
-        case modFunctions.SatHostTypes.DishNet:
+        case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
           mySettings.Colors.MainDownA = System.Drawing.Color.DarkBlue;
           mySettings.Colors.MainDownB = System.Drawing.Color.Transparent;
           mySettings.Colors.MainDownC = System.Drawing.Color.Red;

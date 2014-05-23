@@ -7,7 +7,7 @@ namespace RestrictionTrackerGTK
 {
   public partial class frmMain: Gtk.Window
   {
-    internal modFunctions.SatHostTypes myPanel;
+    private localRestrictionTracker.SatHostTypes myPanel;
 
     private enum LoadStates
     {
@@ -79,21 +79,23 @@ namespace RestrictionTrackerGTK
       {
         localData.ConnectionStatus += localData_ConnectionStatus;
         localData.ConnectionFailure += localData_ConnectionFailure;
-        localData.ConnectionDNResult += localData_ConnectionDNResult;
-        localData.ConnectionEResult += localData_ConnectionEResult;
-        localData.ConnectionRP2Result += localData_ConnectionRP2Result;
-        localData.ConnectionRP4Result += localData_ConnectionRP4Result;
-        localData.ConnectionWBResult += localData_ConnectionWBResult;
+        localData.ConnectionDNXResult += localData_ConnectionDNXResult;
+        localData.ConnectionWBXResult += localData_ConnectionWBXResult;
+        localData.ConnectionRPXResult += localData_ConnectionRPXResult;
+        localData.ConnectionRPLResult += localData_ConnectionRPLResult;
+        localData.ConnectionWBLResult += localData_ConnectionWBLResult;
+        localData.ConnectionWBVResult += localData_ConnectionWBVResult;
       }
       else
       {
         localData.ConnectionStatus -= localData_ConnectionStatus;
         localData.ConnectionFailure -= localData_ConnectionFailure;
-        localData.ConnectionDNResult -= localData_ConnectionDNResult;
-        localData.ConnectionEResult -= localData_ConnectionEResult;
-        localData.ConnectionRP2Result -= localData_ConnectionRP2Result;
-        localData.ConnectionRP4Result -= localData_ConnectionRP4Result;
-        localData.ConnectionWBResult -= localData_ConnectionWBResult;
+        localData.ConnectionDNXResult -= localData_ConnectionDNXResult;
+        localData.ConnectionWBXResult -= localData_ConnectionWBXResult;
+        localData.ConnectionRPXResult -= localData_ConnectionRPXResult;
+        localData.ConnectionRPLResult -= localData_ConnectionRPLResult;
+        localData.ConnectionWBLResult -= localData_ConnectionWBLResult;
+        localData.ConnectionWBVResult -= localData_ConnectionWBVResult;
       }
     }
     private const string sWB = "https://myaccount.{0}/wbisp/{2}/{1}.jsp";
@@ -291,7 +293,7 @@ namespace RestrictionTrackerGTK
           }
           if (TypeDetermined != null)
           {
-            TypeDetermined(Sender, new TypeDeterminedEventArgs(modFunctions.SatHostTypes.DishNet));
+            TypeDetermined(Sender, new TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes.DishNet_EXEDE));
           }
           else
           {
@@ -376,7 +378,7 @@ namespace RestrictionTrackerGTK
         {
           if (TypeDetermined != null)
           {
-            TypeDetermined(Sender, new TypeDeterminedEventArgs(modFunctions.SatHostTypes.Other));
+            TypeDetermined(Sender, new TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes.Other));
           }
         }
         else
@@ -385,21 +387,21 @@ namespace RestrictionTrackerGTK
           {
             if (TypeDetermined != null)
             {
-              TypeDetermined(Sender, new TypeDeterminedEventArgs(modFunctions.SatHostTypes.RuralPortal));
+              TypeDetermined(Sender, new TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE));
             }
           }
           else if (exP > rpP & exP > wbP)
             {
               if (TypeDetermined != null)
               {
-                TypeDetermined(Sender, new TypeDeterminedEventArgs(modFunctions.SatHostTypes.Exede));
+                TypeDetermined(Sender, new TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes.WildBlue_EXEDE));
               }
             }
             else if (wbP > rpP & wbP > exP)
               {
                 if (TypeDetermined != null)
                 {
-                  TypeDetermined(Sender, new TypeDeterminedEventArgs(modFunctions.SatHostTypes.WildBlue));
+                  TypeDetermined(Sender, new TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes.WildBlue_LEGACY));
                 }
               }
               else
@@ -408,14 +410,14 @@ namespace RestrictionTrackerGTK
                 {
                   if (TypeDetermined != null)
                   {
-                    TypeDetermined(Sender, new TypeDeterminedEventArgs(modFunctions.SatHostTypes.Exede));
+                    TypeDetermined(Sender, new TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes.WildBlue_EXEDE));
                   }
                 }
                 else
                 {
                   if (TypeDetermined != null)
                   {
-                    TypeDetermined(Sender, new TypeDeterminedEventArgs(modFunctions.SatHostTypes.Other));
+                    TypeDetermined(Sender, new TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes.Other));
                   }
                   System.Diagnostics.Debugger.Break();
                 }
@@ -445,7 +447,7 @@ namespace RestrictionTrackerGTK
             {
               if (TypeDetermined != null)
               {
-                TypeDetermined(Source[1], new TypeDeterminedEventArgs(modFunctions.SatHostTypes.RuralPortal));
+                TypeDetermined(Source[1], new TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE));
               }
             }
             else
@@ -458,7 +460,7 @@ namespace RestrictionTrackerGTK
               {
                 if (TypeDetermined != null)
                 {
-                  TypeDetermined(Source[1], new TypeDeterminedEventArgs(modFunctions.SatHostTypes.WildBlue));
+                  TypeDetermined(Source[1], new TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes.WildBlue_LEGACY));
                 }
               }
               else
@@ -467,21 +469,21 @@ namespace RestrictionTrackerGTK
                 {
                   if (TypeDetermined != null)
                   {
-                    TypeDetermined(Source[1], new TypeDeterminedEventArgs(modFunctions.SatHostTypes.Exede));
+                    TypeDetermined(Source[1], new TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes.WildBlue_EXEDE));
                   }
                 }
                 else if (exP > rpP & exP > wbP)
                   {
                     if (TypeDetermined != null)
                     {
-                      TypeDetermined(Source[1], new TypeDeterminedEventArgs(modFunctions.SatHostTypes.Exede));
+                      TypeDetermined(Source[1], new TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes.WildBlue_EXEDE));
                     }
                   }
                   else if (wbP > rpP & wbP > exP)
                     {
                       if (TypeDetermined != null)
                       {
-                        TypeDetermined(Source[1], new TypeDeterminedEventArgs(modFunctions.SatHostTypes.WildBlue));
+                        TypeDetermined(Source[1], new TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes.WildBlue_LEGACY));
                       }
                     }
                     else
@@ -490,14 +492,14 @@ namespace RestrictionTrackerGTK
                       {
                         if (TypeDetermined != null)
                         {
-                          TypeDetermined(Source[1], new TypeDeterminedEventArgs(modFunctions.SatHostTypes.Exede));
+                          TypeDetermined(Source[1], new TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes.WildBlue_EXEDE));
                         }
                       }
                       else
                       {
                         if (TypeDetermined != null)
                         {
-                          TypeDetermined(Source[1], new TypeDeterminedEventArgs(modFunctions.SatHostTypes.WildBlue));
+                          TypeDetermined(Source[1], new TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes.WildBlue_LEGACY));
                         }
                         //Stop
                       }
@@ -510,8 +512,8 @@ namespace RestrictionTrackerGTK
     }
     private class TypeDeterminedEventArgs : EventArgs
     {
-      public modFunctions.SatHostTypes HostType;
-      public TypeDeterminedEventArgs(modFunctions.SatHostTypes Type)
+      public localRestrictionTracker.SatHostTypes HostType;
+      public TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes Type)
       {
         HostType = Type;
       }
@@ -544,7 +546,7 @@ namespace RestrictionTrackerGTK
     {
       TypeDeterminedEventArgs e = (TypeDeterminedEventArgs)ea;
       NextGrabTick = modFunctions.TickCount() + (mySettings.Timeout * 1000);
-      if (e.HostType == modFunctions.SatHostTypes.Other)
+      if (e.HostType == localRestrictionTracker.SatHostTypes.Other)
       {
         if (tmrIcon != 0)
         {
@@ -984,7 +986,7 @@ namespace RestrictionTrackerGTK
           SetFontSize(ref baseBox, GetMainFontSize());
         }
         ResizePanels();
-        if (myPanel == modFunctions.SatHostTypes.Other)
+        if (myPanel == localRestrictionTracker.SatHostTypes.Other)
         {
           SetFontSize(ref lblRRS, GetFontSize());
           SetFontSize(ref lblNothing, (int)Math.Ceiling(GetFontSize() * 2.5f));
@@ -999,7 +1001,7 @@ namespace RestrictionTrackerGTK
             }
           }
         }
-        else if (myPanel != modFunctions.SatHostTypes.Other)
+        else if (myPanel != localRestrictionTracker.SatHostTypes.Other)
           {
             SetFontSize(ref lblRRS, GetFontSize());
             SetFontSize(ref lblNothing, (int)Math.Ceiling(GetFontSize() * 2.5f));
@@ -1130,7 +1132,7 @@ namespace RestrictionTrackerGTK
     }
     private void ResizePanels()
     {
-      if (myPanel == modFunctions.SatHostTypes.WildBlue)
+      if (myPanel == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY || myPanel == localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY || myPanel == localRestrictionTracker.SatHostTypes.DishNet_EXEDE)
       {
         if (lblDldUsed.Text == " -- ")
         {
@@ -1147,7 +1149,7 @@ namespace RestrictionTrackerGTK
           SetTrayIcon("graph_wb_" + d + "x" + u); 
         }
       }
-      else if (myPanel == modFunctions.SatHostTypes.Exede)
+      else if (myPanel == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
         {
           if (lblExedeDownVal.Text == " -- ")
           {
@@ -1162,7 +1164,7 @@ namespace RestrictionTrackerGTK
             SetTrayIcon("graph_e_" + d + "x" + u); 
           }
         }
-        else if (myPanel == modFunctions.SatHostTypes.RuralPortal)
+        else if (myPanel == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE || myPanel == localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION)
           {
             if (lblRuralUsedVal.Text == " -- ")
             {
@@ -1176,7 +1178,7 @@ namespace RestrictionTrackerGTK
               SetTrayIcon("graph_r_" + u);
             }
           }
-          else if (myPanel == RestrictionTrackerGTK.modFunctions.SatHostTypes.Other)
+          else if (myPanel == localRestrictionTracker.SatHostTypes.Other)
             {
               lblNothing.Text = modFunctions.ProductName();
 
@@ -1384,7 +1386,7 @@ namespace RestrictionTrackerGTK
       {
         return;
       }
-      if (mySettings.AccountType == modFunctions.SatHostTypes.Other)
+      if (mySettings.AccountType == localRestrictionTracker.SatHostTypes.Other)
       {
         SetStatusText("Analyzing Account", "Determining your account type...", false);
         TypeDetermination = new DetermineType(sProvider, (object)"Load", mySettings.Timeout, mySettings.Proxy);
@@ -1571,7 +1573,7 @@ namespace RestrictionTrackerGTK
       {
         syncTime = new DateTime(2001, 1, 1);
       }
-      remoteData = new remoteRestrictionTracker(sAccount, sPassword, mySettings.RemoteKey, mySettings.Proxy, mySettings.Timeout, syncTime);
+      remoteData = new remoteRestrictionTracker(sAccount, sPassword, mySettings.RemoteKey, mySettings.Proxy, mySettings.Timeout, syncTime, modFunctions.AppData);
       remoteDataEvent(true);
     }
 
@@ -1711,7 +1713,7 @@ namespace RestrictionTrackerGTK
           DisplayUsage(false, true);
           break;
         case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.FatalLoginFailure:
-          mySettings.AccountType = modFunctions.SatHostTypes.Other;
+          mySettings.AccountType = localRestrictionTracker.SatHostTypes.Other;
           SetStatusText(modDB.LOG_GetLast().ToString("g"), e.Message, true);
           if (!string.IsNullOrEmpty(e.Fail))
           {
@@ -1742,84 +1744,23 @@ namespace RestrictionTrackerGTK
         localData = null;
       }
     }
-    private void localData_ConnectionDNResult(object sender, localRestrictionTracker.ConnectionDNResultEventArgs e)
+    private void localData_ConnectionDNXResult(object sender, localRestrictionTracker.TYPEA2ResultEventArgs e)
     {
-      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionDNResult);
+      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionDNXResult);
     }
-    private void Main_LocalDataConnectionDNResult(object o, EventArgs ea)
+    private void Main_LocalDataConnectionDNXResult(object o, EventArgs ea)
     {
-      localRestrictionTracker.ConnectionDNResultEventArgs e = (localRestrictionTracker.ConnectionDNResultEventArgs)ea;
+      localRestrictionTracker.TYPEA2ResultEventArgs e = (localRestrictionTracker.TYPEA2ResultEventArgs)ea;
       SetStatusText(e.Update.ToString("g"), "Saving History...", false);
       NextGrabTick = modFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       modDB.LOG_Add(e.Update, e.AnyTime, e.AnyTimeLimit, e.OffPeak, e.OffPeakLimit, true);
-      mySettings.AccountType = modFunctions.SatHostTypes.DishNet;
+      myPanel = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
+      mySettings.AccountType = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
       mySettings.Save();
-      DisplayUsage(true, true);
-      if (localData != null)
-      {
-        localDataEvent(false);
-        localData.Dispose();
-        localData = null;
-      }
-    }
-    private void localData_ConnectionEResult(object sender, localRestrictionTracker.ConnectionEResultEventArgs e)
-    {
-      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionEResult);
-    }
-    private void Main_LocalDataConnectionEResult(object o, EventArgs ea)
-    {
-      localRestrictionTracker.ConnectionEResultEventArgs e = (localRestrictionTracker.ConnectionEResultEventArgs)ea;
-      SetStatusText(e.Update.ToString("g"), "Saving History...", false);
-      NextGrabTick = modFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
-      modDB.LOG_Add(e.Update, e.Download, e.Limit + e.BuyMore, e.Upload, e.Over, true);
-      mySettings.AccountType = modFunctions.SatHostTypes.Exede;
-      mySettings.Save();
-      DisplayUsage(true, true);
-      if (localData != null)
-      {
-        localDataEvent(false);
-        localData.Dispose();
-        localData = null;
-      }
-    }
-    private void localData_ConnectionRP2Result(object sender, localRestrictionTracker.ConnectionRP2ResultEventArgs e)
-    {
-      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionRP2Result);
-    }
-    private void Main_LocalDataConnectionRP2Result(object o, EventArgs ea)
-    {
-      localRestrictionTracker.ConnectionRP2ResultEventArgs e = (localRestrictionTracker.ConnectionRP2ResultEventArgs)ea;
-      SetStatusText(e.Update.ToString("g"), "Saving History...", false);
-      NextGrabTick = modFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
-      modDB.LOG_Add(e.Update, e.Used, e.Limit, e.Used, e.Limit, true);
-      myPanel = modFunctions.SatHostTypes.RuralPortal;
-      mySettings.AccountType = modFunctions.SatHostTypes.RuralPortal;
-      mySettings.Save();
-      DisplayUsage(true, true);
-      if (localData != null)
-      {
-        localDataEvent(false);
-        localData.Dispose();
-        localData = null;
-      }
-    }
-    private void localData_ConnectionRP4Result(object sender, localRestrictionTracker.ConnectionRP4ResultEventArgs e)
-    {
-      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionRP4Result);
-    }
-    private void Main_LocalDataConnectionRP4Result(object o, EventArgs ea)
-    {
-      localRestrictionTracker.ConnectionRP4ResultEventArgs e = (localRestrictionTracker.ConnectionRP4ResultEventArgs)ea;
-      SetStatusText(e.Update.ToString("g"), "Saving History...", false);
-      NextGrabTick = modFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
-      modDB.LOG_Add(e.Update, e.Download, e.DownloadLimit, e.Upload, e.UploadLimit, true);
-      myPanel = modFunctions.SatHostTypes.WildBlue;
       if (mySettings.Colors.MainUpA.A == 0)
       {
         SetDefaultColors();
       }
-      mySettings.AccountType = modFunctions.SatHostTypes.RuralPortal;
-      mySettings.Save();
       DisplayUsage(true, true);
       if (localData != null)
       {
@@ -1828,18 +1769,123 @@ namespace RestrictionTrackerGTK
         localData = null;
       }
     }
-    private void localData_ConnectionWBResult(object sender, localRestrictionTracker.ConnectionWBResultEventArgs e)
+    private void localData_ConnectionRPXResult(object sender, localRestrictionTracker.TYPEBResultEventArgs e)
     {
-      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionWBResult);
+      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionRPXResult);
     }
-    private void Main_LocalDataConnectionWBResult(object o, EventArgs ea)
+    private void Main_LocalDataConnectionRPXResult(object o, EventArgs ea)
     {
-      localRestrictionTracker.ConnectionWBResultEventArgs e = (localRestrictionTracker.ConnectionWBResultEventArgs)ea;
+      localRestrictionTracker.TYPEBResultEventArgs e = (localRestrictionTracker.TYPEBResultEventArgs)ea;
+      SetStatusText(e.Update.ToString("g"), "Saving History...", false);
+      NextGrabTick = modFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
+      modDB.LOG_Add(e.Update, e.Used, e.Limit, e.Used, e.Limit, true);
+      myPanel = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
+      mySettings.AccountType = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
+      mySettings.Save();
+      if (mySettings.Colors.MainUpA.A == 0)
+      {
+        SetDefaultColors();
+      }
+      DisplayUsage(true, true);
+      if (localData != null)
+      {
+        localDataEvent(false);
+        localData.Dispose();
+        localData = null;
+      }
+    }
+    private void localData_ConnectionRPLResult(object sender, localRestrictionTracker.TYPEAResultEventArgs e)
+    {
+      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionRPLResult);
+    }
+    private void Main_LocalDataConnectionRPLResult(object o, EventArgs ea)
+    {
+      localRestrictionTracker.TYPEAResultEventArgs e = (localRestrictionTracker.TYPEAResultEventArgs)ea;
       SetStatusText(e.Update.ToString("g"), "Saving History...", false);
       NextGrabTick = modFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       modDB.LOG_Add(e.Update, e.Download, e.DownloadLimit, e.Upload, e.UploadLimit, true);
-      mySettings.AccountType = modFunctions.SatHostTypes.WildBlue;
+      myPanel = localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY;
+      mySettings.AccountType = localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY;
       mySettings.Save();
+      if (mySettings.Colors.MainUpA.A == 0)
+      {
+        SetDefaultColors();
+      }
+      DisplayUsage(true, true);
+      if (localData != null)
+      {
+        localDataEvent(false);
+        localData.Dispose();
+        localData = null;
+      }
+    }
+    private void localData_ConnectionWBLResult(object sender, localRestrictionTracker.TYPEAResultEventArgs e)
+    {
+      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionWBLResult);
+    }
+    private void Main_LocalDataConnectionWBLResult(object o, EventArgs ea)
+    {
+      localRestrictionTracker.TYPEAResultEventArgs e = (localRestrictionTracker.TYPEAResultEventArgs)ea;
+      SetStatusText(e.Update.ToString("g"), "Saving History...", false);
+      NextGrabTick = modFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
+      modDB.LOG_Add(e.Update, e.Download, e.DownloadLimit, e.Upload, e.UploadLimit, true);
+      myPanel = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
+      mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
+      mySettings.Save();
+      if (mySettings.Colors.MainUpA.A == 0)
+      {
+        SetDefaultColors();
+      }
+      DisplayUsage(true, true);
+      if (localData != null)
+      {
+        localDataEvent(false);
+        localData.Dispose();
+        localData = null;
+      }
+    }
+    private void localData_ConnectionWBXResult(object sender, localRestrictionTracker.TYPECResultEventArgs e)
+    {
+      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionWBXResult);
+    }
+    private void Main_LocalDataConnectionWBXResult(object o, EventArgs ea)
+    {
+      localRestrictionTracker.TYPECResultEventArgs e = (localRestrictionTracker.TYPECResultEventArgs)ea;
+      SetStatusText(e.Update.ToString("g"), "Saving History...", false);
+      NextGrabTick = modFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
+      modDB.LOG_Add(e.Update, e.Download, e.Limit + e.BuyMore, e.Upload, e.Over, true);
+      myPanel = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
+      mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
+      mySettings.Save();
+      if (mySettings.Colors.MainUpA.A == 0)
+      {
+        SetDefaultColors();
+      }
+      DisplayUsage(true, true);
+      if (localData != null)
+      {
+        localDataEvent(false);
+        localData.Dispose();
+        localData = null;
+      }
+    }
+    private void localData_ConnectionWBVResult(object sender, localRestrictionTracker.TYPEBResultEventArgs e)
+    {
+      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionWBVResult);
+    }
+    private void Main_LocalDataConnectionWBVResult(object o, EventArgs ea)
+    {
+      localRestrictionTracker.TYPEBResultEventArgs e = (localRestrictionTracker.TYPEBResultEventArgs)ea;
+      SetStatusText(e.Update.ToString("g"), "Saving History...", false);
+      NextGrabTick = modFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
+      modDB.LOG_Add(e.Update, e.Used, e.Limit, e.Used, e.Limit, true);
+      myPanel = localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION;
+      mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION;
+      mySettings.Save();
+      if (mySettings.Colors.MainUpA.A == 0)
+      {
+        SetDefaultColors();
+      }
       DisplayUsage(true, true);
       if (localData != null)
       {
@@ -1926,7 +1972,7 @@ namespace RestrictionTrackerGTK
       }
       if (e != null)
       {
-        mySettings.AccountType = (modFunctions.SatHostTypes)e.Provider;
+        mySettings.AccountType = (localRestrictionTracker.SatHostTypes)e.Provider;
         if (mySettings.Colors.HistoryDownA.A == 0)
         {
           SetDefaultColors();
@@ -2251,8 +2297,6 @@ namespace RestrictionTrackerGTK
         pnlNothing.Visible = false;
         pnlDisplays.Remove(pnlNothing);
       }
-
-      myPanel = modFunctions.SatHostTypes.RuralPortal;
       r_used = lDown;
       r_lim = lDownLim;
       if (tmrChanges != null)
@@ -2342,7 +2386,6 @@ namespace RestrictionTrackerGTK
         pnlDisplays.Remove(pnlNothing);
       }
 
-      myPanel = modFunctions.SatHostTypes.WildBlue;
       wb_down = lDown;
       wb_dlim = lDownLim;
       wb_up = lUp;
@@ -2478,7 +2521,6 @@ namespace RestrictionTrackerGTK
         pnlDisplays.Remove(pnlNothing);
       }
 
-      myPanel = modFunctions.SatHostTypes.Exede;
       e_down = lDown;
       e_up = lUp;
       e_over = lOver;
@@ -2615,7 +2657,6 @@ namespace RestrictionTrackerGTK
         pnlDisplays.Remove(pnlNothing);
       }
 
-      myPanel = modFunctions.SatHostTypes.WildBlue;
       wb_down = lDown;
       wb_dlim = lDownLim;
       wb_up = lUp;
@@ -2721,18 +2762,21 @@ namespace RestrictionTrackerGTK
       {
         DateTime lastUpdate = modDB.LOG_GetLast();
         string sLastUpdate = lastUpdate.ToString("M/d h:mm tt");
+        myPanel = mySettings.AccountType;
         switch (mySettings.AccountType)
         {
-          case modFunctions.SatHostTypes.RuralPortal:
+          case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
+          case localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION:
             DisplayRResults(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
             break;
-          case modFunctions.SatHostTypes.DishNet:
+          case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
             DisplayDResults(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
             break;
-          case modFunctions.SatHostTypes.WildBlue:
+          case localRestrictionTracker.SatHostTypes.WildBlue_LEGACY:
+          case localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
             DisplayWResults(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
             break;
-          case modFunctions.SatHostTypes.Exede:
+          case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
             if (mySettings.HistoryInversion)
             {
               DisplayEResults(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
@@ -2784,7 +2828,7 @@ namespace RestrictionTrackerGTK
           pnlDisplays.Add(pnlNothing);
         }
 
-        myPanel = modFunctions.SatHostTypes.Other;
+        myPanel = localRestrictionTracker.SatHostTypes.Other;
         SetTrayText(this.Title);
         if (tmrIcon != 0)
         {
@@ -3574,14 +3618,15 @@ namespace RestrictionTrackerGTK
     }
     private void Main_SetDefaultColors(object o, EventArgs ea)
     {
-      modFunctions.SatHostTypes useStyle = myPanel;
-      if (useStyle == modFunctions.SatHostTypes.Other)
+      localRestrictionTracker.SatHostTypes useStyle = myPanel;
+      if (useStyle == localRestrictionTracker.SatHostTypes.Other)
       {
         useStyle = mySettings.AccountType;
       }
       switch (useStyle)
       {
-        case modFunctions.SatHostTypes.WildBlue:
+        case localRestrictionTracker.SatHostTypes.WildBlue_LEGACY:
+        case localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
           mySettings.Colors.MainDownA = Color.DarkBlue;
           mySettings.Colors.MainDownB = Color.Transparent;
           mySettings.Colors.MainDownC = Color.Red;
@@ -3609,7 +3654,7 @@ namespace RestrictionTrackerGTK
           mySettings.Colors.HistoryText = Color.Black;
           mySettings.Colors.HistoryBackground = Color.White;
           break;
-        case modFunctions.SatHostTypes.Exede:
+        case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
           mySettings.Colors.MainDownA = Color.Orange;
           mySettings.Colors.MainDownB = Color.Transparent;
           mySettings.Colors.MainDownC = Color.Red;
@@ -3637,7 +3682,8 @@ namespace RestrictionTrackerGTK
           mySettings.Colors.HistoryText = Color.Black;
           mySettings.Colors.HistoryBackground = Color.White;
           break;
-        case modFunctions.SatHostTypes.RuralPortal:
+        case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
+        case localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION:
           mySettings.Colors.MainDownA = Color.Orange;
           mySettings.Colors.MainDownB = Color.Transparent;
           mySettings.Colors.MainDownC = Color.Red;
@@ -3665,7 +3711,7 @@ namespace RestrictionTrackerGTK
           mySettings.Colors.HistoryText = Color.Black;
           mySettings.Colors.HistoryBackground = Color.White;
           break;
-        case modFunctions.SatHostTypes.DishNet:
+        case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
 
           mySettings.Colors.MainDownA = Color.DarkBlue;
           mySettings.Colors.MainDownB = Color.Transparent;

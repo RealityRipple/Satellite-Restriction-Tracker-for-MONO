@@ -16,7 +16,7 @@ namespace RestrictionTrackerGTK
     private bool dUp;
     internal AppSettings mySettings;
     private bool HasSaved = false;
-    private modFunctions.SatHostTypes DisplayAs;
+    private localRestrictionTracker.SatHostTypes DisplayAs;
     private System.Collections.Generic.List<DataBase.DataRow> FakeData;
     private Random rGen;
     private Gtk.ColorButton cbSelected;
@@ -28,7 +28,7 @@ namespace RestrictionTrackerGTK
     private Gtk.MenuItem mnuThisDefault;
     private Gtk.MenuItem mnuGraphDefault;
     private Gtk.MenuItem mnuAllDefault;
-    private modFunctions.SatHostTypes useStyle = modFunctions.SatHostTypes.Other;
+    private localRestrictionTracker.SatHostTypes useStyle = localRestrictionTracker.SatHostTypes.Other;
     internal dlgCustomColors(AppSettings settings)
     {
       mySettings = settings;
@@ -78,77 +78,73 @@ namespace RestrictionTrackerGTK
         dUp = true;
         iU = 1;
       }
-      useStyle = MainClass.fMain.myPanel;
-      if (useStyle == modFunctions.SatHostTypes.Other)
+      useStyle = mySettings.AccountType;
+      switch (useStyle)
       {
-        useStyle = mySettings.AccountType;
-      }
-      if (useStyle == modFunctions.SatHostTypes.WildBlue)
-      {
-        lblMainDownTitle.Text = "Download Colors";
-        lblMainUpTitle.Text = "Upload Colors";
-        grpMainUp.Visible = true;
-        lblTrayDownTitle.Text = "Download Colors";
-        lblTrayUpTitle.Text = "Upload Colors";
-        grpTrayUp.Visible = true;
-        lblHistoryDownTitle.Text = "Download Colors";
-        lblHistoryUpTitle.Text = "Upload Colors";
-        grpHistoryUp.Visible = true;
-        lblHistoryUpMax.Visible = true;
-        cmdHistoryUpMax.Visible = true;
-      }
-      else if (useStyle == modFunctions.SatHostTypes.Exede)
-      {
-        lblMainDownTitle.Text = "Download Colors";
-        lblMainUpTitle.Text = "Upload Colors";
-        grpMainUp.Visible = true;
-        lblTrayDownTitle.Text = "Download Colors";
-        lblTrayUpTitle.Text = "Upload Colors";
-        grpTrayUp.Visible = true;
-        lblHistoryDownTitle.Text = "Download Colors";
-        lblHistoryUpTitle.Text = "Upload Colors";
-        grpHistoryUp.Visible = true;
-        lblHistoryUpMax.Visible = false;
-        cmdHistoryUpMax.Visible = false;
-      }
-      else if (useStyle == modFunctions.SatHostTypes.DishNet)
-      {
-        lblMainDownTitle.Text = "Anytime Colors";
-        lblMainUpTitle.Text = "Off-Peak Colors";
-        grpMainUp.Visible = true;
-        lblTrayDownTitle.Text = "Anytime Colors";
-        lblTrayUpTitle.Text = "Off-Peak Colors";
-        grpTrayUp.Visible = true;
-        lblHistoryDownTitle.Text = "Anytime Colors";
-        lblHistoryUpTitle.Text = "Off-Peak Colors";
-        grpHistoryUp.Visible = true;
-        lblHistoryUpMax.Visible = true;
-        cmdHistoryUpMax.Visible = true;
-      }
-      else if (useStyle == modFunctions.SatHostTypes.RuralPortal)
-      {
-        lblMainDownTitle.Text = "Usage Colors";
-        grpMainUp.Visible = false;
-        lblTrayDownTitle.Text = "Usage Colors";
-        grpTrayUp.Visible = false;
-        lblHistoryDownTitle.Text = "Usage Colors";
-        grpHistoryUp.Visible = false;
-        lblHistoryUpMax.Visible = false;
-        cmdHistoryUpMax.Visible = false;
-      }
-      else
-      {
-        lblMainDownTitle.Text = "Download Colors";
-        lblMainUpTitle.Text = "Upload Colors";
-        grpMainUp.Visible = true;
-        lblTrayDownTitle.Text = "Download Colors";
-        lblTrayUpTitle.Text = "Upload Colors";
-        grpTrayUp.Visible = true;
-        lblHistoryDownTitle.Text = "Download Colors";
-        lblHistoryUpTitle.Text = "Upload Colors";
-        grpHistoryUp.Visible = true;
-        lblHistoryUpMax.Visible = true;
-        cmdHistoryUpMax.Visible = true;
+        case localRestrictionTracker.SatHostTypes.WildBlue_LEGACY:
+        case localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
+          lblMainDownTitle.Text = "Download Colors";
+          lblMainUpTitle.Text = "Upload Colors";
+          grpMainUp.Visible = true;
+          lblTrayDownTitle.Text = "Download Colors";
+          lblTrayUpTitle.Text = "Upload Colors";
+          grpTrayUp.Visible = true;
+          lblHistoryDownTitle.Text = "Download Colors";
+          lblHistoryUpTitle.Text = "Upload Colors";
+          grpHistoryUp.Visible = true;
+          lblHistoryUpMax.Visible = true;
+          cmdHistoryUpMax.Visible = true;
+          break;
+        case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
+          lblMainDownTitle.Text = "Download Colors";
+          lblMainUpTitle.Text = "Upload Colors";
+          grpMainUp.Visible = true;
+          lblTrayDownTitle.Text = "Download Colors";
+          lblTrayUpTitle.Text = "Upload Colors";
+          grpTrayUp.Visible = true;
+          lblHistoryDownTitle.Text = "Download Colors";
+          lblHistoryUpTitle.Text = "Upload Colors";
+          grpHistoryUp.Visible = true;
+          lblHistoryUpMax.Visible = false;
+          cmdHistoryUpMax.Visible = false;
+          break;
+        case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
+          lblMainDownTitle.Text = "Anytime Colors";
+          lblMainUpTitle.Text = "Off-Peak Colors";
+          grpMainUp.Visible = true;
+          lblTrayDownTitle.Text = "Anytime Colors";
+          lblTrayUpTitle.Text = "Off-Peak Colors";
+          grpTrayUp.Visible = true;
+          lblHistoryDownTitle.Text = "Anytime Colors";
+          lblHistoryUpTitle.Text = "Off-Peak Colors";
+          grpHistoryUp.Visible = true;
+          lblHistoryUpMax.Visible = true;
+          cmdHistoryUpMax.Visible = true;
+          break;
+        case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
+        case localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION:
+          lblMainDownTitle.Text = "Usage Colors";
+          grpMainUp.Visible = false;
+          lblTrayDownTitle.Text = "Usage Colors";
+          grpTrayUp.Visible = false;
+          lblHistoryDownTitle.Text = "Usage Colors";
+          grpHistoryUp.Visible = false;
+          lblHistoryUpMax.Visible = false;
+          cmdHistoryUpMax.Visible = false;
+          break;
+        default:
+          lblMainDownTitle.Text = "Download Colors";
+          lblMainUpTitle.Text = "Upload Colors";
+          grpMainUp.Visible = true;
+          lblTrayDownTitle.Text = "Download Colors";
+          lblTrayUpTitle.Text = "Upload Colors";
+          grpTrayUp.Visible = true;
+          lblHistoryDownTitle.Text = "Download Colors";
+          lblHistoryUpTitle.Text = "Upload Colors";
+          grpHistoryUp.Visible = true;
+          lblHistoryUpMax.Visible = true;
+          cmdHistoryUpMax.Visible = true;
+          break;
       }
       cmdMainDownA.ColorSet += cmdColor_SelectedColor;
       cmdMainDownA.ButtonReleaseEvent += cmdColor_MouseUp;
@@ -319,7 +315,7 @@ namespace RestrictionTrackerGTK
 
      
       Graphics g;
-      if (DisplayAs == modFunctions.SatHostTypes.WildBlue)
+      if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY)
       {
         Rectangle FakeMRect = new Rectangle(0, 0, 74, 150);
         Image FakeD = modFunctions.DisplayProgress(modFunctions.DrawingSizeToGdkSize(FakeMRect.Size), lDown, lDownLim, mySettings.Accuracy, mda, mdb, mdc, mt, mbg);
@@ -336,7 +332,7 @@ namespace RestrictionTrackerGTK
         g.DrawImage(FakeU, uRect, FakeMRect, GraphicsUnit.Pixel);
         pctMain.Pixbuf = modFunctions.ImageToPixbuf(fakeI);
       }
-      else if (DisplayAs == modFunctions.SatHostTypes.Exede)
+      else if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
       {
         Rectangle FakeMRect = new Rectangle(0, 0, 200, 150);
         Image FakeE = modFunctions.DisplayEProgress(modFunctions.DrawingSizeToGdkSize(FakeMRect.Size), lDown, lUp, 0, lDownLim, mySettings.Accuracy, mda, mdb, mdc, mua, mub, muc, mt, mbg);
@@ -350,11 +346,11 @@ namespace RestrictionTrackerGTK
         g.DrawImage(FakeE, MRect, FakeMRect, GraphicsUnit.Pixel);
         pctMain.Pixbuf = modFunctions.ImageToPixbuf(fakeI);
       }
-      else if (DisplayAs == modFunctions.SatHostTypes.RuralPortal)
+      else if (DisplayAs == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE)
       {
         pctMain.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctMain.Allocation.Size, lDown, lDownLim, mySettings.Accuracy, mda, mdb, mdc, mt, mbg));
       }
-      else if (DisplayAs == modFunctions.SatHostTypes.DishNet)
+      else if (DisplayAs == localRestrictionTracker.SatHostTypes.DishNet_EXEDE)
       {
         Rectangle FakeMRect = new Rectangle(0, 0, 74, 150);
         Image FakeD = modFunctions.DisplayProgress(modFunctions.DrawingSizeToGdkSize(FakeMRect.Size), lDown, lDownLim, mySettings.Accuracy, mda, mdb, mdc, mt, mbg);
@@ -379,7 +375,7 @@ namespace RestrictionTrackerGTK
       g = Graphics.FromImage(imgTray);
       
       g.Clear(Color.Transparent);
-      if (DisplayAs == modFunctions.SatHostTypes.WildBlue)
+      if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY)
       {
         if (lDown >= lDownLim | lUp >= lUpLim)
         {
@@ -393,7 +389,7 @@ namespace RestrictionTrackerGTK
         modFunctions.CreateTrayIcon_Right(ref g, lUp, lUpLim, tua, tub, tuc, 16);
         pctTray.Pixbuf = modFunctions.ImageToPixbuf(imgTray);
       }
-      else if (DisplayAs == modFunctions.SatHostTypes.Exede)
+      else if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
       {
         if (lDown + lUp >= lUpLim)
         {
@@ -406,7 +402,7 @@ namespace RestrictionTrackerGTK
         modFunctions.CreateTrayIcon_Dual(ref g, lDown, lUp, lDownLim, tda, tdb, tdc, tua, tub, tuc, 16);
         pctTray.Pixbuf = modFunctions.ImageToPixbuf(imgTray);
       }
-      else if (DisplayAs == modFunctions.SatHostTypes.RuralPortal)
+      else if (DisplayAs == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE)
       {
         if (lDown >= lDownLim)
         {
@@ -420,7 +416,7 @@ namespace RestrictionTrackerGTK
         modFunctions.CreateTrayIcon_Right(ref g, lDown, lDownLim, tda, tdb, tdc, 16);
         pctTray.Pixbuf = modFunctions.ImageToPixbuf(imgTray);
       }
-      else if (DisplayAs == modFunctions.SatHostTypes.DishNet)
+      else if (DisplayAs == localRestrictionTracker.SatHostTypes.DishNet_EXEDE)
       {
         if (lDown >= lDownLim)
         {
@@ -443,7 +439,7 @@ namespace RestrictionTrackerGTK
         MakeFakeData();
       }
       Rectangle FakeHRect = new Rectangle(0, 0, 500, 200);
-      if (DisplayAs == modFunctions.SatHostTypes.WildBlue)
+      if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY)
       {
         Image FakeD = modFunctions.DrawLineGraph(FakeData.ToArray(), true, FakeHRect.Size, hda, hdb, hdc, ht, hbg, hdm);
         Image FakeU = modFunctions.DrawLineGraph(FakeData.ToArray(), false, FakeHRect.Size, hua, hub, huc, ht, hbg, hum);
@@ -461,7 +457,7 @@ namespace RestrictionTrackerGTK
 
         pctHistory.Pixbuf = modFunctions.ImageToPixbuf(fakeI);
       }
-      else if (DisplayAs == modFunctions.SatHostTypes.Exede)
+      else if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
       {
         Image FakeE = modFunctions.DrawEGraph(FakeData.ToArray(), false, FakeHRect.Size, hda, hdb, hdc, hua, hub, huc, ht,
         hbg, hdm);
@@ -477,7 +473,7 @@ namespace RestrictionTrackerGTK
 
         pctHistory.Pixbuf = modFunctions.ImageToPixbuf(fakeI);
       }
-      else if (DisplayAs == modFunctions.SatHostTypes.RuralPortal)
+      else if (DisplayAs == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE)
       {
         Image FakeR = modFunctions.DrawRGraph(FakeData.ToArray(), FakeHRect.Size, hda, hdb, hdc, ht, hbg, hdm);
         Bitmap fakeI = new Bitmap(pctHistory.Allocation.Width, pctHistory.Allocation.Height);
@@ -492,7 +488,7 @@ namespace RestrictionTrackerGTK
 
         pctHistory.Pixbuf = modFunctions.ImageToPixbuf(fakeI);
       }
-      else if (DisplayAs == modFunctions.SatHostTypes.DishNet)
+      else if (DisplayAs == localRestrictionTracker.SatHostTypes.DishNet_EXEDE)
       {
         Image FakeD = modFunctions.DrawLineGraph(FakeData.ToArray(), true, FakeHRect.Size, hda, hdb, hdc, ht, hbg, hdm);
         Image FakeU = modFunctions.DrawLineGraph(FakeData.ToArray(), false, FakeHRect.Size, hua, hub, huc, ht, hbg, hum);
@@ -665,21 +661,21 @@ namespace RestrictionTrackerGTK
       }
       else if (e.Event.Button == 2)
       {
-        if (DisplayAs == modFunctions.SatHostTypes.WildBlue)
+        if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY)
         {
-          DisplayAs = modFunctions.SatHostTypes.Exede;
+          DisplayAs = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
         }
-        else if (DisplayAs == modFunctions.SatHostTypes.Exede)
+        else if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
         {
-          DisplayAs = modFunctions.SatHostTypes.RuralPortal;
+          DisplayAs = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
         }
-        else if (DisplayAs == modFunctions.SatHostTypes.RuralPortal)
+        else if (DisplayAs == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE)
         {
-          DisplayAs = modFunctions.SatHostTypes.DishNet;
+          DisplayAs = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
         }
-        else if (DisplayAs == modFunctions.SatHostTypes.DishNet)
+        else if (DisplayAs == localRestrictionTracker.SatHostTypes.DishNet_EXEDE)
         {
-          DisplayAs = modFunctions.SatHostTypes.WildBlue;
+          DisplayAs = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
         }
         MakeFakeData();
       }
@@ -729,21 +725,21 @@ namespace RestrictionTrackerGTK
       }
       else if (e.Event.Button == 2)
       {
-        if (DisplayAs == modFunctions.SatHostTypes.WildBlue)
+        if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY)
         {
-          DisplayAs = modFunctions.SatHostTypes.Exede;
+          DisplayAs = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
         }
-        else if (DisplayAs == modFunctions.SatHostTypes.Exede)
+        else if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE )
         {
-          DisplayAs = modFunctions.SatHostTypes.RuralPortal;
+          DisplayAs = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
         }
-        else if (DisplayAs == modFunctions.SatHostTypes.RuralPortal)
+        else if (DisplayAs == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE)
         {
-          DisplayAs = modFunctions.SatHostTypes.DishNet;
+          DisplayAs = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
         }
-        else if (DisplayAs == modFunctions.SatHostTypes.DishNet)
+        else if (DisplayAs == localRestrictionTracker.SatHostTypes.DishNet_EXEDE)
         {
-          DisplayAs = modFunctions.SatHostTypes.WildBlue;
+          DisplayAs = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
         }
         MakeFakeData();
       }
@@ -755,21 +751,21 @@ namespace RestrictionTrackerGTK
       Console.WriteLine("History MouseUp: " + e.Event.Button);
       if (e.Event.Button == 2)
       {
-        if (DisplayAs == modFunctions.SatHostTypes.WildBlue)
+        if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY)
         {
-          DisplayAs = modFunctions.SatHostTypes.Exede;
+          DisplayAs = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
         }
-        else if (DisplayAs == modFunctions.SatHostTypes.Exede)
+        else if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
         {
-          DisplayAs = modFunctions.SatHostTypes.RuralPortal;
+          DisplayAs = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
         }
-        else if (DisplayAs == modFunctions.SatHostTypes.RuralPortal)
+        else if (DisplayAs == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE)
         {
-          DisplayAs = modFunctions.SatHostTypes.DishNet;
+          DisplayAs = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
         }
-        else if (DisplayAs == modFunctions.SatHostTypes.DishNet)
+        else if (DisplayAs == localRestrictionTracker.SatHostTypes.DishNet_EXEDE)
         {
-          DisplayAs = modFunctions.SatHostTypes.WildBlue;
+          DisplayAs = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
         }
         MakeFakeData();
         RedrawImages();
@@ -992,11 +988,12 @@ namespace RestrictionTrackerGTK
       }
     }
 
-    private Color DefaultColorForElement(string Element, modFunctions.SatHostTypes Provider)
+    private Color DefaultColorForElement(string Element, localRestrictionTracker.SatHostTypes Provider)
     {
       switch (Provider)
       {
-        case modFunctions.SatHostTypes.WildBlue:
+        case localRestrictionTracker.SatHostTypes.WildBlue_LEGACY:
+        case localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
           switch (Element)
           {
             case "cmdMainDownA":
@@ -1052,7 +1049,7 @@ namespace RestrictionTrackerGTK
             default:
               return Color.Transparent;
           }
-        case modFunctions.SatHostTypes.Exede:
+        case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
           switch (Element)
           {
             case "cmdMainDownA":
@@ -1108,7 +1105,8 @@ namespace RestrictionTrackerGTK
             default:
               return Color.Transparent;
           }
-        case modFunctions.SatHostTypes.RuralPortal:
+        case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
+        case localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION:
           switch (Element)
           {
             case "cmdMainDownA":
@@ -1164,7 +1162,7 @@ namespace RestrictionTrackerGTK
             default:
               return Color.Transparent;
           }
-        case modFunctions.SatHostTypes.DishNet:
+        case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
           switch (Element)
           {
             case "cmdMainDownA":
@@ -1233,7 +1231,7 @@ namespace RestrictionTrackerGTK
       System.DateTime startDate = new System.DateTime(2000, 1, 1, 0, 0, 0);
       int startDown = 0;
       int startUp = 0;
-      if (DisplayAs == modFunctions.SatHostTypes.WildBlue)
+      if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY)
       {
         for (int I = 1; I <= 90; I++)
         {
@@ -1253,7 +1251,7 @@ namespace RestrictionTrackerGTK
           FakeData.Add(dRow);
         }
       }
-      else if (DisplayAs == modFunctions.SatHostTypes.Exede)
+      else if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
       {
         for (int I = 1; I <= 90; I++)
         {
@@ -1273,7 +1271,7 @@ namespace RestrictionTrackerGTK
           FakeData.Add(dRow);
         }
       }
-      else if (DisplayAs == modFunctions.SatHostTypes.RuralPortal)
+      else if (DisplayAs == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE)
       {
         for (int I = 1; I <= 90; I++)
         {
@@ -1289,7 +1287,7 @@ namespace RestrictionTrackerGTK
           FakeData.Add(dRow);
         }
       }
-      else if (DisplayAs == modFunctions.SatHostTypes.DishNet)
+      else if (DisplayAs == localRestrictionTracker.SatHostTypes.DishNet_EXEDE)
       {
         for (int I = 1; I <= 90; I++)
         {

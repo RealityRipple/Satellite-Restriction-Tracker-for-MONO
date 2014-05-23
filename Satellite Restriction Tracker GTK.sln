@@ -53,18 +53,6 @@ Global
 		$3.BlankLinesAfterUsings = 0
 		$3.BlankLinesBetweenTypes = 0
 		$3.BlankLinesBetweenMembers = 0
-		$3.MethodCallArgumentWrapping = DoNotWrap
-		$3.NewLineAferMethodCallOpenParentheses = SameLine
-		$3.MethodCallClosingParenthesesOnNewLine = SameLine
-		$3.MethodDeclarationParameterWrapping = DoNotWrap
-		$3.NewLineAferMethodDeclarationOpenParentheses = SameLine
-		$3.MethodDeclarationClosingParenthesesOnNewLine = SameLine
-		$3.IndexerDeclarationParameterWrapping = DoNotWrap
-		$3.NewLineAferIndexerDeclarationOpenBracket = SameLine
-		$3.IndexerDeclarationClosingBracketOnNewLine = SameLine
-		$3.IndexerArgumentWrapping = DoNotWrap
-		$3.NewLineAferIndexerOpenBracket = SameLine
-		$3.IndexerClosingBracketOnNewLine = SameLine
 		$3.inheritsSet = Mono
 		$3.inheritsScope = text/x-csharp
 		$3.scope = text/x-csharp
@@ -210,6 +198,6 @@ Global
 		$31.inheritsScope = text/plain
 		$31.scope = text/plain
 		description = Satellite Restriction Tracker
-		version = 0.3.1
+		version = 0.3.1.1
 	EndGlobalSection
 EndGlobal

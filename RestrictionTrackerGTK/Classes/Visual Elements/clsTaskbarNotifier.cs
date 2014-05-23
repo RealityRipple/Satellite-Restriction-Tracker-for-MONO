@@ -54,7 +54,7 @@ namespace RestrictionTrackerGTK
     public event EventHandler TitleClick = null;
     public event EventHandler ContentClick = null;
 #endregion
-#region TaskbarNotifier Enums
+#region TaskbarNotifier enums
     /// <summary>
     /// List of the different popup animation status
     /// </summary>

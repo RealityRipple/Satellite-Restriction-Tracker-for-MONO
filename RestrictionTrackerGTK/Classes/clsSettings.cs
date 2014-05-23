@@ -1,13 +1,13 @@
 using System;
 using System.Drawing;
 using System.Xml;
-
+using RestrictionLibrary;
 namespace RestrictionTrackerGTK
 {
   class AppSettings
   {
     private string m_Account;
-    private modFunctions.SatHostTypes m_AccountType;
+    private localRestrictionTracker.SatHostTypes m_AccountType;
     private int m_Interval;
     private string m_Gr;
     private System.DateTime m_LastSyncTime;
@@ -76,28 +76,11 @@ namespace RestrictionTrackerGTK
                       m_Account = xValue;
                       if (m_node.Attributes.Count > 1)
                       {
-                        switch (m_node.Attributes[1].InnerText)
-                        {
-                          case "WildBlue":
-                            m_AccountType = modFunctions.SatHostTypes.WildBlue;
-                            break;
-                          case "Exede":
-                            m_AccountType = modFunctions.SatHostTypes.Exede;
-                            break;
-                          case "DishNet":
-                            m_AccountType = modFunctions.SatHostTypes.DishNet;
-                            break;
-                          case "RuralPortal":
-                            m_AccountType = modFunctions.SatHostTypes.RuralPortal;
-                            break;
-                          default:
-                            m_AccountType = modFunctions.SatHostTypes.Other;
-                            break;
-                        }
+                        m_AccountType = modFunctions.StringToHostType(m_node.Attributes[1].InnerText);
                       }
                       else
                       {
-                        m_AccountType = modFunctions.SatHostTypes.Other;
+                        m_AccountType = localRestrictionTracker.SatHostTypes.Other;
                       }
                     }
                     else if (xName.CompareTo("Interval") == 0)
@@ -424,7 +407,7 @@ namespace RestrictionTrackerGTK
     private void Reset()
     {
       m_Account = null;
-      m_AccountType = modFunctions.SatHostTypes.Other;
+      m_AccountType = localRestrictionTracker.SatHostTypes.Other;
       m_Interval = 15;
       m_Gr = "aph";
       m_LastSyncTime = new System.DateTime(2000, 1, 1);
@@ -507,24 +490,7 @@ namespace RestrictionTrackerGTK
       {
         sInversion = "True";
       }
-      switch (m_AccountType)
-      {
-        case modFunctions.SatHostTypes.WildBlue:
-          sAccountType = "WildBlue";
-          break;
-        case modFunctions.SatHostTypes.Exede:
-          sAccountType = "Exede";
-          break;
-        case modFunctions.SatHostTypes.DishNet:
-          sAccountType = "DishNet";
-          break;
-        case modFunctions.SatHostTypes.RuralPortal:
-          sAccountType = "RuralPortal";
-          break;
-        default:
-          sAccountType = "Other";
-          break;
-      }
+      sAccountType = modFunctions.HostTypeToString(m_AccountType);
       string sRet = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + Environment.NewLine +
         "<configuration>" + Environment.NewLine +
         "  <userSettings>" + Environment.NewLine +
@@ -825,7 +791,7 @@ namespace RestrictionTrackerGTK
       }
     }
 
-    public modFunctions.SatHostTypes AccountType
+    public localRestrictionTracker.SatHostTypes AccountType
     {
       get
       {
@@ -1481,6 +1447,8 @@ namespace RestrictionTrackerGTK
         }
       }
     }
+
+
   }
 }
 

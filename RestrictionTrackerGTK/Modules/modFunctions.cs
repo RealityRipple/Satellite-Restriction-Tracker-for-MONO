@@ -9,15 +9,6 @@ namespace RestrictionTrackerGTK
 {
   static class modFunctions
   {
-    public enum SatHostTypes
-    {
-      WildBlue,
-      Exede,
-      RuralPortal,
-      DishNet,
-      Other
-    }
-
     public enum DateInterval
     {
       Day,
@@ -225,6 +216,52 @@ namespace RestrictionTrackerGTK
       else
       {
         return InBytes.ToString() + " B";
+      }
+    }
+
+    public static localRestrictionTracker.SatHostTypes StringToHostType(string st)
+    {
+      switch (st.ToUpper())
+      {
+        case "WBL":
+        case "WILDBLUE":
+          return localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
+        case "WBX":
+        case "EXEDE":
+          return localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
+        case "WBV":
+          return localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION;
+        case "RPL":
+          return localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY;
+        case "RPX":
+        case "RURALPORTAL":
+          return localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
+        case "DNX":
+        case "DISHNET":
+          return localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
+        default:
+          return localRestrictionTracker.SatHostTypes.Other ;
+      }
+    }
+
+    public static string HostTypeToString(localRestrictionTracker.SatHostTypes ht)
+    {
+      switch (ht)
+      {
+        case  localRestrictionTracker.SatHostTypes.WildBlue_LEGACY:
+          return "WBL";
+        case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
+          return "WBX";
+        case localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION:
+          return "WBV";
+        case localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
+          return "RPL";
+        case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
+          return "RPX";
+        case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
+          return "DNX";
+        default:
+          return "O";
       }
     }
 
