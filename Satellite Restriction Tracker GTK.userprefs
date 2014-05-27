@@ -4,15 +4,7 @@
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True" selected="True">
-          <Node name="RestrictionTrackerGTK" expanded="True">
-            <Node name="References" expanded="True" />
-            <Node name="Classes" expanded="True">
-              <Node name="MacInterop" expanded="True" />
-              <Node name="Visual Elements" expanded="True" />
-            </Node>
-            <Node name="Forms" expanded="True" />
-            <Node name="Modules" expanded="True" />
-          </Node>
+          <Node name="RestrictionTrackerGTK" expanded="True" />
         </State>
       </Pad>
       <Pad Id="MonoDevelop.Debugger.WatchPad">

@@ -1033,7 +1033,7 @@ namespace RestrictionTrackerGTK
         long lHigh = 0;
         for (int J = 0; J <= Data.Length - 1; J++)
         {
-          if (Math.Abs(DateDiff(dInterval, Data [J].DATETIME, DateAdd(dInterval, I, lStart))) < 2)
+          if (Math.Abs(DateDiff(dInterval, Data [J].DATETIME, DateAdd(dInterval, I, lStart))) == 0)
           {
             long jLim = (Down ? Data [J].DOWNLIM : Data [J].UPLIM);
             if (lHigh < jLim)
@@ -1080,7 +1080,7 @@ namespace RestrictionTrackerGTK
         long lHigh = 0;
         for (int J = 0; J <= Data.Length - 1; J++)
         {
-          if (Math.Abs(DateDiff(dInterval, Data [J].DATETIME, DateAdd(dInterval, I, lStart))) < 2)
+          if (Math.Abs(DateDiff(dInterval, Data [J].DATETIME, DateAdd(dInterval, I, lStart))) == 0)
           {
             long jVal = (Down ? Data [J].DOWNLOAD : Data [J].UPLOAD);
             if (lHigh < jVal)
@@ -1316,7 +1316,7 @@ namespace RestrictionTrackerGTK
         long lHigh = 0;
         for (int J = 0; J <= Data.Length - 1; J++)
         {
-          if (Math.Abs(DateDiff(dInterval, Data [J].DATETIME, DateAdd(dInterval, I, lStart))) < 2)
+          if (Math.Abs(DateDiff(dInterval, Data [J].DATETIME, DateAdd(dInterval, I, lStart))) == 0)
           {
             if (Invert)
             {
@@ -1365,20 +1365,22 @@ namespace RestrictionTrackerGTK
       long lastOVal = 0;
       for (long I = 0; I <= lMaxTime; I++)
       {
-        long lDVal = 0;
-        long lUVal = 0;
-        long lOVal = 0;
+        System.Collections.Generic.List<long> lDRange = new System.Collections.Generic.List<long>();
+        long lDVal = -1;
+        System.Collections.Generic.List<long> lURange = new System.Collections.Generic.List<long>();
+        long lUVal = -1;
+        System.Collections.Generic.List<long> lORange = new System.Collections.Generic.List<long>();
+        long lOVal = -1;
         long lDLow = long.MaxValue;
-        long lDHigh = 0;
+        long lDHigh = -1;
         long lULow = long.MaxValue;
-        long lUHigh = 0;
+        long lUHigh = -1;
         long lOLow = long.MaxValue;
-        long lOHigh = 0;
+        long lOHigh = -1;
 
         for (int J = 0; J <= Data.Length - 1; J++)
         {
-
-          if (Math.Abs(DateDiff(dInterval, Data [J].DATETIME, DateAdd(dInterval, I, lStart))) < 2)
+          if (Math.Abs(DateDiff(dInterval, Data [J].DATETIME, DateAdd(dInterval, I, lStart))) == 0)
           {
             long jDVal = Data [J].DOWNLOAD;
             if (lDHigh < jDVal)
@@ -1427,27 +1429,54 @@ namespace RestrictionTrackerGTK
 
           }
         }
-        if (lDHigh > 0 & lDLow < long.MaxValue)
+
+        if (lDHigh > -1 & lDLow < long.MaxValue)
         {
-          lDVal = (lDHigh + lDLow) / 2;
+          int Nulls = lDRange.FindAll((long val) => val == 0).Count;
+          if (Nulls > lDRange.Count * 0.4)
+          {
+            lDVal = 0;
+          }
+          else
+          {
+            lastDVal = lDHigh;
+          }
         }
-        if (lDVal == -1 & lastDVal > 0)
+        else if (lastDVal > 0)
         {
           lDVal = lastDVal;
         }
-        if (lUHigh > 0 & lULow < long.MaxValue)
+
+        if (lUHigh > -1 & lULow < long.MaxValue)
         {
-          lUVal = (lUHigh + lULow) / 2;
+          int Nulls = lURange.FindAll((long val) => val == 0).Count;
+          if (Nulls > lURange.Count * 0.4)
+          {
+            lUVal = 0;
+          }
+          else
+          {
+            lastUVal = lUHigh;
+          }
         }
-        if (lUVal == -1 & lastUVal > 0)
+        else if (lastUVal > 0)
         {
           lUVal = lastUVal;
         }
-        if (lOHigh > 0 & lOLow < long.MaxValue)
+
+        if (lOHigh > -1 & lOLow < long.MaxValue)
         {
-          lOVal = (lOHigh + lOLow) / 2;
+          int Nulls = lORange.FindAll((long val) => val == 0).Count;
+          if (Nulls > lORange.Count * 0.4)
+          {
+            lOVal = 0;
+          }
+          else
+          {
+            lastOVal = lOHigh;
+          }
         }
-        if (lOVal == -1 & lastOVal > 0)
+        else if (lastOVal > 0)
         {
           lOVal = lastOVal;
         }
@@ -1455,13 +1484,14 @@ namespace RestrictionTrackerGTK
         lUPoints [I].X = (int)(lYWidth + (I * dCompInter));
         lUPoints [I].Y = (int)(yTop + yHeight - (lUVal / (double)lMax * yHeight));
         lDPoints [I].X = (int)(lYWidth + (I * dCompInter));
-        //           '''\/'''
         lDPoints [I].Y = (int)(yTop + yHeight - (lDVal / (double)lMax * yHeight) - (yTop + yHeight - lUPoints [I].Y));
-        ///'
         lOPoints [I].X = (int)(lYWidth + (I * dCompInter));
         lOPoints [I].Y = (int)(yTop + yHeight - (lOVal / (double)lMax * yHeight) - (yTop + yHeight - lDPoints [I].Y));
-        lastDVal = lDVal;
-        lastUVal = lUVal;
+        if (lDVal > 0)
+          lastDVal = lDVal;
+        if (lUVal > 0)
+          lastUVal = lUVal;
+        if (lOVal > 0)
         lastOVal = lOVal;
       }
       lTypes [0] = (byte)PathPointType.Start;
@@ -1655,7 +1685,7 @@ namespace RestrictionTrackerGTK
         long lHigh = 0;
         for (int J = 0; J <= Data.Length - 1; J++)
         {
-          if (Math.Abs(DateDiff(dInterval, Data [J].DATETIME, DateAdd(dInterval, I, lStart))) < 2)
+          if (Math.Abs(DateDiff(dInterval, Data [J].DATETIME, DateAdd(dInterval, I, lStart))) == 0)
           {
             if (lHigh < Data [J].DOWNLIM)
             {
@@ -1690,7 +1720,7 @@ namespace RestrictionTrackerGTK
         long lHigh = 0;
         for (int J = 0; J <= Data.Length - 1; J++)
         {
-          if (Math.Abs(DateDiff(dInterval, Data [J].DATETIME, DateAdd(dInterval, I, lStart))) < 2)
+          if (Math.Abs(DateDiff(dInterval, Data [J].DATETIME, DateAdd(dInterval, I, lStart))) == 0)
           {
             if (lHigh < Data [J].DOWNLOAD)
             {

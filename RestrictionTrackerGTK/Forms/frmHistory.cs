@@ -712,17 +712,21 @@ namespace RestrictionTrackerGTK
       }
       else
       {
-        if (modDB.usageDB != null && modDB.usageDB.Count > 1)
+        if (modDB.usageDB != null)
         {
-          for (int i = modDB.usageDB.Count - 1; i <=1; i--)
+          if (modDB.usageDB.Count > 1)
           {
-            if ((modDB.usageDB.data[i].DOWNLOAD == 0 && modDB.usageDB.data[i].UPLOAD == 0) && (modDB.usageDB.data[i - 1].DOWNLOAD > 0 || modDB.usageDB.data[i - 1].UPLOAD > 0))
+            ShowProgress("Querying DataBase...", "Scanning for Resets...");
+            for (int i = modDB.usageDB.Count - 1; i <=1; i--)
             {
-              if (modDB.usageDB.data[i].DATETIME > dtwFrom.Date)
+              SetProgress(modDB.usageDB.Count - i, modDB.usageDB.Count, "");
+              if ((modDB.usageDB.data[i].DOWNLOAD == 0 && modDB.usageDB.data[i].UPLOAD == 0) && (modDB.usageDB.data[i - 1].DOWNLOAD > 0 || modDB.usageDB.data[i - 1].UPLOAD > 0))
               {
-                From30DaysAgo = dtwFrom.MaxDate;
-              }
-              else if (modDB.usageDB.data[i].DATETIME < dtwFrom.MinDate)
+                if (modDB.usageDB.data[i].DATETIME > dtwFrom.Date)
+                {
+                  From30DaysAgo = dtwFrom.MaxDate;
+                }
+                else if (modDB.usageDB.data[i].DATETIME < dtwFrom.MinDate)
                 {
                   From30DaysAgo = dtwFrom.MinDate;
                 }
@@ -730,17 +734,17 @@ namespace RestrictionTrackerGTK
                 {
                   From30DaysAgo = modDB.usageDB.data[i].DATETIME;
                 }
-              break;
+                break;
+              }
             }
           }
-        }
-        else
-        {
-          if (modDB.usageDB.data[0].DATETIME > dtwFrom.MaxDate)
+          else
           {
-            From30DaysAgo = dtwFrom.MaxDate;
-          }
-          else if (modDB.usageDB.data[0].DATETIME < dtwFrom.MinDate)
+            if (modDB.usageDB.data[0].DATETIME > dtwFrom.MaxDate)
+            {
+              From30DaysAgo = dtwFrom.MaxDate;
+            }
+            else if (modDB.usageDB.data[0].DATETIME < dtwFrom.MinDate)
             {
               From30DaysAgo = dtwFrom.MinDate;
             }
@@ -748,6 +752,11 @@ namespace RestrictionTrackerGTK
             {
               From30DaysAgo = modDB.usageDB.data[0].DATETIME;
             }
+          }
+        }
+        else
+        {
+          From30DaysAgo = dtwFrom.MinDate;
         }
       }
 
@@ -770,6 +779,7 @@ namespace RestrictionTrackerGTK
         ToNow = dtwTo.MinDate;
       dtwFrom.Date = From30DaysAgo;
       dtwTo.Date = ToNow;
+      HideProgress();
       cmdQuery.Click();
     }
     private void cmd60Days_Click(System.Object sender, System.EventArgs e)
@@ -783,54 +793,61 @@ namespace RestrictionTrackerGTK
           From60DaysAgo = dtwFrom.MaxDate;
         }
         else if (modFunctions.DateAdd(modFunctions.DateInterval.Day, -60, RightNow) < dtwFrom.MinDate)
-          {
-            From60DaysAgo = dtwFrom.MinDate;
-          }
-          else
-          {
-            From60DaysAgo = modFunctions.DateAdd(modFunctions.DateInterval.Day, -60, RightNow);
-          }
-      }
-      else
-      {
-        if (modDB.usageDB != null && modDB.usageDB.Count > 1)
         {
-          int Finds = 0;
-          for (int i = modDB.usageDB.Count - 1; i <=1; i--)
-          {
-            if ((modDB.usageDB.data[i].DOWNLOAD == 0 && modDB.usageDB.data[i].UPLOAD == 0) && (modDB.usageDB.data[i - 1].DOWNLOAD > 0 || modDB.usageDB.data[i - 1].UPLOAD > 0))
-            {
-              Finds ++;
-              if (Finds == 2)
-              {
-                if (modDB.usageDB.data[i].DATETIME > dtwFrom.Date)
-                {
-                  From60DaysAgo = dtwFrom.MaxDate;
-                }
-                else if (modDB.usageDB.data[i].DATETIME < dtwFrom.MinDate)
-                  {
-                    From60DaysAgo = dtwFrom.MinDate;
-                  }
-                  else
-                  {
-                    From60DaysAgo = modDB.usageDB.data[i].DATETIME;
-                  }
-                break;
-              }
-            }
-          }
-          if (Finds < 2)
-          {
-            From60DaysAgo = dtwFrom.MinDate;
-          }
+          From60DaysAgo = dtwFrom.MinDate;
         }
         else
         {
-          if (modDB.usageDB.data[0].DATETIME > dtwFrom.MaxDate)
+          From60DaysAgo = modFunctions.DateAdd(modFunctions.DateInterval.Day, -60, RightNow);
+        }
+      }
+      else
+      {
+        if (modDB.usageDB != null)
+        {
+          if (modDB.usageDB.Count > 1)
           {
-            From60DaysAgo = dtwFrom.MaxDate;
+            ShowProgress("Querying DataBase...", "Scanning for Resets...");
+            int Finds = 0;
+            for (int i = modDB.usageDB.Count - 1; i <=1; i--)
+            {
+              SetProgress(modDB.usageDB.Count - i, modDB.usageDB.Count, "");
+              if ((modDB.usageDB.data[i].DOWNLOAD == 0 && modDB.usageDB.data[i].UPLOAD == 0) && (modDB.usageDB.data[i - 1].DOWNLOAD > 0 || modDB.usageDB.data[i - 1].UPLOAD > 0))
+              {
+                if (DateTime.Today.Subtract(modDB.usageDB.data[i].DATETIME).TotalDays > 6)
+                {
+                  Finds ++;
+                  if (Finds == 2)
+                  {
+                    if (modDB.usageDB.data[i].DATETIME > dtwFrom.Date)
+                    {
+                      From60DaysAgo = dtwFrom.MaxDate;
+                    }
+                    else if (modDB.usageDB.data[i].DATETIME < dtwFrom.MinDate)
+                      {
+                        From60DaysAgo = dtwFrom.MinDate;
+                      }
+                      else
+                      {
+                        From60DaysAgo = modDB.usageDB.data[i].DATETIME;
+                      }
+                    break;
+                  }
+                }
+              }
+            }
+            if (Finds < 2)
+            {
+              From60DaysAgo = dtwFrom.MinDate;
+            }
           }
-          else if (modDB.usageDB.data[0].DATETIME < dtwFrom.MinDate)
+          else
+          {
+            if (modDB.usageDB.data[0].DATETIME > dtwFrom.MaxDate)
+            {
+              From60DaysAgo = dtwFrom.MaxDate;
+            }
+            else if (modDB.usageDB.data[0].DATETIME < dtwFrom.MinDate)
             {
               From60DaysAgo = dtwFrom.MinDate;
             }
@@ -838,6 +855,11 @@ namespace RestrictionTrackerGTK
             {
               From60DaysAgo = modDB.usageDB.data[0].DATETIME;
             }
+          }
+        }
+        else
+        {
+          From60DaysAgo = dtwFrom.MinDate;
         }
       }
       System.DateTime ToNow = default(System.DateTime);
@@ -846,19 +868,20 @@ namespace RestrictionTrackerGTK
         ToNow = dtwTo.MaxDate;
       }
       else if (RightNow < dtwTo.MinDate)
-        {
-          ToNow = dtwTo.MinDate;
-        }
-        else
-        {
-          ToNow = RightNow;
-        }
+      {
+        ToNow = dtwTo.MinDate;
+      }
+      else
+      {
+        ToNow = RightNow;
+      }
       if (From60DaysAgo.Year < 2000)
         From60DaysAgo = dtwFrom.MinDate;
       if (ToNow.Year < 2000)
         ToNow = dtwTo.MinDate;
       dtwFrom.Date = From60DaysAgo;
       dtwTo.Date = ToNow;
+      HideProgress();
       cmdQuery.Click();
     }
     private void cmdAllTime_Click(System.Object sender, System.EventArgs e)
