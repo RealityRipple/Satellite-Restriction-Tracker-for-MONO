@@ -1674,20 +1674,35 @@ namespace RestrictionTrackerGTK
       NextGrabTick = modFunctions.TickCount() + (mySettings.Timeout * 1000);
       switch (e.Status)
       {
-        case localRestrictionTracker.ConnectionStatusEventArgs.ConnectionStates.Authentication:
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Authenticating...", false);
+        case localRestrictionTracker.ConnectionStates.Initialize:
+          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Initializing Connection...", false);
           break;
-        case localRestrictionTracker.ConnectionStatusEventArgs.ConnectionStates.Login:
+        case localRestrictionTracker.ConnectionStates.Prepare:
+          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Login...", false);
+          break;
+        case localRestrictionTracker.ConnectionStates.FirstBookend:
+          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Setting Initial Coefficient...", false);
+          break;
+        case localRestrictionTracker.ConnectionStates.Login:
           SetStatusText(modDB.LOG_GetLast().ToString("g"), "Logging In...", false);
           break;
-        case localRestrictionTracker.ConnectionStatusEventArgs.ConnectionStates.TableDownload:
+        case localRestrictionTracker.ConnectionStates.LoginRetry:
+          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Attempting Second Login...", false);
+          break;
+        case localRestrictionTracker.ConnectionStates.LastBookend:
+          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Setting Final Coefficient...", false);
+          break;
+        case localRestrictionTracker.ConnectionStates.Authenticate:
+          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Authenticating...", false);
+          break;
+        case localRestrictionTracker.ConnectionStates.TableDownload:
           SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Usage Table...", false);
           break;
-        case localRestrictionTracker.ConnectionStatusEventArgs.ConnectionStates.TableRead:
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Reading Usage Table...", false);
+        case localRestrictionTracker.ConnectionStates.TableDownloadRetry:
+          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Attempting Second Usage Table Download...", false);
           break;
-        case localRestrictionTracker.ConnectionStatusEventArgs.ConnectionStates.UsageRead:
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Reading Usage...", false);
+        case localRestrictionTracker.ConnectionStates.TableRead:
+          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Reading Usage Table...", false);
           break;
       }
     }
@@ -3515,19 +3530,15 @@ namespace RestrictionTrackerGTK
         sDisp_TT_E = null;
       }
       else if (e.Alert)
-        {
-          bAlert = 1;
-          sDisp_TT_E = e.Details;
-        }
-        else
-        {
-          bAlert = 0;
-          sDisp_TT_E = e.Details;
-        }
-      //lblStatus.Text = "Bandwidth Levels (" + e.Status + ")" + (e.Alert ? " !" : "");
-
-      //lblStatus.TooltipText = e.Details;
-      //ShowProgress(e.Details, "", false);
+      {
+        bAlert = 1;
+        sDisp_TT_E = e.Details;
+      }
+      else
+      {
+        bAlert = 0;
+        sDisp_TT_E = e.Details;
+      }
       System.Threading.Thread.Sleep(0);
     }
     private bool tmrStatus_Tick()

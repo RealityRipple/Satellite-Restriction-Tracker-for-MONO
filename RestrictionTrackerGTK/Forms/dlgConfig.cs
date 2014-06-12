@@ -619,7 +619,7 @@ namespace RestrictionTrackerGTK
           sErr = "Your account is not registered!";
           break;
         case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.Network:
-          sErr = "There was a connection related error. Please check your internet connection. (" + e.Details + ")";
+          sErr = "There was a connection related error. Please check your Internet connection. (" + e.Details + ")";
           break;
 
       }

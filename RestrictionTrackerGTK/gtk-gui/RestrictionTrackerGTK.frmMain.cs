@@ -85,7 +85,7 @@ namespace RestrictionTrackerGTK
 		private global::Gtk.Statusbar sbMainStatus;
 		private global::Gtk.ProgressBar pbMainStatus;
 		private global::Gtk.Label lblMainStatus;
-		
+
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);

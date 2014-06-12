@@ -93,6 +93,8 @@ namespace RestrictionTrackerGTK
       byte[] bRet = null;
       bRet = httpSend.UploadValues("http://bugs.realityripple.com/bug_report.php", "POST", pData);
       string sRet = System.Text.Encoding.GetEncoding(28591).GetString(bRet);
+      httpSend.Dispose();
+      httpSend = null;
       if (sRet.Contains("Operation successful."))
       {
         return "OK";
@@ -107,10 +109,17 @@ namespace RestrictionTrackerGTK
 
 		static internal string ReportIssue(Exception e)
     {
+      if (httpSend != null)
+      {
+        httpSend.Dispose();
+        httpSend = null;
+      }
       httpSend = new RestrictionLibrary.CookieAwareWebClient();
       string sTok = GetToken(1);
       if (string.IsNullOrEmpty(sTok))
       {
+        httpSend.Dispose();
+        httpSend = null;
         return "No token was supplied by the server.";
       }
       string sPlat = Environment.OSVersion.Platform.ToString();

@@ -1383,6 +1383,7 @@
                         <property name="Tooltip" translatable="yes">Display history in a line graph.</property>
                         <property name="CanFocus">True</property>
                         <property name="Label" translatable="yes">Graph</property>
+                        <property name="Active">True</property>
                         <property name="DrawIndicator">True</property>
                         <property name="HasLabel">True</property>
                         <property name="UseUnderline">True</property>
@@ -2843,7 +2844,7 @@ URL</property>
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Dialog" id="RestrictionTrackerGTK.dlgUpdate" design-size="324 415">
+  <widget class="Gtk.Dialog" id="RestrictionTrackerGTK.dlgUpdate" design-size="430 284">
     <property name="MemberName" />
     <property name="Visible">False</property>
     <property name="Icon">resource:RestrictionTrackerGTK.Resources.norm.ico</property>
@@ -2851,9 +2852,7 @@ URL</property>
     <property name="WindowPosition">Center</property>
     <property name="Resizable">False</property>
     <property name="AllowGrow">False</property>
-    <property name="SkipPagerHint">True</property>
-    <property name="SkipTaskbarHint">True</property>
-    <property name="Buttons">2</property>
+    <property name="Buttons">3</property>
     <property name="HelpButton">False</property>
     <child internal-child="VBox">
       <widget class="Gtk.VBox" id="pnlUpdateDialog">
@@ -2864,12 +2863,13 @@ URL</property>
             <property name="MemberName" />
             <property name="Spacing">6</property>
             <child>
-              <widget class="Gtk.Label" id="lblNewVer">
+              <widget class="Gtk.Label" id="lblTitle">
                 <property name="MemberName" />
-                <property name="LabelProp" translatable="yes">&lt;span size="12000"&gt;Satellite Restriction Tracker Update
-Version 0.0.0.0&lt;/span&gt;</property>
+                <property name="Xpad">3</property>
+                <property name="Ypad">3</property>
+                <property name="Xalign">0</property>
+                <property name="LabelProp" translatable="yes">&lt;span size="14000"&gt;Satellite Restriction Tracker Update&lt;/span&gt;</property>
                 <property name="UseMarkup">True</property>
-                <property name="Justify">Center</property>
               </widget>
               <packing>
                 <property name="Position">0</property>
@@ -2879,33 +2879,32 @@ Version 0.0.0.0&lt;/span&gt;</property>
               </packing>
             </child>
             <child>
-              <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
+              <widget class="Gtk.Label" id="lblNewVer">
                 <property name="MemberName" />
-                <property name="ShadowType">In</property>
-                <child>
-                  <widget class="Gtk.TextView" id="txtInfo">
-                    <property name="MemberName" />
-                    <property name="CanFocus">True</property>
-                    <property name="ShowScrollbars">True</property>
-                    <property name="Editable">False</property>
-                    <property name="AcceptsTab">False</property>
-                    <property name="Text" translatable="yes" />
-                    <property name="WrapMode">WordChar</property>
-                  </widget>
-                </child>
+                <property name="Xpad">3</property>
+                <property name="Ypad">3</property>
+                <property name="Xalign">0</property>
+                <property name="LabelProp" translatable="yes">&lt;span size="9000"&gt;Version %v has been released and is available for download.
+To keep up-to-date with the latest features, improvements, bug fixes, and
+meter compliance, please update %p immediately.&lt;/span&gt;</property>
+                <property name="UseMarkup">True</property>
               </widget>
               <packing>
                 <property name="Position">1</property>
                 <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
               </packing>
             </child>
             <child>
               <widget class="Gtk.Label" id="lblBETA">
                 <property name="MemberName" />
-                <property name="LabelProp" translatable="yes">&lt;span color="Firebrick"&gt;BETA updates may have bugs and other issues that haven't been worked out yet, but need testing on a wide range of accounts.
+                <property name="Xpad">3</property>
+                <property name="Xalign">0</property>
+                <property name="LabelProp" translatable="yes">&lt;span color="Firebrick"&gt;BETA updates may have bugs and other issues that haven't been
+worked out yet, but need testing on a wide range of accounts.
 Please back up your history before using BETAs.&lt;/span&gt;</property>
                 <property name="UseMarkup">True</property>
-                <property name="Wrap">True</property>
               </widget>
               <packing>
                 <property name="Position">2</property>
@@ -2917,8 +2916,9 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
             <child>
               <widget class="Gtk.CheckButton" id="chkStopBETA">
                 <property name="MemberName" />
+                <property name="Tooltip" translatable="yes">Disable notifications of BETA version updates.</property>
                 <property name="CanFocus">True</property>
-                <property name="Label" translatable="yes">Don't notify me of BETA updates.</property>
+                <property name="Label" translatable="yes">Don't notify me of _BETA updates.</property>
                 <property name="DrawIndicator">True</property>
                 <property name="HasLabel">True</property>
                 <property name="UseUnderline">True</property>
@@ -2934,6 +2934,31 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
           <packing>
             <property name="Position">0</property>
             <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.ScrolledWindow" id="scrInfo">
+            <property name="MemberName" />
+            <property name="Visible">False</property>
+            <property name="ShadowType">In</property>
+            <child>
+              <widget class="Gtk.TextView" id="txtInfo">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="ShowScrollbars">True</property>
+                <property name="Editable">False</property>
+                <property name="AcceptsTab">False</property>
+                <property name="Text" translatable="yes" />
+                <property name="WrapMode">WordChar</property>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="PackType">End</property>
+            <property name="Position">1</property>
+            <property name="AutoSize">True</property>
           </packing>
         </child>
       </widget>
@@ -2944,11 +2969,12 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
         <property name="Homogeneous">True</property>
         <property name="Spacing">10</property>
         <property name="BorderWidth">5</property>
-        <property name="Size">2</property>
-        <property name="LayoutStyle">Spread</property>
+        <property name="Size">3</property>
+        <property name="LayoutStyle">End</property>
         <child>
           <widget class="Gtk.Button" id="cmdDownload">
             <property name="MemberName" />
+            <property name="Tooltip" translatable="yes">Download the new version.</property>
             <property name="CanDefault">True</property>
             <property name="CanFocus">True</property>
             <property name="Type">TextAndIcon</property>
@@ -2966,6 +2992,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
         <child>
           <widget class="Gtk.Button" id="cmdCancel">
             <property name="MemberName" />
+            <property name="Tooltip" translatable="yes">Ignore the new version for now.</property>
             <property name="CanDefault">True</property>
             <property name="CanFocus">True</property>
             <property name="Type">TextAndIcon</property>
@@ -2977,6 +3004,24 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
           </widget>
           <packing>
             <property name="Position">1</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="cmdChanges">
+            <property name="MemberName" />
+            <property name="Tooltip" translatable="yes">View the latest version's Change Log.</property>
+            <property name="CanFocus">True</property>
+            <property name="Type">TextAndIcon</property>
+            <property name="Icon">stock:gtk-indent Button</property>
+            <property name="Label" translatable="yes">_Changes &gt;&gt;</property>
+            <property name="UseUnderline">True</property>
+            <property name="ResponseId">-1</property>
+            <signal name="Clicked" handler="cmdChanges_Click" />
+          </widget>
+          <packing>
+            <property name="Position">2</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
           </packing>

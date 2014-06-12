@@ -5,14 +5,16 @@ namespace RestrictionTrackerGTK
 	public partial class dlgUpdate
 	{
 		private global::Gtk.VBox pnlUpdate;
+		private global::Gtk.Label lblTitle;
 		private global::Gtk.Label lblNewVer;
-		private global::Gtk.ScrolledWindow GtkScrolledWindow;
-		private global::Gtk.TextView txtInfo;
 		private global::Gtk.Label lblBETA;
 		private global::Gtk.CheckButton chkStopBETA;
+		private global::Gtk.ScrolledWindow scrInfo;
+		private global::Gtk.TextView txtInfo;
 		private global::Gtk.Button cmdDownload;
 		private global::Gtk.Button cmdCancel;
-		
+		private global::Gtk.Button cmdChanges;
+
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);
@@ -23,8 +25,6 @@ namespace RestrictionTrackerGTK
 			this.WindowPosition = ((global::Gtk.WindowPosition)(1));
 			this.Resizable = false;
 			this.AllowGrow = false;
-			this.SkipPagerHint = true;
-			this.SkipTaskbarHint = true;
 			// Internal child RestrictionTrackerGTK.dlgUpdate.VBox
 			global::Gtk.VBox w1 = this.VBox;
 			w1.Name = "pnlUpdateDialog";
@@ -34,125 +34,176 @@ namespace RestrictionTrackerGTK
 			this.pnlUpdate.Name = "pnlUpdate";
 			this.pnlUpdate.Spacing = 6;
 			// Container child pnlUpdate.Gtk.Box+BoxChild
-			this.lblNewVer = new global::Gtk.Label ();
-			this.lblNewVer.Name = "lblNewVer";
-			this.lblNewVer.LabelProp = global::Mono.Unix.Catalog.GetString ("<span size=\"12000\">Satellite Restriction Tracker Update\nVersion 0.0.0.0</span>");
-			this.lblNewVer.UseMarkup = true;
-			this.lblNewVer.Justify = ((global::Gtk.Justification)(2));
-			this.pnlUpdate.Add (this.lblNewVer);
-			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.pnlUpdate [this.lblNewVer]));
+			this.lblTitle = new global::Gtk.Label ();
+			this.lblTitle.Name = "lblTitle";
+			this.lblTitle.Xpad = 3;
+			this.lblTitle.Ypad = 3;
+			this.lblTitle.Xalign = 0F;
+			this.lblTitle.LabelProp = global::Mono.Unix.Catalog.GetString ("<span size=\"14000\">Satellite Restriction Tracker Update</span>");
+			this.lblTitle.UseMarkup = true;
+			this.pnlUpdate.Add (this.lblTitle);
+			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.pnlUpdate [this.lblTitle]));
 			w2.Position = 0;
 			w2.Expand = false;
 			w2.Fill = false;
 			// Container child pnlUpdate.Gtk.Box+BoxChild
-			this.GtkScrolledWindow = new global::Gtk.ScrolledWindow ();
-			this.GtkScrolledWindow.Name = "GtkScrolledWindow";
-			this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
-			// Container child GtkScrolledWindow.Gtk.Container+ContainerChild
+			this.lblNewVer = new global::Gtk.Label ();
+			this.lblNewVer.Name = "lblNewVer";
+			this.lblNewVer.Xpad = 3;
+			this.lblNewVer.Ypad = 3;
+			this.lblNewVer.Xalign = 0F;
+			this.lblNewVer.LabelProp = global::Mono.Unix.Catalog.GetString ("<span size=\"9000\">Version %v has been released and is available for download.\nTo keep up-to-date with the latest features, improvements, bug fixes, and\nmeter compliance, please update %p immediately.</span>");
+			this.lblNewVer.UseMarkup = true;
+			this.pnlUpdate.Add (this.lblNewVer);
+			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.pnlUpdate [this.lblNewVer]));
+			w3.Position = 1;
+			w3.Expand = false;
+			w3.Fill = false;
+			// Container child pnlUpdate.Gtk.Box+BoxChild
+			this.lblBETA = new global::Gtk.Label ();
+			this.lblBETA.Name = "lblBETA";
+			this.lblBETA.Xpad = 3;
+			this.lblBETA.Xalign = 0F;
+			this.lblBETA.LabelProp = global::Mono.Unix.Catalog.GetString ("<span color=\"Firebrick\">BETA updates may have bugs and other issues that haven't been\nworked out yet, but need testing on a wide range of accounts.\nPlease back up your history before using BETAs.</span>");
+			this.lblBETA.UseMarkup = true;
+			this.pnlUpdate.Add (this.lblBETA);
+			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.pnlUpdate [this.lblBETA]));
+			w4.Position = 2;
+			w4.Expand = false;
+			w4.Fill = false;
+			// Container child pnlUpdate.Gtk.Box+BoxChild
+			this.chkStopBETA = new global::Gtk.CheckButton ();
+			this.chkStopBETA.TooltipMarkup = "Disable notifications of BETA version updates.";
+			this.chkStopBETA.CanFocus = true;
+			this.chkStopBETA.Name = "chkStopBETA";
+			this.chkStopBETA.Label = global::Mono.Unix.Catalog.GetString ("Don't notify me of _BETA updates.");
+			this.chkStopBETA.DrawIndicator = true;
+			this.chkStopBETA.UseUnderline = true;
+			this.pnlUpdate.Add (this.chkStopBETA);
+			global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.pnlUpdate [this.chkStopBETA]));
+			w5.Position = 3;
+			w5.Expand = false;
+			w5.Fill = false;
+			w1.Add (this.pnlUpdate);
+			global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(w1 [this.pnlUpdate]));
+			w6.Position = 0;
+			w6.Expand = false;
+			w6.Fill = false;
+			// Container child pnlUpdateDialog.Gtk.Box+BoxChild
+			this.scrInfo = new global::Gtk.ScrolledWindow ();
+			this.scrInfo.Name = "scrInfo";
+			this.scrInfo.ShadowType = ((global::Gtk.ShadowType)(1));
+			// Container child scrInfo.Gtk.Container+ContainerChild
 			this.txtInfo = new global::Gtk.TextView ();
 			this.txtInfo.CanFocus = true;
 			this.txtInfo.Name = "txtInfo";
 			this.txtInfo.Editable = false;
 			this.txtInfo.AcceptsTab = false;
 			this.txtInfo.WrapMode = ((global::Gtk.WrapMode)(3));
-			this.GtkScrolledWindow.Add (this.txtInfo);
-			this.pnlUpdate.Add (this.GtkScrolledWindow);
-			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.pnlUpdate [this.GtkScrolledWindow]));
-			w4.Position = 1;
-			// Container child pnlUpdate.Gtk.Box+BoxChild
-			this.lblBETA = new global::Gtk.Label ();
-			this.lblBETA.Name = "lblBETA";
-			this.lblBETA.LabelProp = global::Mono.Unix.Catalog.GetString ("<span color=\"Firebrick\">BETA updates may have bugs and other issues that haven't been worked out yet, but need testing on a wide range of accounts.\nPlease back up your history before using BETAs.</span>");
-			this.lblBETA.UseMarkup = true;
-			this.lblBETA.Wrap = true;
-			this.pnlUpdate.Add (this.lblBETA);
-			global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.pnlUpdate [this.lblBETA]));
-			w5.Position = 2;
-			w5.Expand = false;
-			w5.Fill = false;
-			// Container child pnlUpdate.Gtk.Box+BoxChild
-			this.chkStopBETA = new global::Gtk.CheckButton ();
-			this.chkStopBETA.CanFocus = true;
-			this.chkStopBETA.Name = "chkStopBETA";
-			this.chkStopBETA.Label = global::Mono.Unix.Catalog.GetString ("Don't notify me of BETA updates.");
-			this.chkStopBETA.DrawIndicator = true;
-			this.chkStopBETA.UseUnderline = true;
-			this.pnlUpdate.Add (this.chkStopBETA);
-			global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.pnlUpdate [this.chkStopBETA]));
-			w6.Position = 3;
-			w6.Expand = false;
-			w6.Fill = false;
-			w1.Add (this.pnlUpdate);
-			global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(w1 [this.pnlUpdate]));
-			w7.Position = 0;
+			this.scrInfo.Add (this.txtInfo);
+			w1.Add (this.scrInfo);
+			global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(w1 [this.scrInfo]));
+			w8.PackType = ((global::Gtk.PackType)(1));
+			w8.Position = 1;
 			// Internal child RestrictionTrackerGTK.dlgUpdate.ActionArea
-			global::Gtk.HButtonBox w8 = this.ActionArea;
-			w8.Name = "pnlUpdateButtons";
-			w8.Homogeneous = true;
-			w8.Spacing = 10;
-			w8.BorderWidth = ((uint)(5));
-			w8.LayoutStyle = ((global::Gtk.ButtonBoxStyle)(1));
+			global::Gtk.HButtonBox w9 = this.ActionArea;
+			w9.Name = "pnlUpdateButtons";
+			w9.Homogeneous = true;
+			w9.Spacing = 10;
+			w9.BorderWidth = ((uint)(5));
+			w9.LayoutStyle = ((global::Gtk.ButtonBoxStyle)(4));
 			// Container child pnlUpdateButtons.Gtk.ButtonBox+ButtonBoxChild
 			this.cmdDownload = new global::Gtk.Button ();
+			this.cmdDownload.TooltipMarkup = "Download the new version.";
 			this.cmdDownload.CanDefault = true;
 			this.cmdDownload.CanFocus = true;
 			this.cmdDownload.Name = "cmdDownload";
 			this.cmdDownload.UseUnderline = true;
 			// Container child cmdDownload.Gtk.Container+ContainerChild
-			global::Gtk.Alignment w9 = new global::Gtk.Alignment (0.5F, 0.5F, 0F, 0F);
+			global::Gtk.Alignment w10 = new global::Gtk.Alignment (0.5F, 0.5F, 0F, 0F);
 			// Container child GtkAlignment.Gtk.Container+ContainerChild
-			global::Gtk.HBox w10 = new global::Gtk.HBox ();
-			w10.Spacing = 2;
+			global::Gtk.HBox w11 = new global::Gtk.HBox ();
+			w11.Spacing = 2;
 			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Image w11 = new global::Gtk.Image ();
-			w11.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("RestrictionTrackerGTK.Resources.web.png");
+			global::Gtk.Image w12 = new global::Gtk.Image ();
+			w12.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("RestrictionTrackerGTK.Resources.web.png");
+			w11.Add (w12);
+			// Container child GtkHBox.Gtk.Container+ContainerChild
+			global::Gtk.Label w14 = new global::Gtk.Label ();
+			w14.LabelProp = global::Mono.Unix.Catalog.GetString ("Visit _Website");
+			w14.UseUnderline = true;
+			w11.Add (w14);
 			w10.Add (w11);
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Label w13 = new global::Gtk.Label ();
-			w13.LabelProp = global::Mono.Unix.Catalog.GetString ("Visit _Website");
-			w13.UseUnderline = true;
-			w10.Add (w13);
-			w9.Add (w10);
-			this.cmdDownload.Add (w9);
+			this.cmdDownload.Add (w10);
 			this.AddActionWidget (this.cmdDownload, -5);
-			global::Gtk.ButtonBox.ButtonBoxChild w17 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w8 [this.cmdDownload]));
-			w17.Expand = false;
-			w17.Fill = false;
+			global::Gtk.ButtonBox.ButtonBoxChild w18 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w9 [this.cmdDownload]));
+			w18.Expand = false;
+			w18.Fill = false;
 			// Container child pnlUpdateButtons.Gtk.ButtonBox+ButtonBoxChild
 			this.cmdCancel = new global::Gtk.Button ();
+			this.cmdCancel.TooltipMarkup = "Ignore the new version for now.";
 			this.cmdCancel.CanDefault = true;
 			this.cmdCancel.CanFocus = true;
 			this.cmdCancel.Name = "cmdCancel";
 			this.cmdCancel.UseUnderline = true;
 			// Container child cmdCancel.Gtk.Container+ContainerChild
-			global::Gtk.Alignment w18 = new global::Gtk.Alignment (0.5F, 0.5F, 0F, 0F);
+			global::Gtk.Alignment w19 = new global::Gtk.Alignment (0.5F, 0.5F, 0F, 0F);
 			// Container child GtkAlignment.Gtk.Container+ContainerChild
-			global::Gtk.HBox w19 = new global::Gtk.HBox ();
-			w19.Spacing = 2;
+			global::Gtk.HBox w20 = new global::Gtk.HBox ();
+			w20.Spacing = 2;
 			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Image w20 = new global::Gtk.Image ();
-			w20.Pixbuf = global::Stetic.IconLoader.LoadIcon (this, "gtk-cancel", global::Gtk.IconSize.Button);
+			global::Gtk.Image w21 = new global::Gtk.Image ();
+			w21.Pixbuf = global::Stetic.IconLoader.LoadIcon (this, "gtk-cancel", global::Gtk.IconSize.Button);
+			w20.Add (w21);
+			// Container child GtkHBox.Gtk.Container+ContainerChild
+			global::Gtk.Label w23 = new global::Gtk.Label ();
+			w23.LabelProp = global::Mono.Unix.Catalog.GetString ("_Not Now");
+			w23.UseUnderline = true;
+			w20.Add (w23);
 			w19.Add (w20);
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Label w22 = new global::Gtk.Label ();
-			w22.LabelProp = global::Mono.Unix.Catalog.GetString ("_Not Now");
-			w22.UseUnderline = true;
-			w19.Add (w22);
-			w18.Add (w19);
-			this.cmdCancel.Add (w18);
+			this.cmdCancel.Add (w19);
 			this.AddActionWidget (this.cmdCancel, -6);
-			global::Gtk.ButtonBox.ButtonBoxChild w26 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w8 [this.cmdCancel]));
-			w26.Position = 1;
-			w26.Expand = false;
-			w26.Fill = false;
+			global::Gtk.ButtonBox.ButtonBoxChild w27 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w9 [this.cmdCancel]));
+			w27.Position = 1;
+			w27.Expand = false;
+			w27.Fill = false;
+			// Container child pnlUpdateButtons.Gtk.ButtonBox+ButtonBoxChild
+			this.cmdChanges = new global::Gtk.Button ();
+			this.cmdChanges.TooltipMarkup = "View the latest version's Change Log.";
+			this.cmdChanges.CanFocus = true;
+			this.cmdChanges.Name = "cmdChanges";
+			this.cmdChanges.UseUnderline = true;
+			// Container child cmdChanges.Gtk.Container+ContainerChild
+			global::Gtk.Alignment w28 = new global::Gtk.Alignment (0.5F, 0.5F, 0F, 0F);
+			// Container child GtkAlignment.Gtk.Container+ContainerChild
+			global::Gtk.HBox w29 = new global::Gtk.HBox ();
+			w29.Spacing = 2;
+			// Container child GtkHBox.Gtk.Container+ContainerChild
+			global::Gtk.Image w30 = new global::Gtk.Image ();
+			w30.Pixbuf = global::Stetic.IconLoader.LoadIcon (this, "gtk-indent", global::Gtk.IconSize.Button);
+			w29.Add (w30);
+			// Container child GtkHBox.Gtk.Container+ContainerChild
+			global::Gtk.Label w32 = new global::Gtk.Label ();
+			w32.LabelProp = global::Mono.Unix.Catalog.GetString ("_Changes >>");
+			w32.UseUnderline = true;
+			w29.Add (w32);
+			w28.Add (w29);
+			this.cmdChanges.Add (w28);
+			w9.Add (this.cmdChanges);
+			global::Gtk.ButtonBox.ButtonBoxChild w36 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w9 [this.cmdChanges]));
+			w36.Position = 2;
+			w36.Expand = false;
+			w36.Fill = false;
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			this.DefaultWidth = 324;
-			this.DefaultHeight = 415;
+			this.DefaultWidth = 430;
+			this.DefaultHeight = 284;
+			this.scrInfo.Hide ();
 			this.Hide ();
 			this.cmdDownload.Clicked += new global::System.EventHandler (this.cmdDownload_Click);
 			this.cmdCancel.Clicked += new global::System.EventHandler (this.cmdCancel_Click);
+			this.cmdChanges.Clicked += new global::System.EventHandler (this.cmdChanges_Click);
 		}
 	}
 }

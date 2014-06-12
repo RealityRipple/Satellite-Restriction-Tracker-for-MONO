@@ -638,6 +638,8 @@ namespace RestrictionTrackerGTK
     public static string PercentEncode(string inString)
     {
       string sRet = string.Empty;
+      if (string.IsNullOrEmpty(inString))
+        return inString;
       for (int I = inString.Length - 1; I >= 0; I += -1)
       {
         int iChar = Convert.ToInt32(inString[I]);

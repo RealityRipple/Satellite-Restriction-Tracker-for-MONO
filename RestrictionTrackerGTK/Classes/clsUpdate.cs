@@ -40,7 +40,6 @@ namespace RestrictionTrackerGTK
 		public event CheckResultEventHandler CheckResult;
 		public delegate void CheckResultEventHandler(object sender, CheckEventArgs e);
     private RestrictionLibrary.CookieAwareWebClient wsVer;
-		private string DownloadURL;
 
 		public void CheckVersion()
     {
@@ -141,7 +140,6 @@ namespace RestrictionTrackerGTK
     {
       CheckEventArgs.ResultType rRet = CheckEventArgs.ResultType.NoUpdate;
       string sVer = null;
-      DownloadURL = null;
       if (e.Error == null)
       {
         try
@@ -168,7 +166,6 @@ namespace RestrictionTrackerGTK
             if (modFunctions.CompareVersions(sVU[0]))
             {
               rRet = CheckEventArgs.ResultType.NewUpdate;
-              DownloadURL = sVU[1];
               sVer = sVU[0];
             }
           }
@@ -182,7 +179,6 @@ namespace RestrictionTrackerGTK
               if (modFunctions.CompareVersions(sVMU[0]))
               {
                 rRet = CheckEventArgs.ResultType.NewUpdate;
-                DownloadURL = sVMU[1];
                 sVer = sVMU[0];
               }
               else if (mySettings.BetaCheck & !string.IsNullOrEmpty(sVL[1]))
@@ -191,7 +187,6 @@ namespace RestrictionTrackerGTK
                 if (modFunctions.CompareVersions(sVBU[0]))
                 {
                   rRet = CheckEventArgs.ResultType.NewBeta;
-                  DownloadURL = sVBU[1];
                   sVer = sVBU[0];
                 }
               }
@@ -217,10 +212,6 @@ namespace RestrictionTrackerGTK
       }
       if (CheckResult != null)
       {
-        if (!String.IsNullOrEmpty(DownloadURL))
-        {
-          Console.WriteLine(DownloadURL);
-        }
         CheckResult(sender, new CheckEventArgs(rRet, sVer, e.Error, e.Cancelled, e.UserState));
       }
     }

@@ -29,12 +29,7 @@ namespace RestrictionTrackerGTK
       sckVerInfo.Failure += sckVerInfo_Failure;
       Ret = false;
 
-      Uri loadPage = new Uri("http://update.realityripple.com/Satellite_Restriction_Tracker/info");
-      if (lblBETA.Visible)
-      {
-        loadPage = new Uri("http://update.realityripple.com/Satellite_Restriction_Tracker/infob");
-      }
-      sckVerInfo.DownloadStringAsync(loadPage);
+
       this.Close += frmUpdate_FormClosing;
     }
 
@@ -55,12 +50,19 @@ namespace RestrictionTrackerGTK
       if (BETA)
       {
         this.Title = "New BETA Version Available";
+        lblTitle.LabelProp = modFunctions.ProductName() + " BETA Update";
       }
       else
       {
         this.Title = "New Version Available";
+        lblTitle.LabelProp = modFunctions.ProductName() + " Update";
       }
-      lblNewVer.Text = modFunctions.ProductName() + " Update\nVersion " + modFunctions.DisplayVersion(Version);
+      string newVer = "Version %v has been released and is available for download.\n" +
+        "To keep up-to-date with the latest features, improvements, bug fixes, and\n" +
+        "meter compliance, please update %p immediately.";
+      newVer = newVer.Replace("%v", modFunctions.DisplayVersion(Version));
+      newVer = newVer.Replace("%p", modFunctions.ProductName());
+      lblNewVer.LabelProp = newVer;
       txtInfo.Buffer.Text = "Loading Update Information\n\nPlease Wait...";
       lblBETA.Visible = BETA;
       chkStopBETA.Visible = BETA;
@@ -92,6 +94,33 @@ namespace RestrictionTrackerGTK
       }
     }
 
+    protected void cmdChanges_Click (object sender, EventArgs e)
+    {
+      if (scrInfo.Visible)
+      {
+        ((Gtk.Label)((Gtk.HBox)((Gtk.Alignment) cmdChanges.Children[0]).Children[0]).Children[1]).LabelProp = "_Changes >>";
+        scrInfo.Visible = false;
+      }
+      else
+      {
+        txtInfo.HeightRequest = 100;
+        ((Gtk.Label)((Gtk.HBox)((Gtk.Alignment) cmdChanges.Children[0]).Children[0]).Children[1]).LabelProp = "_Changes <<";
+        scrInfo.Visible = true;
+        if (!txtInfo.Buffer.Text.StartsWith("Released:"))
+        {
+          cmdDownload.GrabFocus();
+          cmdChanges.Sensitive = false;
+          txtInfo.Buffer.Text = "Loading Update Information\n\nPlease Wait...";
+          Uri loadPage = new Uri("http://update.realityripple.com/Satellite_Restriction_Tracker/info");
+          if (lblBETA.Visible)
+          {
+            loadPage = new Uri("http://update.realityripple.com/Satellite_Restriction_Tracker/infob");
+          }
+          sckVerInfo.DownloadStringAsync(loadPage);
+        }
+      }
+    }
+
     protected void frmUpdate_FormClosing(object o, EventArgs e)
     {
       if (!Ret)
@@ -114,11 +143,17 @@ namespace RestrictionTrackerGTK
       {
         txtInfo.Buffer.Text = e.Result;
       }
+      cmdChanges.Sensitive = true;
+      cmdChanges.GrabFocus();
     }
 
     private void sckVerInfo_Failure(object o, RestrictionLibrary.CookieAwareWebClient.ErrorEventArgs e)
     {
       txtInfo.Buffer.Text = "Info Request Error\n" + e.Error.Message;
+      cmdChanges.Sensitive = true;
+      cmdChanges.GrabFocus();
     }
+
+
   }
 }
