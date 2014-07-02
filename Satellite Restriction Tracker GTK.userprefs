@@ -1,15 +1,15 @@
 ﻿<Properties GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="RestrictionTrackerGTK/Classes/clsUpdate.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="RestrictionTrackerGTK/Forms/dlgConfig.cs">
     <Files>
-      <File FileName="RestrictionTrackerGTK/Classes/clsUpdate.cs" Line="76" Column="10" />
+      <File FileName="RestrictionTrackerGTK/Forms/dlgConfig.cs" Line="737" Column="5" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="RestrictionTrackerGTK" expanded="True">
-            <Node name="Classes" expanded="True">
-              <Node name="clsUpdate.cs" selected="True" />
+            <Node name="Forms" expanded="True">
+              <Node name="dlgConfig.cs" selected="True" />
             </Node>
           </Node>
         </State>

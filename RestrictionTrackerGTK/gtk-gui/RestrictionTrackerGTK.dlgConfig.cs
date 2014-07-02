@@ -406,7 +406,7 @@ namespace RestrictionTrackerGTK
 			this.chkOverAlert.TooltipMarkup = "Check this box to display an alert when you use too much bandwidth.";
 			this.chkOverAlert.CanFocus = true;
 			this.chkOverAlert.Name = "chkOverAlert";
-			this.chkOverAlert.Label = global::Mono.Unix.Catalog.GetString ("Bandwidth Alert");
+			this.chkOverAlert.Label = global::Mono.Unix.Catalog.GetString ("Usage Alert");
 			this.chkOverAlert.DrawIndicator = true;
 			this.chkOverAlert.UseUnderline = true;
 			this.pnlOverAlert.Add (this.chkOverAlert);
@@ -909,7 +909,7 @@ namespace RestrictionTrackerGTK
 			w99.Add (w102);
 			w98.Add (w99);
 			this.cmdClose.Add (w98);
-			this.AddActionWidget (this.cmdClose, -7);
+			w88.Add (this.cmdClose);
 			global::Gtk.ButtonBox.ButtonBoxChild w106 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w88 [this.cmdClose]));
 			w106.Position = 1;
 			w106.Expand = false;

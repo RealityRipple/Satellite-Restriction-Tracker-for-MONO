@@ -96,11 +96,11 @@
           </packing>
         </child>
         <child>
-          <widget class="Gtk.Frame" id="gbBandwidth">
+          <widget class="Gtk.Frame" id="gbUsage">
             <property name="MemberName" />
             <property name="BorderWidth">3</property>
             <child>
-              <widget class="Gtk.Alignment" id="algnBandwidth">
+              <widget class="Gtk.Alignment" id="algnUsage">
                 <property name="MemberName" />
                 <property name="Xalign">0</property>
                 <property name="Yalign">0</property>
@@ -891,7 +891,7 @@
             <child>
               <widget class="Gtk.Label" id="lblStatus">
                 <property name="MemberName" />
-                <property name="LabelProp" translatable="yes">Bandwidth Levels</property>
+                <property name="LabelProp" translatable="yes">Usage Levels</property>
                 <property name="UseMarkup">True</property>
               </widget>
               <packing>
@@ -2145,7 +2145,7 @@
                         <property name="MemberName" />
                         <property name="Tooltip" translatable="yes">Check this box to display an alert when you use too much bandwidth.</property>
                         <property name="CanFocus">True</property>
-                        <property name="Label" translatable="yes">Bandwidth Alert</property>
+                        <property name="Label" translatable="yes">Usage Alert</property>
                         <property name="DrawIndicator">True</property>
                         <property name="HasLabel">True</property>
                         <property name="UseUnderline">True</property>
@@ -2833,7 +2833,7 @@ URL</property>
             <property name="Icon">stock:gtk-close Button</property>
             <property name="Label" translatable="yes">_Close</property>
             <property name="UseUnderline">True</property>
-            <property name="ResponseId">-7</property>
+            <property name="ResponseId">-1</property>
           </widget>
           <packing>
             <property name="Position">1</property>
@@ -4744,7 +4744,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
             <property name="Icon">stock:gtk-close Button</property>
             <property name="Label" translatable="yes">_Close</property>
             <property name="UseUnderline">True</property>
-            <property name="ResponseId">-7</property>
+            <property name="ResponseId">-1</property>
             <signal name="Clicked" handler="cmdClose_Click" />
           </widget>
           <packing>

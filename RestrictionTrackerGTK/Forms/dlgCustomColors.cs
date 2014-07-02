@@ -234,12 +234,13 @@ namespace RestrictionTrackerGTK
       }
       DisplayAs = useStyle;
       RedrawImages();
-      cmdSave.Sensitive = false;
+      cmdSave.Sensitive = SettingsChanged();
       HasSaved = false;
       this.Show();
       this.GdkWindow.SetDecorations(Gdk.WMDecoration.All | Gdk.WMDecoration.Maximize | Gdk.WMDecoration.Minimize | Gdk.WMDecoration.Resizeh | Gdk.WMDecoration.Menu);
       this.GdkWindow.Functions = Gdk.WMFunction.All | Gdk.WMFunction.Maximize | Gdk.WMFunction.Minimize | Gdk.WMFunction.Resize;
       RedrawImages();
+      this.Response += dlgCustomColors_Response;
     }
 
     void HandleWindowStateEvent(object o, Gtk.WindowStateEventArgs args)
@@ -250,6 +251,37 @@ namespace RestrictionTrackerGTK
         {
           args.Event.Window.Deiconify();
         }
+      }
+    }
+
+    protected void dlgCustomColors_Response(object o, Gtk.ResponseArgs args)
+    {
+      this.Response -= dlgCustomColors_Response;
+      if (cmdSave.Sensitive)
+      {
+        Gtk.ResponseType saveRet = modFunctions.ShowMessageBoxYNC(this, "Some settings have been changed but not saved.\n\nDo you want to save the changes to your color scheme?", "Save Colors?", Gtk.DialogFlags.Modal);
+        if (saveRet == Gtk.ResponseType.Yes)
+        {
+          cmdSave.Click();
+        }
+        else if (saveRet == Gtk.ResponseType.No)
+        {
+          this.Respond(Gtk.ResponseType.No);
+        }
+        else if (saveRet == Gtk.ResponseType.Cancel)
+        {
+          this.Respond(Gtk.ResponseType.None);
+          this.Response += dlgCustomColors_Response;
+          return;
+        }
+      }
+      if (HasSaved)
+      {
+        this.Respond(Gtk.ResponseType.Yes);
+      }
+      else
+      {
+        this.Respond(Gtk.ResponseType.No);
       }
     }
 
@@ -588,14 +620,7 @@ namespace RestrictionTrackerGTK
 
     private void cmdClose_Click(Object sender, EventArgs e)
     {
-      if (HasSaved)
-      {
-        this.Respond(Gtk.ResponseType.Yes);
-      }
-      else
-      {
-        this.Respond(Gtk.ResponseType.No);
-      }
+      this.Respond(Gtk.ResponseType.Close);
     }
 #endregion
 
@@ -603,7 +628,7 @@ namespace RestrictionTrackerGTK
     private void cmdColor_SelectedColor(object sender, EventArgs e)
     {
       RedrawImages();
-      cmdSave.Sensitive = true;
+      cmdSave.Sensitive = SettingsChanged();
     }
 
     [GLib.ConnectBefore]
@@ -788,7 +813,7 @@ namespace RestrictionTrackerGTK
       {
         cmdThis.Sensitive = false;
       }
-      cmdSave.Sensitive = true;
+      cmdSave.Sensitive = SettingsChanged();
       RedrawImages();
     }
 #endregion
@@ -809,7 +834,7 @@ namespace RestrictionTrackerGTK
       if (cmdColor != null)
       {
         SetElColor(ref cmdColor, DefaultColorForElement(cmdColor.Name, useStyle));
-        cmdSave.Sensitive = true;
+        cmdSave.Sensitive = SettingsChanged();
       }
       RedrawImages();
     }
@@ -864,7 +889,7 @@ namespace RestrictionTrackerGTK
         SetElColor(ref pColor, bColor);
       }
       RedrawImages();
-      cmdSave.Sensitive = true;
+      cmdSave.Sensitive = SettingsChanged();
     }
 
     private void mnuAllDefault_Click(System.Object sender, System.EventArgs e)
@@ -903,11 +928,63 @@ namespace RestrictionTrackerGTK
         SetElColor(ref pColor, bColor);
       }
       RedrawImages();
-      cmdSave.Sensitive = true;
+      cmdSave.Sensitive = SettingsChanged();
     }
 #endregion
 
 #region "Functions"
+    private bool SettingsChanged()
+    {
+      if (mySettings.Colors.MainDownA.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdMainDownA.Color).ToArgb())
+        return true;
+      if (mySettings.Colors.MainDownB.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdMainDownB.Color).ToArgb())
+        return true;
+      if (mySettings.Colors.MainDownC.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdMainDownC.Color).ToArgb())
+        return true;
+      if (mySettings.Colors.MainUpA.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdMainUpA.Color).ToArgb())
+        return true;
+      if (mySettings.Colors.MainUpB.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdMainUpB.Color).ToArgb())
+        return true;
+      if (mySettings.Colors.MainUpC.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdMainUpC.Color).ToArgb())
+        return true;
+      if (mySettings.Colors.MainText.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdMainText.Color).ToArgb())
+        return true;
+      if (mySettings.Colors.MainBackground.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdMainBG.Color).ToArgb())
+        return true;
+      if (mySettings.Colors.TrayDownA.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdTrayDownA.Color).ToArgb())
+        return true;
+      if (mySettings.Colors.TrayDownB.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdTrayDownB.Color).ToArgb())
+        return true;
+      if (mySettings.Colors.TrayDownC.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdTrayDownC.Color).ToArgb())
+        return true;
+      if (mySettings.Colors.TrayUpA.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdTrayUpA.Color).ToArgb())
+        return true;
+      if (mySettings.Colors.TrayUpB.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdTrayUpB.Color).ToArgb())
+        return true;
+      if (mySettings.Colors.TrayUpC.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdTrayUpC.Color).ToArgb())
+        return true;
+      if (mySettings.Colors.HistoryDownA.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdHistoryDownA.Color).ToArgb())
+        return true;
+      if (mySettings.Colors.HistoryDownB.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdHistoryDownB.Color).ToArgb())
+        return true;
+      if (mySettings.Colors.HistoryDownC.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdHistoryDownC.Color).ToArgb())
+        return true;
+      if (mySettings.Colors.HistoryDownMax.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdHistoryDownMax.Color).ToArgb())
+        return true;
+      if (mySettings.Colors.HistoryUpA.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdHistoryUpA.Color).ToArgb())
+        return true;
+      if (mySettings.Colors.HistoryUpB.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdHistoryUpB.Color).ToArgb())
+        return true;
+      if (mySettings.Colors.HistoryUpC.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdHistoryUpC.Color).ToArgb())
+        return true;
+      if (mySettings.Colors.HistoryUpMax.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdHistoryUpMax.Color).ToArgb())
+        return true;
+      if (mySettings.Colors.HistoryText.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdHistoryText.Color).ToArgb())
+        return true;
+      if (mySettings.Colors.HistoryBackground.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdHistoryBG.Color).ToArgb())
+        return true;
+      return false;
+    }
     private Gtk.Widget getControlFromName(ref Gtk.Table wIn, string name)
     {
       try

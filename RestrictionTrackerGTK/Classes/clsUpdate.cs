@@ -44,7 +44,7 @@ namespace RestrictionTrackerGTK
 		public void CheckVersion()
     {
       AppSettings myS = new AppSettings();
-      wsVer = new RestrictionLibrary.CookieAwareWebClient();
+      wsVer = new RestrictionLibrary.CookieAwareWebClient(System.Net.HttpVersion.Version11);
       wsVer.DownloadProgressChanged += wsVer_DownloadProgressChanged;
       wsVer.DownloadStringCompleted += wsVer_DownloadStringCompleted;
       wsVer.Proxy = myS.Proxy;
@@ -61,7 +61,7 @@ namespace RestrictionTrackerGTK
     {
       string sVerStr = null;
       AppSettings mySettings = new AppSettings();
-      using (RestrictionLibrary.CookieAwareWebClient wsCheck = new RestrictionLibrary.CookieAwareWebClient())
+      using (RestrictionLibrary.CookieAwareWebClient wsCheck = new RestrictionLibrary.CookieAwareWebClient(System.Net.HttpVersion.Version11))
       {
         wsCheck.Proxy = mySettings.Proxy;
         wsCheck.Timeout = mySettings.Timeout;

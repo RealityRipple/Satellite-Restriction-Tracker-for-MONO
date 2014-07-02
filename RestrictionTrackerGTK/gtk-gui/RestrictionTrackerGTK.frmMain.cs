@@ -10,8 +10,8 @@ namespace RestrictionTrackerGTK
 		private global::Gtk.Button cmdHistory;
 		private global::Gtk.Button cmdConfig;
 		private global::Gtk.Button cmdAbout;
-		private global::Gtk.Frame gbBandwidth;
-		private global::Gtk.Alignment algnBandwidth;
+		private global::Gtk.Frame gbUsage;
+		private global::Gtk.Alignment algnUsage;
 		private global::Gtk.VBox pnlDisplays;
 		private global::Gtk.VBox pnlNothing;
 		private global::Gtk.Label lblNothing;
@@ -212,17 +212,17 @@ namespace RestrictionTrackerGTK
 			w37.Expand = false;
 			w37.Fill = false;
 			// Container child pnlDetails.Gtk.Box+BoxChild
-			this.gbBandwidth = new global::Gtk.Frame ();
-			this.gbBandwidth.Name = "gbBandwidth";
-			this.gbBandwidth.BorderWidth = ((uint)(3));
-			// Container child gbBandwidth.Gtk.Container+ContainerChild
-			this.algnBandwidth = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
-			this.algnBandwidth.Name = "algnBandwidth";
-			this.algnBandwidth.LeftPadding = ((uint)(3));
-			this.algnBandwidth.TopPadding = ((uint)(3));
-			this.algnBandwidth.RightPadding = ((uint)(3));
-			this.algnBandwidth.BottomPadding = ((uint)(3));
-			// Container child algnBandwidth.Gtk.Container+ContainerChild
+			this.gbUsage = new global::Gtk.Frame ();
+			this.gbUsage.Name = "gbUsage";
+			this.gbUsage.BorderWidth = ((uint)(3));
+			// Container child gbUsage.Gtk.Container+ContainerChild
+			this.algnUsage = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+			this.algnUsage.Name = "algnUsage";
+			this.algnUsage.LeftPadding = ((uint)(3));
+			this.algnUsage.TopPadding = ((uint)(3));
+			this.algnUsage.RightPadding = ((uint)(3));
+			this.algnUsage.BottomPadding = ((uint)(3));
+			// Container child algnUsage.Gtk.Container+ContainerChild
 			this.pnlDisplays = new global::Gtk.VBox ();
 			this.pnlDisplays.Name = "pnlDisplays";
 			this.pnlDisplays.Spacing = 6;
@@ -802,15 +802,15 @@ namespace RestrictionTrackerGTK
 			this.pnlDisplays.Add (this.pnlRural);
 			global::Gtk.Box.BoxChild w103 = ((global::Gtk.Box.BoxChild)(this.pnlDisplays [this.pnlRural]));
 			w103.Position = 3;
-			this.algnBandwidth.Add (this.pnlDisplays);
-			this.gbBandwidth.Add (this.algnBandwidth);
+			this.algnUsage.Add (this.pnlDisplays);
+			this.gbUsage.Add (this.algnUsage);
 			this.lblStatus = new global::Gtk.Label ();
 			this.lblStatus.Name = "lblStatus";
-			this.lblStatus.LabelProp = global::Mono.Unix.Catalog.GetString ("Bandwidth Levels");
+			this.lblStatus.LabelProp = global::Mono.Unix.Catalog.GetString ("Usage Levels");
 			this.lblStatus.UseMarkup = true;
-			this.gbBandwidth.LabelWidget = this.lblStatus;
-			this.pnlDetails.Add (this.gbBandwidth);
-			global::Gtk.Box.BoxChild w106 = ((global::Gtk.Box.BoxChild)(this.pnlDetails [this.gbBandwidth]));
+			this.gbUsage.LabelWidget = this.lblStatus;
+			this.pnlDetails.Add (this.gbUsage);
+			global::Gtk.Box.BoxChild w106 = ((global::Gtk.Box.BoxChild)(this.pnlDetails [this.gbUsage]));
 			w106.Position = 1;
 			w106.Padding = ((uint)(3));
 			// Container child pnlDetails.Gtk.Box+BoxChild

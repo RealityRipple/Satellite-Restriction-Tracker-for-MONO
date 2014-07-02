@@ -5,7 +5,7 @@ namespace RestrictionTrackerGTK
   public partial class dlgConfig : Gtk.Dialog
   {
     private RestrictionLibrary.remoteRestrictionTracker remoteTest;
-    private bool bSaved, bAccount, bLoaded, bToSave, bRemoteAcct;
+    private bool bSaved, bAccount, bLoaded, bHardChange, bRemoteAcct;
     private AppSettings mySettings;
     private uint pChecker;
     private string checkKey;
@@ -257,7 +257,7 @@ namespace RestrictionTrackerGTK
       {
         bLoaded = true;
       }
-
+      this.Response += dlgConfig_Response;
     }
 
     void HandleWindowStateEvent(object o, Gtk.WindowStateEventArgs args)
@@ -289,8 +289,9 @@ namespace RestrictionTrackerGTK
       return false;
     }
 
-    protected void frmConfig_FormClosing(object sender, EventArgs e)
+    protected void dlgConfig_Response(object o, Gtk.ResponseArgs args)
     {
+      this.Response -= dlgConfig_Response;
       if (bSaved)
       {
         if (bAccount)
@@ -300,6 +301,27 @@ namespace RestrictionTrackerGTK
         else
         {
           this.Respond(Gtk.ResponseType.Ok);
+        }
+      }
+      else if (cmdSave.Sensitive)
+      {
+        Gtk.ResponseType saveRet = modFunctions.ShowMessageBoxYNC(this, "Some settings have been changed but not saved.\n\nDo you want to save the changes to your configuration?", "Save Configuration?", Gtk.DialogFlags.Modal);
+        if (saveRet == Gtk.ResponseType.Yes)
+        {
+          cmdSave.Click();
+          if (bAccount)
+            this.Respond(Gtk.ResponseType.Yes);
+          else
+            this.Respond(Gtk.ResponseType.No);
+        }
+        else if (saveRet == Gtk.ResponseType.No)
+        {
+          this.Respond(Gtk.ResponseType.No);
+        }
+      else if (saveRet == Gtk.ResponseType.Cancel)
+        {
+          this.Respond(Gtk.ResponseType.None);
+          this.Response += dlgConfig_Response;
         }
       }
       else
@@ -331,7 +353,7 @@ namespace RestrictionTrackerGTK
     {
       if (bLoaded)
       {
-        cmdSave.Sensitive = true;
+        cmdSave.Sensitive = SettingsChanged();
       }
     }
 
@@ -341,8 +363,15 @@ namespace RestrictionTrackerGTK
       {
         return;
       }
+      if (pChecker != 0)
+      {
+        bRemoteAcct = CheckState;
+        GLib.Source.Remove(pChecker);
+        pChecker = 0;
+      }
       if (remoteTest != null)
       {
+        bRemoteAcct = CheckState;
         remoteTest.Dispose();
         remoteTest = null;
       }
@@ -488,8 +517,15 @@ namespace RestrictionTrackerGTK
       {
         return;
       }
+      if (pChecker != 0)
+      {
+        bRemoteAcct = CheckState;
+        GLib.Source.Remove(pChecker);
+        pChecker = 0;
+      }
       if (remoteTest != null)
       {
+        bRemoteAcct = CheckState;
         remoteTest.Dispose();
         remoteTest = null;
       }
@@ -594,6 +630,11 @@ namespace RestrictionTrackerGTK
     private void Main_RemoteTestFailure(object sender, EventArgs ea)
     {
       RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs e = (RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs)ea;
+      bool bToSave = true;
+      if (!CheckState)
+        bToSave = false;
+      if (SettingsChanged())
+        bToSave = false;
       bRemoteAcct = false;
       pctKeyState.PixbufAnimation = null;
       pctKeyState.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.error.png");
@@ -621,7 +662,16 @@ namespace RestrictionTrackerGTK
         case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.Network:
           sErr = "There was a connection related error. Please check your Internet connection. (" + e.Details + ")";
           break;
-
+      }
+      if (pChecker != 0)
+      {
+        GLib.Source.Remove(pChecker);
+        pChecker = 0;
+      }
+      if (remoteTest != null)
+      {
+        remoteTest.Dispose();
+        remoteTest = null;
       }
       pctKeyState.TooltipText = sErr;
       DoCheck();
@@ -635,11 +685,26 @@ namespace RestrictionTrackerGTK
 
     private void Main_RemoteTestOKKey(object sender, EventArgs e)
     {
+      bool bToSave = true;
+      if (CheckState)
+        bToSave = false;
+      if (SettingsChanged())
+        bToSave = true;
       bRemoteAcct = true;
       pctKeyState.PixbufAnimation = null;
       pctKeyState.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.ok.png");
       pctKeyState.TooltipText = "Your key has been verified!";
       lblPurchaseKey.Markup = "<a href=\"http://wb.realityripple.com?wbEMail=" + txtAccount.Text + "&amp;wbKey=" + txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text + "&amp;wbSubmit=\">" + LINK_PANEL + "</a>";
+      if (pChecker != 0)
+      {
+        GLib.Source.Remove(pChecker);
+        pChecker = 0;
+      }
+      if (remoteTest != null)
+      {
+        remoteTest.Dispose();
+        remoteTest = null;
+      }
       lblPurchaseKey.TooltipText = LINK_PANEL_TT;
       DoCheck();
       cmdSave.Sensitive = bToSave;
@@ -651,14 +716,14 @@ namespace RestrictionTrackerGTK
     {
       KeyCheck();
     }
-
+    bool CheckState;
     private void KeyCheck()
     {
       pctKeyState.PixbufAnimation = new Gdk.PixbufAnimation(null, "RestrictionTrackerGTK.Resources.throbber.gif");
+      CheckState = bRemoteAcct;
       bRemoteAcct = false;
       pctKeyState.TooltipText = "Verifying your key...";
       string sKeyTest = txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text;
-      bToSave = true;
       cmdSave.Sensitive = false;
       if (pChecker != 0)
       {
@@ -690,6 +755,7 @@ namespace RestrictionTrackerGTK
       if (ret == Gtk.ResponseType.Yes)
       {
         mySettings.AlertStyle = MainClass.fAlertSelection.AlertStyle;
+        bHardChange = true;
         cmdSave.Sensitive = true;
       }
       MainClass.fAlertSelection.Destroy();
@@ -709,11 +775,15 @@ namespace RestrictionTrackerGTK
       MainClass.fCustomColors.TransientFor = this;
       MainClass.fCustomColors.Modal = true;
       MainClass.fCustomColors.WindowPosition = Gtk.WindowPosition.CenterOnParent;
-      Gtk.ResponseType ret = (Gtk.ResponseType)MainClass.fCustomColors.Run();
-
-      if (ret == Gtk.ResponseType.Yes)
+      Gtk.ResponseType dRet;
+      do
+      {
+        dRet = (Gtk.ResponseType)MainClass.fCustomColors.Run();
+      } while (dRet == Gtk.ResponseType.None);
+      if (dRet == Gtk.ResponseType.Yes)
       {
         mySettings = MainClass.fCustomColors.mySettings;
+        bHardChange = true;
         cmdSave.Sensitive = true;
       }
       MainClass.fCustomColors.Destroy();
@@ -955,29 +1025,111 @@ namespace RestrictionTrackerGTK
         }
       }
       mySettings.Save();
+      bHardChange = false;
       bSaved = true;
       cmdSave.Sensitive = false;
     }
 
     protected void cmdClose_Click(object sender, EventArgs e)
     {
-      if (bSaved)
+      this.Respond(Gtk.ResponseType.Close);
+    }
+#endregion 
+
+    private bool SettingsChanged()
+    {
+      if (bHardChange)
+        return true;
+      if (String.Compare(mySettings.Account, txtAccount.Text, true) != 0)
+        return true;
+      if (mySettings.PassCrypt != RestrictionLibrary.StoredPassword.EncryptApp(txtPassword.Text))
+        return true;
+      string sKey = txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text;
+      if (string.Compare(mySettings.RemoteKey, sKey, true) != 0)
+        return true;
+      if ((int) mySettings.Interval - txtInterval.Value != 0)
+        return true;
+      if ((int) mySettings.Accuracy - txtAccuracy.Value != 0)
+        return true;
+      if ((int) mySettings.Timeout - txtTimeout.Value != 0)
+        return true;
+      if (mySettings.ScaleScreen != chkScaleScreen.Active)
+        return true;
+      if (string.Compare(mySettings.HistoryDir, txtHistoryDir.CurrentFolder, true) != 0)
+        return true;
+      if (mySettings.HistoryInversion != chkInvert.Active)
+        return true;
+      if (chkOverAlert.Active ^ (mySettings.Overuse > 0))
+        return true;
+      if (chkOverAlert.Active)
       {
-        if (bAccount)
-        {
-          this.Respond(Gtk.ResponseType.Yes);
-        }
-        else
-        {
-          this.Respond(Gtk.ResponseType.Ok);
-        }
+        if ((int)mySettings.Overuse - txtOverSize.Value != 0)
+          return true;
+      }
+      if ((int) mySettings.Overtime - txtOverTime.Value != 0)
+        return true;
+      if (mySettings.BetaCheck != chkBeta.Active)
+        return true;
+
+      if (mySettings.Proxy == null)
+      {
+        if (cmbProxyType.Active != 0)
+          return true;
+      }
+      else if (mySettings.Proxy == System.Net.WebRequest.DefaultWebProxy)
+      {
+        if (cmbProxyType.Active != 1)
+          return true;
       }
       else
       {
-        this.Respond(Gtk.ResponseType.No);
+          if (cmbProxyType.Active == 0)
+            return true;
+          if (cmbProxyType.Active == 1)
+            return true;
+          Uri addr = ((System.Net.WebProxy)mySettings.Proxy).Address;
+          if (cmbProxyType.Active == 2)
+          {
+            if (String.Compare(txtProxyAddress.Text, addr.Host) != 0)
+              return true;
+          if ((int) txtProxyPort.Value - addr.Port != 0)
+              return true;
+          }
+          if (cmbProxyType.Active == 3)
+          {
+            if (string.Compare(txtProxyAddress.Text, addr.OriginalString) != 0)
+              return true;
+          }
+          if (mySettings.Proxy.Credentials == null)
+          {
+            if (!string.IsNullOrEmpty(txtProxyUser.Text))
+              return true;
+            if (!string.IsNullOrEmpty(txtProxyPassword.Text))
+              return true;
+            if (!string.IsNullOrEmpty(txtProxyDomain.Text))
+              return true;
+          }
+          else
+          {
+            if (string.IsNullOrEmpty(txtProxyUser.Text) && string.IsNullOrEmpty(txtProxyPassword.Text) && string.IsNullOrEmpty(txtProxyDomain.Text))
+              return true;
+            else
+            {
+              if (string.IsNullOrEmpty(txtProxyDomain.Text))
+              {
+                if (mySettings.Proxy.Credentials != new System.Net.NetworkCredential(txtProxyUser.Text, txtProxyPassword.Text))
+                  return true;
+              }
+              else
+              {
+                if (mySettings.Proxy.Credentials != new System.Net.NetworkCredential(txtProxyUser.Text, txtProxyPassword.Text, txtProxyDomain.Text))
+                  return true;
+              }
+            }
+          }
       }
+      return false;
     }
-#endregion 
 
     private void DoCheck()
     {

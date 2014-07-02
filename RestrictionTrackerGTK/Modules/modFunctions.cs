@@ -2460,6 +2460,25 @@ namespace RestrictionTrackerGTK
       return ret;
     }
 
+    public static Gtk.ResponseType ShowMessageBoxYNC(Gtk.Window parent, string text, string title, Gtk.DialogFlags flags)
+    {
+      Gtk.MessageDialog dlg = new Gtk.MessageDialog(parent, flags, Gtk.MessageType.Question, Gtk.ButtonsType.None, text);
+      dlg.AddButton(Gtk.Stock.Yes, Gtk.ResponseType.Yes);
+      dlg.AddButton(Gtk.Stock.No, Gtk.ResponseType.No);
+      dlg.AddButton(Gtk.Stock.Cancel, Gtk.ResponseType.Cancel);
+      if (String.IsNullOrEmpty(title))
+      {
+        dlg.Title = modFunctions.ProductName();
+      }
+      else
+      {
+        dlg.Title = title;
+      }
+      Gtk.ResponseType ret = (Gtk.ResponseType)dlg.Run();
+      dlg.Destroy();
+      return ret;
+    }
+
     public static Bitmap GetScreenRect(Rectangle rectIn)
     {
       Gdk.Window window = Gdk.Global.DefaultRootWindow;

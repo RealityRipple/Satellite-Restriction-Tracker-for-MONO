@@ -1082,7 +1082,7 @@ namespace RestrictionTrackerGTK
 			w97.Add (w100);
 			w96.Add (w97);
 			this.cmdClose.Add (w96);
-			this.AddActionWidget (this.cmdClose, -7);
+			w86.Add (this.cmdClose);
 			global::Gtk.ButtonBox.ButtonBoxChild w104 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w86 [this.cmdClose]));
 			w104.Position = 1;
 			w104.Expand = false;

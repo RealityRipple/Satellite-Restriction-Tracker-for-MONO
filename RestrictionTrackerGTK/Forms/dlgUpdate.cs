@@ -24,7 +24,7 @@ namespace RestrictionTrackerGTK
       this.GdkWindow.SetDecorations(Gdk.WMDecoration.All | Gdk.WMDecoration.Maximize | Gdk.WMDecoration.Minimize | Gdk.WMDecoration.Resizeh | Gdk.WMDecoration.Menu);
       this.GdkWindow.Functions = Gdk.WMFunction.All | Gdk.WMFunction.Maximize | Gdk.WMFunction.Minimize | Gdk.WMFunction.Resize;
       this.WindowStateEvent += HandleWindowStateEvent;
-      sckVerInfo = new RestrictionLibrary.CookieAwareWebClient();
+      sckVerInfo = new RestrictionLibrary.CookieAwareWebClient(System.Net.HttpVersion.Version11);
       sckVerInfo.DownloadStringCompleted += sckVerInfo_DownloadStringCompleted;
       sckVerInfo.Failure += sckVerInfo_Failure;
       Ret = false;

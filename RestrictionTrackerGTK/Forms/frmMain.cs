@@ -100,7 +100,7 @@ namespace RestrictionTrackerGTK
     }
     private const string sWB = "https://myaccount.{0}/wbisp/{2}/{1}.jsp";
     private const string sRP = "https://{0}.ruralportal.net/us/{1}.do";
-    private const string sDISPLAY = "Bandwidth Levels (%lt)";
+    private const string sDISPLAY = "Usage Levels (%lt)";
     private const string sDISPLAY_LT_NONE = "No History";
     private const string sDISPLAY_LT_BUSY = "Please Wait";
     private const string sDISPLAY_TT_NEXT = "Next Update in %t.";
@@ -144,135 +144,14 @@ namespace RestrictionTrackerGTK
     private Gtk.MenuItem mnuGraphColors;
 
     #region "Server Type Determination"
-    private class DetermineType
+
+    private class DetermineTypeOffline
     {
-      private class URLChecker
-      {
-        public class CheckEventArgs : EventArgs
-        {
-          public bool Result;
-          public CheckEventArgs(bool bRet)
-          {
-            Result = bRet;
-          }
-        }
-        public event CheckResultEventHandler CheckResult;
-        public delegate void CheckResultEventHandler(object sender,CheckEventArgs e);
-        private System.Net.WebRequest wRequest;
-        private string sAddr;
-        public URLChecker()
-        {
-          wRequest = null;
-          sAddr = string.Empty;
-        }
-        public void CheckURLAsync(object sender, string HostAddress, int iTimeout, System.Net.IWebProxy pProxy)
-        {
-          sAddr = HostAddress;
-          if (HostAddress.IndexOf("://") < 0)
-          {
-            HostAddress = "http://" + HostAddress;
-          }
-          wRequest = System.Net.WebRequest.Create(HostAddress);
-          wRequest.Timeout = iTimeout;
-          wRequest.Proxy = pProxy;
-          try
-          {
-            wRequest.BeginGetResponse(new AsyncCallback(URLCheckResponse), sender);
-          }
-          catch (Exception)
-          {
-            if (CheckResult != null)
-            {
-              CheckResult(sender, new CheckEventArgs(false));
-            }
-          }
-        }
-        private void URLCheckResponse(IAsyncResult ar)
-        {
-          try
-          {
-            System.Net.WebResponse wResponse = wRequest.EndGetResponse(ar);
-            if (wResponse.ResponseUri.AbsoluteUri.ToString().IndexOf(sAddr) > -1)
-            {
-              string sData = null;
-              using (System.IO.Stream wData = wResponse.GetResponseStream())
-              {
-                using (System.IO.StreamReader readStream = new System.IO.StreamReader(wData, System.Text.Encoding.GetEncoding("latin1")))
-                {
-                  sData = readStream.ReadToEnd();
-                }
-              }
-              if (string.IsNullOrEmpty(sData))
-              {
-                if (CheckResult != null)
-                {
-                  CheckResult(ar.AsyncState, new CheckEventArgs(false));
-                }
-              }
-              else if (sData.ToLower().Contains("<meta http-equiv=\"refresh\""))
-                {
-                  if (CheckResult != null)
-                  {
-                    CheckResult(ar.AsyncState, new CheckEventArgs(false));
-                  }
-                }
-                else
-                {
-                  if (CheckResult != null)
-                  {
-                    CheckResult(ar.AsyncState, new CheckEventArgs(true));
-                  }
-                }
-            }
-            else
-            {
-              if (CheckResult != null)
-              {
-                CheckResult(ar.AsyncState, new CheckEventArgs(false));
-              }
-            }
-            wResponse.Close();
-            wResponse = null;
-          }
-          catch (Exception)
-          {
-            if (CheckResult != null)
-            {
-              CheckResult(ar.AsyncState, new CheckEventArgs(false));
-            }
-          }
-        }
-      }
-      private URLChecker withEventsField_uChecker;
-      private URLChecker uChecker
-      {
-        get
-        {
-          return withEventsField_uChecker;
-        }
-        set
-        {
-          if (withEventsField_uChecker != null)
-          {
-            withEventsField_uChecker.CheckResult -= uChecker_CheckResult;
-          }
-          withEventsField_uChecker = value;
-          if (withEventsField_uChecker != null)
-          {
-            withEventsField_uChecker.CheckResult += uChecker_CheckResult;
-          }
-        }
-      }
       public event TypeDeterminedEventHandler TypeDetermined;
       public delegate void TypeDeterminedEventHandler(object Sender,TypeDeterminedEventArgs e);
-      private string sProvider;
-      private int iTimeout;
-      private System.Net.IWebProxy pProxy;
-      public DetermineType(string Provider, object Sender, int Timeout, System.Net.IWebProxy Proxy)
+      public DetermineTypeOffline(string Provider, object Sender)
       {
         System.Threading.Thread.Sleep(0);
-        iTimeout = Timeout;
-        pProxy = Proxy;
         ParamaterizedInvoker testCallback = new ParamaterizedInvoker(BeginTest);
         object[] oparams = { Provider, Sender };
         object param = (object)oparams;
@@ -302,15 +181,7 @@ namespace RestrictionTrackerGTK
         }
         else
         {
-          if (Provider.Contains("."))
-          {
-            Provider = Provider.Substring(0, Provider.LastIndexOf("."));
-          }
-          sProvider = Provider + ".ruralportal.net";
-          uChecker = new URLChecker();
-          object[] oparams = { "INIT", Sender };
-          object param = (object)oparams;
-          uChecker.CheckURLAsync(param, "wildblue.com", iTimeout, pProxy);
+          OfflineCheck(state);
         }
       }
       private void OfflineStats(ref float rpP, ref float exP, ref float wbP)
@@ -424,99 +295,6 @@ namespace RestrictionTrackerGTK
               }
         }
       }
-      private void uChecker_CheckResult(object sender, URLChecker.CheckEventArgs e)
-      {
-        object[] Source = (object[])sender;
-        string sSource = Source[0].ToString();
-        switch (sSource)
-        {
-          case "INIT":
-            if (e.Result)
-            {
-              object[] oparams = { "REQ", Source[1] };
-              object param = (object)oparams;
-              uChecker.CheckURLAsync(param, sProvider, iTimeout, pProxy);
-            }
-            else
-            {
-              OfflineCheck(Source[1]);
-            }
-            break;
-          default:
-            if (e.Result)
-            {
-              if (TypeDetermined != null)
-              {
-                TypeDetermined(Source[1], new TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE));
-              }
-            }
-            else
-            {
-              float rpP = 0;
-              float exP = 0;
-              float wbP = 0;
-              OfflineStats(ref rpP, ref exP, ref wbP);
-              if (rpP == 0 & exP == 0 & wbP == 0)
-              {
-                if (TypeDetermined != null)
-                {
-                  TypeDetermined(Source[1], new TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes.WildBlue_LEGACY));
-                }
-              }
-              else
-              {
-                if (rpP > exP & rpP > wbP)
-                {
-                  if (TypeDetermined != null)
-                  {
-                    TypeDetermined(Source[1], new TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes.WildBlue_EXEDE));
-                  }
-                }
-                else if (exP > rpP & exP > wbP)
-                  {
-                    if (TypeDetermined != null)
-                    {
-                      TypeDetermined(Source[1], new TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes.WildBlue_EXEDE));
-                    }
-                  }
-                  else if (wbP > rpP & wbP > exP)
-                    {
-                      if (TypeDetermined != null)
-                      {
-                        TypeDetermined(Source[1], new TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes.WildBlue_LEGACY));
-                      }
-                    }
-                    else
-                    {
-                      if (rpP > wbP & exP > wbP & rpP == exP)
-                      {
-                        if (TypeDetermined != null)
-                        {
-                          TypeDetermined(Source[1], new TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes.WildBlue_EXEDE));
-                        }
-                      }
-                      else
-                      {
-                        if (TypeDetermined != null)
-                        {
-                          TypeDetermined(Source[1], new TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes.WildBlue_LEGACY));
-                        }
-                        //Stop
-                      }
-                    }
-              }
-            }
-            break;
-        }
-      }
-    }
-    private class TypeDeterminedEventArgs : EventArgs
-    {
-      public localRestrictionTracker.SatHostTypes HostType;
-      public TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes Type)
-      {
-        HostType = Type;
-      }
     }
     private DetermineType withEventsField_TypeDetermination;
     private DetermineType TypeDetermination
@@ -538,11 +316,84 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-    private void TypeDetermination_TypeDetermined(object Sender, TypeDeterminedEventArgs e)
+    private DetermineTypeOffline withEventsField_TypeDeterminationOffline;
+    private DetermineTypeOffline TypeDeterminationOffline
+    {
+      get
+      {
+        return withEventsField_TypeDeterminationOffline;
+      }
+      set
+      {
+        if (withEventsField_TypeDeterminationOffline != null)
+        {
+          withEventsField_TypeDeterminationOffline.TypeDetermined -= TypeDeterminationOffline_TypeDetermined;
+        }
+        withEventsField_TypeDeterminationOffline = value;
+        if (withEventsField_TypeDeterminationOffline != null)
+        {
+          withEventsField_TypeDeterminationOffline.TypeDetermined += TypeDeterminationOffline_TypeDetermined;
+        }
+      }
+    }
+    private void TypeDetermination_TypeDetermined(object Sender, DetermineType.TypeDeterminedEventArgs e)
     {
       Gtk.Application.Invoke(Sender, e, Main_TypeDetermined);
     }
     private void Main_TypeDetermined(object sender, EventArgs ea)
+    {
+      DetermineType.TypeDeterminedEventArgs e = (DetermineType.TypeDeterminedEventArgs)ea;
+      NextGrabTick = modFunctions.TickCount() + (mySettings.Timeout * 1000);
+      if (e.HostGroup == DetermineType.TypeDeterminedEventArgs.SatHostGroup.Other)
+      {
+        if (tmrIcon != 0)
+        {
+          GLib.Source.Remove(tmrIcon);
+          tmrIcon = 0;
+        }
+        TypeDeterminationOffline = new DetermineTypeOffline(sProvider, sender);
+      }
+      else
+      {
+        if (e.HostGroup == DetermineType.TypeDeterminedEventArgs.SatHostGroup.DishNet)
+          mySettings.AccountType = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
+        else if (e.HostGroup == DetermineType.TypeDeterminedEventArgs.SatHostGroup.WildBlue)
+          mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
+        else if (e.HostGroup == DetermineType.TypeDeterminedEventArgs.SatHostGroup.RuralPortal)
+            mySettings.AccountType = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
+        if (mySettings.Colors.HistoryDownA.A == 0)
+        {
+          SetDefaultColors();
+        }
+        mySettings.Save();
+        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Current Connection...", false);
+        if (localData != null)
+        {
+          localDataEvent(false);
+          localData.Dispose();
+          localData = null;
+        }
+        localData = new localRestrictionTracker(modFunctions.AppData);
+        localDataEvent(true);
+        MethodInvoker connectInvoker = new MethodInvoker(localData.Connect);
+        connectInvoker.BeginInvoke(null, null);
+        
+      }
+    }
+    private class TypeDeterminedEventArgs : EventArgs
+    {
+      public localRestrictionTracker.SatHostTypes HostType;
+      public TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes Type)
+      {
+        HostType = Type;
+      }
+    }
+
+    private void TypeDeterminationOffline_TypeDetermined(object Sender, TypeDeterminedEventArgs e)
+    {
+      Gtk.Application.Invoke(Sender, e, Main_TypeDeterminedOffline);
+    }
+    private void Main_TypeDeterminedOffline(object sender, EventArgs ea)
     {
       TypeDeterminedEventArgs e = (TypeDeterminedEventArgs)ea;
       NextGrabTick = modFunctions.TickCount() + (mySettings.Timeout * 1000);
@@ -553,32 +404,8 @@ namespace RestrictionTrackerGTK
           GLib.Source.Remove(tmrIcon);
           tmrIcon = 0;
         }
-        if (sender.GetType().IsArray)
-        {
-          if (localData != null)
-          {
-            localDataEvent(false);
-            localData.Dispose();
-            localData = null;
-          }
-          localData = new localRestrictionTracker(modFunctions.AppData);
-          localDataEvent(true);
-          MethodInvoker connectInvoker = localData.Connect;
-          connectInvoker.BeginInvoke(null, connectInvoker);
-        }
-        else
-        {
-          switch ((string)sender)
-          {
-            case "LOAD":
-              DisplayUsage(false, true);
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Please connect to the Internet.", true);
-              break;
-            default:
-              DisplayUsage(true, false);
-              break;
-          }
-        }
+        DisplayUsage(false, true);
+        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Please connect to the Internet.", true);
       }
       else
       {
@@ -588,42 +415,17 @@ namespace RestrictionTrackerGTK
           SetDefaultColors();
         }
         mySettings.Save();
-        if (sender.GetType().IsArray)
+        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing First Connection...", false);
+        if (localData != null)
         {
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Current Connection...", false);
-          if (localData != null)
-          {
-            localDataEvent(false);
-            localData.Dispose();
-            localData = null;
-          }
-          localData = new localRestrictionTracker(modFunctions.AppData);
-          localDataEvent(true);
-          MethodInvoker connectInvoker = new MethodInvoker(localData.Connect);
-          connectInvoker.BeginInvoke(null, null);
+          localDataEvent(false);
+          localData.Dispose();
+          localData = null;
         }
-        else
-        {
-          switch ((string)sender)
-          {
-            case "LOAD":
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing First Connection...", false);
-              if (localData != null)
-              {
-                localDataEvent(false);
-                localData.Dispose();
-                localData = null;
-              }
-              localData = new localRestrictionTracker(modFunctions.AppData);
-              localDataEvent(true);
-              MethodInvoker connectInvoker = new MethodInvoker(localData.Connect);
-              connectInvoker.BeginInvoke(null, null);
-              break;
-            default:
-              DisplayUsage(true, false);
-              break;
-          }
-        }
+        localData = new localRestrictionTracker(modFunctions.AppData);
+        localDataEvent(true);
+        MethodInvoker connectInvoker = new MethodInvoker(localData.Connect);
+        connectInvoker.BeginInvoke(null, null);
       }
     }
     #endregion
@@ -1349,6 +1151,8 @@ namespace RestrictionTrackerGTK
         SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Reloaded Connection...", false);
         GetUsage();
       }
+      if (ClosingTime)
+        return;
       Main_SizeChanged(null, null);
     }
     private void EnableProgressIcon()
@@ -1389,11 +1193,10 @@ namespace RestrictionTrackerGTK
       if (mySettings.AccountType == localRestrictionTracker.SatHostTypes.Other)
       {
         SetStatusText("Analyzing Account", "Determining your account type...", false);
-        TypeDetermination = new DetermineType(sProvider, (object)"Load", mySettings.Timeout, mySettings.Proxy);
+        TypeDetermination = new DetermineType(sProvider, mySettings.Timeout, mySettings.Proxy);
       }
       else
       {
-        //SetStatusText("Please Wait", "Preparing your connection...", false);
         if (tmrIcon != 0)
         {
           GLib.Source.Remove(tmrIcon);
@@ -1715,6 +1518,9 @@ namespace RestrictionTrackerGTK
       localRestrictionTracker.ConnectionFailureEventArgs e = (localRestrictionTracker.ConnectionFailureEventArgs)ea;
       switch (e.Type)
       {
+        case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.LoginIssue:
+          SetStatusText(modDB.LOG_GetLast().ToString("g"), e.Message, true);
+          return;
         case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.ConnectionTimeout:
           SetStatusText(modDB.LOG_GetLast().ToString("g"), "Connection Timed Out!", true);
           DisplayUsage(false, false);
@@ -1749,7 +1555,7 @@ namespace RestrictionTrackerGTK
           break;
         case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.UnknownAccountType:
           SetStatusText("Analyzing Account", "Determining your account type...", false);
-          TypeDetermination = new DetermineType(sProvider, "LOAD", mySettings.Timeout, mySettings.Proxy);
+          TypeDetermination = new DetermineType(sProvider, mySettings.Timeout, mySettings.Proxy);
           break;
       }
       if (localData != null)
@@ -2321,7 +2127,7 @@ namespace RestrictionTrackerGTK
       }
       tmrChanges = new System.Threading.Timer(DisplayChangeInterval, (object)"RURAL", 75, System.Threading.Timeout.Infinite);
       pctRural.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctRural.Allocation.Size, lDown, lDownLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-      sTTT = "Satellite Bandwidth Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
+      sTTT = "Satellite Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
         "Last Updated " + sLastUpdate + "\n" +
         "Using " + MBorGB(lDown) + " of " + MBorGB(lDownLim) + " (" + AccuratePercent((double)lDown / lDownLim) + ")";
       if (lDownLim > lDown)
@@ -2444,7 +2250,7 @@ namespace RestrictionTrackerGTK
         {
           opFree = "";
         }
-      sTTT = "Satellite Bandwidth Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
+      sTTT = "Satellite Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
         "Last Updated " + sLastUpdate + "\n" +
         "Anytime: " + MBorGB(lDown) + " (" + AccuratePercent((double)lDown / lDownLim) + ")" + atFree + "\n" +
         "Off-Peak: " + MBorGB(lUp) + " (" + AccuratePercent((double)lUp / lUpLim) + ")" + opFree;
@@ -2560,7 +2366,7 @@ namespace RestrictionTrackerGTK
         {
           sFree = "";
         }
-      sTTT = "Satellite Bandwidth Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
+      sTTT = "Satellite Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
         "Last Updated " + sLastUpdate + "\n" +
         "Download: " + MBorGB(lDown) + "\n" +
         "Upload: " + MBorGB(lUp) + "\n" +
@@ -2715,7 +2521,7 @@ namespace RestrictionTrackerGTK
         {
           uFree = "";
         }
-      sTTT = "Satellite Bandwidth Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
+      sTTT = "Satellite Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
         "Last Updated " + sLastUpdate + "\n" +
         "Download: " + MBorGB(lDown) + " (" + AccuratePercent((double)lDown / lDownLim) + ")" + dFree + "\n" +
         "Upload: " + MBorGB(lUp) + " (" + AccuratePercent((double)lUp / lUpLim) + ")" + uFree;
@@ -2947,7 +2753,10 @@ namespace RestrictionTrackerGTK
       MainClass.fConfig = new dlgConfig();
       MainClass.fConfig.TransientFor = this;
       MainClass.fConfig.Modal = true;
-      dRet = (Gtk.ResponseType)MainClass.fConfig.Run();
+      do
+      {
+        dRet = (Gtk.ResponseType)MainClass.fConfig.Run();
+      } while (dRet == ResponseType.None);
       MainClass.fConfig.Hide();
       MainClass.fConfig.Destroy();
       MainClass.fConfig = null;
@@ -3093,7 +2902,10 @@ namespace RestrictionTrackerGTK
       MainClass.fCustomColors = new dlgCustomColors(mySettings);
       MainClass.fCustomColors.TransientFor = this;
       MainClass.fCustomColors.Modal = true;
-      dRet = (Gtk.ResponseType)MainClass.fCustomColors.Run();
+      do
+      {
+        dRet = (Gtk.ResponseType)MainClass.fCustomColors.Run();
+      } while (dRet == ResponseType.None);
       if (dRet == ResponseType.Yes)
       {
         mySettings = MainClass.fCustomColors.mySettings;

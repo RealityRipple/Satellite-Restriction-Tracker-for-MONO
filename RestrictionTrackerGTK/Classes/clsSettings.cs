@@ -1010,7 +1010,9 @@ namespace RestrictionTrackerGTK
           if (string.Compare(pType.ToLower(), "ip") == 0)
           {
             string pIP = myProxySettings[1];
-            int pPort = int.Parse(myProxySettings[2].Replace("/", ""));
+            int pPort = 80;
+            if (myProxySettings.Length > 2)
+              pPort = int.Parse(myProxySettings[2].Replace("/", ""));
             if (myProxySettings.Length > 3)
             {
               string pUser = myProxySettings[3];
@@ -1035,16 +1037,24 @@ namespace RestrictionTrackerGTK
             string pURL = myProxySettings[1];
             if (myProxySettings.Length > 2)
             {
-              string pUser = myProxySettings[2];
-              string pPass = myProxySettings[3];
-              if (myProxySettings.Length > 4)
+              if (myProxySettings.Length > 3)
               {
-                string pDomain = myProxySettings[4];
-                return new System.Net.WebProxy(pURL, false, null, new System.Net.NetworkCredential(pUser, pPass, pDomain));
+                string pUser = myProxySettings[2];
+                string pPass = myProxySettings[3];
+                if (myProxySettings.Length > 4)
+                {
+                  string pDomain = myProxySettings[4];
+                  return new System.Net.WebProxy(pURL, false, null, new System.Net.NetworkCredential(pUser, pPass, pDomain));
+                }
+                else
+                {
+                  return new System.Net.WebProxy(pURL, false, null, new System.Net.NetworkCredential(pUser, pPass));
+                }
               }
               else
               {
-                return new System.Net.WebProxy(pURL, false, null, new System.Net.NetworkCredential(pUser, pPass));
+                int pPort = int.Parse(myProxySettings[2].Replace("/", ""));
+                return new System.Net.WebProxy(pURL, pPort);
               }
             }
             else

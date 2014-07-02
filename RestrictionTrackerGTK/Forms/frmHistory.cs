@@ -7,8 +7,8 @@ namespace RestrictionTrackerGTK
   {
     DateTimeWidget dtwFrom;
     DateTimeWidget dtwTo;
-    ScrolledWindow sclBandwidth;
-    DataListView lvBandwidth;
+    ScrolledWindow sclUsage;
+    DataListView lvUsage;
     internal AppSettings mySettings;
     private Gdk.Rectangle lastRect;
     private System.Drawing.Rectangle graphSpaceD;
@@ -454,12 +454,12 @@ namespace RestrictionTrackerGTK
       bool runResize = false;
       if (optGraph.Active)
       {
-        if (sclBandwidth != null)
+        if (sclUsage != null)
         {
-          if (sclBandwidth.Visible)
+          if (sclUsage.Visible)
           {
-            sclBandwidth.Visible = false;
-            pnlHistory.Remove(sclBandwidth);
+            sclUsage.Visible = false;
+            pnlHistory.Remove(sclUsage);
           }
         }
         if (!pnlGraph.Visible)
@@ -496,7 +496,7 @@ namespace RestrictionTrackerGTK
         {
           lItems = null;
         }
-        if (sclBandwidth == null)
+        if (sclUsage == null)
         {
           bool SameLim = true;
           switch (useStyle)
@@ -540,18 +540,18 @@ namespace RestrictionTrackerGTK
               }
               if (SameLim)
               {
-                lvBandwidth = (DataListView)new DishNetView();
+                lvUsage = (DataListView)new DishNetView();
               }
               else
               {
-                lvBandwidth = (DataListView)new DishNetLimsView();
+                lvUsage = (DataListView)new DishNetLimsView();
               }
               break;
             case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
-              lvBandwidth = (DataListView)new RuralPortalView();
+              lvUsage = (DataListView)new RuralPortalView();
               break;
             case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
-              lvBandwidth = (DataListView)new ExedeView(mySettings.HistoryInversion);
+              lvUsage = (DataListView)new ExedeView(mySettings.HistoryInversion);
               break;
             default:
               if (lItems != null)
@@ -592,51 +592,51 @@ namespace RestrictionTrackerGTK
               }
               if (SameLim)
               {
-                lvBandwidth = (DataListView)new WildBlueView();
+                lvUsage = (DataListView)new WildBlueView();
               }
               else
               {
-                lvBandwidth = (DataListView)new WildBlueLimsView();
+                lvUsage = (DataListView)new WildBlueLimsView();
               }
               break;
           }
-          sclBandwidth = new ScrolledWindow();
-          sclBandwidth.Add(lvBandwidth);
-          pnlHistory.Add(sclBandwidth);
-          ((Gtk.Box.BoxChild)pnlHistory[sclBandwidth]).Position = 1;
-          sclBandwidth.Visible = true;
-          lvBandwidth.Visible = true;
+          sclUsage = new ScrolledWindow();
+          sclUsage.Add(lvUsage);
+          pnlHistory.Add(sclUsage);
+          ((Gtk.Box.BoxChild)pnlHistory[sclUsage]).Position = 1;
+          sclUsage.Visible = true;
+          lvUsage.Visible = true;
 
-          lvBandwidth.Columns[0].Resizable = true;
-          lvBandwidth.Columns[1].Resizable = true;
-          lvBandwidth.Columns[2].Resizable = true;
+          lvUsage.Columns[0].Resizable = true;
+          lvUsage.Columns[1].Resizable = true;
+          lvUsage.Columns[2].Resizable = true;
 
-          lvBandwidth.Columns[0].Expand = true;
-          lvBandwidth.Columns[1].Alignment = 0.5f;
-          lvBandwidth.Columns[1].CellRenderers[0].Xalign = 1.0f;
-          lvBandwidth.Columns[2].Alignment = 0.5f;
-          lvBandwidth.Columns[2].CellRenderers[0].Xalign = 1.0f;
+          lvUsage.Columns[0].Expand = true;
+          lvUsage.Columns[1].Alignment = 0.5f;
+          lvUsage.Columns[1].CellRenderers[0].Xalign = 1.0f;
+          lvUsage.Columns[2].Alignment = 0.5f;
+          lvUsage.Columns[2].CellRenderers[0].Xalign = 1.0f;
         }
-        else if (!sclBandwidth.Visible)
+        else if (!sclUsage.Visible)
           {
-            pnlHistory.Add(sclBandwidth);
-            ((Gtk.Box.BoxChild)pnlHistory[sclBandwidth]).Position = 1;
-            sclBandwidth.Visible = true;
-            lvBandwidth.Visible = true;
+            pnlHistory.Add(sclUsage);
+            ((Gtk.Box.BoxChild)pnlHistory[sclUsage]).Position = 1;
+            sclUsage.Visible = true;
+            lvUsage.Visible = true;
           }
 
         if (modDB.usageDB != null && modDB.usageDB.Count > 0)
         {
-          lvBandwidth.ClearItems();
+          lvUsage.ClearItems();
           ShowProgress("", "Populating Table...");
           foreach (DataBase.DataRow lItem in lItems)
           {
-            lvBandwidth.AddItem(lItem);
+            lvUsage.AddItem(lItem);
           }
         }
         else
         {
-          lvBandwidth.ClearItems();
+          lvUsage.ClearItems();
         }
       }
       if (runResize)
