@@ -16,10 +16,19 @@ namespace RestrictionTrackerGTK
 		public static frmMain fMain;
 		public static void Main(string[] args)
     {
-
       Application.Init();
+      try
+      {
+        string sUpdatePath = modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + "Setup";
+        if (CurrentOS.IsMac)
+          sUpdatePath += ".dmg";
+        else if (CurrentOS.IsLinux)
+          sUpdatePath += ".bz2.sh";
+        if (System.IO.File.Exists(sUpdatePath))
+          System.IO.File.Delete(sUpdatePath);
+      }
+      catch {}
       fMain = new frmMain();
-
       if (CurrentOS.IsMac)
       {
         ApplicationEvents.Quit += delegate (object sender, ApplicationQuitEventArgs e)
@@ -32,9 +41,7 @@ namespace RestrictionTrackerGTK
           fMain.ShowFromTray();
           e.Handled = true;
         };
-
       }
-
       fMain.Show();
       Application.Run();
     }

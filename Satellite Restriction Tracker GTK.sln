@@ -30,7 +30,6 @@ Global
 		$0.CSharpFormattingPolicy = $3
 		$3.IndentSwitchBody = True
 		$3.AlignEmbeddedUsingStatements = False
-		$3.AlignEmbeddedIfStatements = False
 		$3.AnonymousMethodBraceStyle = NextLine
 		$3.PropertyBraceStyle = NextLine
 		$3.PropertyGetBraceStyle = NextLine
@@ -40,6 +39,7 @@ Global
 		$3.EventRemoveBraceStyle = NextLine
 		$3.StatementBraceStyle = NextLine
 		$3.ElseNewLinePlacement = NewLine
+		$3.ElseIfNewLinePlacement = SameLine
 		$3.CatchNewLinePlacement = NewLine
 		$3.FinallyNewLinePlacement = NewLine
 		$3.ArrayInitializerWrapping = DoNotWrap
@@ -209,6 +209,6 @@ Global
 		$32.inheritsScope = text/plain
 		$32.scope = text/plain
 		description = Satellite Restriction Tracker
-		version = 0.4
+		version = 0.4.4
 	EndGlobalSection
 EndGlobal

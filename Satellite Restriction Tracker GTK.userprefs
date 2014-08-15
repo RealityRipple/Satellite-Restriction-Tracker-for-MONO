@@ -1,15 +1,18 @@
 ﻿<Properties GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="RestrictionTrackerGTK/Forms/dlgConfig.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="RestrictionTrackerGTK/Modules/modFunctions.cs">
     <Files>
-      <File FileName="RestrictionTrackerGTK/Forms/dlgConfig.cs" Line="737" Column="5" />
+      <File FileName="RestrictionTrackerGTK/AssemblyInfo.cs" Line="18" Column="19" />
+      <File FileName="RestrictionTrackerGTK/Modules/modFunctions.cs" Line="640" Column="12" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="RestrictionTrackerGTK" expanded="True">
-            <Node name="Forms" expanded="True">
-              <Node name="dlgConfig.cs" selected="True" />
+            <Node name="Classes" expanded="True" />
+            <Node name="Forms" expanded="True" />
+            <Node name="Modules" expanded="True">
+              <Node name="modFunctions.cs" selected="True" />
             </Node>
           </Node>
         </State>

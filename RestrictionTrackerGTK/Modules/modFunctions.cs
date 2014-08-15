@@ -620,18 +620,26 @@ namespace RestrictionTrackerGTK
 
     public static void SaveToFTP(object sData)
     {
-      string sFailFile = "WB-ReadFail-" + DateTime.Now.ToString("G") + "-v" + ProductVersion() + ".txt";
-      sFailFile = sFailFile.Replace("/", "-");
-      sFailFile = sFailFile.Replace(":", "-");
-      System.Net.WebRequest ftpSave = System.Net.FtpWebRequest.Create("ftp://realityripple.com/" + sFailFile);
-      ftpSave.Proxy = new System.Net.WebProxy();
-      ftpSave.Credentials = modCreds.FTPCredentials(); //Use [new System.Net.NetworkCredential("FTPUSER", "FTPPASS");] to upload failures to a FTP location.
-      ftpSave.Method = System.Net.WebRequestMethods.Ftp.UploadFile;
-      using (System.IO.Stream ftpStream = ftpSave.GetRequestStream())
+      try
       {
-        byte[] bHTTP = System.Text.Encoding.UTF8.GetBytes(sData.ToString());
-        ftpStream.Write(bHTTP, 0, bHTTP.Length);
-        ftpStream.Close();
+        string sFailFile = "WB-ReadFail-" + DateTime.Now.ToString("G") + "-v" + ProductVersion() + ".txt";
+        sFailFile = sFailFile.Replace("/", "-");
+        sFailFile = sFailFile.Replace(":", "-");
+        System.Net.WebRequest ftpSave = System.Net.FtpWebRequest.Create("ftp://realityripple.com/" + sFailFile);
+        ftpSave.Proxy = new System.Net.WebProxy();
+        ftpSave.Credentials = modCreds.FTPCredentials(); //Use [new System.Net.NetworkCredential("FTPUSER", "FTPPASS");] to upload failures to a FTP location.
+        ftpSave.Method = System.Net.WebRequestMethods.Ftp.UploadFile;
+        using (System.IO.Stream ftpStream = ftpSave.GetRequestStream())
+        {
+          byte[] bHTTP = System.Text.Encoding.UTF8.GetBytes(sData.ToString());
+          ftpStream.Write(bHTTP, 0, bHTTP.Length);
+          ftpStream.Close();
+        }
+        MainClass.fMain.FailResponse(true);
+      }
+      catch
+      {
+        MainClass.fMain.FailResponse(false);
       }
     }
 
@@ -2564,6 +2572,59 @@ namespace RestrictionTrackerGTK
     {
       return new Gdk.Size(s.Width, s.Height);
     }
+
+    public static bool CompareColors(Color a, Color b, bool IgnoreAlpha)
+    {
+      bool ret = true;
+      if (IgnoreAlpha)
+      {
+        if (a.R != b.R)
+          ret = false;
+        else if (a.G != b.G)
+          ret = false;
+        else if (a.B != b.B)
+          ret = false;
+      }
+      else
+      {
+        if (a.R != b.R)
+          ret = false;
+        else if (a.G != b.G)
+          ret = false;
+        else if (a.B != b.B)
+          ret = false;
+        else if (a.A != b.A)
+          ret = false;
+      }
+      return(ret);
+    }
+
+    public static bool CompareColors(Color a, Gdk.Color b)
+    {
+      bool ret = true;
+      Color b2 = GdkColorToDrawingColor(b);
+      if (a.R != b2.R)
+        ret = false;
+      else if (a.G != b2.G)
+        ret = false;
+      else if (a.B != b2.B)
+        ret = false;
+      return(ret);
+    }
+
+    public static bool CompareColors(Gdk.Color a, Gdk.Color b)
+    {
+      bool ret = true;
+      if (a.Red != b.Red)
+        ret = false;
+      else if (a.Green != b.Green)
+        ret = false;
+      else if (a.Blue != b.Blue)
+        ret = false;
+      return(ret);
+    }
+
+
 
     public static Gdk.Pixbuf ImageToPixbuf(Image img)
     {

@@ -85,7 +85,7 @@ namespace RestrictionTrackerGTK
       {
         if (LOG_GetCount() > lngIndex)
         {
-          DataBase.DataRow dbRow = usageDB.data[lngIndex];
+          DataBase.DataRow dbRow = usageDB.ToArray()[lngIndex];
           dtDate = dbRow.DATETIME;
           lngDown = dbRow.DOWNLOAD;
           lngDownLim = dbRow.DOWNLIM;
@@ -122,7 +122,7 @@ namespace RestrictionTrackerGTK
       }
       if (LOG_GetCount() > 0)
       {
-        return usageDB.data[LOG_GetCount() - 1].DATETIME;
+        return usageDB.ToArray()[LOG_GetCount() - 1].DATETIME;
       }
       else
       {

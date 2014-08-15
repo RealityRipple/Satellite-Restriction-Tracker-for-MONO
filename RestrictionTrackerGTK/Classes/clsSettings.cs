@@ -14,7 +14,6 @@ namespace RestrictionTrackerGTK
     private int m_Accuracy;
     private uint m_Ago;
     private string m_HistoryDir;
-    private bool m_HistoryInvert;
     private bool m_BetaCheck;
     private bool m_ScaleScreen;
     private Gdk.Size m_MainSize;
@@ -115,10 +114,6 @@ namespace RestrictionTrackerGTK
                     else if (xName.CompareTo("HistoryDir") == 0)
                     {
                       m_HistoryDir = xValue;
-                    }
-                    else if (xName.CompareTo("HistoryInversion") == 0)
-                    {
-                      m_HistoryInvert = (xValue.CompareTo("True") == 0);
                     }
                     else if (xName.CompareTo("BetaCheck") == 0)
                     {
@@ -414,7 +409,6 @@ namespace RestrictionTrackerGTK
       m_Accuracy = 0;
       m_Ago = 30u;
       m_HistoryDir = null;
-      m_HistoryInvert = false;
       m_BetaCheck = true;
       m_ScaleScreen = false;
       m_MainSize = new Gdk.Size(450, 200);
@@ -485,11 +479,6 @@ namespace RestrictionTrackerGTK
         sScaleScreen = "True";
       }
       string sAccountType = "Other";
-      string sInversion = "False";
-      if (m_HistoryInvert)
-      {
-        sInversion = "True";
-      }
       sAccountType = modFunctions.HostTypeToString(m_AccountType);
       string sRet = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + Environment.NewLine +
         "<configuration>" + Environment.NewLine +
@@ -519,9 +508,6 @@ namespace RestrictionTrackerGTK
         "      <setting name=\"HistoryDir\">" + Environment.NewLine + 
         "        <value>" + m_HistoryDir + "</value>" + Environment.NewLine + 
         "      </setting>" + Environment.NewLine +
-        "      <setting name=\"HistoryInversion\">" + Environment.NewLine +
-        "        <value>" + sInversion + "</value>" + Environment.NewLine + 
-        "      </setting>" + Environment.NewLine + 
         "      <setting name=\"BetaCheck\">" + Environment.NewLine + 
         "        <value>" + sBeta + "</value>" + Environment.NewLine +
         "      </setting>" + Environment.NewLine +
@@ -884,18 +870,6 @@ namespace RestrictionTrackerGTK
       set
       {
         m_HistoryDir = value;
-      }
-    }
-
-    public bool HistoryInversion
-    {
-      get
-      {
-        return m_HistoryInvert;
-      }
-      set
-      {
-        m_HistoryInvert = value;
       }
     }
 

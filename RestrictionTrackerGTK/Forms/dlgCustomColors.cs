@@ -935,53 +935,53 @@ namespace RestrictionTrackerGTK
 #region "Functions"
     private bool SettingsChanged()
     {
-      if (mySettings.Colors.MainDownA.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdMainDownA.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.MainDownA, cmdMainDownA.Color))
         return true;
-      if (mySettings.Colors.MainDownB.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdMainDownB.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.MainDownB,cmdMainDownB.Color))
         return true;
-      if (mySettings.Colors.MainDownC.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdMainDownC.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.MainDownC,cmdMainDownC.Color))
         return true;
-      if (mySettings.Colors.MainUpA.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdMainUpA.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.MainUpA,cmdMainUpA.Color))
         return true;
-      if (mySettings.Colors.MainUpB.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdMainUpB.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.MainUpB,cmdMainUpB.Color))
         return true;
-      if (mySettings.Colors.MainUpC.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdMainUpC.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.MainUpC,cmdMainUpC.Color))
         return true;
-      if (mySettings.Colors.MainText.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdMainText.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.MainText,cmdMainText.Color))
         return true;
-      if (mySettings.Colors.MainBackground.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdMainBG.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.MainBackground,cmdMainBG.Color))
         return true;
-      if (mySettings.Colors.TrayDownA.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdTrayDownA.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.TrayDownA,cmdTrayDownA.Color))
         return true;
-      if (mySettings.Colors.TrayDownB.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdTrayDownB.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.TrayDownB,cmdTrayDownB.Color))
         return true;
-      if (mySettings.Colors.TrayDownC.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdTrayDownC.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.TrayDownC,cmdTrayDownC.Color))
         return true;
-      if (mySettings.Colors.TrayUpA.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdTrayUpA.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.TrayUpA,cmdTrayUpA.Color))
         return true;
-      if (mySettings.Colors.TrayUpB.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdTrayUpB.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.TrayUpB,cmdTrayUpB.Color))
         return true;
-      if (mySettings.Colors.TrayUpC.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdTrayUpC.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.TrayUpC,cmdTrayUpC.Color))
         return true;
-      if (mySettings.Colors.HistoryDownA.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdHistoryDownA.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.HistoryDownA,cmdHistoryDownA.Color))
         return true;
-      if (mySettings.Colors.HistoryDownB.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdHistoryDownB.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.HistoryDownB,cmdHistoryDownB.Color))
         return true;
-      if (mySettings.Colors.HistoryDownC.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdHistoryDownC.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.HistoryDownC,cmdHistoryDownC.Color))
         return true;
-      if (mySettings.Colors.HistoryDownMax.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdHistoryDownMax.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.HistoryDownMax,cmdHistoryDownMax.Color))
         return true;
-      if (mySettings.Colors.HistoryUpA.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdHistoryUpA.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.HistoryUpA,cmdHistoryUpA.Color))
         return true;
-      if (mySettings.Colors.HistoryUpB.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdHistoryUpB.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.HistoryUpB,cmdHistoryUpB.Color))
         return true;
-      if (mySettings.Colors.HistoryUpC.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdHistoryUpC.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.HistoryUpC,cmdHistoryUpC.Color))
         return true;
-      if (mySettings.Colors.HistoryUpMax.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdHistoryUpMax.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.HistoryUpMax,cmdHistoryUpMax.Color))
         return true;
-      if (mySettings.Colors.HistoryText.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdHistoryText.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.HistoryText,cmdHistoryText.Color))
         return true;
-      if (mySettings.Colors.HistoryBackground.ToArgb() != modFunctions.GdkColorToDrawingColor(cmdHistoryBG.Color).ToArgb())
+      if (!modFunctions.CompareColors(mySettings.Colors.HistoryBackground, cmdHistoryBG.Color))
         return true;
       return false;
     }

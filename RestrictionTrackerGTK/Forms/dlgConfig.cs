@@ -5,6 +5,7 @@ namespace RestrictionTrackerGTK
   public partial class dlgConfig : Gtk.Dialog
   {
     private RestrictionLibrary.remoteRestrictionTracker remoteTest;
+    private RestrictionLibrary.CookieAwareWebClient wsHostList;
     private bool bSaved, bAccount, bLoaded, bHardChange, bRemoteAcct;
     private AppSettings mySettings;
     private uint pChecker;
@@ -34,6 +35,7 @@ namespace RestrictionTrackerGTK
       txtAccount.Changed += txtAccount_Changed;
       txtPassword.ClipboardPasted += txtPassword_ClipboardPasted;
 
+      cmbProvider.Changed += ValuesChanged;
       txtPassword.Changed += ValuesChanged;
       txtInterval.Changed += ValuesChanged;
       cmdPassDisplay.Toggled += cmdPassDisplay_Toggled;
@@ -41,7 +43,6 @@ namespace RestrictionTrackerGTK
       txtTimeout.Changed += ValuesChanged;
       chkScaleScreen.Clicked += ValuesChanged;
       txtHistoryDir.CurrentFolderChanged += txtHistoryDir_CurrentFolderChanged;
-      chkInvert.Clicked += ValuesChanged;
       txtOverSize.Changed += ValuesChanged;
       txtOverTime.Changed += ValuesChanged;
       chkBeta.Clicked += ValuesChanged;
@@ -72,9 +73,7 @@ namespace RestrictionTrackerGTK
       txtKey5.KeyPressEvent += txtProductKey_KeyPressEvent;
       txtKey5.TextInserted += txtProductKey_InsertText;
 
-      //chkOverAlert.Pressed  += chkOverAlert_Activated;
       chkOverAlert.Clicked += chkOverAlert_Activated;
-      //chkOverAlert.Activated += chkOverAlert_Activated;
       cmbProxyType.Changed += cmbProxyType_Changed;
 
       evnKeyState.ButtonPressEvent += evnKeyState_ButtonPressEvent;
@@ -88,7 +87,21 @@ namespace RestrictionTrackerGTK
       cmdClose.Clicked += cmdClose_Click;
 
       mySettings = new AppSettings();
-      txtAccount.Text = mySettings.Account;
+      string sAccount = mySettings.Account;
+      string sUsername, sProvider;
+      if (!String.IsNullOrEmpty(sAccount) && (sAccount.Contains("@") && sAccount.Contains(".")))
+      {
+        sUsername = sAccount.Substring(0, sAccount.LastIndexOf("@"));
+        sProvider = sAccount.Substring(sAccount.LastIndexOf("@") + 1);
+      }
+      else
+      {
+        sUsername = sAccount;
+        sProvider = "";
+      }
+      txtAccount.Text = sUsername;
+      UseDefaultHostList();
+      cmbProvider.Entry.Text = sProvider;
       if (mySettings.PassCrypt != null)
       {
         txtPassword.Text = RestrictionLibrary.StoredPassword.DecryptApp(mySettings.PassCrypt);
@@ -177,7 +190,6 @@ namespace RestrictionTrackerGTK
         mySettings.HistoryDir = modFunctions.MySaveDir;
       }
       txtHistoryDir.SetCurrentFolder(mySettings.HistoryDir);
-      chkInvert.Active = mySettings.HistoryInversion;
       if (mySettings.Overuse == 0)
       {
         chkOverAlert.Active = false;
@@ -258,6 +270,7 @@ namespace RestrictionTrackerGTK
         bLoaded = true;
       }
       this.Response += dlgConfig_Response;
+      PopulateHostList();
     }
 
     void HandleWindowStateEvent(object o, Gtk.WindowStateEventArgs args)
@@ -277,7 +290,7 @@ namespace RestrictionTrackerGTK
       {
         GLib.Source.Remove(pChecker);
         pChecker = 0;
-        remoteTest = new RestrictionLibrary.remoteRestrictionTracker(txtAccount.Text, "", checkKey, mySettings.Proxy, mySettings.Timeout, new DateTime(2001, 1, 1), modFunctions.AppData);
+        remoteTest = new RestrictionLibrary.remoteRestrictionTracker(txtAccount.Text + "@" + cmbProvider.Entry.Text, "", checkKey, mySettings.Proxy, mySettings.Timeout, new DateTime(2001, 1, 1), modFunctions.AppData);
         remoteTest.Failure += remoteTest_Failure;
         remoteTest.OKKey += remoteTest_OKKey;
       }
@@ -641,6 +654,9 @@ namespace RestrictionTrackerGTK
       string sErr = "There was an error verifying your key!";
       switch (e.Type)
       {
+        case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadLogin:
+          sErr = "There was a server error. Please try again later.";
+          break;
         case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadPassword:
           sErr = "Your password is incorrect!";
           break;
@@ -694,7 +710,7 @@ namespace RestrictionTrackerGTK
       pctKeyState.PixbufAnimation = null;
       pctKeyState.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.ok.png");
       pctKeyState.TooltipText = "Your key has been verified!";
-      lblPurchaseKey.Markup = "<a href=\"http://wb.realityripple.com?wbEMail=" + txtAccount.Text + "&amp;wbKey=" + txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text + "&amp;wbSubmit=\">" + LINK_PANEL + "</a>";
+      lblPurchaseKey.Markup = "<a href=\"http://wb.realityripple.com?wbEMail=" + txtAccount.Text + "@" + cmbProvider.Entry.Text + "&amp;wbKey=" + txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text + "&amp;wbSubmit=\">" + LINK_PANEL + "</a>";
       if (pChecker != 0)
       {
         GLib.Source.Remove(pChecker);
@@ -709,11 +725,95 @@ namespace RestrictionTrackerGTK
       DoCheck();
       cmdSave.Sensitive = bToSave;
     }
+
+    private void PopulateHostList()
+    {
+      wsHostList = new RestrictionLibrary.CookieAwareWebClient();
+      wsHostList.DownloadStringCompleted += wsHostList_DownloadStringCompleted;
+      wsHostList.DownloadStringAsync(new Uri("http://wb.realityripple.com/hosts"), "GRAB");
+    }
+
+    void wsHostList_DownloadStringCompleted (object sender, System.Net.DownloadStringCompletedEventArgs e)
+    {
+      if ((string) e.UserState == "GRAB")
+      {
+        Gtk.Application.Invoke(sender, (EventArgs)e, Main_HostListDownloadStringCompleted);
+      }
+    }
+
+    private void Main_HostListDownloadStringCompleted(object sender, EventArgs ea)
+    {
+      System.Net.DownloadStringCompletedEventArgs e = (System.Net.DownloadStringCompletedEventArgs)ea;
+      if (e.Error == null && !e.Cancelled && !String.IsNullOrEmpty(e.Result))
+      {
+        try
+        {
+          if (e.Result.Contains("\n"))
+          {
+            String[] HostList = e.Result.Split('\n');
+            bLoaded = false;
+            ClearHostList();
+            for (int i = 0; i < HostList.Length; i++)
+            {
+              cmbProvider.AppendText(HostList[i]);
+            }
+            if (mySettings.Account.Contains("@"))
+            {
+              string sProvider = mySettings.Account.Substring(mySettings.Account.LastIndexOf("@") + 1);
+              cmbProvider.Entry.Text = sProvider;
+            }
+            bLoaded = true;
+          }
+        }
+        catch
+        {}
+      }
+    }
+
+    private void ClearHostList()
+    {
+      Gtk.TreeIter ti= new Gtk.TreeIter();
+      bool iter = cmbProvider.Model.GetIterFirst(out ti);
+      while (iter)
+      {
+        cmbProvider.RemoveText(0);
+        iter = cmbProvider.Model.GetIterFirst(out ti);
+      }
+    }
+
+    private void UseDefaultHostList()
+    {
+      ClearHostList();
+      cmbProvider.AppendText("wildblue.net");
+      cmbProvider.AppendText("exede.net");
+      cmbProvider.AppendText("dishmail.net");
+      cmbProvider.AppendText("dish.net");
+    }
+
+    private void SaveToHostList(string Provider)
+    {
+      ResolveEventArgs er = new ResolveEventArgs(Provider);
+      Gtk.Application.Invoke(null, (EventArgs) er, Main_SaveToHostList);
+    }
+
+    private void Main_SaveToHostList(object sender, EventArgs ea)
+    {
+      ResolveEventArgs e = (ResolveEventArgs)ea;
+      string Provider = e.Name;
+      if (wsHostList != null)
+      {
+        wsHostList.Dispose();
+        wsHostList = null;
+      }
+      wsHostList = new RestrictionLibrary.CookieAwareWebClient();
+      wsHostList.DownloadDataAsync(new Uri("http://wb.realityripple.com/hosts/?add=" + Provider), "UPDATE");
+    }
 #endregion
 
 #region "Remote Service Results"
     protected void evnKeyState_ButtonPressEvent(object sender, Gtk.ButtonPressEventArgs e)
     {
+      if(txtKey1.Text.Length == 6 && txtKey2.Text.Length == 4 && txtKey3.Text.Length == 4 && txtKey4.Text.Length == 4 && txtKey5.Text.Length == 6)
       KeyCheck();
     }
     bool CheckState;
@@ -791,15 +891,21 @@ namespace RestrictionTrackerGTK
 
     protected void cmdSave_Click(object sender, EventArgs e)
     {
-      if ((!txtAccount.Text.Contains("@")) || (!txtAccount.Text.Contains(".")))
+      if (String.IsNullOrEmpty(txtAccount.Text))
       {
-        modFunctions.ShowMessageBox(this, "Please enter your full ViaSat account name.\nExample: Customer@WildBlue.net", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+        modFunctions.ShowMessageBox(this, "Please enter your ViaSat account Username.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
         txtAccount.GrabFocus();
+        return;
+      }
+      if (String.IsNullOrEmpty(cmbProvider.Entry.Text))
+      {
+        modFunctions.ShowMessageBox(this, "Please enter your ViaSat Provider address or select one from the list.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+        cmbProvider.GrabFocus();
         return;
       }
       if (String.IsNullOrEmpty(txtPassword.Text))
       {
-        modFunctions.ShowMessageBox(this, "Please enter your ViaSat account password.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+        modFunctions.ShowMessageBox(this, "Please enter your ViaSat account Password.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
         txtPassword.GrabFocus();
         return;
       }
@@ -816,9 +922,15 @@ namespace RestrictionTrackerGTK
           return;
         }
       }
-      if (mySettings.Account.ToLower() != txtAccount.Text.ToLower())
+      if (cmbProvider.Entry.Text.ToLower().Contains("excede") ||
+        cmbProvider.Entry.Text.ToLower().Contains("force") ||
+        cmbProvider.Entry.Text.ToLower().Contains("mysso") ||
+        cmbProvider.Entry.Text.ToLower().Contains("myexede") ||
+        cmbProvider.Entry.Text.ToLower().Contains("my.exede"))
+        cmbProvider.Entry.Text = "exede.net";
+      if (string.Compare(mySettings.Account,txtAccount.Text + "@" + cmbProvider.Entry.Text, true) != 0)
       {
-        mySettings.Account = txtAccount.Text;
+        mySettings.Account = txtAccount.Text + "@" + cmbProvider.Entry.Text;
         bAccount = true;
       }
       if (RestrictionLibrary.StoredPassword.DecryptApp(mySettings.PassCrypt) != txtPassword.Text)
@@ -955,7 +1067,6 @@ namespace RestrictionTrackerGTK
         mySettings.HistoryDir = txtHistoryDir.CurrentFolder;
         bAccount = true;
       }
-      mySettings.HistoryInversion = chkInvert.Active;
       if (chkOverAlert.Active)
       {
         mySettings.Overuse = txtOverSize.ValueAsInt;
@@ -1028,6 +1139,7 @@ namespace RestrictionTrackerGTK
       bHardChange = false;
       bSaved = true;
       cmdSave.Sensitive = false;
+      SaveToHostList(cmbProvider.Entry.Text);
     }
 
     protected void cmdClose_Click(object sender, EventArgs e)
@@ -1040,7 +1152,7 @@ namespace RestrictionTrackerGTK
     {
       if (bHardChange)
         return true;
-      if (String.Compare(mySettings.Account, txtAccount.Text, true) != 0)
+      if (String.Compare(mySettings.Account, txtAccount.Text + "@" + cmbProvider.Entry.Text, true) != 0)
         return true;
       if (mySettings.PassCrypt != RestrictionLibrary.StoredPassword.EncryptApp(txtPassword.Text))
         return true;
@@ -1056,8 +1168,6 @@ namespace RestrictionTrackerGTK
       if (mySettings.ScaleScreen != chkScaleScreen.Active)
         return true;
       if (string.Compare(mySettings.HistoryDir, txtHistoryDir.CurrentFolder, true) != 0)
-        return true;
-      if (mySettings.HistoryInversion != chkInvert.Active)
         return true;
       if (chkOverAlert.Active ^ (mySettings.Overuse > 0))
         return true;

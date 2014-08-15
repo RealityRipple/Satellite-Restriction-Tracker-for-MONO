@@ -1,17 +1,22 @@
 using System;
-
 namespace RestrictionTrackerGTK
 {
   public partial class frmAbout : Gtk.Window
   {
+    private string sUpdatePath = modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + "Setup";
     private clsUpdate updateChecker;
     private uint tReset;
+    private uint tSpeed;
     private Gtk.Button cmdUpdate;
     private delegate void MethodInvoker();
-
     #region "Form Events"
     public frmAbout() : base(Gtk.WindowType.Toplevel)
     {
+      sUpdatePath = modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + "Setup";
+      if (CurrentOS.IsMac)
+        sUpdatePath += ".dmg";
+      else if (CurrentOS.IsLinux)
+        sUpdatePath += ".bz2.sh";
       this.Build();
       this.WindowStateEvent += HandleWindowStateEvent;
       this.Title = "About " + modFunctions.ProductName();
@@ -41,9 +46,7 @@ namespace RestrictionTrackerGTK
       ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).Position = 2;
       cmdUpdate.ShowAll();
       cmdUpdate.Visible = true;
-
-      cmdUpdate.TooltipText = "Check for a new version of Satellite Restriction Tracker";
-
+      cmdUpdate.TooltipText = "Check for a new version of " + modFunctions.ProductName() + ".";
       ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).PackType = Gtk.PackType.Start;
       ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).Fill = false;
       ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).Expand = false;
@@ -53,7 +56,6 @@ namespace RestrictionTrackerGTK
       lblVersion.HeightRequest = upHeight;
       lblCompany.HeightRequest = upHeight;
     }
-
     void HandleWindowStateEvent(object o, Gtk.WindowStateEventArgs args)
     {
       if (args.Event.ChangedMask == Gdk.WindowState.Iconified)
@@ -64,7 +66,6 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-
     protected void OnHidden(object sender, EventArgs e)
     {
       if (tReset != 0)
@@ -79,73 +80,87 @@ namespace RestrictionTrackerGTK
       }
     }
     #endregion
-
     #region "Buttons"
     protected void cmdOK_Click(object sender, EventArgs e)
     {
       this.Hide();
     }
-
     protected void cmdDonate_Click(object sender, EventArgs e)
     {
       System.Diagnostics.Process.Start("http://realityripple.com/donate.php?itm=Satellite+Restriction+Tracker");
     }
     #endregion
-
     #region "Updates"
     protected void cmdUpdate_Click(object sender, EventArgs e)
     {
       if (((Gtk.Label)((Gtk.HBox)((Gtk.Alignment)cmdUpdate.Child).Child).Children[1]).Text == "Check for Updates")
       {
-        int upHeight = cmdUpdate.Allocation.Height;
-        cmdUpdate.Visible = false;
-        pnlUpdate.Remove(cmdUpdate);
-        pnlUpdate.Add(lblUpdate);
-        lblUpdate.Visible = true;
-        lblUpdate.HeightRequest = upHeight;
         byte lState = modDB.LOG_State;
         switch (lState)
         {
           case 0:
             SetUpdateValue("Update Skipped: Log is being read", false);
-            if (tReset != 0)
-            {
-              GLib.Source.Remove(tReset);
-              tReset = 0;
-            }
-            tReset = GLib.Timeout.Add(3500, ResetUpdate); 
+            RestartReset();
             break;
-            case 1:
+          case 1:
             SetUpdateValue("Initializing Update Check", true);
             MethodInvoker checkInvoker = BeginCheck;
             checkInvoker.BeginInvoke(null, null);
             break;
-            case 2:
+          case 2:
             SetUpdateValue("Update Skipped: Log is being saved", false);
-            if (tReset != 0)
-            {
-              GLib.Source.Remove(tReset);
-              tReset = 0;
-            }
-            tReset = GLib.Timeout.Add(3500, ResetUpdate); 
+            RestartReset();
             break;
-            default:
+          default:
             SetUpdateValue("Update Skipped: Log is being edited", false);
-            if (tReset != 0)
-            {
-              GLib.Source.Remove(tReset);
-              tReset = 0;
-            }
-            tReset = GLib.Timeout.Add(3500, ResetUpdate); 
+            RestartReset();
             break;
         }
       }
-      else if (((Gtk.Label)((Gtk.HBox)((Gtk.Alignment)cmdUpdate.Child).Child).Children[1]).Text == "Visit Website")
+      else if (((Gtk.Label)((Gtk.HBox)((Gtk.Alignment)cmdUpdate.Child).Child).Children[1]).Text == "New Update Available")
       {
-        System.Diagnostics.Process.Start("http://srt.realityripple.com/For_MONO/");
+        updateChecker.DownloadUpdate(sUpdatePath);
+      }
+      else if (((Gtk.Label)((Gtk.HBox)((Gtk.Alignment)cmdUpdate.Child).Child).Children[1]).Text == "New BETA Available")
+      {
+        updateChecker.DownloadUpdate(sUpdatePath);
+      }
+      else if (((Gtk.Label)((Gtk.HBox)((Gtk.Alignment)cmdUpdate.Child).Child).Children[1]).Text == "Apply Update")
+      {
+        try
+        {
+          if (System.IO.File.Exists(sUpdatePath))
+          {
+            if (CurrentOS.IsMac)
+              System.Diagnostics.Process.Start(sUpdatePath);
+            else if (CurrentOS.IsLinux)
+              System.Diagnostics.Process.Start("bash", "\"" + sUpdatePath + "\"");
+            else
+              System.Diagnostics.Process.Start(sUpdatePath);
+          }
+        }
+        catch {}
+        Gtk.Application.Quit();
       }
     }
-
+    private void RestartReset()
+    {
+      if (tReset != 0)
+      {
+        GLib.Source.Remove(tReset);
+        tReset = 0;
+      }
+      tReset = GLib.Timeout.Add(3500, ResetUpdate); 
+    }
+    private void UpdateReset()
+    {
+      if (tReset != 0)
+      {
+        GLib.Source.Remove(tReset);
+        tReset = 0;
+      }
+      tReset = GLib.Timeout.Add(1000, NewUpdate); 
+    }
     private bool ResetUpdate()
     {
       if (tReset == 0)
@@ -157,22 +172,13 @@ namespace RestrictionTrackerGTK
         GLib.Source.Remove(tReset);
         tReset = 0;
       }
-      lblUpdate.Visible = false;
-      pnlUpdate.Remove(lblUpdate);
-      pnlUpdate.Add(cmdUpdate);
-      ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).Position = 2;
-      ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).PackType = Gtk.PackType.Start;
-      ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).Fill = false;
-      ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).Expand = false;
-      cmdUpdate.Visible = true;
-      ((Gtk.Label)((Gtk.HBox)((Gtk.Alignment)cmdUpdate.Child).Child).Children[1]).Text = "Check for Updates";
-      cmdUpdate.TooltipText = "Check for a new version of Satellite Restriction Tracker.";
+      SetButtonUpdate("Check for Updates", "Check for a new version of Satellite Restriction Tracker.");
       return false;
     }
-
-    private void NewUpdate()
+    private bool NewUpdate()
     {
       Gtk.Application.Invoke(null, null, Main_NewUpdate);
+      return false;
     }
     private void Main_NewUpdate(object o, EventArgs e)
     {
@@ -185,20 +191,19 @@ namespace RestrictionTrackerGTK
         GLib.Source.Remove(tReset);
         tReset = 0;
       }
-      lblUpdate.Visible = false;
-      pnlUpdate.Remove(lblUpdate);
-      pnlUpdate.Add(cmdUpdate);
-      cmdUpdate.Visible = true;
-      ((Gtk.Label)((Gtk.HBox)((Gtk.Alignment)cmdUpdate.Child).Child).Children[1]).Text = "Visit Website";
-      cmdUpdate.TooltipText = "Download the latest version from RealityRipple.com.";
+      if (CurrentOS.IsLinux)
+        System.Diagnostics.Process.Start("chmod", "+x \"" + sUpdatePath + "\"");
+      SetButtonUpdate("Apply Update", modFunctions.ProductName() + " must be restarted before the update can be applied.");
     }
-
     private void BeginCheck()
     {
       updateChecker = new clsUpdate();
       updateChecker.CheckingVersion += updateChecker_CheckingVersion;
       updateChecker.CheckProgressChanged += updateChecker_CheckProgressChanged;
       updateChecker.CheckResult += updateChecker_CheckResult;
+      updateChecker.DownloadingUpdate+= updateChecker_DownloadingUpdate;
+      updateChecker.UpdateProgressChanged += updateChecker_UpdateProgressChanged;
+      updateChecker.DownloadResult += updateChecker_DownloadResult;
       updateChecker.CheckVersion();
     }
 
@@ -223,7 +228,6 @@ namespace RestrictionTrackerGTK
           ToolTip = tt;
       }
     }
-
     private void SetUpdateValue(string Message, bool Throbber)
     {
       UpdateValueEventArgs e = new UpdateValueEventArgs(Message, Throbber);
@@ -237,6 +241,15 @@ namespace RestrictionTrackerGTK
     private void Main_SetUpdateValue(object o, EventArgs ea)
     {
       UpdateValueEventArgs e = (UpdateValueEventArgs)ea;
+      if (cmdUpdate.Visible)
+      {
+        int upHeight = cmdUpdate.Allocation.Height;
+        cmdUpdate.Visible = false;
+        pnlUpdate.Remove(cmdUpdate);
+        pnlUpdate.Add(lblUpdate);
+        lblUpdate.Visible = true;
+        lblUpdate.HeightRequest = upHeight;
+      }
       if (pctUpdate.Visible != e.Throbber)
       {
         pctUpdate.Visible = e.Throbber;
@@ -245,18 +258,39 @@ namespace RestrictionTrackerGTK
       lblUpdate.TooltipText = e.ToolTip;
       pctUpdate.TooltipText = e.ToolTip;
     }
-
+    private void SetButtonUpdate(string Message, string ToolTip)
+    {
+      UpdateValueEventArgs e = new UpdateValueEventArgs(Message, false, ToolTip);
+      Gtk.Application.Invoke(null, (EventArgs)e, Main_SetButtonUpdate);
+    }
+    private void Main_SetButtonUpdate(object o, EventArgs ea)
+    {
+      UpdateValueEventArgs e = (UpdateValueEventArgs)ea;
+      if (lblUpdate.Visible)
+      {
+        pctUpdate.Visible = false;
+        lblUpdate.Visible = false;
+        pnlUpdate.Remove(lblUpdate);
+        pnlUpdate.Add(cmdUpdate);
+        ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).Position = 2;
+        ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).PackType = Gtk.PackType.Start;
+        ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).Fill = false;
+        ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).Expand = false;
+        cmdUpdate.Visible = true;
+      }
+      //((Gtk.Image)((Gtk.HBox)((Gtk.Alignment)cmdUpdate.Child).Child).Children[0]).Pixbuf = e.Image;
+      ((Gtk.Label)((Gtk.HBox)((Gtk.Alignment)cmdUpdate.Child).Child).Children[1]).Text = e.Message;
+      cmdUpdate.TooltipText = e.ToolTip;
+    }
     protected void updateChecker_CheckingVersion(object sender, EventArgs e)
     {
       SetUpdateValue("Checking for Updates", true);
     }
-
     protected void updateChecker_CheckProgressChanged(object sender, clsUpdate.ProgressEventArgs e)
     {
       string sProgress = "(" + e.ProgressPercentage.ToString() + "%)";
       SetUpdateValue("Checking for Updates " + sProgress, true);
     }
-
     protected void updateChecker_CheckResult(object sender, clsUpdate.CheckEventArgs e)
     {
       Gtk.Application.Invoke(sender, (EventArgs)e, Main_UpdateCheckerCheckResult);
@@ -279,124 +313,175 @@ namespace RestrictionTrackerGTK
         else
         {
           SetUpdateValue(e.Error.Message, false);
-          if (tReset != 0)
-          {
-            GLib.Source.Remove(tReset);
-            tReset = 0;
-          }
-          tReset = GLib.Timeout.Add(3500, ResetUpdate); 
+          RestartReset();
         }
       }
       else if (e.Cancelled)
-      {
-        SetUpdateValue("Update Check Cancelled", false);
-        if (tReset != 0)
         {
-          GLib.Source.Remove(tReset);
-          tReset = 0;
+          SetUpdateValue("Update Check Cancelled", false);
+          RestartReset();
         }
-        tReset = GLib.Timeout.Add(3500, ResetUpdate); 
-      }
-      else
-      {
-        AppSettings mySettings = new AppSettings();
-        dlgUpdate fUpdate;
-        switch (e.Result)
+        else
         {
-          case clsUpdate.CheckEventArgs.ResultType.NewUpdate:
-            SetUpdateValue("<a href=\"http://srt.realityripple.com/For_MONO/\">New Update Available</a>", false, "New Update Available");
-            System.Threading.Thread.Sleep(0);
-            fUpdate = new dlgUpdate();
-            fUpdate.NewUpdate(e.Version, false);
-            switch ((Gtk.ResponseType)fUpdate.Run())
-            {
-              case Gtk.ResponseType.Yes:
-                System.Diagnostics.Process.Start("http://srt.realityripple.com/For_MONO/");
-                if (tReset != 0)
-                {
-                  GLib.Source.Remove(tReset);
-                  tReset = 0;
-                }
-                tReset = GLib.Timeout.Add(3500, ResetUpdate); 
-                break;
-                case Gtk.ResponseType.No:
-                break;
-                case Gtk.ResponseType.Ok:
-                System.Diagnostics.Process.Start("http://srt.realityripple.com/For_MONO/");
-                if (tReset != 0)
-                {
-                  GLib.Source.Remove(tReset);
-                  tReset = 0;
-                }
-                tReset = GLib.Timeout.Add(3500, ResetUpdate); 
-                mySettings.BetaCheck = false;
-                mySettings.Save();
-                break;
-                case Gtk.ResponseType.Cancel:
-                mySettings.BetaCheck = false;
-                mySettings.Save();
-                break;
-                default:
-                break;
-            }
-            fUpdate.Destroy();
-            fUpdate.Dispose();
-            fUpdate = null;
-            break;
-            case clsUpdate.CheckEventArgs.ResultType.NewBeta:
-            if (mySettings.BetaCheck)
-            {
-              SetUpdateValue("<a href=\"http://srt.realityripple.com/For_MONO/\">New BETA Available</a>", false);
+          AppSettings mySettings = new AppSettings();
+          dlgUpdate fUpdate;
+          switch (e.Result)
+          {
+            case clsUpdate.CheckEventArgs.ResultType.NewUpdate:
+              SetButtonUpdate("New Update Available", "Click to begin download.");
               System.Threading.Thread.Sleep(0);
               fUpdate = new dlgUpdate();
               fUpdate.NewUpdate(e.Version, false);
               switch ((Gtk.ResponseType)fUpdate.Run())
               {
                 case Gtk.ResponseType.Yes:
-                  System.Diagnostics.Process.Start("http://srt.realityripple.com/For_MONO/");
-                  if (tReset != 0)
-                  {
-                    GLib.Source.Remove(tReset);
-                    tReset = 0;
-                  }
-                  tReset = GLib.Timeout.Add(3500, ResetUpdate); 
+                  updateChecker.DownloadUpdate(sUpdatePath);
                   break;
-                  case Gtk.ResponseType.No:
+                case Gtk.ResponseType.No:
                   break;
-                  case Gtk.ResponseType.Ok:
-                  System.Diagnostics.Process.Start("http://srt.realityripple.com/For_MONO/");
-                  if (tReset != 0)
-                  {
-                    GLib.Source.Remove(tReset);
-                    tReset = 0;
-                  }
-                  tReset = GLib.Timeout.Add(3500, ResetUpdate); 
+                case Gtk.ResponseType.Ok:
+                  updateChecker.DownloadUpdate(sUpdatePath);
                   mySettings.BetaCheck = false;
                   mySettings.Save();
                   break;
-                  case Gtk.ResponseType.Cancel:
+                case Gtk.ResponseType.Cancel:
                   mySettings.BetaCheck = false;
                   mySettings.Save();
-                  SetUpdateValue("No New Updates", false);
                   break;
-                  default:
+                default:
                   break;
               }
               fUpdate.Destroy();
               fUpdate.Dispose();
               fUpdate = null;
-            }
-            else
-            {
-              SetUpdateValue("No New Updates", false);
-            }
-            break;
+              break;
+            case clsUpdate.CheckEventArgs.ResultType.NewBeta:
+              if (mySettings.BetaCheck)
+              {
+                SetButtonUpdate("New BETA Available", "Click to begin download.");
+                System.Threading.Thread.Sleep(0);
+                fUpdate = new dlgUpdate();
+                fUpdate.NewUpdate(e.Version, false);
+                switch ((Gtk.ResponseType)fUpdate.Run())
+                {
+                  case Gtk.ResponseType.Yes:
+                    updateChecker.DownloadUpdate(sUpdatePath);
+                    break;
+                  case Gtk.ResponseType.No:
+                    break;
+                  case Gtk.ResponseType.Ok:
+                    updateChecker.DownloadUpdate(sUpdatePath);
+                    mySettings.BetaCheck = false;
+                    mySettings.Save();
+                    break;
+                  case Gtk.ResponseType.Cancel:
+                    mySettings.BetaCheck = false;
+                    mySettings.Save();
+                    SetUpdateValue("No New Updates", false);
+                    break;
+                  default:
+                    break;
+                }
+                fUpdate.Destroy();
+                fUpdate.Dispose();
+                fUpdate = null;
+              }
+              else
+              {
+                SetUpdateValue("No New Updates", false);
+                RestartReset();
+              }
+              break;
             case clsUpdate.CheckEventArgs.ResultType.NoUpdate:
-            SetUpdateValue("No New Updates", false);
-            break;
+              SetUpdateValue("No New Updates", false);
+              RestartReset();
+              break;
+          }
+          mySettings = null;
         }
+    }
+    void updateChecker_DownloadingUpdate (object sender, EventArgs e)
+    {
+      Gtk.Application.Invoke(sender, e, Main_UpdateCheckerDownloadingUpdate);
+    }
+    void Main_UpdateCheckerDownloadingUpdate(object sender, EventArgs e)
+    {
+      StartSpeed();
+      SetUpdateValue("Downloading Update", true);
+    }
+    void updateChecker_DownloadResult (object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+    {
+      Gtk.Application.Invoke(sender, (EventArgs)e, Main_UpdateCheckerDownloadResult);
+    }
+    void Main_UpdateCheckerDownloadResult(object sender, EventArgs ea)
+    {
+      System.ComponentModel.AsyncCompletedEventArgs e = (System.ComponentModel.AsyncCompletedEventArgs)ea;
+      StopSpeed();
+      if (e.Error != null)
+        SetUpdateValue(e.Error.Message,false);
+      else if (e.Cancelled)
+      {
+        updateChecker.Dispose();
+        SetUpdateValue("Download Cancelled",false);
+      }
+      else
+      {
+        updateChecker.Dispose();
+        SetUpdateValue("Download Complete",false);
+        System.Threading.Thread.Sleep(0);
+        if (System.IO.File.Exists(sUpdatePath))
+          UpdateReset();
+        else
+          SetUpdateValue("Update Failure",false);
       }
     }
-    #endregion 
+    private long CurSize;
+    private long TotalSize;
+    private ulong DownSpeed;
+    private int CurPercent;
+    void updateChecker_UpdateProgressChanged (object sender, clsUpdate.ProgressEventArgs e)
+    {
+      Gtk.Application.Invoke(sender, (EventArgs)e, Main_UpdateCheckerUpdateProgressChanged);
+    }
+    void Main_UpdateCheckerUpdateProgressChanged(object sender, EventArgs ea)
+    {
+      clsUpdate.ProgressEventArgs e = (clsUpdate.ProgressEventArgs)ea;
+      CurSize = e.BytesReceived;
+      TotalSize = e.TotalBytesToReceive;
+      CurPercent = e.ProgressPercentage;
+    }
+    private long LastSize;
+    private void StopSpeed()
+    {
+      if (tSpeed != 0)
+      {
+        GLib.Source.Remove(tSpeed);
+        tSpeed = 0;
+      }
+    }
+    private void StartSpeed()
+    {
+      StopSpeed();
+      tSpeed = GLib.Timeout.Add(1000, speed_tick); 
+    }
+    bool speed_tick()
+    {
+      if (tSpeed == 0)
+      if (CurSize > LastSize)
+        DownSpeed = (ulong) (CurSize - LastSize);
+      else
+        DownSpeed = 0ul;
+      LastSize = CurSize;
+      string sProgress = "(" + CurPercent + "%)";
+      string sStatus = modFunctions.ByteSize((ulong) CurSize) + " of " + modFunctions.ByteSize((ulong) TotalSize) + " at " + modFunctions.ByteSize(DownSpeed) + "/s";
+      if (TotalSize == 0)
+      {
+        sStatus = "Downloading Update (Waiting for Response)";
+        sProgress = "(Waiting for Response)";
+      }
+      SetUpdateValue("Downloading Update " + sProgress, true, sStatus);
+      return true;
+    }
+    #endregion
   }
 }

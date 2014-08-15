@@ -114,7 +114,7 @@ namespace RestrictionTrackerGTK
         httpSend.Dispose();
         httpSend = null;
       }
-      httpSend = new RestrictionLibrary.CookieAwareWebClient(System.Net.HttpVersion.Version11);
+      httpSend = new RestrictionLibrary.CookieAwareWebClient();
       string sTok = GetToken(1);
       if (string.IsNullOrEmpty(sTok))
       {

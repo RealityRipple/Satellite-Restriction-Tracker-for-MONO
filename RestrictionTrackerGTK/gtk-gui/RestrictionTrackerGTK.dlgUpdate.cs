@@ -130,7 +130,7 @@ namespace RestrictionTrackerGTK
 			w11.Add (w12);
 			// Container child GtkHBox.Gtk.Container+ContainerChild
 			global::Gtk.Label w14 = new global::Gtk.Label ();
-			w14.LabelProp = global::Mono.Unix.Catalog.GetString ("Visit _Website");
+			w14.LabelProp = global::Mono.Unix.Catalog.GetString ("Download _Update");
 			w14.UseUnderline = true;
 			w11.Add (w14);
 			w10.Add (w11);
@@ -197,7 +197,7 @@ namespace RestrictionTrackerGTK
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			this.DefaultWidth = 430;
+			this.DefaultWidth = 463;
 			this.DefaultHeight = 284;
 			this.scrInfo.Hide ();
 			this.Hide ();

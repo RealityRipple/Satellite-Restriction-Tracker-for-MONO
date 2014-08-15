@@ -1,52 +1,58 @@
 using System;
-
 namespace RestrictionTrackerGTK
 {
-	public class clsUpdate : IDisposable
-	{
-		private const string VersionURL = "http://update.realityripple.com/Satellite_Restriction_Tracker/ver";
-		public class ProgressEventArgs : EventArgs
-		{
-			public long BytesReceived;
-			public int ProgressPercentage;
-			public long TotalBytesToReceive;
-			internal ProgressEventArgs(long bReceived, long bToReceive, int iPercentage)
-			{
-				BytesReceived = bReceived;
-				TotalBytesToReceive = bToReceive;
-				ProgressPercentage = iPercentage;
+  public class clsUpdate : IDisposable
+  {
+    private const string VersionURL = "http://update.realityripple.com/Satellite_Restriction_Tracker/ver";
+    public class ProgressEventArgs : EventArgs
+    {
+      public long BytesReceived;
+      public int ProgressPercentage;
+      public long TotalBytesToReceive;
+      internal ProgressEventArgs(long bReceived, long bToReceive, int iPercentage)
+      {
+        BytesReceived = bReceived;
+        TotalBytesToReceive = bToReceive;
+        ProgressPercentage = iPercentage;
       }
     }
-		public class CheckEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-		{
-			public enum ResultType
-			{
-				NoUpdate,
-				NewUpdate,
-				NewBeta
+    public class CheckEventArgs : System.ComponentModel.AsyncCompletedEventArgs
+    {
+      public enum ResultType
+      {
+        NoUpdate,
+        NewUpdate,
+        NewBeta
       }
-			public ResultType Result;
-			public string Version;
-			internal CheckEventArgs(ResultType rtResult, string sVersion, Exception ex, bool bCancelled, object state) : base(ex, bCancelled, state)
-			{
-				Version = sVersion;
-				Result = rtResult;
+      public ResultType Result;
+      public string Version;
+      internal CheckEventArgs(ResultType rtResult, string sVersion, Exception ex, bool bCancelled, object state) : base(ex, bCancelled, state)
+      {
+        Version = sVersion;
+        Result = rtResult;
       }
     }
-		public event CheckingVersionEventHandler CheckingVersion;
-		public delegate void CheckingVersionEventHandler(object sender, EventArgs e);
-		public event CheckProgressChangedEventHandler CheckProgressChanged;
-		public delegate void CheckProgressChangedEventHandler(object sender, ProgressEventArgs e);
-		public event CheckResultEventHandler CheckResult;
-		public delegate void CheckResultEventHandler(object sender, CheckEventArgs e);
+    public event CheckingVersionEventHandler CheckingVersion;
+    public delegate void CheckingVersionEventHandler(object sender,EventArgs e);
+    public event CheckProgressChangedEventHandler CheckProgressChanged;
+    public delegate void CheckProgressChangedEventHandler(object sender,ProgressEventArgs e);
+    public event CheckResultEventHandler CheckResult;
+    public delegate void CheckResultEventHandler(object sender,CheckEventArgs e);
+    public event DownloadingUpdateEventHandler DownloadingUpdate;
+    public delegate void DownloadingUpdateEventHandler(object sender,EventArgs e);
+    public event UpdateProgressChangedEventHandler UpdateProgressChanged;
+    public delegate void UpdateProgressChangedEventHandler(object sender,ProgressEventArgs e);
+    public event DownloadResultEventHandler DownloadResult;
+    public delegate void DownloadResultEventHandler(object sender,System.ComponentModel.AsyncCompletedEventArgs e);
     private RestrictionLibrary.CookieAwareWebClient wsVer;
-
-		public void CheckVersion()
+    private string DownloadURL;
+    public void CheckVersion()
     {
       AppSettings myS = new AppSettings();
-      wsVer = new RestrictionLibrary.CookieAwareWebClient(System.Net.HttpVersion.Version11);
+      wsVer = new RestrictionLibrary.CookieAwareWebClient();
       wsVer.DownloadProgressChanged += wsVer_DownloadProgressChanged;
       wsVer.DownloadStringCompleted += wsVer_DownloadStringCompleted;
+      wsVer.DownloadFileCompleted += wsVer_DownloadFileCompleted;
       wsVer.Proxy = myS.Proxy;
       wsVer.Timeout = myS.Timeout;
       myS = null;
@@ -56,12 +62,11 @@ namespace RestrictionTrackerGTK
         CheckingVersion(this, new EventArgs());
       }
     }
-
-		public static CheckEventArgs.ResultType QuickCheckVersion()
+    public static CheckEventArgs.ResultType QuickCheckVersion()
     {
       string sVerStr = null;
       AppSettings mySettings = new AppSettings();
-      using (RestrictionLibrary.CookieAwareWebClient wsCheck = new RestrictionLibrary.CookieAwareWebClient(System.Net.HttpVersion.Version11))
+      using (RestrictionLibrary.CookieAwareWebClient wsCheck = new RestrictionLibrary.CookieAwareWebClient())
       {
         wsCheck.Proxy = mySettings.Proxy;
         wsCheck.Timeout = mySettings.Timeout;
@@ -75,21 +80,21 @@ namespace RestrictionTrackerGTK
           return CheckEventArgs.ResultType.NoUpdate;
         }
       }
-      char[] sSplit = {' '};
+      char[] sSplit = { ' ' };
       if (sVerStr.Contains("\r\n"))
       {
         sVerStr = sVerStr.Replace("\r\n", "\n");
         sSplit[0] = '\n';
       }
       else if (sVerStr.Contains("\n"))
-      {
-        sSplit[0] = '\n';
-      }
-      else if (sVerStr.Contains("\r"))
-      {
-        sSplit[0] = '\r';
-      }
-      char[] verSplit = {'|'};
+        {
+          sSplit[0] = '\n';
+        }
+        else if (sVerStr.Contains("\r"))
+          {
+            sSplit[0] = '\r';
+          }
+      char[] verSplit = { '|' };
       if (sSplit[0] == ' ')
       {
         string[] sVU = sVerStr.Split(verSplit);
@@ -111,21 +116,35 @@ namespace RestrictionTrackerGTK
             return CheckEventArgs.ResultType.NewUpdate;
           }
           else if (mySettings.BetaCheck & !string.IsNullOrEmpty(sVL[1]))
-          {
-            string[] sVBU = sVL[1].Split(verSplit);
-            if (modFunctions.CompareVersions(sVBU[0]))
             {
-              mySettings = null;
-              return CheckEventArgs.ResultType.NewBeta;
+              string[] sVBU = sVL[1].Split(verSplit);
+              if (modFunctions.CompareVersions(sVBU[0]))
+              {
+                mySettings = null;
+                return CheckEventArgs.ResultType.NewBeta;
+              }
             }
-          }
         }
       }
       mySettings = null;
       return CheckEventArgs.ResultType.NoUpdate;
     }
-
-		private void wsVer_DownloadProgressChanged(object sender, System.Net.DownloadProgressChangedEventArgs e)
+    public void DownloadUpdate(string toLocation)
+    {
+      if (!string.IsNullOrEmpty(DownloadURL))
+      {
+        wsVer.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
+        wsVer.DownloadFileAsync(new Uri(DownloadURL), toLocation, "FILE");
+        if (DownloadingUpdate != null)
+          DownloadingUpdate(this, new EventArgs());
+      }
+      else
+      {
+        if (DownloadResult != null)
+          DownloadResult(this, new System.ComponentModel.AsyncCompletedEventArgs(new Exception("Version Check was not run."), true, null));
+      }
+    }
+    private void wsVer_DownloadProgressChanged(object sender, System.Net.DownloadProgressChangedEventArgs e)
     {
       if (e.UserState.ToString().CompareTo("INFO") == 0)
       {
@@ -134,31 +153,36 @@ namespace RestrictionTrackerGTK
           CheckProgressChanged(sender, new ProgressEventArgs(e.BytesReceived, e.TotalBytesToReceive, e.ProgressPercentage));
         }
       }
+      else if (e.UserState.ToString().CompareTo("FILE") == 0)
+        {
+          if (UpdateProgressChanged != null)
+            UpdateProgressChanged(sender, new ProgressEventArgs(e.BytesReceived, e.TotalBytesToReceive, e.ProgressPercentage));
+        }
     }
-
-		private void wsVer_DownloadStringCompleted(object sender, System.Net.DownloadStringCompletedEventArgs e)
+    private void wsVer_DownloadStringCompleted(object sender, System.Net.DownloadStringCompletedEventArgs e)
     {
       CheckEventArgs.ResultType rRet = CheckEventArgs.ResultType.NoUpdate;
       string sVer = null;
+      DownloadURL = null;
       if (e.Error == null)
       {
         try
         {
           string sVerStr = e.Result;
-          char[] sSplit = {' '};
+          char[] sSplit = { ' ' };
           if (sVerStr.Contains("\r\n"))
           {
             sSplit[0] = '\n';
             sVerStr = sVerStr.Replace("\r\n", "\n");
           }
           else if (sVerStr.Contains("\n"))
-          {
-            sSplit[0] = '\n';
-          }
-          else if (sVerStr.Contains("\r"))
-          {
-            sSplit[0] = '\r';
-          }
+            {
+              sSplit[0] = '\n';
+            }
+            else if (sVerStr.Contains("\r"))
+              {
+                sSplit[0] = '\r';
+              }
           char verSplit = '|';
           if (sSplit[0] == ' ')
           {
@@ -166,6 +190,7 @@ namespace RestrictionTrackerGTK
             if (modFunctions.CompareVersions(sVU[0]))
             {
               rRet = CheckEventArgs.ResultType.NewUpdate;
+              DownloadURL = sVU[1];
               sVer = sVU[0];
             }
           }
@@ -179,17 +204,19 @@ namespace RestrictionTrackerGTK
               if (modFunctions.CompareVersions(sVMU[0]))
               {
                 rRet = CheckEventArgs.ResultType.NewUpdate;
+                DownloadURL = sVMU[1];
                 sVer = sVMU[0];
               }
               else if (mySettings.BetaCheck & !string.IsNullOrEmpty(sVL[1]))
-              {
-                string[] sVBU = sVL[1].Split(verSplit);
-                if (modFunctions.CompareVersions(sVBU[0]))
                 {
-                  rRet = CheckEventArgs.ResultType.NewBeta;
-                  sVer = sVBU[0];
+                  string[] sVBU = sVL[1].Split(verSplit);
+                  if (modFunctions.CompareVersions(sVBU[0]))
+                  {
+                    rRet = CheckEventArgs.ResultType.NewBeta;
+                  DownloadURL = sVBU [1];
+                    sVer = sVBU[0];
+                  }
                 }
-              }
               mySettings = null;
             }
             else
@@ -215,11 +242,14 @@ namespace RestrictionTrackerGTK
         CheckResult(sender, new CheckEventArgs(rRet, sVer, e.Error, e.Cancelled, e.UserState));
       }
     }
-
-#region "IDisposable Support"
-		private bool disposedValue;
-
-		protected virtual void Dispose(bool disposing)
+    private void wsVer_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+    {
+      if (DownloadResult != null)
+        DownloadResult(sender, e);
+    }
+    #region "IDisposable Support"
+    private bool disposedValue;
+    protected virtual void Dispose(bool disposing)
     {
       if (!this.disposedValue)
       {
@@ -239,13 +269,12 @@ namespace RestrictionTrackerGTK
       }
       this.disposedValue = true;
     }
-
-		public void Dispose()
+    public void Dispose()
     {
       Dispose(true);
       GC.SuppressFinalize(this);
     }
-#endregion
+    #endregion
   }
 }
 
