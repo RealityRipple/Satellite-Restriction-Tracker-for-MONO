@@ -40,7 +40,7 @@ namespace RestrictionTrackerGTK
       mySettings = new AppSettings();
       useStyle = mySettings.AccountType;
 
-      if (mySettings.Colors.HistoryDownA.A == 0)
+      if (mySettings.Colors.HistoryDownA == System.Drawing.Color.Transparent)
       {
         SetDefaultColors();
       }
@@ -348,8 +348,8 @@ namespace RestrictionTrackerGTK
       {
         System.DateTime dNow = CalculateNow(graphSpaceD, graphMinX, graphMaxX, e.Event.X);
         DataBase.DataRow gShow = modFunctions.GetGraphData(dNow, true);
-        string showTime = gShow.DATETIME.ToString("g");
-        string Show = showTime + " : " + gShow.DOWNLOAD + " MB / " + gShow.UPLIM + " MB";
+        string showTime = gShow.sDATETIME;
+        string Show = showTime + " : " + gShow.sDOWNLOAD + " MB / " + gShow.sDOWNLIM + " MB";
         if (static_pctDld_MouseMove_lastShow == Show)
         {
           return;
@@ -377,7 +377,7 @@ namespace RestrictionTrackerGTK
       {
         System.DateTime dNow = CalculateNow(graphSpaceU, graphMinX, graphMaxX, e.Event.X);
         DataBase.DataRow gShow = modFunctions.GetGraphData(dNow, false);
-        string Show = gShow.DATETIME.ToString("g") + " : " + gShow.UPLOAD + " MB / " + gShow.UPLIM + " MB";
+        string Show = gShow.sDATETIME + " : " + gShow.sUPLOAD + " MB / " + gShow.sUPLIM + " MB";
         if (static_pctUld_MouseMove_lastShow == Show)
         {
           return;
@@ -694,7 +694,7 @@ namespace RestrictionTrackerGTK
               }
             }
           }
-          else
+          else if (modDB.usageDB.Count > 0)
           {
             if (modDB.usageDB.ToArray()[0].DATETIME > dtwFrom.MaxDate)
             {
@@ -708,6 +708,10 @@ namespace RestrictionTrackerGTK
             {
               From30DaysAgo = modDB.usageDB.ToArray()[0].DATETIME;
             }
+          }
+          else
+          {
+            From30DaysAgo = dtwFrom.MinDate;
           }
         }
         else
@@ -797,7 +801,7 @@ namespace RestrictionTrackerGTK
               From60DaysAgo = dtwFrom.MinDate;
             }
           }
-          else
+          else if (modDB.usageDB.Count > 0)
           {
             if (modDB.usageDB.ToArray()[0].DATETIME > dtwFrom.MaxDate)
             {
@@ -811,6 +815,10 @@ namespace RestrictionTrackerGTK
             {
               From60DaysAgo = modDB.usageDB.ToArray()[0].DATETIME;
             }
+          }
+          else
+          {
+            From60DaysAgo = dtwFrom.MinDate;
           }
         }
         else
@@ -1508,7 +1516,7 @@ namespace RestrictionTrackerGTK
         switch (index)
         {
           case 0:
-            render.Text = item.DATETIME.ToString("g");
+            render.Text = item.sDATETIME;
             break;
           default:
             render.Text = "";
@@ -1526,13 +1534,13 @@ namespace RestrictionTrackerGTK
         switch (index)
         {
           case 0:
-            render.Text = item.DATETIME.ToString("g");
+            render.Text = item.sDATETIME;
             break;
           case 1:
-            render.Text = item.DOWNLOAD.ToString();
+            render.Text = item.sDOWNLOAD;
             break;
           case 2:
-            render.Text = item.UPLOAD.ToString();
+            render.Text = item.sUPLOAD;
             break;
         }
       }
@@ -1547,13 +1555,13 @@ namespace RestrictionTrackerGTK
         switch (index)
         {
           case 0:
-            render.Text = item.DATETIME.ToString("g");
+            render.Text = item.sDATETIME;
             break;
           case 1:
-            render.Text = item.DOWNLOAD.ToString() + " / " + item.DOWNLIM.ToString();
+            render.Text = item.sDOWNLOAD + " / " + item.sDOWNLIM;
             break;
           case 2:
-            render.Text = item.UPLOAD.ToString() + " / " + item.UPLIM.ToString();
+            render.Text = item.sUPLOAD + " / " + item.sUPLIM;
             break;
         }
       }
@@ -1568,13 +1576,13 @@ namespace RestrictionTrackerGTK
         switch (index)
         {
           case 0:
-            render.Text = item.DATETIME.ToString("g");
+            render.Text = item.sDATETIME;
             break;
           case 1:
-            render.Text = item.DOWNLOAD.ToString();
+            render.Text = item.sDOWNLOAD;
             break;
           case 2:
-            render.Text = item.DOWNLIM.ToString();
+            render.Text = item.sDOWNLIM;
             break;
         }
       }
@@ -1589,13 +1597,13 @@ namespace RestrictionTrackerGTK
         switch (index)
         {
           case 0:
-            render.Text = item.DATETIME.ToString("g");
+            render.Text = item.sDATETIME;
             break;
           case 1:
-            render.Text = item.DOWNLOAD.ToString();
+            render.Text = item.sDOWNLOAD;
             break;
           case 2:
-            render.Text = item.UPLOAD.ToString();
+            render.Text = item.sUPLOAD;
             break;
         }
       }
@@ -1610,13 +1618,13 @@ namespace RestrictionTrackerGTK
         switch (index)
         {
           case 0:
-            render.Text = item.DATETIME.ToString("g");
+            render.Text = item.sDATETIME;
             break;
           case 1:
-            render.Text = item.DOWNLOAD.ToString() + " / " + item.DOWNLIM.ToString();
+            render.Text = item.sDOWNLOAD + " / " + item.sDOWNLIM;
             break;
           case 2:
-            render.Text = item.UPLOAD.ToString() + " / " + item.UPLIM.ToString();
+            render.Text = item.sUPLOAD + " / " + item.sUPLIM;
             break;
         }
       }

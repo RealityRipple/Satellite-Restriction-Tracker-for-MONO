@@ -643,6 +643,21 @@ namespace RestrictionTrackerGTK
     private string ColorToStr(Color c)
     {
       string sA = null;
+      if (c == Color.Transparent)
+        sA = "00";
+      else
+      {
+        if (c.A > 0)
+        {
+          sA = c.A.ToString("X");
+          if (sA.Length == 0)
+            sA = "FF";
+          else if (sA.Length == 1)
+            sA = 0 + "sA";
+        }
+        else
+          sA = "FF";
+      }
       if (c.A > 0)
       {
         sA = c.A.ToString("X");
@@ -718,6 +733,8 @@ namespace RestrictionTrackerGTK
       int iColor = 0;
       if (int.TryParse(s, System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.CurrentCulture, out iColor))
       {
+        if (!((iColor & 0xFF000000) == 0xFF000000))
+          return Color.Transparent;
         return Color.FromArgb(iColor);
       }
       else

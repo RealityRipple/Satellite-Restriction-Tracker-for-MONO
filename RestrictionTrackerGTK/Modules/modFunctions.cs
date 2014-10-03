@@ -1150,406 +1150,6 @@ namespace RestrictionTrackerGTK
       return iPic;
     }
 
-    public static Image DrawEGraph(DataBase.DataRow[] Data, bool Invert, Size ImgSize, Color ColorDA, Color ColorDB, Color ColorDC, Color ColorUA, Color ColorUB, Color ColorUC, Color ColorText,
-                                   Color ColorBG, Color ColorMax)
-    {
-      if (Data == null || Data.Length == 0)
-      {
-        return new Bitmap(1, 1);
-      }
-      long yVMax = 0;
-      for (long I = 0; I <= Data.Length - 1; I++)
-      {
-        if (Invert)
-        {
-          if (yVMax < Data [I].DOWNLOAD + Data [I].UPLOAD + Data [I].DOWNLIM)
-          {
-            yVMax = Data [I].DOWNLOAD + Data [I].UPLOAD + Data [I].DOWNLIM;
-          }
-        }
-        else
-        {
-          if (yVMax < Data [I].DOWNLOAD + Data [I].UPLOAD + Data [I].UPLIM)
-          {
-            yVMax = Data [I].DOWNLOAD + Data [I].UPLOAD + Data [I].UPLIM;
-          }
-        }
-      }
-      if (Invert)
-      {
-        if (yVMax < Data [Data.Length - 1].UPLIM)
-        {
-          yVMax = Data [Data.Length - 1].UPLIM;
-        }
-      }
-      else
-      {
-        if (yVMax < Data [Data.Length - 1].DOWNLIM)
-        {
-          yVMax = Data [Data.Length - 1].DOWNLIM;
-        }
-      }
-      long yMax = yVMax;
-      if (!(yMax % 1000 == 0))
-      {
-        yMax = (int)(((double)yMax / 1000) * 1000);
-      }
-      long lMax = yVMax;
-      if (!(lMax % 1000 == 0))
-      {
-        lMax = (int)(((double)lMax / 1000) * 1000 + 1000);
-      }
-      Image iPic = new Bitmap(ImgSize.Width, ImgSize.Height);
-      Graphics g = Graphics.FromImage(iPic);
-      Font tFont = new Font(FontFamily.GenericSansSerif, 7);
-      int lYWidth = (int)g.MeasureString(yMax.ToString().Trim() + " MB", tFont).Width + 10;
-      int lXHeight = (int)g.MeasureString(DateTime.Now.ToString("g"), tFont).Height + 10;
-      g.Clear(ColorBG);
-      int yTop = lXHeight / 2;
-      int yHeight = (int)(ImgSize.Height - (lXHeight * 1.5));
-      dGraph = new Rectangle(lYWidth, yTop, ImgSize.Width - lYWidth, yHeight);
-      dData = Data;
-      uGraph = new Rectangle(0, 0, 0, 0);
-      uData = null;
-      g.DrawLine(new Pen(ColorText), lYWidth, yTop, lYWidth, yTop + yHeight);
-      g.DrawLine(new Pen(ColorText), lYWidth, yTop + yHeight, ImgSize.Width, yTop + yHeight);
-      oldDate = Data [0].DATETIME;
-      newDate = Data [Data.Length - 1].DATETIME;
-      for (int I = 0; I <= (int) lMax; I += (int) ((((lMax / ((double) yHeight / (tFont.Size + 12)))) / 100) * 100))
-      {
-        int iY = (int)(yTop + yHeight - (I / (double)lMax * yHeight));
-        g.DrawString(I.ToString().Trim() + " MB", tFont, new SolidBrush(ColorText), lYWidth - g.MeasureString(I.ToString().Trim() + " MB", tFont).Width - 5, iY - (g.MeasureString(I.ToString().Trim() + " MB", tFont).Height / 2));
-        g.DrawLine(new Pen(ColorText), lYWidth - 3, iY, lYWidth, iY);
-      }
-      System.DateTime lStart = Data [0].DATETIME;
-      System.DateTime lEnd = Data [Data.Length - 1].DATETIME;
-      DateInterval dInterval = DateInterval.Minute;
-      uint lInterval = 1;
-      uint lLabelInterval = 5;
-      if (Math.Abs(DateDiff(DateInterval.Minute, lStart, lEnd)) <= 61)
-      {
-        //Under an Hour
-        lInterval = 1;
-        lLabelInterval = 5;
-        dInterval = DateInterval.Minute;
-      }
-      else if (Math.Abs(DateDiff(DateInterval.Minute, lStart, lEnd)) < 60 * 13)
-      {
-        //Under 12 hours
-        lInterval = 15;
-        lLabelInterval = 60;
-        dInterval = DateInterval.Minute;
-      }
-      else if (Math.Abs(DateDiff(DateInterval.Minute, lStart, lEnd)) <= 60 * 25)
-      {
-        //Under a Day
-        lInterval = 60;
-        lLabelInterval = 60 * 6;
-        dInterval = DateInterval.Minute;
-      }
-      else if (Math.Abs(DateDiff(DateInterval.Minute, lStart, lEnd)) <= 60 * 24 * 8)
-      {
-        //Under a Week
-        lInterval = 12;
-        lLabelInterval = 24;
-        dInterval = DateInterval.Hour;
-      }
-      else if (Math.Abs(DateDiff(DateInterval.Minute, lStart, lEnd)) <= 60 * 24 * 31)
-      {
-        //Under 30 Days
-        lInterval = 24;
-        lLabelInterval = 24 * 7;
-        dInterval = DateInterval.Hour;
-      }
-      else if (Math.Abs(DateDiff(DateInterval.Minute, lStart, lEnd)) <= 60 * 24 * 366)
-      {
-        //Under a Year
-        lInterval = 7;
-        lLabelInterval = 30;
-        dInterval = DateInterval.Day;
-      }
-      else
-      {
-        //Over a year
-        lInterval = 30;
-        lLabelInterval = 365;
-        dInterval = DateInterval.Day;
-      }
-      long lMaxTime = Math.Abs(DateDiff(dInterval, lStart, lEnd));
-      if (lMaxTime == 0)
-      {
-        return new Bitmap(1, 1);
-      }
-      long lLineWidth = ImgSize.Width - lYWidth;
-      double dCompInter = lLineWidth / (double)lMaxTime;
-      for (long I = 0; I <= lMaxTime; I += lInterval)
-      {
-        int lX = (int)(lYWidth + (I * dCompInter));
-        g.DrawLine(new Pen(ColorText), lX, ImgSize.Height - (lXHeight - 3), lX, ImgSize.Height - lXHeight);
-      }
-      for (long I = 0; I <= lMaxTime; I += lLabelInterval)
-      {
-        int lX = (int)(lYWidth + (I * dCompInter));
-        g.DrawLine(new Pen(ColorText), lX, ImgSize.Height - (lXHeight - 5), lX, ImgSize.Height - lXHeight);
-        string sDisp = null;
-        if (DateDiff(DateInterval.Day, lStart, lEnd) > 1)
-        {
-          sDisp = DateAdd(dInterval, I, lStart).ToString("d");
-        }
-        else if (DateDiff(DateInterval.Day, lStart, lEnd) < 1)
-        {
-          sDisp = DateAdd(dInterval, I, lStart).ToString("t");
-        }
-        else
-        {
-          sDisp = DateAdd(dInterval, I, lStart).ToString("g");
-        }
-        g.DrawString(sDisp, tFont, new SolidBrush(ColorText), lX - (g.MeasureString(sDisp, tFont).Width / 2), ImgSize.Height - lXHeight + 5);
-      }
-      int MaxY = 0;
-      if (Invert)
-      {
-        MaxY = (int)(yTop + yHeight - (Data [Data.Length - 1].UPLIM / (double)lMax * yHeight));
-      }
-      else
-      {
-        MaxY = (int)(yTop + yHeight - (Data [Data.Length - 1].DOWNLIM / (double)lMax * yHeight));
-      }
-
-      Point[] lMaxPoints = new Point[lMaxTime + 1];
-      long lastLVal = 0;
-
-      for (long I = 0; I <= lMaxTime; I++)
-      {
-        long lVal = -1;
-        long lLow = long.MaxValue;
-        long lHigh = 0;
-        for (int J = 0; J <= Data.Length - 1; J++)
-        {
-          if (Math.Abs(DateDiff(dInterval, Data [J].DATETIME, DateAdd(dInterval, I, lStart))) == 0)
-          {
-            if (Invert)
-            {
-              if (lHigh < Data [J].UPLIM)
-              {
-                lHigh = Data [J].UPLIM;
-              }
-              if (lLow > Data [J].UPLIM)
-              {
-                lLow = Data [J].UPLIM;
-              }
-            }
-            else
-            {
-              if (lHigh < Data [J].DOWNLIM)
-              {
-                lHigh = Data [J].DOWNLIM;
-              }
-              if (lLow > Data [J].DOWNLIM)
-              {
-                lLow = Data [J].DOWNLIM;
-              }
-            }
-          }
-        }
-
-        if (lHigh > 0 & lLow < long.MaxValue)
-        {
-          lVal = (lHigh + lLow) / 2;
-        }
-        if (lVal == -1 & lastLVal > 0)
-        {
-          lVal = lastLVal;
-        }
-        lMaxPoints [I].X = (int)(lYWidth + (I * dCompInter));
-        lMaxPoints [I].Y = (int)(yTop + yHeight - ((double)lVal / lMax * yHeight));
-        lastLVal = lVal;
-      }
-
-      Point[] lUPoints = new Point[lMaxTime + 4];
-      Point[] lDPoints = new Point[lMaxTime + 4];
-      Point[] lOPoints = new Point[lMaxTime + 4];
-      byte[] lTypes = new byte[lMaxTime + 4];
-      long lastDVal = 0;
-      long lastUVal = 0;
-      long lastOVal = 0;
-      for (long I = 0; I <= lMaxTime; I++)
-      {
-        System.Collections.Generic.List<long> lDRange = new System.Collections.Generic.List<long>();
-        long lDVal = -1;
-        System.Collections.Generic.List<long> lURange = new System.Collections.Generic.List<long>();
-        long lUVal = -1;
-        System.Collections.Generic.List<long> lORange = new System.Collections.Generic.List<long>();
-        long lOVal = -1;
-        long lDLow = long.MaxValue;
-        long lDHigh = -1;
-        long lULow = long.MaxValue;
-        long lUHigh = -1;
-        long lOLow = long.MaxValue;
-        long lOHigh = -1;
-
-        for (int J = 0; J <= Data.Length - 1; J++)
-        {
-          if (Math.Abs(DateDiff(dInterval, Data [J].DATETIME, DateAdd(dInterval, I, lStart))) == 0)
-          {
-            long jDVal = Data [J].DOWNLOAD;
-            if (lDHigh < jDVal)
-            {
-              lDHigh = jDVal;
-            }
-            if (lDLow > jDVal)
-            {
-              lDLow = jDVal;
-            }
-
-            long jUVal = Data [J].UPLOAD;
-            if (lUHigh < jUVal)
-            {
-              lUHigh = jUVal;
-            }
-            if (lULow > jUVal)
-            {
-              lULow = jUVal;
-            }
-
-            long jOVal = 0;
-            if (Data [J].DOWNLIM == Data [J].UPLIM)
-            {
-              jOVal = 0;
-            }
-            else
-            {
-              if (Invert)
-              {
-                jOVal = Data [J].DOWNLIM;
-              }
-              else
-              {
-                jOVal = Data [J].UPLIM;
-              }
-            }
-            if (lOHigh < jOVal)
-            {
-              lOHigh = jOVal;
-            }
-            if (lOLow > jOVal)
-            {
-              lOLow = jOVal;
-            }
-
-          }
-        }
-
-        if (lDHigh > -1 & lDLow < long.MaxValue)
-        {
-          int Nulls = lDRange.FindAll((long val) => val == 0).Count;
-          if (Nulls > lDRange.Count * 0.4)
-          {
-            lDVal = 0;
-          }
-          else
-          {
-            lastDVal = lDHigh;
-          }
-        }
-        else if (lastDVal > 0)
-        {
-          lDVal = lastDVal;
-        }
-
-        if (lUHigh > -1 & lULow < long.MaxValue)
-        {
-          int Nulls = lURange.FindAll((long val) => val == 0).Count;
-          if (Nulls > lURange.Count * 0.4)
-          {
-            lUVal = 0;
-          }
-          else
-          {
-            lastUVal = lUHigh;
-          }
-        }
-        else if (lastUVal > 0)
-        {
-          lUVal = lastUVal;
-        }
-
-        if (lOHigh > -1 & lOLow < long.MaxValue)
-        {
-          int Nulls = lORange.FindAll((long val) => val == 0).Count;
-          if (Nulls > lORange.Count * 0.4)
-          {
-            lOVal = 0;
-          }
-          else
-          {
-            lastOVal = lOHigh;
-          }
-        }
-        else if (lastOVal > 0)
-        {
-          lOVal = lastOVal;
-        }
-
-        lUPoints [I].X = (int)(lYWidth + (I * dCompInter));
-        lUPoints [I].Y = (int)(yTop + yHeight - (lUVal / (double)lMax * yHeight));
-        lDPoints [I].X = (int)(lYWidth + (I * dCompInter));
-        lDPoints [I].Y = (int)(yTop + yHeight - (lDVal / (double)lMax * yHeight) - (yTop + yHeight - lUPoints [I].Y));
-        lOPoints [I].X = (int)(lYWidth + (I * dCompInter));
-        lOPoints [I].Y = (int)(yTop + yHeight - (lOVal / (double)lMax * yHeight) - (yTop + yHeight - lDPoints [I].Y));
-        if (lDVal > 0)
-          lastDVal = lDVal;
-        if (lUVal > 0)
-          lastUVal = lUVal;
-        if (lOVal > 0)
-        lastOVal = lOVal;
-      }
-      lTypes [0] = (byte)PathPointType.Start;
-      for (long I = 1; I <= lMaxTime + 2; I++)
-      {
-        lTypes [I] = (byte)PathPointType.Line;
-      }
-
-      if (lUPoints [lMaxTime].IsEmpty)
-      {
-        lUPoints [lMaxTime] = new Point(ImgSize.Width, yTop + yHeight);
-      }
-      lUPoints [lMaxTime + 1] = new Point(ImgSize.Width, yTop + yHeight);
-      lUPoints [lMaxTime + 2] = new Point(lYWidth, yTop + yHeight);
-      lUPoints [lMaxTime + 3] = lUPoints [0];
-      lTypes [lMaxTime + 3] = (byte)(PathPointType.Line | PathPointType.CloseSubpath);
-      LinearGradientBrush uBrush = TriGradientBrush(new Point(lYWidth, MaxY), new Point(lYWidth, yTop + yHeight), ColorUA, ColorUB, ColorUC);
-      uBrush.WrapMode = WrapMode.TileFlipX;
-
-      if (lDPoints [lMaxTime].IsEmpty)
-      {
-        lDPoints [lMaxTime] = new Point(ImgSize.Width, yTop + yHeight);
-      }
-      lDPoints [lMaxTime + 1] = new Point(ImgSize.Width, yTop + yHeight);
-      lDPoints [lMaxTime + 2] = new Point(lYWidth, yTop + yHeight);
-      lDPoints [lMaxTime + 3] = lDPoints [0];
-      LinearGradientBrush dBrush = TriGradientBrush(new Point(lYWidth, MaxY), new Point(lYWidth, yTop + yHeight), ColorDA, ColorDB, ColorDC);
-      dBrush.WrapMode = WrapMode.TileFlipX;
-
-      if (lOPoints [lMaxTime].IsEmpty)
-      {
-        lOPoints [lMaxTime] = new Point(ImgSize.Width, yTop + yHeight);
-      }
-      lOPoints [lMaxTime + 1] = new Point(ImgSize.Width, yTop + yHeight);
-      lOPoints [lMaxTime + 2] = new Point(lYWidth, yTop + yHeight);
-      lOPoints [lMaxTime + 3] = lOPoints [0];
-      LinearGradientBrush oBrush = TriGradientBrush(new Point(lYWidth, MaxY), new Point(lYWidth, yTop + yHeight), ColorDA, ColorDB, ColorDC);
-      oBrush.WrapMode = WrapMode.TileFlipX;
-
-      g.DrawLines(new Pen(new SolidBrush(ColorMax), 5), lMaxPoints);
-      g.FillPath(oBrush, new GraphicsPath(lOPoints, lTypes));
-      g.FillPath(dBrush, new GraphicsPath(lDPoints, lTypes));
-      g.FillPath(uBrush, new GraphicsPath(lUPoints, lTypes));
-      g.DrawLines(new Pen(new SolidBrush(Color.FromArgb(96, ColorMax)), 5), lMaxPoints);
-      g.Dispose();
-      return iPic;
-    }
-
     public static Image DrawRGraph(DataBase.DataRow[] Data, Size ImgSize, Color ColorA, Color ColorB, Color ColorC, Color ColorText, Color ColorBG, Color ColorMax)
     {
       if (Data == null || Data.Length == 0)
@@ -1563,10 +1163,10 @@ namespace RestrictionTrackerGTK
         {
           yVMax = Data [I].DOWNLOAD;
         }
-      }
-      if (yVMax < Data [Data.Length - 1].DOWNLIM)
-      {
-        yVMax = Data [Data.Length - 1].DOWNLIM;
+        if (yVMax < Data [I].DOWNLIM)
+        {
+          yVMax = Data [I].DOWNLIM;
+        }
       }
       long yMax = yVMax;
       if (!(yMax % 1000 == 0))
@@ -1586,10 +1186,8 @@ namespace RestrictionTrackerGTK
       g.Clear(ColorBG);
       int yTop = lXHeight / 2;
       int yHeight = (int)(ImgSize.Height - (lXHeight * 1.5));
-      dGraph = new Rectangle(lYWidth, yTop, ImgSize.Width - lYWidth, yHeight);
+      dGraph = new Rectangle(lYWidth, yTop, (ImgSize.Width - 4)- lYWidth, yHeight);
       dData = Data;
-      uGraph = new Rectangle(0, 0, 0, 0);
-      uData = null;
       g.DrawLine(new Pen(ColorText), lYWidth, yTop, lYWidth, yTop + yHeight);
       g.DrawLine(new Pen(ColorText), lYWidth, yTop + yHeight, ImgSize.Width, yTop + yHeight);
       oldDate = Data [0].DATETIME;
@@ -1659,52 +1257,69 @@ namespace RestrictionTrackerGTK
       {
         return new Bitmap(1, 1);
       }
-      long lLineWidth = ImgSize.Width - lYWidth;
+      long lLineWidth = (ImgSize.Width - 4) - lYWidth - 1;
       double dCompInter = lLineWidth / (double)lMaxTime;
       for (long I = 0; I <= lMaxTime; I += lInterval)
       {
-        int lX = (int)(lYWidth + (I * dCompInter));
+        int lX = (int)(lYWidth + (I * dCompInter)) + 1;
         g.DrawLine(new Pen(ColorText), lX, ImgSize.Height - (lXHeight - 3), lX, ImgSize.Height - lXHeight);
       }
+      long lastI = (long)(lYWidth + (lMaxTime * dCompInter));
+      if (lastI >= (ImgSize.Width - 4))
+        lastI = (ImgSize.Width - 4);
+      string sDispV = "g";
+      long ddRet = DateDiff(DateInterval.Minute, lStart, lEnd);
+      if (ddRet > 1)
+        sDispV = "d";
+      else if (ddRet < 1)
+        sDispV = "t";
+      else
+        sDispV = "g";
+      string sLastDisp = lEnd.ToString(sDispV);
+      float iLastDispWidth = g.MeasureString(sLastDisp, tFont).Width;
       for (long I = 0; I <= lMaxTime; I += lLabelInterval)
       {
-        int lX = (int)(lYWidth + (I * dCompInter));
-        g.DrawLine(new Pen(ColorText), lX, ImgSize.Height - (lXHeight - 5), lX, ImgSize.Height - lXHeight);
-        string sDisp = null;
-        if (DateDiff(DateInterval.Day, lStart, lEnd) > 1)
+        int lX = (int)(lYWidth + (I * dCompInter)) + 1;
+        if (lX >= (ImgSize.Width - 4))
         {
-          sDisp = DateAdd(dInterval, I, lStart).ToString("d");
-        }
-        else if (DateDiff(DateInterval.Day, lStart, lEnd) < 1)
-        {
-          sDisp = DateAdd(dInterval, I, lStart).ToString("t");
+          lX = (ImgSize.Width - 4);
+          g.DrawLine(new Pen(ColorText), lX, ImgSize.Height - (lXHeight - 5), lX, ImgSize.Height - lXHeight);
+          string sDisp = DateAdd(dInterval, I, lStart).ToString(sDispV);
+          g.DrawString(sDisp, tFont, new SolidBrush(ColorText), lX - g.MeasureString(sDisp, tFont).Width, ImgSize.Height - lXHeight + 5);
         }
         else
         {
-          sDisp = DateAdd(dInterval, I, lStart).ToString("g");
+          g.DrawLine(new Pen(ColorText), lX, ImgSize.Height - (lXHeight - 5), lX, ImgSize.Height - lXHeight);
+          string sDisp = DateAdd(dInterval, I, lStart).ToString(sDispV);
+          g.DrawString(sDisp, tFont, new SolidBrush(ColorText), lX - (g.MeasureString(sDisp, tFont).Width / 2), ImgSize.Height - lXHeight + 5);
         }
-        g.DrawString(sDisp, tFont, new SolidBrush(ColorText), lX - (g.MeasureString(sDisp, tFont).Width / 2), ImgSize.Height - lXHeight + 5);
+        if (lX >= lastI - (iLastDispWidth * 1.6))
+          lastI = -1;
+      }
+      if (lastI > -1)
+      {
+        g.DrawLine(new Pen(ColorText), lastI, ImgSize.Height - (lXHeight - 5), lastI, ImgSize.Height - lXHeight);
+        g.DrawString(sLastDisp, tFont, new SolidBrush(ColorText), lastI - iLastDispWidth + 3, ImgSize.Height - lXHeight + 5);
       }
       int MaxY = (int)(yTop + yHeight - (Data [Data.Length - 1].DOWNLIM / (double)lMax * yHeight));
       Point[] lMaxPoints = new Point[lMaxTime + 1];
+      Point[] lPoints = new Point[lMaxTime + 4];
+      byte[] lTypes = new byte[lMaxTime + 4];
       long lastLVal = 0;
       for (long I = 0; I <= lMaxTime; I++)
       {
-        long lVal = 0;
+        long lVal = -1;
         long lLow = long.MaxValue;
         long lHigh = 0;
         for (int J = 0; J <= Data.Length - 1; J++)
         {
           if (Math.Abs(DateDiff(dInterval, Data [J].DATETIME, DateAdd(dInterval, I, lStart))) == 0)
           {
-            if (lHigh < Data [J].DOWNLIM)
-            {
-              lHigh = Data [J].DOWNLIM;
-            }
-            if (lLow > Data [J].DOWNLIM)
-            {
-              lLow = Data [J].DOWNLIM;
-            }
+            long jLim = Data[J].DOWNLIM;
+            if (lHigh < jLim)
+              lHigh = jLim;
+            if (lLow > jLim)
+              lLow = jLim;
           }
         }
         if (lHigh > 0 & lLow < long.MaxValue)
@@ -1715,52 +1330,74 @@ namespace RestrictionTrackerGTK
         {
           lVal = lastLVal;
         }
-        lMaxPoints [I].X = (int)(lYWidth + (I * dCompInter));
+        lMaxPoints [I].X = (int)(lYWidth + (I * dCompInter) + 1);
         lMaxPoints [I].Y = (int)(yTop + yHeight - (lVal / (double)lMax * yHeight));
+        if (I > 0)
+        {
+          if (lMaxPoints[I - 1].X == 0 & lMaxPoints[I - 1].Y == 0)
+          {
+            long J = 1;
+            while (lMaxPoints[I - J].Y == 0)
+              J++;
+            for (long K = 1; K < J; K++)
+            {
+              lMaxPoints[I - K].X = (int)(lYWidth + ((I - K) * dCompInter) + 1);
+              lMaxPoints[I - K].Y = (lMaxPoints[I - J].Y + lMaxPoints[I].Y) / 2;
+            }
+          }
+        }
         lastLVal = lVal;
       }
-
       lastLVal = 0;
-      Point[] lDPoints = new Point[lMaxTime + 4];
-      byte[] lTypes = new byte[lMaxTime + 4];
       for (long I = 0; I <= lMaxTime; I++)
       {
-        long lDVal = 0;
+        long lVal = -1;
         long lLow = long.MaxValue;
         long lHigh = 0;
         for (int J = 0; J <= Data.Length - 1; J++)
         {
           if (Math.Abs(DateDiff(dInterval, Data [J].DATETIME, DateAdd(dInterval, I, lStart))) == 0)
           {
-            if (lHigh < Data [J].DOWNLOAD)
-            {
-              lHigh = Data [J].DOWNLOAD;
-            }
-            if (lLow > Data [J].DOWNLOAD)
-            {
-              lLow = Data [J].DOWNLOAD;
-            }
+            long jVal = Data[J].DOWNLOAD;
+            if (lHigh < jVal)
+              lHigh = jVal;
+            if (lLow > jVal)
+              lLow = jVal;
           }
         }
         if (lHigh > 0 & lLow < long.MaxValue)
         {
-          lDVal = (lHigh + lLow) / 2;
+          lVal = (lHigh + lLow) / 2;
         }
-        if (lDVal == -1 & lastLVal > 0)
+        if (lVal == -1 & lastLVal > 0)
         {
-          lDVal = lastLVal;
+          lVal = lastLVal;
         }
-        lDPoints [I].X = (int)(lYWidth + (I * dCompInter));
-        lDPoints [I].Y = (int)(yTop + yHeight - (lDVal / (double)lMax * yHeight));
-        lastLVal = lDVal;
+        lPoints [I].X = (int)(lYWidth + (I * dCompInter) + 1);
+        lPoints [I].Y = (int)(yTop + yHeight - (lVal / (double)lMax * yHeight));
+        if (I > 0)
+        {
+          if (lPoints[I - 1].X == 0 & lPoints[I - 1].Y == 0)
+          {
+            long J = 1;
+            while (lPoints[I-J].Y == 0)
+              J++;
+            for (long K = 1; K < J; K++)
+            {
+              lPoints[I - K].X = (int)(lYWidth + ((I - K) * dCompInter) + 1);
+              lPoints[I - K].Y = (lPoints[I - J].Y + lPoints[I].Y) / 2;
+            }
+          }
+        }
+        lastLVal = lVal;
       }
-      if (lDPoints [lMaxTime].IsEmpty)
+      if (lPoints [lMaxTime].IsEmpty)
       {
-        lDPoints [lMaxTime] = new Point(ImgSize.Width, yTop + yHeight);
+        lPoints [lMaxTime] = new Point(ImgSize.Width, yTop + yHeight);
       }
-      lDPoints [lMaxTime + 1] = new Point(ImgSize.Width, yTop + yHeight);
-      lDPoints [lMaxTime + 2] = new Point(lYWidth, yTop + yHeight);
-      lDPoints [lMaxTime + 3] = lDPoints [0];
+      lPoints [lMaxTime + 1] = new Point(ImgSize.Width, yTop + yHeight);
+      lPoints [lMaxTime + 2] = new Point(lYWidth, yTop + yHeight);
+      lPoints [lMaxTime + 3] = lPoints [0];
       lTypes [0] = (byte)PathPointType.Start;
       for (long I = 1; I <= lMaxTime + 2; I++)
       {
@@ -1771,7 +1408,7 @@ namespace RestrictionTrackerGTK
       LinearGradientBrush fBrush = TriGradientBrush(new Point(lYWidth, MaxY), new Point(lYWidth, yTop + yHeight), ColorA, ColorB, ColorC);
       fBrush.WrapMode = WrapMode.TileFlipX;
       g.DrawLines(new Pen(new SolidBrush(ColorMax), 5), lMaxPoints);
-      g.FillPath(fBrush, new GraphicsPath(lDPoints, lTypes));
+      g.FillPath(fBrush, new GraphicsPath(lPoints, lTypes));
       g.DrawLines(new Pen(new SolidBrush(Color.FromArgb(96,ColorMax)), 5), lMaxPoints);
       g.Dispose();
       return iPic;
@@ -2140,7 +1777,7 @@ namespace RestrictionTrackerGTK
         return new LinearGradientBrush(point1, new Point(point2.X, point2.Y + 1), ColorC, ColorA);
       }
       LinearGradientBrush tBrush = default(LinearGradientBrush);
-      if (ColorB.A == 0)
+      if (ColorB == Color.Transparent)
       {
         tBrush = new LinearGradientBrush(point1, point2, ColorC, ColorA);
       }
@@ -2171,7 +1808,7 @@ namespace RestrictionTrackerGTK
     public static void CreateTrayIcon_Left(ref Graphics g, long lUsed, long lLim, Color cA, Color cB, Color cC, int iSize)
     {
       LinearGradientBrush fillBrush = default(LinearGradientBrush);
-      if (cB.A == 0)
+      if (cB == Color.Transparent)
       {
         fillBrush = new LinearGradientBrush(new Point(0, 0), new Point(0, iSize), Color.FromArgb(Alpha, cC), Color.FromArgb(Alpha, cA));
       }
@@ -2203,7 +1840,7 @@ namespace RestrictionTrackerGTK
     public static void CreateTrayIcon_Right(ref Graphics g, long lUsed, long lLim, Color cA, Color cB, Color cC, int iSize)
     {
       LinearGradientBrush fillBrush = default(LinearGradientBrush);
-      if (cB.A == 0)
+      if (cB == Color.Transparent)
       {
         fillBrush = new LinearGradientBrush(new Point(0, 0), new Point(0, iSize), Color.FromArgb(Alpha, cC), Color.FromArgb(Alpha, cA));
       }
@@ -2235,7 +1872,7 @@ namespace RestrictionTrackerGTK
     public static void CreateTrayIcon_Dual(ref Graphics g, long lDown, long lUp, long lLim, Color cDA, Color cDB, Color cDC, Color cUA, Color cUB, Color cUC, int iSize)
     {
       LinearGradientBrush upBrush = default(LinearGradientBrush);
-      if (cUB.A == 0)
+      if (cUB == Color.Transparent)
       {
         upBrush = new LinearGradientBrush(new Point(0, 0), new Point(0, iSize), Color.FromArgb(Alpha, cUC), Color.FromArgb(Alpha, cUA));
       }
@@ -2253,7 +1890,7 @@ namespace RestrictionTrackerGTK
         upBrush.InterpolationColors = cBlend;
       }
       LinearGradientBrush downBrush = default(LinearGradientBrush);
-      if (cDB.A == 0)
+      if (cDB == Color.Transparent)
       {
         downBrush = new LinearGradientBrush(new Point(0, 0), new Point(0, iSize), Color.FromArgb(Alpha, cDC), Color.FromArgb(Alpha, cDA));
       }

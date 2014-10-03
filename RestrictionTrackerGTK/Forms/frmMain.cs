@@ -376,7 +376,7 @@ namespace RestrictionTrackerGTK
           mySettings.AccountType = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
         else if (e.HostGroup == DetermineType.TypeDeterminedEventArgs.SatHostGroup.Exede)
           mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
-        if (mySettings.Colors.HistoryDownA.A == 0)
+        if (mySettings.Colors.HistoryDownA == Color.Transparent)
         {
           SetDefaultColors();
         }
@@ -424,7 +424,7 @@ namespace RestrictionTrackerGTK
       else
       {
         mySettings.AccountType = e.HostType;
-        if (mySettings.Colors.HistoryDownA.A == 0)
+        if (mySettings.Colors.HistoryDownA == Color.Transparent)
         {
           SetDefaultColors();
         }
@@ -488,7 +488,7 @@ namespace RestrictionTrackerGTK
       if (mySettings == null)
       {
         mySettings = new AppSettings();
-        if (mySettings.Colors.MainDownA.A == 0)
+        if (mySettings.Colors.MainDownA == Color.Transparent)
         {
           SetDefaultColors();
         }
@@ -753,7 +753,7 @@ namespace RestrictionTrackerGTK
         if (mySettings == null)
         {
           mySettings = new AppSettings();
-          if (mySettings.Colors.MainDownA.A == 0)
+          if (mySettings.Colors.MainDownA == Color.Transparent)
           {
             SetDefaultColors();
           }
@@ -1110,7 +1110,7 @@ namespace RestrictionTrackerGTK
     public void ReLoadSettings()
     {
       mySettings = new AppSettings();
-      if (mySettings.Colors.MainDownA.A == 0)
+      if (mySettings.Colors.MainDownA == Color.Transparent)
       {
         SetDefaultColors();
       }
@@ -1471,28 +1471,53 @@ namespace RestrictionTrackerGTK
           SetStatusText(modDB.LOG_GetLast().ToString("g"), "Initializing Connection...", false);
           break;
         case localRestrictionTracker.ConnectionStates.Prepare:
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Login...", false);
-          break;
-        case localRestrictionTracker.ConnectionStates.FirstBookend:
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Setting Initial Coefficient...", false);
+          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing to Log In...", false);
           break;
         case localRestrictionTracker.ConnectionStates.Login:
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Logging In...", false);
-          break;
-        case localRestrictionTracker.ConnectionStates.LoginRetry:
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Attempting Second Login...", false);
-          break;
-        case localRestrictionTracker.ConnectionStates.LastBookend:
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Setting Final Coefficient...", false);
-          break;
-        case localRestrictionTracker.ConnectionStates.Authenticate:
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Authenticating...", false);
+          switch (e.SubState)
+          {
+            case localRestrictionTracker.ConnectionSubStates.ReadLogin:
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Reading Login Page...", false);
+              break;
+            case localRestrictionTracker.ConnectionSubStates.AuthPrepare:
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparinng Authentication...", false);
+              break;
+            case localRestrictionTracker.ConnectionSubStates.Authenticate:
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Authenticating...", false);
+              break;
+            case localRestrictionTracker.ConnectionSubStates.AuthenticateRetry :
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Re-Authenticating...", false);
+              break;
+            case localRestrictionTracker.ConnectionSubStates.Verify:
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Verifying Authentication...", false);
+              break;
+            default:
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Logging In...", false);
+              break;
+          }
           break;
         case localRestrictionTracker.ConnectionStates.TableDownload:
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Usage Table...", false);
-          break;
-        case localRestrictionTracker.ConnectionStates.TableDownloadRetry:
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Attempting Second Usage Table Download...", false);
+          switch (e.SubState)
+          {
+            case localRestrictionTracker.ConnectionSubStates.LoadHome:
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Home Page...", false);
+              break;
+            case localRestrictionTracker.ConnectionSubStates.LoadAJAX1:
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading AJAX Page 1 of 2...", false);
+              break;
+            case localRestrictionTracker.ConnectionSubStates.LoadAJAX2:
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading AJAX page 2 of 2...", false);
+              break;
+            case localRestrictionTracker.ConnectionSubStates.LoadTable:
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Usage Table...", false);
+              break;
+            case localRestrictionTracker.ConnectionSubStates.LoadTableRetry:
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Re-Downloading Usage Table...", false);
+              break;
+            default:
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Usage Table...", false);
+              break;
+          }
           break;
         case localRestrictionTracker.ConnectionStates.TableRead:
           SetStatusText(modDB.LOG_GetLast().ToString("g"), "Reading Usage Table...", false);
@@ -1568,7 +1593,7 @@ namespace RestrictionTrackerGTK
       myPanel = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
       mySettings.Save();
-      if (mySettings.Colors.MainUpA.A == 0)
+      if (mySettings.Colors.MainUpA == Color.Transparent)
       {
         SetDefaultColors();
       }
@@ -1593,7 +1618,7 @@ namespace RestrictionTrackerGTK
       myPanel = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
       mySettings.Save();
-      if (mySettings.Colors.MainUpA.A == 0)
+      if (mySettings.Colors.MainUpA == Color.Transparent)
       {
         SetDefaultColors();
       }
@@ -1618,7 +1643,7 @@ namespace RestrictionTrackerGTK
       myPanel = localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY;
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY;
       mySettings.Save();
-      if (mySettings.Colors.MainUpA.A == 0)
+      if (mySettings.Colors.MainUpA == Color.Transparent)
       {
         SetDefaultColors();
       }
@@ -1643,7 +1668,7 @@ namespace RestrictionTrackerGTK
       myPanel = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
       mySettings.Save();
-      if (mySettings.Colors.MainUpA.A == 0)
+      if (mySettings.Colors.MainUpA == Color.Transparent)
       {
         SetDefaultColors();
       }
@@ -1668,7 +1693,7 @@ namespace RestrictionTrackerGTK
       myPanel = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
       mySettings.Save();
-      if (mySettings.Colors.MainUpA.A == 0)
+      if (mySettings.Colors.MainUpA == Color.Transparent)
       {
         SetDefaultColors();
       }
@@ -1693,7 +1718,7 @@ namespace RestrictionTrackerGTK
       myPanel = localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION;
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION;
       mySettings.Save();
-      if (mySettings.Colors.MainUpA.A == 0)
+      if (mySettings.Colors.MainUpA == Color.Transparent)
       {
         SetDefaultColors();
       }
@@ -1786,7 +1811,7 @@ namespace RestrictionTrackerGTK
       if (e != null)
       {
         mySettings.AccountType = (localRestrictionTracker.SatHostTypes)e.Provider;
-        if (mySettings.Colors.HistoryDownA.A == 0)
+        if (mySettings.Colors.HistoryDownA == Color.Transparent)
         {
           SetDefaultColors();
         }
@@ -1941,6 +1966,8 @@ namespace RestrictionTrackerGTK
       if (lblTemp.Text.Length > 3 & lblTemp.Text.Contains(" "))
       {
         string tmpS = lblTemp.Text.Substring(0, lblTemp.Text.LastIndexOf(' '));
+        if (tmpS.Contains(","))
+          tmpS = tmpS.Replace(",", "");
         if (modFunctions.IsNumeric(tmpS))
         {
           tmpVal = long.Parse(tmpS);
@@ -1977,22 +2004,22 @@ namespace RestrictionTrackerGTK
         if (tmpVal > toVal)
         {
           tmpVal -= majorDif;
-          tmpStr = tmpVal.ToString().Trim() + " MB";
+          tmpStr = tmpVal.ToString("N0").Trim() + " MB";
         }
         else if (tmpVal < toVal)
         {
           tmpVal += majorDif;
-          tmpStr = tmpVal.ToString().Trim() + " MB";
+          tmpStr = tmpVal.ToString("N0").Trim() + " MB";
         }
         else
         {
-          tmpStr = toVal.ToString().Trim() + " MB";
+          tmpStr = toVal.ToString("N0").Trim() + " MB";
           toVal = 0;
         }
       }
       else
       {
-        tmpStr = toVal.ToString().Trim() + " MB";
+        tmpStr = toVal.ToString("N0").Trim() + " MB";
         toVal = 0;
       }
       if (red)
@@ -2746,7 +2773,7 @@ namespace RestrictionTrackerGTK
         case ResponseType.Yes:
           mySettings = null;
           mySettings = new AppSettings();
-          if (mySettings.Colors.MainDownA.A == 0)
+          if (mySettings.Colors.MainDownA == Color.Transparent)
           {
             SetDefaultColors();
           }
@@ -2759,7 +2786,7 @@ namespace RestrictionTrackerGTK
         case ResponseType.Ok:
           mySettings = null;
           mySettings = new AppSettings();
-          if (mySettings.Colors.MainDownA.A == 0)
+          if (mySettings.Colors.MainDownA == Color.Transparent)
           {
             SetDefaultColors();
           }

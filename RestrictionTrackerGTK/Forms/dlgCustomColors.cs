@@ -95,19 +95,6 @@ namespace RestrictionTrackerGTK
           lblHistoryUpMax.Visible = true;
           cmdHistoryUpMax.Visible = true;
           break;
-        case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
-          lblMainDownTitle.Text = "Download Colors";
-          lblMainUpTitle.Text = "Upload Colors";
-          grpMainUp.Visible = true;
-          lblTrayDownTitle.Text = "Download Colors";
-          lblTrayUpTitle.Text = "Upload Colors";
-          grpTrayUp.Visible = true;
-          lblHistoryDownTitle.Text = "Download Colors";
-          lblHistoryUpTitle.Text = "Upload Colors";
-          grpHistoryUp.Visible = true;
-          lblHistoryUpMax.Visible = false;
-          cmdHistoryUpMax.Visible = false;
-          break;
         case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
           lblMainDownTitle.Text = "Anytime Colors";
           lblMainUpTitle.Text = "Off-Peak Colors";
@@ -122,6 +109,7 @@ namespace RestrictionTrackerGTK
           cmdHistoryUpMax.Visible = true;
           break;
         case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
+        case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
         case localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION:
           lblMainDownTitle.Text = "Usage Colors";
           grpMainUp.Visible = false;
@@ -199,7 +187,7 @@ namespace RestrictionTrackerGTK
       cmdHistoryText.ColorSet += cmdColor_SelectedColor;
       cmdHistoryBG.ButtonReleaseEvent += cmdColor_MouseUp;
 
-      if (mySettings.Colors.MainDownA.A == 0)
+      if (mySettings.Colors.MainDownA == Color.Transparent)
       {
         mnuAllDefault_Click(mnuAllDefault, new EventArgs());
       }
@@ -364,20 +352,6 @@ namespace RestrictionTrackerGTK
         g.DrawImage(FakeU, uRect, FakeMRect, GraphicsUnit.Pixel);
         pctMain.Pixbuf = modFunctions.ImageToPixbuf(fakeI);
       }
-      else if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
-      {
-        Rectangle FakeMRect = new Rectangle(0, 0, 200, 150);
-        Image FakeE = modFunctions.DisplayEProgress(modFunctions.DrawingSizeToGdkSize(FakeMRect.Size), lDown, lUp, 0, lDownLim, mySettings.Accuracy, mda, mdb, mdc, mua, mub, muc, mt, mbg);
-        Bitmap fakeI = new Bitmap(pctHistory.Allocation.Width, pctHistory.Allocation.Height);
-        g = Graphics.FromImage(fakeI);
-        g.Clear(Color.Black);
-        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-        g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-        Rectangle MRect = new Rectangle(0, 9, 75, 56);
-        g.DrawImage(FakeE, MRect, FakeMRect, GraphicsUnit.Pixel);
-        pctMain.Pixbuf = modFunctions.ImageToPixbuf(fakeI);
-      }
       else if (DisplayAs == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE)
       {
         pctMain.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctMain.Allocation.Size, lDown, lDownLim, mySettings.Accuracy, mda, mdb, mdc, mt, mbg));
@@ -419,19 +393,6 @@ namespace RestrictionTrackerGTK
         }
         modFunctions.CreateTrayIcon_Left(ref g, lDown, lDownLim, tda, tdb, tdc, 16);
         modFunctions.CreateTrayIcon_Right(ref g, lUp, lUpLim, tua, tub, tuc, 16);
-        pctTray.Pixbuf = modFunctions.ImageToPixbuf(imgTray);
-      }
-      else if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
-      {
-        if (lDown + lUp >= lUpLim)
-        {
-          g.DrawIconUnstretched(new System.Drawing.Icon(GetType(), "Resources.tray_16.restricted.ico"), new Rectangle(0, 0, 16, 16));
-        }
-        else
-        {
-          g.DrawIconUnstretched(new System.Drawing.Icon(GetType(), "Resources.tray_16.norm.ico"), new Rectangle(0, 0, 16, 16));
-        }
-        modFunctions.CreateTrayIcon_Dual(ref g, lDown, lUp, lDownLim, tda, tdb, tdc, tua, tub, tuc, 16);
         pctTray.Pixbuf = modFunctions.ImageToPixbuf(imgTray);
       }
       else if (DisplayAs == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE)
@@ -486,22 +447,6 @@ namespace RestrictionTrackerGTK
         Rectangle uRect = new Rectangle(0, 40, 75, 30);
         g.DrawImage(FakeD, dRect, FakeHRect, GraphicsUnit.Pixel);
         g.DrawImage(FakeU, uRect, FakeHRect, GraphicsUnit.Pixel);
-
-        pctHistory.Pixbuf = modFunctions.ImageToPixbuf(fakeI);
-      }
-      else if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
-      {
-        Image FakeE = modFunctions.DrawEGraph(FakeData.ToArray(), false, FakeHRect.Size, hda, hdb, hdc, hua, hub, huc, ht,
-        hbg, hdm);
-        Bitmap fakeI = new Bitmap(pctHistory.Allocation.Width, pctHistory.Allocation.Height);
-        g = Graphics.FromImage(fakeI);
-
-        g.Clear(Color.Black);
-        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-        g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-        Rectangle dRect = new Rectangle(0, 22, 75, 30);
-        g.DrawImage(FakeE, dRect, FakeHRect, GraphicsUnit.Pixel);
 
         pctHistory.Pixbuf = modFunctions.ImageToPixbuf(fakeI);
       }
@@ -688,10 +633,6 @@ namespace RestrictionTrackerGTK
       {
         if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY)
         {
-          DisplayAs = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
-        }
-        else if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
-        {
           DisplayAs = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
         }
         else if (DisplayAs == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE)
@@ -752,10 +693,6 @@ namespace RestrictionTrackerGTK
       {
         if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY)
         {
-          DisplayAs = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
-        }
-        else if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE )
-        {
           DisplayAs = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
         }
         else if (DisplayAs == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE)
@@ -777,10 +714,6 @@ namespace RestrictionTrackerGTK
       if (e.Event.Button == 2)
       {
         if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY)
-        {
-          DisplayAs = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
-        }
-        else if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
         {
           DisplayAs = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
         }
@@ -1060,8 +993,8 @@ namespace RestrictionTrackerGTK
       Gtk.CheckButton chkThis = (Gtk.CheckButton)getControlFromName(ref pnlCustomColors, cmdColor.Name.Replace("cmd", "chk"));
       if (chkThis != null)
       {
-        chkThis.Active = !(color.A == 0);
-        cmdColor.Sensitive = !(color.A == 0);
+        chkThis.Active = !(color == Color.Transparent);
+        cmdColor.Sensitive = !(color == Color.Transparent);
       }
     }
 
@@ -1126,63 +1059,8 @@ namespace RestrictionTrackerGTK
             default:
               return Color.Transparent;
           }
-        case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
-          switch (Element)
-          {
-            case "cmdMainDownA":
-              return Color.Orange;
-            case "cmdMainDownB":
-              return Color.Transparent;
-            case "cmdMainDownC":
-              return Color.Red;
-            case "cmdMainUpA":
-              return Color.Blue;
-            case "cmdMainUpB":
-              return Color.Transparent;
-            case "cmdMainUpC":
-              return Color.Violet;
-            case "cmdMainText":
-              return Color.White;
-            case "cmdMainBG":
-
-              return Color.Black;
-            case "cmdTrayDownA":
-              return Color.Orange;
-            case "cmdTrayDownB":
-              return Color.Transparent;
-            case "cmdTrayDownC":
-              return Color.Red;
-            case "cmdTrayUpA":
-              return Color.Blue;
-            case "cmdTrayUpB":
-              return Color.Transparent;
-            case "cmdTrayUpC":
-
-              return Color.Violet;
-            case "cmdHistoryDownA":
-              return Color.Orange;
-            case "cmdHistoryDownB":
-              return Color.Transparent;
-            case "cmdHistoryDownC":
-              return Color.Red;
-            case "cmdHistoryDownMax":
-              return Color.Yellow;
-            case "cmdHistoryUpA":
-              return Color.Blue;
-            case "cmdHistoryUpB":
-              return Color.Transparent;
-            case "cmdHistoryUpC":
-              return Color.Violet;
-            case "cmdHistoryUpMax":
-              return Color.Yellow;
-            case "cmdHistoryText":
-              return Color.Black;
-            case "cmdHistoryBG":
-              return Color.White;
-            default:
-              return Color.Transparent;
-          }
         case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
+        case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
         case localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION:
           switch (Element)
           {
@@ -1324,26 +1202,6 @@ namespace RestrictionTrackerGTK
           {
             startDown -= DownList[I - 30];
             startUp -= UpList[I - 30];
-          }
-          FakeData.Add(dRow);
-        }
-      }
-      else if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
-      {
-        for (int I = 1; I <= 90; I++)
-        {
-          DataBase.DataRow dRow = new DataBase.DataRow(startDate, startDown, 10000, startUp, 10000);
-          int DownUsed = RandSel(50, 450);
-          int UpUsed = RandSel(10, 120);
-          DownList.Add(DownUsed);
-          UpList.Add(UpUsed);
-          startDown += DownUsed;
-          startUp += UpUsed;
-          startDate = startDate.AddDays(1);
-          if (I % 30 == 0)
-          {
-            startDown = 0;
-            startUp = 0;
           }
           FakeData.Add(dRow);
         }
