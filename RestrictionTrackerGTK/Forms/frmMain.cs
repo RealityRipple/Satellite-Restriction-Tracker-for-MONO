@@ -125,7 +125,6 @@ namespace RestrictionTrackerGTK
     private string sFailTray;
     private byte bAlert;
     private long wb_down, wb_up, wb_dlim, wb_ulim;
-    private long e_down, e_up, e_over, e_lim;
     private long r_used, r_lim;
     private bool updateFull;
     private long lastBalloon;
@@ -636,10 +635,6 @@ namespace RestrictionTrackerGTK
           using (Gdk.Pixbuf pIco = CreateTrayIcon(down, trayRes, up, trayRes))
           {
             pIco.Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "graph_wb_" + down + "x" + up + ".png", "png");
-          }
-          using (Gdk.Pixbuf pIco = CreateETrayIcon(down, up, trayRes))
-          {
-            pIco.Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "graph_e_" + down + "x" + up + ".png", "png");
           }
         }
         using (Gdk.Pixbuf pIco = CreateRTrayIcon(up, trayRes))
@@ -1502,11 +1497,8 @@ namespace RestrictionTrackerGTK
             case localRestrictionTracker.ConnectionSubStates.LoadHome:
               SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Home Page...", false);
               break;
-            case localRestrictionTracker.ConnectionSubStates.LoadAJAX1:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading AJAX Page 1 of 2...", false);
-              break;
-            case localRestrictionTracker.ConnectionSubStates.LoadAJAX2:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading AJAX page 2 of 2...", false);
+            case localRestrictionTracker.ConnectionSubStates.LoadAJAX:
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading AJAX Data (" + modFunctions.FormatPercent((double) e.SubPercentage, 0) + ")...", false);
               break;
             case localRestrictionTracker.ConnectionSubStates.LoadTable:
               SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Usage Table...", false);
@@ -1908,26 +1900,6 @@ namespace RestrictionTrackerGTK
             return;
           }
           break;
-        case "EXEDE":
-          long eDown = e_down;
-          long eUp = e_up;
-          long eTotal = eDown + eUp + e_over;
-          long eLim = e_lim;
-          long eRemain = eLim - eTotal;
-          if (eDown > 0 | eUp > 0 | eLim > 0 | eTotal > 0 | eRemain != 0)
-          {
-            DoChange(ref lblExedeDownVal, ref eDown, (eDown >= eLim));
-            DoChange(ref lblExedeUpVal, ref eUp, (eUp >= eLim));
-            DoChange(ref lblExedeTotalVal, ref eTotal, !(eRemain > 0));
-            DoChange(ref lblExedeRemainVal, ref eRemain, !(eRemain > 0));
-            DoChange(ref lblExedeAllowedVal, ref eLim, false);
-          }
-          ResizePanels();
-          if (eDown == 0 & eUp == 0 & eTotal == 0 & eRemain == 0 & eLim == 0)
-          {
-            return;
-          }
-          break;
         case "WB":
           long wDown = wb_down;
           long wDLim = wb_dlim;
@@ -2314,147 +2286,6 @@ namespace RestrictionTrackerGTK
               {
                 taskNotifierEvent(true);
                 taskNotifier.Show("Excessive Off-Peak Usage Detected", modFunctions.ProductName() + " has logged an Off-Peak usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
-              }
-              lastBalloon = modFunctions.TickCount();
-              break;
-            }
-          }
-        }
-      }
-    }
-    private void DisplayEResults(long lDown, long lOver, long lUp, long lLimit, string sLastUpdate)
-    {
-      string sTTT = this.Title;
-      if (lOver == lLimit)
-      {
-        lOver = 0;
-      }
-      long lUsed = lDown + lUp + lOver;
-      if (lUsed >= lLimit)
-      {
-        imSlowed = true;
-      }
-      if (lUsed < lLimit * 0.7)
-      {
-        imSlowed = false;
-      }
-      if (pnlWildBlue.Visible)
-      {
-        pnlWildBlue.Visible = false;
-        pnlDisplays.Remove(pnlWildBlue);
-      }
-      if (!pnlExede.Visible)
-      {
-        pnlExede.Visible = true;
-        pnlDisplays.Add(pnlExede);
-      }
-      if (pnlRural.Visible)
-      {
-        pnlRural.Visible = false;
-        pnlDisplays.Remove(pnlRural);
-      }
-      if (pnlNothing.Visible)
-      {
-        pnlNothing.Visible = false;
-        pnlDisplays.Remove(pnlNothing);
-      }
-
-      e_down = lDown;
-      e_up = lUp;
-      e_over = lOver;
-      e_lim = lLimit;
-      if (tmrChanges != null)
-      {
-        tmrChanges.Dispose();
-        tmrChanges = null;
-      }
-      tmrChanges = new System.Threading.Timer(DisplayChangeInterval, (object)"EXEDE", 75, System.Threading.Timeout.Infinite);
-      pctExede.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayEProgress(pctDld.Allocation.Size, lDown, lUp, lOver, lLimit, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainUpA, mySettings.Colors.MainUpB, mySettings.Colors.MainUpC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-      string sFree;
-      if (lLimit > lUsed)
-      {
-        sFree = "\nFree: " + MBorGB(lLimit - lDown);
-      }
-      else if (lLimit < lDown)
-      {
-        sFree = "\nOver:" + MBorGB(lDown - lLimit);
-      }
-      else
-      {
-        sFree = "";
-      }
-      sTTT = "Satellite Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
-        "Last Updated " + sLastUpdate + "\n" +
-        "Download: " + MBorGB(lDown) + "\n" +
-        "Upload: " + MBorGB(lUp) + "\n" +
-        "Total: " + AccuratePercent((double)lUsed / lLimit) + sFree;
-      if (tmrIcon != 0)
-      {
-        GLib.Source.Remove(tmrIcon);
-        tmrIcon = 0;
-      }
-      int d = (int)Math.Round(((double)lDown / lLimit) * trayRes);
-      int u = (int)Math.Round(((double)lUp / lLimit) * trayRes);
-      SetTrayIcon("graph_e_" + d + "x" + u);
-      SetTrayText(sTTT);
-      if (mySettings.Overuse > 0)
-      {
-        if (lastBalloon > 0 && modFunctions.TickCount() - lastBalloon < mySettings.Overtime * 60 * 1000)
-        {
-          return;
-        }
-        int timeCheck = -mySettings.Overtime;
-        if (timeCheck <= -15)
-        {
-          DataBase.DataRow[] lItems = Array.FindAll(modDB.usageDB.ToArray(), (DataBase.DataRow satRow) => satRow.DATETIME.CompareTo(DateTime.Now.AddMinutes(timeCheck)) >= 0 & satRow.DATETIME.CompareTo(DateTime.Now) <= 0);
-          long DownTotal = lDown + lOver;
-          long UpTotal = lUp + lOver;
-          for (int I = lItems.Length - 2; I >= 0; I += -1)
-          {
-            long DownThis = lItems[I].DOWNLOAD;
-            long UpThis = lItems[I].UPLOAD;
-            long OverThis = 0;
-            if (lItems[I].DOWNLIM != lItems[I].UPLIM)
-            {
-              OverThis = lItems[I].UPLIM;
-            }
-            DownThis += OverThis;
-            UpThis += OverThis;
-            if (DownTotal - DownThis >= mySettings.Overuse)
-            {
-              long ChangeSize = Math.Abs(DownTotal - DownThis);
-              ulong ChangeTime = (ulong)Math.Abs(modFunctions.DateDiff(modFunctions.DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
-              modFunctions.MakeNotifier(ref taskNotifier, false);
-              if (taskNotifier != null)
-              {
-                taskNotifierEvent(true);
-                taskNotifier.Show("Excessive Download  Detected", modFunctions.ProductName() + " has logged a download of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
-              }
-              lastBalloon = modFunctions.TickCount();
-              break;
-            }
-            else if (UpTotal - UpThis >= mySettings.Overuse)
-            {
-              long ChangeSize = Math.Abs(UpTotal - UpThis);
-              ulong ChangeTime = (ulong)Math.Abs(modFunctions.DateDiff(modFunctions.DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
-              modFunctions.MakeNotifier(ref taskNotifier, false);
-              if (taskNotifier != null)
-              {
-                taskNotifierEvent(true);
-                taskNotifier.Show("Excessive Upload Detected", modFunctions.ProductName() + " has logged an upload change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
-              }
-              lastBalloon = modFunctions.TickCount();
-              break;
-            }
-            else if (lOver - OverThis >= mySettings.Overuse)
-            {
-              long ChangeSize = Math.Abs(lOver - OverThis);
-              ulong ChangeTime = (ulong)Math.Abs(modFunctions.DateDiff(modFunctions.DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
-              modFunctions.MakeNotifier(ref taskNotifier, false);
-              if (taskNotifier != null)
-              {
-                taskNotifierEvent(true);
-                taskNotifier.Show("Excessive Usage Detected", modFunctions.ProductName() + " has logged an over-the-limit usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
               }
               lastBalloon = modFunctions.TickCount();
               break;
@@ -3153,43 +2984,6 @@ namespace RestrictionTrackerGTK
       g.Dispose();
       return modFunctions.ImageToPixbuf(imgTray);
     }
-    private Gdk.Pixbuf CreateETrayIcon(long lDown, long lUp, long lLim)
-    {
-      Bitmap imgTray = new Bitmap(trayRes, trayRes);
-      Graphics g = Graphics.FromImage(imgTray);
-      g.Clear(Color.Transparent);
-      if (imSlowed)
-      {
-        string restricted = "Resources.tray_16.restricted.ico";
-        if (trayRes > 16)
-        {
-          restricted = "Resources.tray_32.restricted.ico";
-        }
-        g.DrawIcon(new System.Drawing.Icon(GetType(), restricted), new Rectangle(0, 0, trayRes, trayRes));
-        modFunctions.CreateTrayIcon_Dual(ref g, lDown, lUp, lLim, mySettings.Colors.TrayDownA, mySettings.Colors.TrayDownB, mySettings.Colors.TrayDownC, mySettings.Colors.TrayUpA, mySettings.Colors.TrayUpB, mySettings.Colors.TrayUpC, trayRes);
-      }
-      else if (imFree)
-      {
-        string free = "Resources.tray_16.free.ico";
-        if (trayRes > 16)
-        {
-          free = "Resources.tray_32.free.ico";
-        }
-        g.DrawIcon(new System.Drawing.Icon(GetType(), free), new Rectangle(0, 0, trayRes, trayRes));
-      }
-      else
-      {
-        string norm = "Resources.tray_16.norm.ico";
-        if (trayRes > 16)
-        {
-          norm = "Resources.tray_32.norm.ico";
-        }
-        g.DrawIcon(new System.Drawing.Icon(GetType(), norm), new Rectangle(0, 0, trayRes, trayRes));
-        modFunctions.CreateTrayIcon_Dual(ref g, lDown, lUp, lLim, mySettings.Colors.TrayDownA, mySettings.Colors.TrayDownB, mySettings.Colors.TrayDownC, mySettings.Colors.TrayUpA, mySettings.Colors.TrayUpB, mySettings.Colors.TrayUpC, trayRes);
-      }
-      g.Dispose();
-      return modFunctions.ImageToPixbuf(imgTray);
-    }
     private Gdk.Pixbuf CreateRTrayIcon(long lUsed, long lLim)
     {
       Bitmap imgTray = new Bitmap(trayRes, trayRes);
@@ -3204,7 +2998,7 @@ namespace RestrictionTrackerGTK
         }
         g.DrawIcon(new System.Drawing.Icon(GetType(), restricted), new Rectangle(0, 0, trayRes, trayRes));
         modFunctions.CreateTrayIcon_Left(ref g, lUsed, lLim, mySettings.Colors.TrayDownA, mySettings.Colors.TrayDownB, mySettings.Colors.TrayDownC, trayRes);
-        modFunctions.CreateTrayIcon_Right(ref g, lUsed, lLim, mySettings.Colors.TrayUpA, mySettings.Colors.TrayUpB, mySettings.Colors.TrayUpC, trayRes);
+        modFunctions.CreateTrayIcon_Right(ref g, lUsed, lLim, mySettings.Colors.TrayDownA, mySettings.Colors.TrayDownB, mySettings.Colors.TrayDownC, trayRes);
       }
       else if (imFree)
       {
@@ -3224,7 +3018,7 @@ namespace RestrictionTrackerGTK
         }
         g.DrawIcon(new System.Drawing.Icon(GetType(), norm), new Rectangle(0, 0, trayRes, trayRes));
         modFunctions.CreateTrayIcon_Left(ref g, lUsed, lLim, mySettings.Colors.TrayDownA, mySettings.Colors.TrayDownB, mySettings.Colors.TrayDownC, trayRes);
-        modFunctions.CreateTrayIcon_Right(ref g, lUsed, lLim, mySettings.Colors.TrayUpA, mySettings.Colors.TrayUpB, mySettings.Colors.TrayUpC, trayRes);
+        modFunctions.CreateTrayIcon_Right(ref g, lUsed, lLim, mySettings.Colors.TrayDownA, mySettings.Colors.TrayDownB, mySettings.Colors.TrayDownC, trayRes);
       }
       g.Dispose();
       return modFunctions.ImageToPixbuf(imgTray);
