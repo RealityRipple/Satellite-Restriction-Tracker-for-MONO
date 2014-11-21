@@ -71,7 +71,7 @@ namespace RestrictionTrackerGTK
           sExt = System.IO.Path.GetExtension(sTitle).ToLower() + sExt;
           sTitle = System.IO.Path.GetFileNameWithoutExtension(sTitle);
         }
-        if (sExt == ".tgz" || sExt == ".tar.gz")
+        if (sExt == ".tgz" || sExt == ".tar.gz" || sExt == ".tar")
         {
           lstStyles.AddItem(sTitle);
           lstStyles.Model.IterNext(ref iter);
@@ -82,7 +82,7 @@ namespace RestrictionTrackerGTK
           }
         }
       }
-      lstStyles.TooltipMarkup = "Select the Alert Window Style you want to use.\n<b>Drag and Drop:</b> Add an Alert Style from a GZipped TAR (*.tar.gz, *.tgz).\n<b>Delete:</b> Remove an Alert Style from the list.";
+      lstStyles.TooltipMarkup = "Select the Alert Window Style you want to use.\n<b>Drag and Drop:</b> Add an Alert Style from a Tarball or GZipped TAR (*.tar, *.tar.gz, *.tgz).\n<b>Delete:</b> Remove an Alert Style from the list.";
       lblMore.Markup = "<a href=\"http://srt.realityripple.com/Alert_Styles\">Get More Styles</a>";
       lblMore.TooltipText = "Download new Alert Window Styles from RealityRipple.com.";
       Changed = false;
@@ -142,6 +142,12 @@ namespace RestrictionTrackerGTK
             {
               lstStyles.Selection.SelectIter(iFirst);
               System.IO.File.Delete(modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + sTitle + ".tgz");
+              lstStyles.RemoveItem(sTitle);
+            }
+            else if (System.IO.File.Exists(modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + sTitle + ".tar"))
+            {
+              lstStyles.Selection.SelectIter(iFirst);
+              System.IO.File.Delete(modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + sTitle + ".tar");
               lstStyles.RemoveItem(sTitle);
             }
             else
@@ -280,7 +286,7 @@ namespace RestrictionTrackerGTK
               sExt = System.IO.Path.GetExtension(sTitle).ToLower() + sExt;
               sTitle = System.IO.Path.GetFileNameWithoutExtension(sTitle);
             }
-            if (sExt == ".tgz" || sExt == ".tar.gz")
+            if (sExt == ".tgz" || sExt == ".tar.gz" || sExt == ".tar")
             {
               Added = true;
               break;
@@ -318,7 +324,7 @@ namespace RestrictionTrackerGTK
               sExt = System.IO.Path.GetExtension(sTitle).ToLower() + sExt;
               sTitle = System.IO.Path.GetFileNameWithoutExtension(sTitle);
             }
-            if (sExt == ".tgz" || sExt == ".tar.gz")
+            if (sExt == ".tgz" || sExt == ".tar.gz" || sExt == ".tar")
             {
               System.IO.File.Copy(StylePath, modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + sTitle + sExt, true);
               TreeIter iter;
@@ -385,6 +391,7 @@ namespace RestrictionTrackerGTK
     {
       FileChooserDialog cdlOpen = new FileChooserDialog("Add Alert Window Styles", this, FileChooserAction.Open, Gtk.Stock.Cancel, Gtk.ResponseType.Cancel, Gtk.Stock.Open, Gtk.ResponseType.Ok);
       Gtk.FileFilter fTGZ = new Gtk.FileFilter();
+      fTGZ.AddPattern("*.tar");
       fTGZ.AddPattern("*.tgz");
       fTGZ.AddPattern("*.tar.gz");
       fTGZ.Name = "Window Styles";
@@ -408,7 +415,7 @@ namespace RestrictionTrackerGTK
               sExt = System.IO.Path.GetExtension(sTitle).ToLower() + sExt;
               sTitle = System.IO.Path.GetFileNameWithoutExtension(sTitle);
             }
-            if (sExt == ".tgz" || sExt == ".tar.gz")
+            if (sExt == ".tgz" || sExt == ".tar.gz" || sExt == ".tar")
             {
               System.IO.File.Copy(StylePath, modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + sTitle + sExt, true);
               TreeIter iter;
@@ -485,6 +492,12 @@ namespace RestrictionTrackerGTK
           {
             lstStyles.Selection.SelectIter(iFirst);
             System.IO.File.Delete(modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + sTitle + ".tgz");
+            lstStyles.RemoveItem(sTitle);
+          }
+          else if (System.IO.File.Exists(modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + sTitle + ".tar"))
+          {
+            lstStyles.Selection.SelectIter(iFirst);
+            System.IO.File.Delete(modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + sTitle + ".tar");
             lstStyles.RemoveItem(sTitle);
           }
           else

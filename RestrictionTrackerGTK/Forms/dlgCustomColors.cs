@@ -94,6 +94,7 @@ namespace RestrictionTrackerGTK
           grpHistoryUp.Visible = true;
           lblHistoryUpMax.Visible = true;
           cmdHistoryUpMax.Visible = true;
+          DisplayAs = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
           break;
         case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
           lblMainDownTitle.Text = "Anytime Colors";
@@ -107,10 +108,10 @@ namespace RestrictionTrackerGTK
           grpHistoryUp.Visible = true;
           lblHistoryUpMax.Visible = true;
           cmdHistoryUpMax.Visible = true;
+          DisplayAs = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
           break;
         case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
         case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
-        case localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION:
           lblMainDownTitle.Text = "Usage Colors";
           grpMainUp.Visible = false;
           lblTrayDownTitle.Text = "Usage Colors";
@@ -119,6 +120,7 @@ namespace RestrictionTrackerGTK
           grpHistoryUp.Visible = false;
           lblHistoryUpMax.Visible = false;
           cmdHistoryUpMax.Visible = false;
+          DisplayAs = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
           break;
         default:
           lblMainDownTitle.Text = "Download Colors";
@@ -132,6 +134,7 @@ namespace RestrictionTrackerGTK
           grpHistoryUp.Visible = true;
           lblHistoryUpMax.Visible = true;
           cmdHistoryUpMax.Visible = true;
+          DisplayAs = localRestrictionTracker.SatHostTypes.Other;
           break;
       }
       cmdMainDownA.ColorSet += cmdColor_SelectedColor;
@@ -220,7 +223,6 @@ namespace RestrictionTrackerGTK
         SetElColor(ref cmdHistoryText, mySettings.Colors.HistoryText);
         SetElColor(ref cmdHistoryBG, mySettings.Colors.HistoryBackground);
       }
-      DisplayAs = useStyle;
       RedrawImages();
       cmdSave.Sensitive = SettingsChanged();
       HasSaved = false;
@@ -629,22 +631,6 @@ namespace RestrictionTrackerGTK
           }
         }
       }
-      else if (e.Event.Button == 2)
-      {
-        if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY)
-        {
-          DisplayAs = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
-        }
-        else if (DisplayAs == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE)
-        {
-          DisplayAs = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
-        }
-        else if (DisplayAs == localRestrictionTracker.SatHostTypes.DishNet_EXEDE)
-        {
-          DisplayAs = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
-        }
-        MakeFakeData();
-      }
       RedrawImages();
     }
 
@@ -689,45 +675,7 @@ namespace RestrictionTrackerGTK
           }
         }
       }
-      else if (e.Event.Button == 2)
-      {
-        if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY)
-        {
-          DisplayAs = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
-        }
-        else if (DisplayAs == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE)
-        {
-          DisplayAs = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
-        }
-        else if (DisplayAs == localRestrictionTracker.SatHostTypes.DishNet_EXEDE)
-        {
-          DisplayAs = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
-        }
-        MakeFakeData();
-      }
       RedrawImages();
-    }
-
-    private void pctHistory_MouseUp(object sender, Gtk.ButtonReleaseEventArgs  e)
-    {
-      Console.WriteLine("History MouseUp: " + e.Event.Button);
-      if (e.Event.Button == 2)
-      {
-        if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY)
-        {
-          DisplayAs = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
-        }
-        else if (DisplayAs == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE)
-        {
-          DisplayAs = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
-        }
-        else if (DisplayAs == localRestrictionTracker.SatHostTypes.DishNet_EXEDE)
-        {
-          DisplayAs = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
-        }
-        MakeFakeData();
-        RedrawImages();
-      }
     }
 
     private void chkB_CheckedChanged(System.Object sender, System.EventArgs e)
@@ -1009,47 +957,47 @@ namespace RestrictionTrackerGTK
             case "cmdMainDownA":
               return Color.DarkBlue;
             case "cmdMainDownB":
-              return Color.Transparent;
+              return Color.Blue;
             case "cmdMainDownC":
-              return Color.Red;
+              return Color.Aqua;
             case "cmdMainUpA":
               return Color.DarkBlue;
             case "cmdMainUpB":
-              return Color.Transparent;
+              return Color.Blue;
             case "cmdMainUpC":
-              return Color.Red;
+              return Color.Aqua;
             case "cmdMainText":
               return Color.White;
             case "cmdMainBG":
               return Color.Black;
 
             case "cmdTrayDownA":
-              return Color.Blue;
+              return Color.DarkBlue;
             case "cmdTrayDownB":
-              return Color.Yellow;
-            case "cmdTrayDownC":
-              return Color.Red;
-            case "cmdTrayUpA":
               return Color.Blue;
+            case "cmdTrayDownC":
+              return Color.Aqua;
+            case "cmdTrayUpA":
+              return Color.DarkBlue;
             case "cmdTrayUpB":
-              return Color.Yellow;
+              return Color.Blue;
             case "cmdTrayUpC":
-              return Color.Red;
+              return Color.Aqua;
 
             case "cmdHistoryDownA":
               return Color.DarkBlue;
             case "cmdHistoryDownB":
-              return Color.Transparent;
+              return Color.Blue;
             case "cmdHistoryDownC":
-              return Color.Red;
+              return Color.Aqua;
             case "cmdHistoryDownMax":
               return Color.Yellow;
             case "cmdHistoryUpA":
               return Color.DarkBlue;
             case "cmdHistoryUpB":
-              return Color.Transparent;
+              return Color.Blue;
             case "cmdHistoryUpC":
-              return Color.Red;
+              return Color.Aqua;
             case "cmdHistoryUpMax":
               return Color.Yellow;
             case "cmdHistoryText":
@@ -1061,15 +1009,14 @@ namespace RestrictionTrackerGTK
           }
         case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
         case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
-        case localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION:
           switch (Element)
           {
             case "cmdMainDownA":
-              return Color.Orange;
+              return Color.DarkBlue;
             case "cmdMainDownB":
-              return Color.Transparent;
+              return Color.Blue;
             case "cmdMainDownC":
-              return Color.Red;
+              return Color.Aqua;
             case "cmdMainUpA":
               return Color.Transparent;
             case "cmdMainUpB":
@@ -1079,27 +1026,27 @@ namespace RestrictionTrackerGTK
             case "cmdMainText":
               return Color.White;
             case "cmdMainBG":
-
               return Color.Black;
+
             case "cmdTrayDownA":
-              return Color.Orange;
+              return Color.DarkBlue;
             case "cmdTrayDownB":
-              return Color.Transparent;
+              return Color.Blue;
             case "cmdTrayDownC":
-              return Color.Red;
+              return Color.Aqua;
             case "cmdTrayUpA":
               return Color.Transparent;
             case "cmdTrayUpB":
               return Color.Transparent;
             case "cmdTrayUpC":
+              return Color.Transparent;
 
-              return Color.Transparent;
             case "cmdHistoryDownA":
-              return Color.Orange;
+              return Color.DarkBlue;
             case "cmdHistoryDownB":
-              return Color.Transparent;
+              return Color.Blue;
             case "cmdHistoryDownC":
-              return Color.Red;
+              return Color.Aqua;
             case "cmdHistoryDownMax":
               return Color.Yellow;
             case "cmdHistoryUpA":
@@ -1123,47 +1070,47 @@ namespace RestrictionTrackerGTK
             case "cmdMainDownA":
               return Color.DarkBlue;
             case "cmdMainDownB":
-              return Color.Transparent;
+              return Color.Blue;
             case "cmdMainDownC":
-              return Color.Red;
+              return Color.Aqua;
             case "cmdMainUpA":
               return Color.DarkBlue;
             case "cmdMainUpB":
-              return Color.Transparent;
+              return Color.Blue;
             case "cmdMainUpC":
-              return Color.Red;
+              return Color.Aqua;
             case "cmdMainText":
               return Color.White;
             case "cmdMainBG":
-
               return Color.Black;
-            case "cmdTrayDownA":
-              return Color.Blue;
-            case "cmdTrayDownB":
-              return Color.Yellow;
-            case "cmdTrayDownC":
-              return Color.Red;
-            case "cmdTrayUpA":
-              return Color.Blue;
-            case "cmdTrayUpB":
-              return Color.Yellow;
-            case "cmdTrayUpC":
 
-              return Color.Red;
+            case "cmdTrayDownA":
+              return Color.DarkBlue;
+            case "cmdTrayDownB":
+              return Color.Blue;
+            case "cmdTrayDownC":
+              return Color.Aqua;
+            case "cmdTrayUpA":
+              return Color.DarkBlue;
+            case "cmdTrayUpB":
+              return Color.Blue;
+            case "cmdTrayUpC":
+              return Color.Aqua;
+
             case "cmdHistoryDownA":
               return Color.DarkBlue;
             case "cmdHistoryDownB":
-              return Color.Transparent;
+              return Color.Blue;
             case "cmdHistoryDownC":
-              return Color.Red;
+              return Color.Aqua;
             case "cmdHistoryDownMax":
               return Color.Yellow;
             case "cmdHistoryUpA":
               return Color.DarkBlue;
             case "cmdHistoryUpB":
-              return Color.Transparent;
+              return Color.Blue;
             case "cmdHistoryUpC":
-              return Color.Red;
+              return Color.Aqua;
             case "cmdHistoryUpMax":
               return Color.Yellow;
             case "cmdHistoryText":

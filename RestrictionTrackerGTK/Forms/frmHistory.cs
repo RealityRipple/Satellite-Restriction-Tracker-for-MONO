@@ -87,7 +87,6 @@ namespace RestrictionTrackerGTK
         case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
         case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
         case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
-        case localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION:
           ((Label)((HBox)((Alignment)cmd30Days.Children[0]).Children[0]).Children[1]).LabelProp = "This Period";
           ((Label)((HBox)((Alignment)cmd60Days.Children[0]).Children[0]).Children[1]).LabelProp = "Last Period";
           break;
@@ -273,7 +272,6 @@ namespace RestrictionTrackerGTK
                   break;
                 case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
                 case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
-                case localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION:
                   evnUld.Visible = false;
                   pnlGraph.Homogeneous = false;
                   pnlGraph.CheckResize();
@@ -506,7 +504,6 @@ namespace RestrictionTrackerGTK
               break;
             case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
             case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
-            case localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION:
               lvUsage = (DataListView)new RuralPortalView();
               break;
             default:
@@ -673,10 +670,10 @@ namespace RestrictionTrackerGTK
           if (modDB.usageDB.Count > 1)
           {
             ShowProgress("Querying DataBase...", "Scanning for Resets...");
-            for (int i = modDB.usageDB.Count - 1; i <=1; i--)
+            for (int i = modDB.usageDB.Count - 1; i > 1; i--)
             {
               SetProgress(modDB.usageDB.Count - i, modDB.usageDB.Count, "");
-              if ((modDB.usageDB.ToArray()[i].DOWNLOAD == 0 && modDB.usageDB.ToArray()[i].UPLOAD == 0) && (modDB.usageDB.ToArray()[i - 1].DOWNLOAD > 0 || modDB.usageDB.ToArray()[i - 1].UPLOAD > 0))
+              if ((modDB.usageDB.ToArray()[i].DOWNLOAD < 500 && modDB.usageDB.ToArray()[i].UPLOAD < 500) && (modDB.usageDB.ToArray()[i - 1].DOWNLOAD > 500 || modDB.usageDB.ToArray()[i - 1].UPLOAD > 500))
               {
                 if (modDB.usageDB.ToArray()[i].DATETIME > dtwFrom.Date)
                 {
@@ -769,10 +766,10 @@ namespace RestrictionTrackerGTK
           {
             ShowProgress("Querying DataBase...", "Scanning for Resets...");
             int Finds = 0;
-            for (int i = modDB.usageDB.Count - 1; i <=1; i--)
+            for (int i = modDB.usageDB.Count - 1; i > 1; i--)
             {
               SetProgress(modDB.usageDB.Count - i, modDB.usageDB.Count, "");
-              if ((modDB.usageDB.ToArray()[i].DOWNLOAD == 0 && modDB.usageDB.ToArray()[i].UPLOAD == 0) && (modDB.usageDB.ToArray()[i - 1].DOWNLOAD > 0 || modDB.usageDB.ToArray()[i - 1].UPLOAD > 0))
+              if ((modDB.usageDB.ToArray()[i].DOWNLOAD < 500 && modDB.usageDB.ToArray()[i].UPLOAD < 500) && (modDB.usageDB.ToArray()[i - 1].DOWNLOAD > 500 || modDB.usageDB.ToArray()[i - 1].UPLOAD > 500))
               {
                 if (DateTime.Today.Subtract(modDB.usageDB.ToArray()[i].DATETIME).TotalDays > 6)
                 {
@@ -1137,57 +1134,56 @@ namespace RestrictionTrackerGTK
       switch (useStyle)
       {
         case localRestrictionTracker.SatHostTypes.WildBlue_LEGACY:
-        case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
         case localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
           mySettings.Colors.MainDownA = System.Drawing.Color.DarkBlue;
-          mySettings.Colors.MainDownB = System.Drawing.Color.Transparent;
-          mySettings.Colors.MainDownC = System.Drawing.Color.Red;
+          mySettings.Colors.MainDownB = System.Drawing.Color.Blue;
+          mySettings.Colors.MainDownC = System.Drawing.Color.Aqua;
           mySettings.Colors.MainUpA = System.Drawing.Color.DarkBlue;
-          mySettings.Colors.MainUpB = System.Drawing.Color.Transparent;
-          mySettings.Colors.MainUpC = System.Drawing.Color.Red;
+          mySettings.Colors.MainUpB = System.Drawing.Color.Blue;
+          mySettings.Colors.MainUpC = System.Drawing.Color.Aqua;
           mySettings.Colors.MainText = System.Drawing.Color.White;
           mySettings.Colors.MainBackground = System.Drawing.Color.Black;
 
-          mySettings.Colors.TrayDownA = System.Drawing.Color.Blue;
-          mySettings.Colors.TrayDownB = System.Drawing.Color.Yellow;
-          mySettings.Colors.TrayDownC = System.Drawing.Color.Red;
-          mySettings.Colors.TrayUpA = System.Drawing.Color.Blue;
-          mySettings.Colors.TrayUpB = System.Drawing.Color.Yellow;
-          mySettings.Colors.TrayUpC = System.Drawing.Color.Red;
+          mySettings.Colors.TrayDownA = System.Drawing.Color.DarkBlue;
+          mySettings.Colors.TrayDownB = System.Drawing.Color.Blue;
+          mySettings.Colors.TrayDownC = System.Drawing.Color.Aqua;
+          mySettings.Colors.TrayUpA = System.Drawing.Color.DarkBlue;
+          mySettings.Colors.TrayUpB = System.Drawing.Color.Blue;
+          mySettings.Colors.TrayUpC = System.Drawing.Color.Aqua;
 
           mySettings.Colors.HistoryDownA = System.Drawing.Color.DarkBlue;
-          mySettings.Colors.HistoryDownB = System.Drawing.Color.Transparent;
-          mySettings.Colors.HistoryDownC = System.Drawing.Color.Red;
+          mySettings.Colors.HistoryDownB = System.Drawing.Color.Blue;
+          mySettings.Colors.HistoryDownC = System.Drawing.Color.Aqua;
           mySettings.Colors.HistoryDownMax = System.Drawing.Color.Yellow;
           mySettings.Colors.HistoryUpA = System.Drawing.Color.DarkBlue;
-          mySettings.Colors.HistoryUpB = System.Drawing.Color.Transparent;
-          mySettings.Colors.HistoryUpC = System.Drawing.Color.Red;
+          mySettings.Colors.HistoryUpB = System.Drawing.Color.Blue;
+          mySettings.Colors.HistoryUpC = System.Drawing.Color.Aqua;
           mySettings.Colors.HistoryUpMax = System.Drawing.Color.Yellow;
           mySettings.Colors.HistoryText = System.Drawing.Color.Black;
           mySettings.Colors.HistoryBackground = System.Drawing.Color.White;
 
           break;
+        case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
         case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
-        case localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION:
-          mySettings.Colors.MainDownA = System.Drawing.Color.Orange;
-          mySettings.Colors.MainDownB = System.Drawing.Color.Transparent;
-          mySettings.Colors.MainDownC = System.Drawing.Color.Red;
+          mySettings.Colors.MainDownA = System.Drawing.Color.DarkBlue;
+          mySettings.Colors.MainDownB = System.Drawing.Color.Blue;
+          mySettings.Colors.MainDownC = System.Drawing.Color.Aqua;
           mySettings.Colors.MainUpA = System.Drawing.Color.Transparent;
           mySettings.Colors.MainUpB = System.Drawing.Color.Transparent;
           mySettings.Colors.MainUpC = System.Drawing.Color.Transparent;
           mySettings.Colors.MainText = System.Drawing.Color.White;
           mySettings.Colors.MainBackground = System.Drawing.Color.Black;
 
-          mySettings.Colors.TrayDownA = System.Drawing.Color.Orange;
-          mySettings.Colors.TrayDownB = System.Drawing.Color.Transparent;
-          mySettings.Colors.TrayDownC = System.Drawing.Color.Red;
+          mySettings.Colors.TrayDownA = System.Drawing.Color.DarkBlue;
+          mySettings.Colors.TrayDownB = System.Drawing.Color.Blue;
+          mySettings.Colors.TrayDownC = System.Drawing.Color.Aqua;
           mySettings.Colors.TrayUpA = System.Drawing.Color.Transparent;
           mySettings.Colors.TrayUpB = System.Drawing.Color.Transparent;
           mySettings.Colors.TrayUpC = System.Drawing.Color.Transparent;
 
-          mySettings.Colors.HistoryDownA = System.Drawing.Color.Orange;
-          mySettings.Colors.HistoryDownB = System.Drawing.Color.Transparent;
-          mySettings.Colors.HistoryDownC = System.Drawing.Color.Red;
+          mySettings.Colors.HistoryDownA = System.Drawing.Color.DarkBlue;
+          mySettings.Colors.HistoryDownB = System.Drawing.Color.Blue;
+          mySettings.Colors.HistoryDownC = System.Drawing.Color.Aqua;
           mySettings.Colors.HistoryDownMax = System.Drawing.Color.Yellow;
           mySettings.Colors.HistoryUpA = System.Drawing.Color.Transparent;
           mySettings.Colors.HistoryUpB = System.Drawing.Color.Transparent;
@@ -1199,28 +1195,28 @@ namespace RestrictionTrackerGTK
           break;
         case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
           mySettings.Colors.MainDownA = System.Drawing.Color.DarkBlue;
-          mySettings.Colors.MainDownB = System.Drawing.Color.Transparent;
-          mySettings.Colors.MainDownC = System.Drawing.Color.Red;
+          mySettings.Colors.MainDownB = System.Drawing.Color.Blue;
+          mySettings.Colors.MainDownC = System.Drawing.Color.Aqua;
           mySettings.Colors.MainUpA = System.Drawing.Color.DarkBlue;
-          mySettings.Colors.MainUpB = System.Drawing.Color.Transparent;
-          mySettings.Colors.MainUpC = System.Drawing.Color.Red;
+          mySettings.Colors.MainUpB = System.Drawing.Color.Blue;
+          mySettings.Colors.MainUpC = System.Drawing.Color.Aqua;
           mySettings.Colors.MainText = System.Drawing.Color.White;
           mySettings.Colors.MainBackground = System.Drawing.Color.Black;
 
-          mySettings.Colors.TrayDownA = System.Drawing.Color.Blue;
-          mySettings.Colors.TrayDownB = System.Drawing.Color.Yellow;
-          mySettings.Colors.TrayDownC = System.Drawing.Color.Red;
-          mySettings.Colors.TrayUpA = System.Drawing.Color.Blue;
-          mySettings.Colors.TrayUpB = System.Drawing.Color.Yellow;
-          mySettings.Colors.TrayUpC = System.Drawing.Color.Red;
+          mySettings.Colors.TrayDownA = System.Drawing.Color.DarkBlue;
+          mySettings.Colors.TrayDownB = System.Drawing.Color.Blue;
+          mySettings.Colors.TrayDownC = System.Drawing.Color.Aqua;
+          mySettings.Colors.TrayUpA = System.Drawing.Color.DarkBlue;
+          mySettings.Colors.TrayUpB = System.Drawing.Color.Blue;
+          mySettings.Colors.TrayUpC = System.Drawing.Color.Aqua;
 
           mySettings.Colors.HistoryDownA = System.Drawing.Color.DarkBlue;
-          mySettings.Colors.HistoryDownB = System.Drawing.Color.Transparent;
-          mySettings.Colors.HistoryDownC = System.Drawing.Color.Red;
+          mySettings.Colors.HistoryDownB = System.Drawing.Color.Blue;
+          mySettings.Colors.HistoryDownC = System.Drawing.Color.Aqua;
           mySettings.Colors.HistoryDownMax = System.Drawing.Color.Yellow;
           mySettings.Colors.HistoryUpA = System.Drawing.Color.DarkBlue;
-          mySettings.Colors.HistoryUpB = System.Drawing.Color.Transparent;
-          mySettings.Colors.HistoryUpC = System.Drawing.Color.Red;
+          mySettings.Colors.HistoryUpB = System.Drawing.Color.Blue;
+          mySettings.Colors.HistoryUpC = System.Drawing.Color.Aqua;
           mySettings.Colors.HistoryUpMax = System.Drawing.Color.Yellow;
           mySettings.Colors.HistoryText = System.Drawing.Color.Black;
           mySettings.Colors.HistoryBackground = System.Drawing.Color.White;

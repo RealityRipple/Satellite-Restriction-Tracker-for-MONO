@@ -735,10 +735,15 @@ namespace RestrictionTrackerGTK
 
     void wsHostList_DownloadStringCompleted (object sender, System.Net.DownloadStringCompletedEventArgs e)
     {
-      if ((string) e.UserState == "GRAB")
+      try
       {
-        Gtk.Application.Invoke(sender, (EventArgs)e, Main_HostListDownloadStringCompleted);
+        if ((string) e.UserState == "GRAB")
+        {
+          Gtk.Application.Invoke(sender, (EventArgs)e, Main_HostListDownloadStringCompleted);
+        }
       }
+      catch(Exception)
+      {}
     }
 
     private void Main_HostListDownloadStringCompleted(object sender, EventArgs ea)
@@ -1139,7 +1144,6 @@ namespace RestrictionTrackerGTK
       bHardChange = false;
       bSaved = true;
       cmdSave.Sensitive = false;
-      SaveToHostList(cmbProvider.Entry.Text);
     }
 
     protected void cmdClose_Click(object sender, EventArgs e)

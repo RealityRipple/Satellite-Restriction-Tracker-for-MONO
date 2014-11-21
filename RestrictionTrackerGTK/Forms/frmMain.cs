@@ -82,7 +82,6 @@ namespace RestrictionTrackerGTK
         localData.ConnectionRPXResult += localData_ConnectionRPXResult;
         localData.ConnectionRPLResult += localData_ConnectionRPLResult;
         localData.ConnectionWBLResult += localData_ConnectionWBLResult;
-        localData.ConnectionWBVResult += localData_ConnectionWBVResult;
       }
       else
       {
@@ -93,9 +92,9 @@ namespace RestrictionTrackerGTK
         localData.ConnectionRPXResult -= localData_ConnectionRPXResult;
         localData.ConnectionRPLResult -= localData_ConnectionRPLResult;
         localData.ConnectionWBLResult -= localData_ConnectionWBLResult;
-        localData.ConnectionWBVResult -= localData_ConnectionWBVResult;
       }
     }
+    private RestrictionLibrary.CookieAwareWebClient wsHostList;
     private const string sWB = "https://myaccount.{0}/wbisp/{2}/{1}.jsp";
     private const string sRP = "https://{0}.ruralportal.net/us/{1}.do";
     private const string sDISPLAY = "Usage Levels (%lt)";
@@ -375,7 +374,7 @@ namespace RestrictionTrackerGTK
           mySettings.AccountType = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
         else if (e.HostGroup == DetermineType.TypeDeterminedEventArgs.SatHostGroup.Exede)
           mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
-        if (mySettings.Colors.HistoryDownA == Color.Transparent)
+        if (mySettings.Colors.MainDownA == Color.Transparent)
         {
           SetDefaultColors();
         }
@@ -423,7 +422,7 @@ namespace RestrictionTrackerGTK
       else
       {
         mySettings.AccountType = e.HostType;
-        if (mySettings.Colors.HistoryDownA == Color.Transparent)
+        if (mySettings.Colors.MainDownA == Color.Transparent)
         {
           SetDefaultColors();
         }
@@ -768,7 +767,7 @@ namespace RestrictionTrackerGTK
           float fontSize = fMin;
           if ((alloc.Width / 2) < alloc.Height)
           {
-            if ((alloc.Width / 2) / fRatio > fMin)
+            if ((alloc.Width / 2) * fRatio > fMin)
             {
               fontSize = (int)Math.Ceiling((alloc.Width / 2) * fRatio);
             }
@@ -959,7 +958,7 @@ namespace RestrictionTrackerGTK
           SetTrayIcon("graph_wb_" + d + "x" + u); 
         }
       }
-      else if (myPanel == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE || myPanel == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE || myPanel == localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION)
+      else if (myPanel == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE || myPanel == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
       {
         if (lblRuralUsedVal.Text == " -- ")
         {
@@ -1585,7 +1584,7 @@ namespace RestrictionTrackerGTK
       myPanel = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
       mySettings.Save();
-      if (mySettings.Colors.MainUpA == Color.Transparent)
+      if (mySettings.Colors.MainDownA == Color.Transparent)
       {
         SetDefaultColors();
       }
@@ -1596,6 +1595,7 @@ namespace RestrictionTrackerGTK
         localData.Dispose();
         localData = null;
       }
+      SaveToHostList();
     }
     private void localData_ConnectionRPXResult(object sender, localRestrictionTracker.TYPEBResultEventArgs e)
     {
@@ -1610,7 +1610,7 @@ namespace RestrictionTrackerGTK
       myPanel = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
       mySettings.Save();
-      if (mySettings.Colors.MainUpA == Color.Transparent)
+      if (mySettings.Colors.MainDownA == Color.Transparent)
       {
         SetDefaultColors();
       }
@@ -1621,6 +1621,7 @@ namespace RestrictionTrackerGTK
         localData.Dispose();
         localData = null;
       }
+      SaveToHostList();
     }
     private void localData_ConnectionRPLResult(object sender, localRestrictionTracker.TYPEAResultEventArgs e)
     {
@@ -1635,7 +1636,7 @@ namespace RestrictionTrackerGTK
       myPanel = localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY;
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY;
       mySettings.Save();
-      if (mySettings.Colors.MainUpA == Color.Transparent)
+      if (mySettings.Colors.MainDownA == Color.Transparent)
       {
         SetDefaultColors();
       }
@@ -1646,6 +1647,7 @@ namespace RestrictionTrackerGTK
         localData.Dispose();
         localData = null;
       }
+      SaveToHostList();
     }
     private void localData_ConnectionWBLResult(object sender, localRestrictionTracker.TYPEAResultEventArgs e)
     {
@@ -1660,7 +1662,7 @@ namespace RestrictionTrackerGTK
       myPanel = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
       mySettings.Save();
-      if (mySettings.Colors.MainUpA == Color.Transparent)
+      if (mySettings.Colors.MainDownA == Color.Transparent)
       {
         SetDefaultColors();
       }
@@ -1671,6 +1673,7 @@ namespace RestrictionTrackerGTK
         localData.Dispose();
         localData = null;
       }
+      SaveToHostList();
     }
     private void localData_ConnectionWBXResult(object sender, localRestrictionTracker.TYPEBResultEventArgs e)
     {
@@ -1685,7 +1688,7 @@ namespace RestrictionTrackerGTK
       myPanel = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
       mySettings.Save();
-      if (mySettings.Colors.MainUpA == Color.Transparent)
+      if (mySettings.Colors.MainDownA == Color.Transparent)
       {
         SetDefaultColors();
       }
@@ -1697,31 +1700,34 @@ namespace RestrictionTrackerGTK
         localData = null;
       }
     }
-    private void localData_ConnectionWBVResult(object sender, localRestrictionTracker.TYPEBResultEventArgs e)
+    #region "HostList"
+    private bool didHostListSave = false;
+    private void SaveToHostList()
     {
-      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionWBVResult);
+      Gtk.Application.Invoke(new object(), new EventArgs(), Main_SaveToHostList);
     }
-    private void Main_LocalDataConnectionWBVResult(object o, EventArgs ea)
+    private void Main_SaveToHostList(object o, EventArgs ea)
     {
-      localRestrictionTracker.TYPEBResultEventArgs e = (localRestrictionTracker.TYPEBResultEventArgs)ea;
-      SetStatusText(e.Update.ToString("g"), "Saving History...", false);
-      NextGrabTick = modFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
-      modDB.LOG_Add(e.Update, e.Used, e.Limit, e.Used, e.Limit, true);
-      myPanel = localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION;
-      mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION;
-      mySettings.Save();
-      if (mySettings.Colors.MainUpA == Color.Transparent)
+      if (didHostListSave)
+        return;
+      try
       {
-        SetDefaultColors();
+        if (wsHostList != null)
+        {
+          wsHostList.Dispose();
+          wsHostList = null;
+        }
+        string myProvider = mySettings.Account.Substring(mySettings.Account.LastIndexOf("@") + 1).ToLower();
+        wsHostList = new CookieAwareWebClient();
+        wsHostList.DownloadDataAsync(new Uri("http://wb.realityripple.com/hosts/?add=" + myProvider), "UPDATE");
+        didHostListSave = true;
       }
-      DisplayUsage(true, true);
-      if (localData != null)
+      catch (Exception)
       {
-        localDataEvent(false);
-        localData.Dispose();
-        localData = null;
+        didHostListSave = false;
       }
     }
+    #endregion
     #endregion
     #region "Remote Usage Events"
     private void remoteData_Failure(object sender, remoteRestrictionTracker.FailureEventArgs e)
@@ -1803,7 +1809,7 @@ namespace RestrictionTrackerGTK
       if (e != null)
       {
         mySettings.AccountType = (localRestrictionTracker.SatHostTypes)e.Provider;
-        if (mySettings.Colors.HistoryDownA == Color.Transparent)
+        if (mySettings.Colors.MainDownA == Color.Transparent)
         {
           SetDefaultColors();
         }
@@ -1862,6 +1868,7 @@ namespace RestrictionTrackerGTK
         remoteData.Dispose();
         remoteData = null;
       }
+      SaveToHostList();
     }
     #endregion
     #region "Graphs"
@@ -2436,7 +2443,6 @@ namespace RestrictionTrackerGTK
         {
           case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
           case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
-          case localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION:
             DisplayRResults(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
             break;
           case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
@@ -2602,6 +2608,7 @@ namespace RestrictionTrackerGTK
       switch (dRet)
       {
         case ResponseType.Yes:
+          didHostListSave = false;
           mySettings = null;
           mySettings = new AppSettings();
           if (mySettings.Colors.MainDownA == Color.Transparent)
@@ -2615,6 +2622,7 @@ namespace RestrictionTrackerGTK
           ReInitInvoker.BeginInvoke(null, null);
           break;
         case ResponseType.Ok:
+          didHostListSave = false;
           mySettings = null;
           mySettings = new AppSettings();
           if (mySettings.Colors.MainDownA == Color.Transparent)
@@ -3244,81 +3252,53 @@ namespace RestrictionTrackerGTK
         case localRestrictionTracker.SatHostTypes.WildBlue_LEGACY:
         case localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
           mySettings.Colors.MainDownA = Color.DarkBlue;
-          mySettings.Colors.MainDownB = Color.Transparent;
-          mySettings.Colors.MainDownC = Color.Red;
+          mySettings.Colors.MainDownB = Color.Blue;
+          mySettings.Colors.MainDownC = Color.Aqua;
           mySettings.Colors.MainUpA = Color.DarkBlue;
-          mySettings.Colors.MainUpB = Color.Transparent;
-          mySettings.Colors.MainUpC = Color.Red;
+          mySettings.Colors.MainUpB = Color.Blue;
+          mySettings.Colors.MainUpC = Color.Aqua;
           mySettings.Colors.MainText = Color.White;
           mySettings.Colors.MainBackground = Color.Black;
 
-          mySettings.Colors.TrayDownA = Color.Blue;
-          mySettings.Colors.TrayDownB = Color.Yellow;
-          mySettings.Colors.TrayDownC = Color.Red;
-          mySettings.Colors.TrayUpA = Color.Blue;
-          mySettings.Colors.TrayUpB = Color.Yellow;
-          mySettings.Colors.TrayUpC = Color.Red;
+          mySettings.Colors.TrayDownA = Color.DarkBlue;
+          mySettings.Colors.TrayDownB = Color.Blue;
+          mySettings.Colors.TrayDownC = Color.Aqua;
+          mySettings.Colors.TrayUpA = Color.DarkBlue;
+          mySettings.Colors.TrayUpB = Color.Blue;
+          mySettings.Colors.TrayUpC = Color.Aqua;
 
           mySettings.Colors.HistoryDownA = Color.DarkBlue;
-          mySettings.Colors.HistoryDownB = Color.Transparent;
-          mySettings.Colors.HistoryDownC = Color.Red;
+          mySettings.Colors.HistoryDownB = Color.Blue;
+          mySettings.Colors.HistoryDownC = Color.Aqua;
           mySettings.Colors.HistoryDownMax = Color.Yellow;
           mySettings.Colors.HistoryUpA = Color.DarkBlue;
-          mySettings.Colors.HistoryUpB = Color.Transparent;
-          mySettings.Colors.HistoryUpC = Color.Red;
+          mySettings.Colors.HistoryUpB = Color.Blue;
+          mySettings.Colors.HistoryUpC = Color.Aqua;
           mySettings.Colors.HistoryUpMax = Color.Yellow;
           mySettings.Colors.HistoryText = Color.Black;
           mySettings.Colors.HistoryBackground = Color.White;
           break;
         case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
-          mySettings.Colors.MainDownA = Color.Orange;
-          mySettings.Colors.MainDownB = Color.Transparent;
-          mySettings.Colors.MainDownC = Color.Red;
-          mySettings.Colors.MainUpA = Color.Blue;
-          mySettings.Colors.MainUpB = Color.Transparent;
-          mySettings.Colors.MainUpC = Color.Violet;
-          mySettings.Colors.MainText = Color.White;
-          mySettings.Colors.MainBackground = Color.Black;
-
-          mySettings.Colors.TrayDownA = Color.Orange;
-          mySettings.Colors.TrayDownB = Color.Transparent;
-          mySettings.Colors.TrayDownC = Color.Red;
-          mySettings.Colors.TrayUpA = Color.Blue;
-          mySettings.Colors.TrayUpB = Color.Transparent;
-          mySettings.Colors.TrayUpC = Color.Violet;
-
-          mySettings.Colors.HistoryDownA = Color.Orange;
-          mySettings.Colors.HistoryDownB = Color.Transparent;
-          mySettings.Colors.HistoryDownC = Color.Red;
-          mySettings.Colors.HistoryDownMax = Color.Yellow;
-          mySettings.Colors.HistoryUpA = Color.Blue;
-          mySettings.Colors.HistoryUpB = Color.Transparent;
-          mySettings.Colors.HistoryUpC = Color.Violet;
-          mySettings.Colors.HistoryUpMax = Color.Yellow;
-          mySettings.Colors.HistoryText = Color.Black;
-          mySettings.Colors.HistoryBackground = Color.White;
-          break;
         case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
-        case localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION:
-          mySettings.Colors.MainDownA = Color.Orange;
-          mySettings.Colors.MainDownB = Color.Transparent;
-          mySettings.Colors.MainDownC = Color.Red;
+          mySettings.Colors.MainDownA = Color.DarkBlue;
+          mySettings.Colors.MainDownB = Color.Blue;
+          mySettings.Colors.MainDownC = Color.Aqua;
           mySettings.Colors.MainUpA = Color.Transparent;
           mySettings.Colors.MainUpB = Color.Transparent;
           mySettings.Colors.MainUpC = Color.Transparent;
           mySettings.Colors.MainText = Color.White;
           mySettings.Colors.MainBackground = Color.Black;
 
-          mySettings.Colors.TrayDownA = Color.Orange;
-          mySettings.Colors.TrayDownB = Color.Transparent;
-          mySettings.Colors.TrayDownC = Color.Red;
+          mySettings.Colors.TrayDownA = Color.DarkBlue;
+          mySettings.Colors.TrayDownB = Color.Blue;
+          mySettings.Colors.TrayDownC = Color.Aqua;
           mySettings.Colors.TrayUpA = Color.Transparent;
           mySettings.Colors.TrayUpB = Color.Transparent;
           mySettings.Colors.TrayUpC = Color.Transparent;
 
-          mySettings.Colors.HistoryDownA = Color.Orange;
-          mySettings.Colors.HistoryDownB = Color.Transparent;
-          mySettings.Colors.HistoryDownC = Color.Red;
+          mySettings.Colors.HistoryDownA = Color.DarkBlue;
+          mySettings.Colors.HistoryDownB = Color.Blue;
+          mySettings.Colors.HistoryDownC = Color.Aqua;
           mySettings.Colors.HistoryDownMax = Color.Yellow;
           mySettings.Colors.HistoryUpA = Color.Transparent;
           mySettings.Colors.HistoryUpB = Color.Transparent;
@@ -3328,30 +3308,29 @@ namespace RestrictionTrackerGTK
           mySettings.Colors.HistoryBackground = Color.White;
           break;
         case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
-
           mySettings.Colors.MainDownA = Color.DarkBlue;
-          mySettings.Colors.MainDownB = Color.Transparent;
-          mySettings.Colors.MainDownC = Color.Red;
+          mySettings.Colors.MainDownB = Color.Blue;
+          mySettings.Colors.MainDownC = Color.Aqua;
           mySettings.Colors.MainUpA = Color.DarkBlue;
-          mySettings.Colors.MainUpB = Color.Transparent;
-          mySettings.Colors.MainUpC = Color.Red;
+          mySettings.Colors.MainUpB = Color.Blue;
+          mySettings.Colors.MainUpC = Color.Aqua;
           mySettings.Colors.MainText = Color.White;
           mySettings.Colors.MainBackground = Color.Black;
 
-          mySettings.Colors.TrayDownA = Color.Blue;
-          mySettings.Colors.TrayDownB = Color.Yellow;
-          mySettings.Colors.TrayDownC = Color.Red;
-          mySettings.Colors.TrayUpA = Color.Blue;
-          mySettings.Colors.TrayUpB = Color.Yellow;
-          mySettings.Colors.TrayUpC = Color.Red;
+          mySettings.Colors.TrayDownA = Color.DarkBlue;
+          mySettings.Colors.TrayDownB = Color.Blue;
+          mySettings.Colors.TrayDownC = Color.Aqua;
+          mySettings.Colors.TrayUpA = Color.DarkBlue;
+          mySettings.Colors.TrayUpB = Color.Blue;
+          mySettings.Colors.TrayUpC = Color.Aqua;
 
           mySettings.Colors.HistoryDownA = Color.DarkBlue;
-          mySettings.Colors.HistoryDownB = Color.Transparent;
-          mySettings.Colors.HistoryDownC = Color.Red;
+          mySettings.Colors.HistoryDownB = Color.Blue;
+          mySettings.Colors.HistoryDownC = Color.Aqua;
           mySettings.Colors.HistoryDownMax = Color.Yellow;
           mySettings.Colors.HistoryUpA = Color.DarkBlue;
-          mySettings.Colors.HistoryUpB = Color.Transparent;
-          mySettings.Colors.HistoryUpC = Color.Red;
+          mySettings.Colors.HistoryUpB = Color.Blue;
+          mySettings.Colors.HistoryUpC = Color.Aqua;
           mySettings.Colors.HistoryUpMax = Color.Yellow;
           mySettings.Colors.HistoryText = Color.Black;
           mySettings.Colors.HistoryBackground = Color.White;

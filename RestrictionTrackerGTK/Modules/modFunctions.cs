@@ -35,6 +35,10 @@ namespace RestrictionTrackerGTK
       {
         Path = AppData + System.IO.Path.DirectorySeparatorChar + Path + ".tar.gz";
       }
+      else if (File.Exists(AppData + System.IO.Path.DirectorySeparatorChar + Path + ".tar"))
+      {
+        Path = AppData + System.IO.Path.DirectorySeparatorChar + Path + ".tar";
+      }
       else
       {
         return new NotifierStyle();
@@ -43,9 +47,23 @@ namespace RestrictionTrackerGTK
       {
         string TempAlertDir = AppData + "/notifier/";
         string TempAlertTAR = AppData + "/notifier.tar";
-        ExtractGZ(Path, TempAlertTAR);
-        ExtractTar(TempAlertTAR, TempAlertDir);
-        File.Delete(TempAlertTAR);
+        if (Path.EndsWith(".tar"))
+        {
+          ExtractTar(Path, TempAlertDir);
+        }
+        else
+        {
+          try
+          {
+            ExtractGZ(Path, TempAlertTAR);
+            ExtractTar(TempAlertTAR, TempAlertDir);
+            File.Delete(TempAlertTAR);
+          }
+          catch (Exception)
+          {
+            ExtractTar(Path, TempAlertDir);
+          }
+        }
         NotifierStyle ns = new NotifierStyle(TempAlertDir + "alert.png", TempAlertDir + "close.png", TempAlertDir + "loc");
         Directory.Delete(TempAlertDir, true);
         return ns;
@@ -228,9 +246,8 @@ namespace RestrictionTrackerGTK
           return localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
         case "WBX":
         case "EXEDE":
-          return localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
         case "WBV":
-          return localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION;
+          return localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
         case "RPL":
           return localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY;
         case "RPX":
@@ -252,8 +269,6 @@ namespace RestrictionTrackerGTK
           return "WBL";
         case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
           return "WBX";
-        case localRestrictionTracker.SatHostTypes.WildBlue_EVOLUTION:
-          return "WBV";
         case localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
           return "RPL";
         case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
@@ -887,6 +902,7 @@ namespace RestrictionTrackerGTK
       Image iPic = new Bitmap(ImgSize.Width, ImgSize.Height);
       Graphics g = Graphics.FromImage(iPic);
       Font tFont = new Font(FontFamily.GenericSansSerif, 7);
+      g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
       int lYWidth = (int)g.MeasureString(yMax.ToString().Trim() + " MB", tFont).Width + 10;
       int lXHeight = (int)g.MeasureString(DateTime.Now.ToString("g"), tFont).Height + 10;
       g.Clear(ColorBG);
@@ -1181,6 +1197,7 @@ namespace RestrictionTrackerGTK
       Image iPic = new Bitmap(ImgSize.Width, ImgSize.Height);
       Graphics g = Graphics.FromImage(iPic);
       Font tFont = new Font(FontFamily.GenericSansSerif, 7);
+      g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
       int lYWidth = (int)g.MeasureString(yMax.ToString().Trim() + " MB", tFont).Width + 10;
       int lXHeight = (int)g.MeasureString(DateTime.Now.ToString("g"), tFont).Height + 10;
       g.Clear(ColorBG);
@@ -1195,7 +1212,7 @@ namespace RestrictionTrackerGTK
       for (int I = 0; I <= (int) lMax; I += (int) ((((lMax / ((double) yHeight / (tFont.Size + 12)))) / 100) * 100))
       {
         int iY = (int)(yTop + yHeight - (I / (double)lMax * yHeight));
-        g.DrawString(I.ToString().Trim() + " MB", tFont, new SolidBrush(ColorText), lYWidth - g.MeasureString(I.ToString().Trim() + " MB", tFont).Width, iY - (g.MeasureString(I.ToString().Trim() + " MB", tFont).Height / 2));
+        g.DrawString(I.ToString().Trim() + " MB", tFont, new SolidBrush(ColorText), lYWidth - g.MeasureString(I.ToString().Trim() + " MB", tFont).Width - 5, iY - (g.MeasureString(I.ToString().Trim() + " MB", tFont).Height / 2));
         g.DrawLine(new Pen(ColorText), lYWidth - 3, iY, lYWidth, iY);
       }
       System.DateTime lStart = Data [0].DATETIME;
@@ -1483,6 +1500,7 @@ namespace RestrictionTrackerGTK
         }
         using (Graphics g = Graphics.FromImage(bmpTmp))
         {
+          g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
           g.Clear(ColorBG);
           Font fFont = MonospaceFont(fontSize);
           LinearGradientBrush linGrBrush = TriGradientBrush(new Point(0, 0), new Point(0, ImgSize.Height), ColorA, ColorB, ColorC);
@@ -1529,6 +1547,7 @@ namespace RestrictionTrackerGTK
         {
           using (Graphics g = Graphics.FromImage(bmpTmp))
           {
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
             g.Clear(ColorBG);
             if (Total > 0 & Current > 0)
             {
@@ -1554,6 +1573,7 @@ namespace RestrictionTrackerGTK
         {
           using (Graphics g = Graphics.FromImage(bmpTmp))
           {
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
             g.Clear(ColorBG);
             if (Total > 0 & Current > 0)
             {
@@ -1616,6 +1636,7 @@ namespace RestrictionTrackerGTK
       {
         using (Graphics g = Graphics.FromImage(bmpTmp))
         {
+          g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
           g.Clear(ColorBG);
           if (Total > 0 & (Down > 0 | Up > 0))
           {
@@ -1650,6 +1671,7 @@ namespace RestrictionTrackerGTK
       {
         using (Graphics g = Graphics.FromImage(bmpTmp))
         {
+          g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
           g.Clear(ColorBG);
           if (Total > 0 & (Down > 0 | Up > 0))
           {
@@ -1722,6 +1744,7 @@ namespace RestrictionTrackerGTK
       {
         using (Graphics g = Graphics.FromImage(bmpTmp))
         {
+          g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
           g.Clear(ColorBG);
           if (Total > 0 & Down > 0)
           {
@@ -1747,6 +1770,7 @@ namespace RestrictionTrackerGTK
       {
         using (Graphics g = Graphics.FromImage(bmpTmp))
         {
+          g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
           g.Clear(ColorBG);
           if (Total > 0 & Down > 0)
           {

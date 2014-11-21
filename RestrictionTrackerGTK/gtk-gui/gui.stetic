@@ -3086,7 +3086,6 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
             <child>
               <widget class="Gtk.EventBox" id="evnHistory">
                 <property name="MemberName" />
-                <signal name="ButtonReleaseEvent" handler="pctHistory_MouseUp" />
                 <child>
                   <widget class="Gtk.Image" id="pctHistory">
                     <property name="MemberName" />

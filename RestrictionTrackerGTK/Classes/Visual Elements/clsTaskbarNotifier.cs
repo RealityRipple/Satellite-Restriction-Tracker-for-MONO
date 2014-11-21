@@ -496,6 +496,8 @@ namespace RestrictionTrackerGTK
       this.WidthRequest = BackgroundBitmap.Width;
       this.HeightRequest = BackgroundBitmap.Height;
       transparencyKey = transparencyColor;
+      if (BackgroundBitmap == null)
+        SetDefaultBitmaps();
       //Region = BitmapToRegion(BackgroundBitmap, transparencyColor);
       Refresh(true);
     }
@@ -512,6 +514,8 @@ namespace RestrictionTrackerGTK
       this.WidthRequest = BackgroundBitmap.Width;
       this.HeightRequest = BackgroundBitmap.Height;
       transparencyKey = transparencyColor;
+      if (BackgroundBitmap == null)
+        SetDefaultBitmaps();
       //Region = BitmapToRegion(BackgroundBitmap, transparencyColor);
       Refresh(true);
     }
@@ -530,6 +534,8 @@ namespace RestrictionTrackerGTK
       //transparencyKey = transparencyColor;
       CloseBitmapSize = new Size(CloseBitmap.Width / 3, CloseBitmap.Height);
       CloseBitmapLocation = position;
+      if (CloseBitmap == null || CloseBitmapSize.IsEmpty)
+        SetDefaultBitmaps();
       Refresh(true);
     }
  
@@ -545,13 +551,43 @@ namespace RestrictionTrackerGTK
       CloseBitmap = modFunctions.MakeTransparent(new Bitmap(image), transparencyColor);
       CloseBitmapSize = new Size(CloseBitmap.Width / 3, CloseBitmap.Height);
       CloseBitmapLocation = position;
+      if (CloseBitmap == null || CloseBitmapSize.IsEmpty)
+        SetDefaultBitmaps();
       Refresh(true);
     }
+
+    private void SetDefaultBitmaps()
+    {
+      SetDefaultBackgroundBitmap();
+      SetDefaultCloseBitmap();
+    }
+
+    private void SetDefaultBackgroundBitmap()
+    {
+      BackgroundBitmap = new Bitmap(GetType(), "RestrictionTrackerGTK.Resources.default_alert.png");
+      this.WidthRequest = BackgroundBitmap.Width;
+      this.HeightRequest = BackgroundBitmap.Height;
+      transparencyKey = Color.Fuchsia;
+      TitleRectangle = new Rectangle(7, 3, 188, 24);
+      ContentRectangle = new Rectangle(9, 31, 227, 66);
+    }
+
+    private void SetDefaultCloseBitmap()
+    {
+      Bitmap srcBitmap = new Bitmap(GetType(), "RestrictionTrackerGTK.Resources.default_close.png");
+      CloseBitmap = modFunctions.MakeTransparent(srcBitmap, Color.Fuchsia);
+      CloseBitmapSize = new Size(srcBitmap.Width / 3, srcBitmap.Height);
+      CloseBitmapLocation = new Point(190, 0);
+    }
+
+
 #endregion
  
 #region TaskbarNotifier Protected Methods
     protected void DrawCloseButton(ref Graphics grfx)
     {
+      if (CloseBitmap == null || CloseBitmapSize.IsEmpty)
+        SetDefaultBitmaps();
       if (CloseBitmap != null)
       {  
         Rectangle rectDest = new Rectangle(CloseBitmapLocation, CloseBitmapSize);

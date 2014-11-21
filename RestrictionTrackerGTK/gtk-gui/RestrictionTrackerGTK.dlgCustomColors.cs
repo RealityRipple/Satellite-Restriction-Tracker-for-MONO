@@ -1095,7 +1095,6 @@ namespace RestrictionTrackerGTK
 			this.Hide ();
 			this.evnTray.ButtonReleaseEvent += new global::Gtk.ButtonReleaseEventHandler (this.pctTray_MouseUp);
 			this.evnMain.ButtonReleaseEvent += new global::Gtk.ButtonReleaseEventHandler (this.pctMain_MouseUp);
-			this.evnHistory.ButtonReleaseEvent += new global::Gtk.ButtonReleaseEventHandler (this.pctHistory_MouseUp);
 			this.cmdSave.Clicked += new global::System.EventHandler (this.cmdSave_Click);
 			this.cmdClose.Clicked += new global::System.EventHandler (this.cmdClose_Click);
 		}
