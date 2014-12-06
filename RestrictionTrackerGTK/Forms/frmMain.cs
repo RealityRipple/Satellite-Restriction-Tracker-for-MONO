@@ -482,7 +482,6 @@ namespace RestrictionTrackerGTK
       this.SizeAllocated += Form_SizeAllocated;
       this.DeleteEvent += Form_Closed;
 
-      System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Ssl3;
       if (mySettings == null)
       {
         mySettings = new AppSettings();
@@ -492,6 +491,8 @@ namespace RestrictionTrackerGTK
         }
         modFunctions.NOTIFIER_STYLE = modFunctions.LoadAlertStyle(mySettings.AlertStyle);
       }
+      System.Net.ServicePointManager.SecurityProtocol = mySettings.Protocol;
+
       NextGrabTick = long.MinValue;
 
       cmdRefresh.ButtonReleaseEvent += cmdRefresh_Click;
@@ -1104,6 +1105,7 @@ namespace RestrictionTrackerGTK
     public void ReLoadSettings()
     {
       mySettings = new AppSettings();
+      System.Net.ServicePointManager.SecurityProtocol = mySettings.Protocol;
       if (mySettings.Colors.MainDownA == Color.Transparent)
       {
         SetDefaultColors();
@@ -2611,6 +2613,7 @@ namespace RestrictionTrackerGTK
           didHostListSave = false;
           mySettings = null;
           mySettings = new AppSettings();
+          System.Net.ServicePointManager.SecurityProtocol = mySettings.Protocol;
           if (mySettings.Colors.MainDownA == Color.Transparent)
           {
             SetDefaultColors();
@@ -2625,6 +2628,7 @@ namespace RestrictionTrackerGTK
           didHostListSave = false;
           mySettings = null;
           mySettings = new AppSettings();
+          System.Net.ServicePointManager.SecurityProtocol = mySettings.Protocol;
           if (mySettings.Colors.MainDownA == Color.Transparent)
           {
             SetDefaultColors();

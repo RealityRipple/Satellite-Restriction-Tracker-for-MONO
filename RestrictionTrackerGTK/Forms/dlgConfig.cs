@@ -51,6 +51,7 @@ namespace RestrictionTrackerGTK
       txtProxyUser.Changed += ValuesChanged;
       txtProxyPassword.Changed += ValuesChanged;
       txtProxyDomain.Changed += ValuesChanged;
+      chkProtocolSSL.Toggled += ValuesChanged;
 
       txtKey1.AddEvents((int)Gdk.EventType.KeyPress);
       txtKey1.Changed += txtProductKey_Changed;
@@ -258,6 +259,7 @@ namespace RestrictionTrackerGTK
         }
       }
       cmbProxyType_Changed(null, null);
+      chkProtocolSSL.Active = (mySettings.Protocol == System.Net.SecurityProtocolType.Ssl3);
       bSaved = false;
       bAccount = false;
       cmdSave.Sensitive = false;
@@ -1140,6 +1142,14 @@ namespace RestrictionTrackerGTK
           }
         }
       }
+      if (chkProtocolSSL.Active)
+      {
+        mySettings.Protocol = System.Net.SecurityProtocolType.Ssl3;
+      }
+      else
+      {
+        mySettings.Protocol = System.Net.SecurityProtocolType.Tls;
+      }
       mySettings.Save();
       bHardChange = false;
       bSaved = true;
@@ -1241,6 +1251,14 @@ namespace RestrictionTrackerGTK
               }
             }
           }
+      }
+      if (mySettings.Protocol == System.Net.SecurityProtocolType.Ssl3 && !chkProtocolSSL.Active)
+      {
+        return true;
+      }
+      else if (mySettings.Protocol == System.Net.SecurityProtocolType.Tls && chkProtocolSSL.Active)
+      {
+        return true;
       }
       return false;
     }

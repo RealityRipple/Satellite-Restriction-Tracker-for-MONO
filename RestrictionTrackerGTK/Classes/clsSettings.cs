@@ -24,6 +24,7 @@ namespace RestrictionTrackerGTK
     private int m_Overtime;
     private string m_AlertStyle;
     private string m_ProxySetting;
+    private System.Net.SecurityProtocolType m_Protocol;
     public bool Loaded;
     public AppColors Colors;
 
@@ -125,7 +126,7 @@ namespace RestrictionTrackerGTK
                     }
                     else if (xName.CompareTo("MainSize") == 0)
                     {
-                      char[] comma = {','};
+                      char[] comma = { ',' };
                       string[] sSizes = xValue.Split(comma, 2);
                       int iWidth = 450;
                       if (!int.TryParse(sSizes[0], out iWidth))
@@ -175,6 +176,17 @@ namespace RestrictionTrackerGTK
                     else if (xName.CompareTo("Proxy") == 0)
                     {
                       m_ProxySetting = xValue;
+                    }
+                    else if (xName.CompareTo("Protocol") == 0)
+                    {
+                      if (xValue == "TLS")
+                      {
+                        m_Protocol = System.Net.SecurityProtocolType.Tls;
+                      }
+                      else
+                      {
+                        m_Protocol = System.Net.SecurityProtocolType.Ssl3;
+                      }
                     }
                   }
                   Loaded = true;
@@ -419,6 +431,7 @@ namespace RestrictionTrackerGTK
       m_Overtime = 60;
       m_AlertStyle = "Default";
       m_ProxySetting = "System";
+      m_Protocol = System.Net.SecurityProtocolType.Tls;
       Colors = new AppColors();
       ResetColors();
     }
@@ -478,6 +491,11 @@ namespace RestrictionTrackerGTK
       {
         sScaleScreen = "True";
       }
+      string sProtocol = "TLS";
+      if (m_Protocol == System.Net.SecurityProtocolType.Ssl3)
+      {
+        sProtocol = "SSL";
+      }
       string sAccountType = "Other";
       sAccountType = modFunctions.HostTypeToString(m_AccountType);
       string sRet = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + Environment.NewLine +
@@ -534,6 +552,9 @@ namespace RestrictionTrackerGTK
         "      </setting>" + Environment.NewLine +
         "      <setting name=\"Proxy\">" + Environment.NewLine + 
         "        <value>" + m_ProxySetting + "</value>" + Environment.NewLine + 
+        "      </setting>" + Environment.NewLine + 
+        "      <setting name=\"Protocol\">" + Environment.NewLine + 
+        "        <value>" + sProtocol + "</value>" + Environment.NewLine + 
         "      </setting>" + Environment.NewLine + 
         "    </RestrictionTracker.My.MySettings>" + Environment.NewLine + 
         "  </userSettings>" + Environment.NewLine +
@@ -1126,6 +1147,18 @@ namespace RestrictionTrackerGTK
             }
           }
         }
+      }
+    }
+
+    public System.Net.SecurityProtocolType Protocol
+    {
+      get
+      {
+        return m_Protocol;
+      }
+      set
+      {
+        m_Protocol = value;
       }
     }
 
