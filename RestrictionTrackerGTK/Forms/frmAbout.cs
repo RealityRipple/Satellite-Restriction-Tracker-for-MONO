@@ -361,7 +361,7 @@ namespace RestrictionTrackerGTK
                 SetButtonUpdate("New BETA Available", "Click to begin download.");
                 System.Threading.Thread.Sleep(0);
                 fUpdate = new dlgUpdate();
-                fUpdate.NewUpdate(e.Version, false);
+                fUpdate.NewUpdate(e.Version, true);
                 switch ((Gtk.ResponseType)fUpdate.Run())
                 {
                   case Gtk.ResponseType.Yes:
