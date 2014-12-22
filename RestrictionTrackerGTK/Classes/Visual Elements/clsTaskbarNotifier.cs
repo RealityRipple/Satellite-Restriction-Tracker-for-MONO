@@ -406,8 +406,11 @@ namespace RestrictionTrackerGTK
         switch (taskbarState)
         {
           case TaskbarStates.hidden:
-            GLib.Source.Remove(timer);
-            timer = 0;
+            if (timer != 0)
+            {
+              GLib.Source.Remove(timer);
+              timer = 0;
+            }
             taskbarState = TaskbarStates.appearing;
             Opacity = 0;
             this.WidthRequest = BackgroundBitmap.Width;
@@ -421,8 +424,11 @@ namespace RestrictionTrackerGTK
             Refresh(true);
             break;
           case TaskbarStates.visible:
-            GLib.Source.Remove(timer);
-            timer = 0;
+            if (timer != 0)
+            {
+              GLib.Source.Remove(timer);
+              timer = 0;
+            }
             if (nVisibleEvents > 0)
             {
               timer = GLib.Timeout.Add(nVisibleEvents, OnTimer);
@@ -430,8 +436,11 @@ namespace RestrictionTrackerGTK
             Refresh(true);
             break;
           case TaskbarStates.disappearing:
-            GLib.Source.Remove(timer);
-            timer = 0;
+            if (timer != 0)
+            {
+              GLib.Source.Remove(timer);
+              timer = 0;
+            }
             taskbarState = TaskbarStates.visible;
             Opacity = 1;
             this.WidthRequest = BackgroundBitmap.Width;
@@ -469,8 +478,11 @@ namespace RestrictionTrackerGTK
     {
       if (taskbarState != TaskbarStates.hidden)
       {
-        GLib.Source.Remove(timer);
-        timer = 0;
+        if (timer != 0)
+        {
+          GLib.Source.Remove(timer);
+          timer = 0;
+        }
         taskbarState = TaskbarStates.hidden;
         base.Hide();
       }
@@ -478,8 +490,11 @@ namespace RestrictionTrackerGTK
 
     public void SlowHide()
     {
-      GLib.Source.Remove(timer);
-      timer = 0;
+      if (timer != 0)
+      {
+        GLib.Source.Remove(timer);
+        timer = 0;
+      }
       taskbarState = TaskbarStates.disappearing;
       timer = GLib.Timeout.Add(nHideEvents, OnTimer);
     }
@@ -694,8 +709,11 @@ namespace RestrictionTrackerGTK
           }
           else
           {
-            GLib.Source.Remove(timer);
-            timer = 0;
+            if (timer != 0)
+            {
+              GLib.Source.Remove(timer);
+              timer = 0;
+            }
             Opacity = 1;
             if (nVisibleEvents > 0)
             {
@@ -706,8 +724,11 @@ namespace RestrictionTrackerGTK
           }
           break;
         case TaskbarStates.visible:
-          GLib.Source.Remove(timer);
-          timer = 0;
+          if (timer != 0)
+          {
+            GLib.Source.Remove(timer);
+            timer = 0;
+          }
           if ((bKeepVisibleOnMouseOver && !bIsMouseOverPopup) || (!bKeepVisibleOnMouseOver))
           {
             taskbarState = TaskbarStates.disappearing;
