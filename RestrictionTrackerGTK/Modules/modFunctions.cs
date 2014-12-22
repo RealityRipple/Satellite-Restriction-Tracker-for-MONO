@@ -1890,63 +1890,7 @@ namespace RestrictionTrackerGTK
       {
         yUsed = iSize;
       }
-      g.FillRectangle(fillBrush, (float) Math.Floor(iSize / 2d), yUsed, (float) Math.Floor(iSize / 2d), iSize - yUsed);
-    }
-
-    public static void CreateTrayIcon_Dual(ref Graphics g, long lDown, long lUp, long lLim, Color cDA, Color cDB, Color cDC, Color cUA, Color cUB, Color cUC, int iSize)
-    {
-      LinearGradientBrush upBrush = default(LinearGradientBrush);
-      if (cUB == Color.Transparent)
-      {
-        upBrush = new LinearGradientBrush(new Point(0, 0), new Point(0, iSize), Color.FromArgb(Alpha, cUC), Color.FromArgb(Alpha, cUA));
-      }
-      else
-      {
-        upBrush = new LinearGradientBrush(new Point(0, 0), new Point(0, iSize), Color.Black, Color.Black);
-        ColorBlend cBlend = new ColorBlend();
-        cBlend.Positions = new float[] {0f ,0.5f ,1f};
-        cBlend.Colors = new Color[]
-        {
-          Color.FromArgb(Alpha, cUC),
-          Color.FromArgb(Alpha, cUB),
-          Color.FromArgb(Alpha, cUA)
-        };
-        upBrush.InterpolationColors = cBlend;
-      }
-      LinearGradientBrush downBrush = default(LinearGradientBrush);
-      if (cDB == Color.Transparent)
-      {
-        downBrush = new LinearGradientBrush(new Point(0, 0), new Point(0, iSize), Color.FromArgb(Alpha, cDC), Color.FromArgb(Alpha, cDA));
-      }
-      else
-      {
-        downBrush = new LinearGradientBrush(new Point(0, 0), new Point(0, iSize), Color.Black, Color.Black);
-        ColorBlend cBlend = new ColorBlend();
-        cBlend.Positions = new float[] {0f, 0.5f, 1f};
-        cBlend.Colors = new Color[]
-        {
-          Color.FromArgb(Alpha, cDC),
-          Color.FromArgb(Alpha, cDB),
-          Color.FromArgb(Alpha, cDA)
-        };
-        downBrush.InterpolationColors = cBlend;
-      }
-      if (lDown + lUp > lLim)
-      {
-        //Maxed
-        long fillLim = lDown + lUp;
-        long yUp = (long) Math.Round(iSize - ((double) lUp / fillLim * iSize));
-        long yDown = (long) Math.Round(yUp - ((double) lDown / fillLim * iSize));
-        g.FillRectangle(downBrush, 0, yDown, iSize, iSize - ((iSize - yUp) - 1) - yDown);
-        g.FillRectangle(upBrush, 0, yUp, iSize, iSize - yUp);
-      }
-      else
-      {
-        long yUp = (long) Math.Round(iSize - ((double) lUp / lLim * iSize));
-        long yDown = (long) Math.Round(yUp - ((double) lDown / lLim * iSize));
-        g.FillRectangle(downBrush, 0, yDown, iSize, iSize - ((iSize - yUp) - 1) - yDown);
-        g.FillRectangle(upBrush, 0, yUp, iSize, iSize - yUp);
-      }
+      g.FillRectangle(fillBrush, (float) Math.Floor(iSize / 2d), yUsed, (float) Math.Ceiling(iSize / 2d), iSize - yUsed);
     }
     #endregion
     #endregion
@@ -2084,6 +2028,7 @@ namespace RestrictionTrackerGTK
       {
         ret = ret.Replace(i.ToString().Trim(), "");
       }
+      ret = ret.Replace("-", "");
       return ret.Length == 0;
     }
 
