@@ -492,6 +492,7 @@ namespace RestrictionTrackerGTK
         modFunctions.NOTIFIER_STYLE = modFunctions.LoadAlertStyle(mySettings.AlertStyle);
       }
       System.Net.ServicePointManager.SecurityProtocol = mySettings.Protocol;
+      System.Net.ServicePointManager.ServerCertificateValidationCallback += (o, certificate, chain, errors) => true;
 
       NextGrabTick = long.MinValue;
 
@@ -585,6 +586,12 @@ namespace RestrictionTrackerGTK
     }
     private void MakeIconListing()
     {
+      string[] sFiles = System.IO.Directory.GetFiles(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString());
+      foreach(string sFile in sFiles)
+      {
+        if (System.IO.Path.GetExtension(sFile).ToLower() == ".png")
+          System.IO.File.Delete(sFile);
+      }
       ResizeIcon("norm.ico").Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "norm.png", System.Drawing.Imaging.ImageFormat.Png);
       ResizeIcon("free.ico").Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "free.png", System.Drawing.Imaging.ImageFormat.Png);
       ResizeIcon("restricted.ico").Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "restricted.png", System.Drawing.Imaging.ImageFormat.Png);
@@ -628,18 +635,61 @@ namespace RestrictionTrackerGTK
     }
     private void MakeCustomIconListing()
     {
-      for (long up = 0; up <= trayRes; up++)
+      bool doBoth = true;
+      bool doWB = false;
+      if (mySettings != null)
       {
-        for (long down = 0; down <= trayRes; down++)
+        if (mySettings.AccountType != localRestrictionTracker.SatHostTypes.Other)
         {
-          using (Gdk.Pixbuf pIco = CreateTrayIcon(down, trayRes, up, trayRes))
+          doBoth = false;
+          if (mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY || mySettings.AccountType == localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY)
+            doWB = true;
+        }
+      }
+      string[] sFiles = System.IO.Directory.GetFiles(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString());
+      foreach(string sFile in sFiles)
+      {
+        if ((System.IO.Path.GetExtension(sFile).ToLower() == ".png") && (System.IO.Path.GetFileName(sFile).ToLower().Substring(0, 6) == "graph_"))
+          System.IO.File.Delete(sFile);
+      }
+      if (doBoth)
+      {
+        for (long up = 0; up <= trayRes; up++)
+        {
+          for (long down = 0; down <= trayRes; down++)
           {
-            pIco.Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "graph_wb_" + down + "x" + up + ".png", "png");
+            using (Gdk.Pixbuf pIco = CreateTrayIcon(down, trayRes, up, trayRes))
+            {
+              pIco.Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "graph_wb_" + down + "x" + up + ".png", "png");
+            }
+          }
+          using (Gdk.Pixbuf pIco = CreateRTrayIcon(up, trayRes))
+          {
+            pIco.Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "graph_r_" + up + ".png", "png");
           }
         }
-        using (Gdk.Pixbuf pIco = CreateRTrayIcon(up, trayRes))
+      }
+      else if (doWB)
+      {
+        for (long up = 0; up <= trayRes; up++)
         {
-          pIco.Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "graph_r_" + up + ".png", "png");
+          for (long down = 0; down <= trayRes; down++)
+          {
+            using (Gdk.Pixbuf pIco = CreateTrayIcon(down, trayRes, up, trayRes))
+            {
+              pIco.Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "graph_wb_" + down + "x" + up + ".png", "png");
+            }
+          }
+        }
+      }
+      else
+      {
+        for (long up = 0; up <= trayRes; up++)
+        {
+          using (Gdk.Pixbuf pIco = CreateRTrayIcon(up, trayRes))
+          {
+            pIco.Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "graph_r_" + up + ".png", "png");
+          }
         }
       }
     }
@@ -657,8 +707,6 @@ namespace RestrictionTrackerGTK
           SetTrayIcon("norm");
           EnableProgressIcon();
           SetStatusText("Initializing", "Beginning application initialization process...", false);
-          //pctDld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(pctDld.Allocation.Size, 0, 0, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-          //pctUld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(pctUld.Allocation.Size, 0, 0, mySettings.Accuracy, mySettings.Colors.MainUpA, mySettings.Colors.MainUpB, mySettings.Colors.MainUpC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
           MethodInvoker lookupInvoker = LookupProvider;
           lookupInvoker.BeginInvoke(null, lookupInvoker);
         }
@@ -701,7 +749,6 @@ namespace RestrictionTrackerGTK
 
       thisRect = e.Allocation;
       tmrResizeCheck = GLib.Timeout.Add(400, frmMain_ResizeEnd);
-
     }
     private void Form_SizeConfigured(object sender, ConfigureEventArgs e)
     {
@@ -931,8 +978,6 @@ namespace RestrictionTrackerGTK
         {
           Label wLabel = (Label)wItem;
           SetFontSize(ref wLabel, iSize);
-          //markupList[wLabel.Name + wLabel.Handle.ToString("x")] = "<span size=\"" + iSize + "\">" + wLabel.Text + "</span>";
-          //wLabel.Markup = markupList[wLabel.Name + wLabel.Handle.ToString("x")];
         }
       }
     }
@@ -970,6 +1015,8 @@ namespace RestrictionTrackerGTK
         {
           pctRural.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctRural.Allocation.Size, r_used, r_lim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
           int u = (int)Math.Round(((double)r_used / r_lim) * trayRes);
+          if (u > trayRes)
+            u = trayRes;
           SetTrayIcon("graph_r_" + u);
         }
       }
@@ -1078,7 +1125,6 @@ namespace RestrictionTrackerGTK
         GLib.Source.Remove(tmrUpdate);
         tmrUpdate = 0;
       }
-      //StopSong();
       if (mySettings != null)
       { 
         mySettings.Save();
@@ -1550,9 +1596,6 @@ namespace RestrictionTrackerGTK
           }
           DisplayUsage(false, false);
           break;
-        case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.SSLFailureBypass:
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), e.Message, false);
-          break;
         case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.UnknownAccountDetails:
           if ((this.GdkWindow.State & Gdk.WindowState.Iconified) != 0)
           {
@@ -1833,7 +1876,6 @@ namespace RestrictionTrackerGTK
               Gtk.Main.IterationDo(false);
               System.Threading.Thread.Sleep(0);
               Gtk.Main.Iteration();
-              //Main_SetStatusText(null, new SetStatusTextEventArgs(LastTime, "Synchronizing History [" + iPercent + "%]...", false));
               if ((iPercent == 4))
               {
                 long iDur = modFunctions.TickCount() - iStart;
@@ -1854,8 +1896,6 @@ namespace RestrictionTrackerGTK
           }
         }
         FullCheck = false;
-        //        SetStatusText(LastTime, "Sorting History...", false);
-        //        modDB.LOG_Sort();
         mySettings.LastSyncTime = modDB.LOG_GetLast();
         mySettings.Save();
         DisplayUsage(true, true);
@@ -1978,9 +2018,21 @@ namespace RestrictionTrackerGTK
         {
           majorDif = 271;
         }
-        else
+        else if (majorDif < 5000)
         {
           majorDif = 977;
+        }
+        else if (majorDif < 10000)
+        {
+          majorDif = 3347;
+        }
+        else if (majorDif < 50000)
+        {
+          majorDif = 8237;
+        }
+        else 
+        {
+          majorDif = 38671;
         }
         if (tmpVal > toVal)
         {
@@ -2142,6 +2194,8 @@ namespace RestrictionTrackerGTK
         tmrIcon = 0;
       }
       int u = (int)Math.Round(((double)lDown / lDownLim) * trayRes);
+      if (u > trayRes)
+        u = trayRes;
       SetTrayIcon("graph_r_" + u);
       SetTrayText(sTTT);
       if (mySettings.Overuse > 0)
@@ -2919,7 +2973,6 @@ namespace RestrictionTrackerGTK
     }
     private void SetTrayIcon(string resource)
     {
-      //Console.WriteLine("Set to: " + resource );
       if (TrayStyle == 1)
       {
         ((StatusIcon)trayIcon).File = IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + resource + ".png";
