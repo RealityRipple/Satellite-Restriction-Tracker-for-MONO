@@ -818,14 +818,30 @@ namespace RestrictionTrackerGTK
     {
       if (!modFunctions.CompareColors(mySettings.Colors.MainDownA, cmdMainDownA.Color))
         return true;
-      if (!modFunctions.CompareColors(mySettings.Colors.MainDownB,cmdMainDownB.Color))
-        return true;
+      if (chkMainDownB.Active)
+      {
+        if (!modFunctions.CompareColors(mySettings.Colors.MainDownB, cmdMainDownB.Color))
+          return true;
+      }
+      else
+      {
+        if (mySettings.Colors.MainDownB != Color.Transparent)
+          return true;
+      }
       if (!modFunctions.CompareColors(mySettings.Colors.MainDownC,cmdMainDownC.Color))
         return true;
       if (!modFunctions.CompareColors(mySettings.Colors.MainUpA,cmdMainUpA.Color))
         return true;
-      if (!modFunctions.CompareColors(mySettings.Colors.MainUpB,cmdMainUpB.Color))
-        return true;
+      if (chkMainUpB.Active)
+      {
+        if (!modFunctions.CompareColors(mySettings.Colors.MainUpB, cmdMainUpB.Color))
+          return true;
+      }
+      else
+      {
+        if (mySettings.Colors.MainUpB != Color.Transparent)
+          return true;
+      }
       if (!modFunctions.CompareColors(mySettings.Colors.MainUpC,cmdMainUpC.Color))
         return true;
       if (!modFunctions.CompareColors(mySettings.Colors.MainText,cmdMainText.Color))
@@ -834,28 +850,60 @@ namespace RestrictionTrackerGTK
         return true;
       if (!modFunctions.CompareColors(mySettings.Colors.TrayDownA,cmdTrayDownA.Color))
         return true;
-      if (!modFunctions.CompareColors(mySettings.Colors.TrayDownB,cmdTrayDownB.Color))
-        return true;
+      if (chkTrayDownB.Active)
+      {
+        if (!modFunctions.CompareColors(mySettings.Colors.TrayDownB, cmdTrayDownB.Color))
+          return true;
+      }
+      else
+      {
+        if (mySettings.Colors.TrayDownB != Color.Transparent)
+          return true;
+      }
       if (!modFunctions.CompareColors(mySettings.Colors.TrayDownC,cmdTrayDownC.Color))
         return true;
       if (!modFunctions.CompareColors(mySettings.Colors.TrayUpA,cmdTrayUpA.Color))
         return true;
-      if (!modFunctions.CompareColors(mySettings.Colors.TrayUpB,cmdTrayUpB.Color))
-        return true;
+      if (chkTrayUpB.Active)
+      {
+        if (!modFunctions.CompareColors(mySettings.Colors.TrayUpB, cmdTrayUpB.Color))
+          return true;
+      }
+      else
+      {
+        if (mySettings.Colors.TrayUpB != Color.Transparent)
+          return true;
+      }
       if (!modFunctions.CompareColors(mySettings.Colors.TrayUpC,cmdTrayUpC.Color))
         return true;
       if (!modFunctions.CompareColors(mySettings.Colors.HistoryDownA,cmdHistoryDownA.Color))
         return true;
-      if (!modFunctions.CompareColors(mySettings.Colors.HistoryDownB,cmdHistoryDownB.Color))
-        return true;
+      if (chkHistoryDownB.Active)
+      {
+        if (!modFunctions.CompareColors(mySettings.Colors.HistoryDownB, cmdHistoryDownB.Color))
+          return true;
+      }
+      else
+      {
+        if (mySettings.Colors.HistoryDownB != Color.Transparent)
+          return true;
+      }
       if (!modFunctions.CompareColors(mySettings.Colors.HistoryDownC,cmdHistoryDownC.Color))
         return true;
       if (!modFunctions.CompareColors(mySettings.Colors.HistoryDownMax,cmdHistoryDownMax.Color))
         return true;
       if (!modFunctions.CompareColors(mySettings.Colors.HistoryUpA,cmdHistoryUpA.Color))
         return true;
-      if (!modFunctions.CompareColors(mySettings.Colors.HistoryUpB,cmdHistoryUpB.Color))
-        return true;
+      if (chkHistoryUpB.Active)
+      {
+        if (!modFunctions.CompareColors(mySettings.Colors.HistoryUpB, cmdHistoryUpB.Color))
+          return true;
+      }
+      else
+      {
+        if (mySettings.Colors.HistoryUpB != Color.Transparent)
+          return true;
+      }
       if (!modFunctions.CompareColors(mySettings.Colors.HistoryUpC,cmdHistoryUpC.Color))
         return true;
       if (!modFunctions.CompareColors(mySettings.Colors.HistoryUpMax,cmdHistoryUpMax.Color))
