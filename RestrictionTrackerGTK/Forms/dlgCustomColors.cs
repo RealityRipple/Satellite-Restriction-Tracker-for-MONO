@@ -168,6 +168,8 @@ namespace RestrictionTrackerGTK
       cmdMainUpC.ColorSet += cmdColor_SelectedColor;
       cmdMainUpC.ButtonReleaseEvent += cmdColor_MouseUp;
       cmdMainText.ColorSet += cmdColor_SelectedColor;
+      cmdMainText.ButtonReleaseEvent += cmdColor_MouseUp;
+      cmdMainBG.ColorSet += cmdColor_SelectedColor;
       cmdMainBG.ButtonReleaseEvent += cmdColor_MouseUp;
 
       cmdTrayDownA.ColorSet += cmdColor_SelectedColor;
@@ -204,6 +206,8 @@ namespace RestrictionTrackerGTK
       cmdHistoryUpMax.ColorSet += cmdColor_SelectedColor;
       cmdHistoryUpMax.ButtonReleaseEvent += cmdColor_MouseUp;
       cmdHistoryText.ColorSet += cmdColor_SelectedColor;
+      cmdHistoryText.ButtonReleaseEvent += cmdColor_MouseUp;
+      cmdHistoryBG.ColorSet += cmdColor_SelectedColor;
       cmdHistoryBG.ButtonReleaseEvent += cmdColor_MouseUp;
 
       if (mySettings.Colors.MainDownA == Color.Transparent)

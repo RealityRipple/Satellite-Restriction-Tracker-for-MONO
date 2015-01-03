@@ -5,13 +5,7 @@
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="RestrictionTrackerGTK" expanded="True">
-            <Node name="Classes" expanded="True">
-              <Node name="MacInterop" expanded="True" />
-              <Node name="Visual Elements" expanded="True" />
-            </Node>
-            <Node name="Forms" expanded="True" />
-            <Node name="Modules" expanded="True" />
-            <Node name="AssemblyInfo.cs" selected="True" />
+            <Node name="Resources" selected="True" />
           </Node>
         </State>
       </Pad>
