@@ -602,7 +602,7 @@ namespace RestrictionTrackerGTK
     protected void DrawCloseButton(ref Graphics grfx)
     {
       if (CloseBitmap == null || CloseBitmapSize.IsEmpty)
-        SetDefaultBitmaps();
+        SetDefaultCloseBitmap();
       if (CloseBitmap != null)
       {  
         Rectangle rectDest = new Rectangle(CloseBitmapLocation, CloseBitmapSize);
