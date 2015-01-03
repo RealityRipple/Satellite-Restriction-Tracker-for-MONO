@@ -23,8 +23,6 @@ namespace RestrictionTrackerGTK
     private Gtk.Menu mnuColorOpts;
     private Gtk.MenuItem mnuChoose;
     private Gtk.SeparatorMenuItem mnuSpace;
-    private Gtk.MenuItem mnuDefault;
-    private Gtk.Menu mnuDefaultOpts;
     private Gtk.MenuItem mnuThisDefault;
     private Gtk.MenuItem mnuGraphDefault;
     private Gtk.MenuItem mnuAllDefault;
@@ -36,18 +34,14 @@ namespace RestrictionTrackerGTK
       mnuColorOpts = new Gtk.Menu();
       mnuChoose = new Gtk.MenuItem("_Choose Color");
       mnuSpace = new Gtk.SeparatorMenuItem();
-      mnuDefault = new Gtk.MenuItem("Use _Default Color for");
-      mnuDefaultOpts = new Gtk.Menu();
-      mnuDefault.Submenu = mnuDefaultOpts;
-      mnuThisDefault = new Gtk.MenuItem("This _Color");
-      mnuGraphDefault = new Gtk.MenuItem("This _Graph");
-      mnuAllDefault = new Gtk.MenuItem("_All Graphs");
+      mnuThisDefault = new Gtk.MenuItem("Use Defaut for _This Color");
+      mnuGraphDefault = new Gtk.MenuItem("Use Defaut for This _Graph");
+      mnuAllDefault = new Gtk.MenuItem("Use Defaut for _All Graphs");
       mnuColorOpts.Append(mnuChoose);
       mnuColorOpts.Append(mnuSpace);
-      mnuDefaultOpts.Append(mnuThisDefault);
-      mnuDefaultOpts.Append(mnuGraphDefault);
-      mnuDefaultOpts.Append(mnuAllDefault);
-      mnuColorOpts.Append(mnuDefault);
+      mnuColorOpts.Append(mnuThisDefault);
+      mnuColorOpts.Append(mnuGraphDefault);
+      mnuColorOpts.Append(mnuAllDefault);
 
       mnuChoose.Activated += mnuChoose_Click;
       mnuThisDefault.Activated += mnuDefault_Click;
@@ -490,7 +484,7 @@ namespace RestrictionTrackerGTK
         if (iHeight == 75)
           dRect = new Rectangle(0, iHalfH / 2, iWidth, iHalfH);
         else
-          dRect = new Rectangle(0, 0, iWidth, iHeight);
+          dRect = new Rectangle(0, 0, iWidth + 4, iHeight);
         g.DrawImage(FakeR, dRect, FakeHRect, GraphicsUnit.Pixel);
         pctHistory.Pixbuf = modFunctions.ImageToPixbuf(fakeI);
       }
