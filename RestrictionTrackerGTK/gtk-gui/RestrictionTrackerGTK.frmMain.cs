@@ -841,8 +841,8 @@ namespace RestrictionTrackerGTK
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			this.DefaultWidth = 979;
-			this.DefaultHeight = 688;
+			this.DefaultWidth = 463;
+			this.DefaultHeight = 385;
 			this.Show ();
 		}
 	}

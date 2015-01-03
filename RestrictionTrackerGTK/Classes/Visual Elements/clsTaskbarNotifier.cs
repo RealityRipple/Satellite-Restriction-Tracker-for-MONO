@@ -579,7 +579,7 @@ namespace RestrictionTrackerGTK
 
     private void SetDefaultBackgroundBitmap()
     {
-      BackgroundBitmap = new Bitmap(GetType(), "RestrictionTrackerGTK.Resources.default_alert.png");
+      BackgroundBitmap = new Bitmap(GetType(), "Resources.default_alert.png");
       this.WidthRequest = BackgroundBitmap.Width;
       this.HeightRequest = BackgroundBitmap.Height;
       transparencyKey = Color.Fuchsia;
@@ -589,7 +589,7 @@ namespace RestrictionTrackerGTK
 
     private void SetDefaultCloseBitmap()
     {
-      Bitmap srcBitmap = new Bitmap(GetType(), "RestrictionTrackerGTK.Resources.default_close.png");
+      Bitmap srcBitmap = new Bitmap(GetType(), "Resources.default_close.png");
       CloseBitmap = modFunctions.MakeTransparent(srcBitmap, Color.Fuchsia);
       CloseBitmapSize = new Size(srcBitmap.Width / 3, srcBitmap.Height);
       CloseBitmapLocation = new Point(190, 0);

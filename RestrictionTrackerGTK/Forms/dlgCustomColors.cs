@@ -83,58 +83,74 @@ namespace RestrictionTrackerGTK
       {
         case localRestrictionTracker.SatHostTypes.WildBlue_LEGACY:
         case localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
+          lblMainTitle.Text = "Main Window Current Usage Graphs";
           lblMainDownTitle.Text = "Download Colors";
           lblMainUpTitle.Text = "Upload Colors";
           grpMainUp.Visible = true;
+          lblTrayTitle.Text = "Tray Icon Current Usage Graph Overlay";
           lblTrayDownTitle.Text = "Download Colors";
           lblTrayUpTitle.Text = "Upload Colors";
           grpTrayUp.Visible = true;
+          lblHistoryTitle.Text = "History Window Graphs";
           lblHistoryDownTitle.Text = "Download Colors";
           lblHistoryUpTitle.Text = "Upload Colors";
           grpHistoryUp.Visible = true;
           lblHistoryUpMax.Visible = true;
           cmdHistoryUpMax.Visible = true;
           DisplayAs = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
+          SetTextBGAlignments(true);
           break;
         case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
+          lblMainTitle.Text = "Main Window Current Usage Graphs";
           lblMainDownTitle.Text = "Anytime Colors";
           lblMainUpTitle.Text = "Off-Peak Colors";
           grpMainUp.Visible = true;
+          lblTrayTitle.Text = "Tray Icon Current Usage Graph Overlay";
           lblTrayDownTitle.Text = "Anytime Colors";
           lblTrayUpTitle.Text = "Off-Peak Colors";
           grpTrayUp.Visible = true;
+          lblHistoryTitle.Text = "History Window Graphs";
           lblHistoryDownTitle.Text = "Anytime Colors";
           lblHistoryUpTitle.Text = "Off-Peak Colors";
           grpHistoryUp.Visible = true;
           lblHistoryUpMax.Visible = true;
           cmdHistoryUpMax.Visible = true;
           DisplayAs = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
+          SetTextBGAlignments(true);
           break;
         case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
         case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
+          lblMainTitle.Text = "Main Window Graph";
           lblMainDownTitle.Text = "Usage Colors";
           grpMainUp.Visible = false;
+          lblTrayTitle.Text = "Tray Icon Graph";
           lblTrayDownTitle.Text = "Usage Colors";
           grpTrayUp.Visible = false;
+          lblHistoryTitle.Text = "History Graph";
           lblHistoryDownTitle.Text = "Usage Colors";
           grpHistoryUp.Visible = false;
           lblHistoryUpMax.Visible = false;
           cmdHistoryUpMax.Visible = false;
           DisplayAs = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
+          SetTextBGAlignments(false);
           break;
         default:
+          lblMainTitle.Text = "Main Window Current Usage Graphs";
           lblMainDownTitle.Text = "Download Colors";
           lblMainUpTitle.Text = "Upload Colors";
           grpMainUp.Visible = true;
+          lblTrayTitle.Text = "Tray Icon Current Usage Graph Overlay";
           lblTrayDownTitle.Text = "Download Colors";
           lblTrayUpTitle.Text = "Upload Colors";
           grpTrayUp.Visible = true;
+          lblHistoryTitle.Text = "History Window Graphs";
           lblHistoryDownTitle.Text = "Download Colors";
           lblHistoryUpTitle.Text = "Upload Colors";
           grpHistoryUp.Visible = true;
           lblHistoryUpMax.Visible = true;
           cmdHistoryUpMax.Visible = true;
           DisplayAs = localRestrictionTracker.SatHostTypes.Other;
+          SetTextBGAlignments(true);
           break;
       }
       cmdMainDownA.ColorSet += cmdColor_SelectedColor;
@@ -335,11 +351,15 @@ namespace RestrictionTrackerGTK
       Color ht = modFunctions.GdkColorToDrawingColor(cmdHistoryText.Color);
       Color hbg = modFunctions.GdkColorToDrawingColor(cmdHistoryBG.Color);
 
+      int iWidth = pctMain.Allocation.Size.Width ; 
+      int iHeight = pctMain.Allocation.Size.Height;
+      int iHalfW = (int) Math.Floor(iWidth / 2d);
+      int iHalfH = (int) Math.Floor(iHeight / 2d);
      
       Graphics g;
       if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY)
       {
-        Rectangle FakeMRect = new Rectangle(0, 0, 74, 150);
+        Rectangle FakeMRect = new Rectangle(0, 0, iWidth - 1, iHeight * 2);
         Image FakeD = modFunctions.DisplayProgress(modFunctions.DrawingSizeToGdkSize(FakeMRect.Size), lDown, lDownLim, mySettings.Accuracy, mda, mdb, mdc, mt, mbg);
         Image FakeU = modFunctions.DisplayProgress(modFunctions.DrawingSizeToGdkSize(FakeMRect.Size), lUp, lUpLim, mySettings.Accuracy, mua, mub, muc, mt, mbg);
         Bitmap fakeI = new Bitmap(pctHistory.Allocation.Width, pctHistory.Allocation.Height);
@@ -348,8 +368,8 @@ namespace RestrictionTrackerGTK
         g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
         g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
         g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-        System.Drawing.Rectangle dRect = new System.Drawing.Rectangle(0, 0, 37, 75);
-        System.Drawing.Rectangle uRect = new System.Drawing.Rectangle(38, 0, 37, 75);
+        System.Drawing.Rectangle dRect = new System.Drawing.Rectangle(0, 0, iHalfW, iHeight );
+        System.Drawing.Rectangle uRect = new System.Drawing.Rectangle(iHalfW + 1, 0, iHalfW, iHeight);
         g.DrawImage(FakeD, dRect, FakeMRect, GraphicsUnit.Pixel);
         g.DrawImage(FakeU, uRect, FakeMRect, GraphicsUnit.Pixel);
         pctMain.Pixbuf = modFunctions.ImageToPixbuf(fakeI);
@@ -360,7 +380,7 @@ namespace RestrictionTrackerGTK
       }
       else if (DisplayAs == localRestrictionTracker.SatHostTypes.DishNet_EXEDE)
       {
-        Rectangle FakeMRect = new Rectangle(0, 0, 74, 150);
+        Rectangle FakeMRect = new Rectangle(0, 0, iWidth - 1, iHeight * 2);
         Image FakeD = modFunctions.DisplayProgress(modFunctions.DrawingSizeToGdkSize(FakeMRect.Size), lDown, lDownLim, mySettings.Accuracy, mda, mdb, mdc, mt, mbg);
         Image FakeU = modFunctions.DisplayProgress(modFunctions.DrawingSizeToGdkSize(FakeMRect.Size), lUp, lUpLim, mySettings.Accuracy, mua, mub, muc, mt, mbg);
         Bitmap fakeI = new Bitmap(pctHistory.Allocation.Width, pctHistory.Allocation.Height);
@@ -369,8 +389,8 @@ namespace RestrictionTrackerGTK
         g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
         g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
         g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-        Rectangle dRect = new Rectangle(0, 0, 37, 75);
-        Rectangle uRect = new Rectangle(38, 0, 37, 75);
+        Rectangle dRect = new Rectangle(0, 0, iHalfW, iHeight);
+        Rectangle uRect = new Rectangle(iHalfW + 1, 0, iHalfW, iHeight);
         g.DrawImage(FakeD, dRect, FakeMRect, GraphicsUnit.Pixel);
         g.DrawImage(FakeU, uRect, FakeMRect, GraphicsUnit.Pixel);
         pctMain.Pixbuf = modFunctions.ImageToPixbuf(fakeI);
@@ -445,8 +465,8 @@ namespace RestrictionTrackerGTK
         g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
         g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
         g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-        Rectangle dRect = new Rectangle(0, 5, 75, 30);
-        Rectangle uRect = new Rectangle(0, 40, 75, 30);
+        Rectangle dRect = new Rectangle(0, (int)(iHalfH * 0.1d), iWidth, (int)(iHalfH * 0.85d));
+        Rectangle uRect = new Rectangle(0, (int)(iHalfH + (iHalfH * 0.05d)), iWidth, (int)(iHalfH * 0.85d));
         g.DrawImage(FakeD, dRect, FakeHRect, GraphicsUnit.Pixel);
         g.DrawImage(FakeU, uRect, FakeHRect, GraphicsUnit.Pixel);
 
@@ -462,9 +482,12 @@ namespace RestrictionTrackerGTK
         g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
         g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
         g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-        Rectangle dRect = new Rectangle(0, 22, 75, 30);
+        Rectangle dRect;
+        if (iHeight == 75)
+          dRect = new Rectangle(0, iHalfH / 2, iWidth, iHalfH);
+        else
+          dRect = new Rectangle(0, 0, iWidth, iHeight);
         g.DrawImage(FakeR, dRect, FakeHRect, GraphicsUnit.Pixel);
-
         pctHistory.Pixbuf = modFunctions.ImageToPixbuf(fakeI);
       }
       else if (DisplayAs == localRestrictionTracker.SatHostTypes.DishNet_EXEDE)
@@ -478,11 +501,10 @@ namespace RestrictionTrackerGTK
         g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
         g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
         g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-        Rectangle dRect = new Rectangle(0, 5, 75, 30);
-        Rectangle uRect = new Rectangle(0, 40, 75, 30);
+        Rectangle dRect = new Rectangle(0, (int)(iHalfH * 0.1d), iWidth, (int)(iHalfH * 0.85d));
+        Rectangle uRect = new Rectangle(0, (int)(iHalfH + (iHalfH * 0.05d)), iWidth, (int)(iHalfH * 0.85d));
         g.DrawImage(FakeD, dRect, FakeHRect, GraphicsUnit.Pixel);
         g.DrawImage(FakeU, uRect, FakeHRect, GraphicsUnit.Pixel);
-
         pctHistory.Pixbuf = modFunctions.ImageToPixbuf(fakeI);
       }
       else
@@ -1247,6 +1269,103 @@ namespace RestrictionTrackerGTK
         I = High;
       }
       return I;
+    }
+
+    private void SetTextBGAlignments(bool Horizontal)
+    {
+      if (Horizontal)
+      {
+        //Size preSize = new Size(75, 75);
+
+      }
+      else
+      {
+        Size preSize = new Size(100, 55);
+        pnlMain.NRows = 3;
+        ((Gtk.Table.TableChild)pnlMain[pnlMainStyle]).TopAttach = 2;
+        ((Gtk.Table.TableChild)pnlMain[pnlMainStyle]).BottomAttach = 3;
+        pnlMain.Remove(grpMainUp);
+        ((Gtk.Table.TableChild)pnlMain[grpMainDown]).TopAttach = 1;
+        ((Gtk.Table.TableChild)pnlMain[grpMainDown]).BottomAttach = 2;
+
+        ((Gtk.Table.TableChild)pnlMain[evnMain]).TopAttach = 0;
+        ((Gtk.Table.TableChild)pnlMain[evnMain]).LeftAttach = 0;
+        ((Gtk.Table.TableChild)pnlMain[evnMain]).BottomAttach = 1;
+        ((Gtk.Table.TableChild)pnlMain[evnMain]).RightAttach = 1;
+        pnlMain.NColumns = 1;
+        pctMain.WidthRequest = preSize.Width;
+        pctMain.HeightRequest = preSize.Height;
+
+        pnlMainStyle.NRows = 4;
+        ((Gtk.Table.TableChild)pnlMainStyle[lblMainBG]).TopAttach = 1;
+        ((Gtk.Table.TableChild)pnlMainStyle[lblMainBG]).BottomAttach = 2;
+        ((Gtk.Table.TableChild)pnlMainStyle[lblMainBG]).LeftAttach = 0;
+        ((Gtk.Table.TableChild)pnlMainStyle[lblMainBG]).RightAttach = 1;
+
+        ((Gtk.Table.TableChild)pnlMainStyle[cmdMainBG]).TopAttach = 1;
+        ((Gtk.Table.TableChild)pnlMainStyle[cmdMainBG]).BottomAttach = 2;
+        ((Gtk.Table.TableChild)pnlMainStyle[cmdMainBG]).LeftAttach = 1;
+        ((Gtk.Table.TableChild)pnlMainStyle[cmdMainBG]).RightAttach = 2;
+        pnlMainStyle.NColumns = 2;
+
+        pnlTray.NRows = 2;
+        pnlTray.Remove(grpTrayUp);
+        ((Gtk.Table.TableChild)pnlTray[grpTrayDown]).TopAttach = 1;
+        ((Gtk.Table.TableChild)pnlTray[grpTrayDown]).BottomAttach = 2;
+
+        ((Gtk.Table.TableChild)pnlTray[evnTray]).TopAttach = 0;
+        ((Gtk.Table.TableChild)pnlTray[evnTray]).LeftAttach = 0;
+        ((Gtk.Table.TableChild)pnlTray[evnTray]).BottomAttach = 1;
+        ((Gtk.Table.TableChild)pnlTray[evnTray]).RightAttach = 2;
+        pnlTray.NColumns = 1;
+        pctTray.WidthRequest = preSize.Width;
+        pctTray.HeightRequest = preSize.Height;
+
+
+        pnlHistory.NRows = 3;
+        ((Gtk.Table.TableChild)pnlHistory[pnlHistoryStyle]).TopAttach = 2;
+        ((Gtk.Table.TableChild)pnlHistory[pnlHistoryStyle]).BottomAttach = 3;
+        pnlHistory.Remove(grpHistoryUp);
+        ((Gtk.Table.TableChild)pnlHistory[grpHistoryDown]).TopAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistory[grpHistoryDown]).BottomAttach = 2;
+
+        ((Gtk.Table.TableChild)pnlHistory[evnHistory]).TopAttach = 0;
+        ((Gtk.Table.TableChild)pnlHistory[evnHistory]).LeftAttach = 0;
+        ((Gtk.Table.TableChild)pnlHistory[evnHistory]).BottomAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistory[evnHistory]).RightAttach = 2;
+        pnlHistory.NColumns = 1;
+        pctHistory.WidthRequest = preSize.Width;
+        pctHistory.HeightRequest = preSize.Height;
+
+        pnlHistoryStyle.NRows = 4;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryBG]).TopAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryBG]).BottomAttach = 2;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryBG]).LeftAttach = 0;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryBG]).RightAttach = 1;
+
+        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryBG]).TopAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryBG]).BottomAttach = 2;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryBG]).LeftAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryBG]).RightAttach = 2;
+        pnlHistoryStyle.NColumns = 2;
+
+        pnlCustomColors.NColumns = 3;
+        ((Gtk.Table.TableChild)pnlCustomColors[grpHistory]).RightAttach = 3;
+        ((Gtk.Table.TableChild)pnlCustomColors[grpHistory]).LeftAttach = 2;
+        ((Gtk.Table.TableChild)pnlCustomColors[grpHistory]).TopAttach = 0;
+        ((Gtk.Table.TableChild)pnlCustomColors[grpHistory]).BottomAttach = 1;
+
+        ((Gtk.Table.TableChild)pnlCustomColors[grpTray]).RightAttach = 2;
+        ((Gtk.Table.TableChild)pnlCustomColors[grpTray]).LeftAttach = 1;
+        ((Gtk.Table.TableChild)pnlCustomColors[grpTray]).TopAttach = 0;
+        ((Gtk.Table.TableChild)pnlCustomColors[grpTray]).BottomAttach = 1;
+
+        ((Gtk.Table.TableChild)pnlCustomColors[grpMain]).RightAttach = 1;
+        ((Gtk.Table.TableChild)pnlCustomColors[grpMain]).LeftAttach = 0;
+        ((Gtk.Table.TableChild)pnlCustomColors[grpMain]).TopAttach = 0;
+        ((Gtk.Table.TableChild)pnlCustomColors[grpMain]).BottomAttach = 1;
+        pnlCustomColors.NRows = 1;
+      }
     }
 #endregion
   }

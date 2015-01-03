@@ -9,7 +9,7 @@
     <widget-library name="../../appindicator-sharp.dll" />
     <widget-library name="../bin/Debug/RestrictionTracker.exe" internal="true" />
   </import>
-  <widget class="Gtk.Window" id="RestrictionTrackerGTK.frmMain" design-size="979 688">
+  <widget class="Gtk.Window" id="RestrictionTrackerGTK.frmMain" design-size="463 385">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Satellite Restriction Tracker</property>
     <property name="Icon">resource:RestrictionTrackerGTK.Resources.norm.ico</property>
@@ -1383,6 +1383,7 @@
                         <property name="Tooltip" translatable="yes">Display history in a line graph.</property>
                         <property name="CanFocus">True</property>
                         <property name="Label" translatable="yes">Graph</property>
+                        <property name="Active">True</property>
                         <property name="DrawIndicator">True</property>
                         <property name="HasLabel">True</property>
                         <property name="UseUnderline">True</property>
@@ -3105,7 +3106,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Dialog" id="RestrictionTrackerGTK.dlgCustomColors" design-size="371 600">
+  <widget class="Gtk.Dialog" id="RestrictionTrackerGTK.dlgCustomColors" design-size="345 567">
     <property name="MemberName" />
     <property name="Visible">False</property>
     <property name="Title" translatable="yes">Graph Color Customization</property>
@@ -3126,90 +3127,8 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
           <widget class="Gtk.Table" id="pnlCustomColors">
             <property name="MemberName" />
             <property name="NRows">3</property>
-            <property name="NColumns">2</property>
-            <property name="RowSpacing">6</property>
-            <property name="ColumnSpacing">6</property>
-            <child>
-              <widget class="Gtk.EventBox" id="evnHistory">
-                <property name="MemberName" />
-                <child>
-                  <widget class="Gtk.Image" id="pctHistory">
-                    <property name="MemberName" />
-                    <property name="WidthRequest">75</property>
-                    <property name="HeightRequest">75</property>
-                  </widget>
-                </child>
-              </widget>
-              <packing>
-                <property name="TopAttach">2</property>
-                <property name="BottomAttach">3</property>
-                <property name="LeftAttach">1</property>
-                <property name="RightAttach">2</property>
-                <property name="AutoSize">False</property>
-                <property name="XOptions">0</property>
-                <property name="YOptions">0</property>
-                <property name="XExpand">False</property>
-                <property name="XFill">False</property>
-                <property name="XShrink">False</property>
-                <property name="YExpand">False</property>
-                <property name="YFill">False</property>
-                <property name="YShrink">False</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="Gtk.EventBox" id="evnMain">
-                <property name="MemberName" />
-                <signal name="ButtonReleaseEvent" handler="pctMain_MouseUp" />
-                <child>
-                  <widget class="Gtk.Image" id="pctMain">
-                    <property name="MemberName" />
-                    <property name="WidthRequest">75</property>
-                    <property name="HeightRequest">75</property>
-                  </widget>
-                </child>
-              </widget>
-              <packing>
-                <property name="LeftAttach">1</property>
-                <property name="RightAttach">2</property>
-                <property name="AutoSize">False</property>
-                <property name="XOptions">0</property>
-                <property name="YOptions">0</property>
-                <property name="XExpand">False</property>
-                <property name="XFill">False</property>
-                <property name="XShrink">False</property>
-                <property name="YExpand">False</property>
-                <property name="YFill">False</property>
-                <property name="YShrink">False</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="Gtk.EventBox" id="evnTray">
-                <property name="MemberName" />
-                <signal name="ButtonReleaseEvent" handler="pctTray_MouseUp" />
-                <child>
-                  <widget class="Gtk.Image" id="pctTray">
-                    <property name="MemberName" />
-                    <property name="WidthRequest">75</property>
-                    <property name="HeightRequest">75</property>
-                  </widget>
-                </child>
-              </widget>
-              <packing>
-                <property name="TopAttach">1</property>
-                <property name="BottomAttach">2</property>
-                <property name="LeftAttach">1</property>
-                <property name="RightAttach">2</property>
-                <property name="AutoSize">False</property>
-                <property name="XOptions">0</property>
-                <property name="YOptions">0</property>
-                <property name="XExpand">False</property>
-                <property name="XFill">False</property>
-                <property name="XShrink">False</property>
-                <property name="YExpand">False</property>
-                <property name="YFill">False</property>
-                <property name="YShrink">False</property>
-              </packing>
-            </child>
+            <property name="RowSpacing">3</property>
+            <property name="ColumnSpacing">3</property>
             <child>
               <widget class="Gtk.Frame" id="grpHistory">
                 <property name="MemberName" />
@@ -3226,9 +3145,35 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                       <widget class="Gtk.Table" id="pnlHistory">
                         <property name="MemberName" />
                         <property name="NRows">2</property>
-                        <property name="NColumns">2</property>
-                        <property name="RowSpacing">6</property>
-                        <property name="ColumnSpacing">6</property>
+                        <property name="NColumns">3</property>
+                        <property name="RowSpacing">3</property>
+                        <property name="ColumnSpacing">3</property>
+                        <child>
+                          <widget class="Gtk.EventBox" id="evnHistory">
+                            <property name="MemberName" />
+                            <child>
+                              <widget class="Gtk.Image" id="pctHistory">
+                                <property name="MemberName" />
+                                <property name="WidthRequest">75</property>
+                                <property name="HeightRequest">75</property>
+                              </widget>
+                            </child>
+                          </widget>
+                          <packing>
+                            <property name="BottomAttach">2</property>
+                            <property name="LeftAttach">2</property>
+                            <property name="RightAttach">3</property>
+                            <property name="AutoSize">True</property>
+                            <property name="XOptions">Fill</property>
+                            <property name="YOptions">Fill</property>
+                            <property name="XExpand">False</property>
+                            <property name="XFill">True</property>
+                            <property name="XShrink">False</property>
+                            <property name="YExpand">False</property>
+                            <property name="YFill">True</property>
+                            <property name="YShrink">False</property>
+                          </packing>
+                        </child>
                         <child>
                           <widget class="Gtk.Frame" id="grpHistoryDown">
                             <property name="MemberName" />
@@ -3247,8 +3192,8 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                                     <property name="MemberName" />
                                     <property name="NRows">4</property>
                                     <property name="NColumns">3</property>
-                                    <property name="RowSpacing">6</property>
-                                    <property name="ColumnSpacing">6</property>
+                                    <property name="RowSpacing">3</property>
+                                    <property name="ColumnSpacing">3</property>
                                     <child>
                                       <placeholder />
                                     </child>
@@ -3481,8 +3426,8 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                                     <property name="MemberName" />
                                     <property name="NRows">4</property>
                                     <property name="NColumns">3</property>
-                                    <property name="RowSpacing">6</property>
-                                    <property name="ColumnSpacing">6</property>
+                                    <property name="RowSpacing">3</property>
+                                    <property name="ColumnSpacing">3</property>
                                     <child>
                                       <placeholder />
                                     </child>
@@ -3703,8 +3648,8 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                           <widget class="Gtk.Table" id="pnlHistoryStyle">
                             <property name="MemberName" />
                             <property name="NColumns">5</property>
-                            <property name="RowSpacing">6</property>
-                            <property name="ColumnSpacing">6</property>
+                            <property name="RowSpacing">3</property>
+                            <property name="ColumnSpacing">3</property>
                             <child>
                               <placeholder />
                             </child>
@@ -3850,9 +3795,36 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                       <widget class="Gtk.Table" id="pnlMain">
                         <property name="MemberName" />
                         <property name="NRows">2</property>
-                        <property name="NColumns">2</property>
-                        <property name="RowSpacing">6</property>
-                        <property name="ColumnSpacing">6</property>
+                        <property name="NColumns">3</property>
+                        <property name="RowSpacing">3</property>
+                        <property name="ColumnSpacing">3</property>
+                        <child>
+                          <widget class="Gtk.EventBox" id="evnMain">
+                            <property name="MemberName" />
+                            <signal name="ButtonReleaseEvent" handler="pctMain_MouseUp" />
+                            <child>
+                              <widget class="Gtk.Image" id="pctMain">
+                                <property name="MemberName" />
+                                <property name="WidthRequest">75</property>
+                                <property name="HeightRequest">75</property>
+                              </widget>
+                            </child>
+                          </widget>
+                          <packing>
+                            <property name="BottomAttach">2</property>
+                            <property name="LeftAttach">2</property>
+                            <property name="RightAttach">3</property>
+                            <property name="AutoSize">True</property>
+                            <property name="XOptions">Fill</property>
+                            <property name="YOptions">Fill</property>
+                            <property name="XExpand">False</property>
+                            <property name="XFill">True</property>
+                            <property name="XShrink">False</property>
+                            <property name="YExpand">False</property>
+                            <property name="YFill">True</property>
+                            <property name="YShrink">False</property>
+                          </packing>
+                        </child>
                         <child>
                           <widget class="Gtk.Frame" id="grpMainDown">
                             <property name="MemberName" />
@@ -3871,8 +3843,8 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                                     <property name="MemberName" />
                                     <property name="NRows">3</property>
                                     <property name="NColumns">3</property>
-                                    <property name="RowSpacing">6</property>
-                                    <property name="ColumnSpacing">6</property>
+                                    <property name="RowSpacing">3</property>
+                                    <property name="ColumnSpacing">3</property>
                                     <child>
                                       <placeholder />
                                     </child>
@@ -4058,8 +4030,8 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                                     <property name="MemberName" />
                                     <property name="NRows">3</property>
                                     <property name="NColumns">3</property>
-                                    <property name="RowSpacing">6</property>
-                                    <property name="ColumnSpacing">6</property>
+                                    <property name="RowSpacing">3</property>
+                                    <property name="ColumnSpacing">3</property>
                                     <child>
                                       <placeholder />
                                     </child>
@@ -4233,8 +4205,8 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                           <widget class="Gtk.Table" id="pnlMainStyle">
                             <property name="MemberName" />
                             <property name="NColumns">5</property>
-                            <property name="RowSpacing">6</property>
-                            <property name="ColumnSpacing">6</property>
+                            <property name="RowSpacing">3</property>
+                            <property name="ColumnSpacing">3</property>
                             <child>
                               <placeholder />
                             </child>
@@ -4376,9 +4348,37 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                     <property name="RightPadding">3</property>
                     <property name="BottomPadding">3</property>
                     <child>
-                      <widget class="Gtk.HBox" id="pnlTray">
+                      <widget class="Gtk.Table" id="pnlTray">
                         <property name="MemberName" />
-                        <property name="Spacing">6</property>
+                        <property name="NColumns">3</property>
+                        <property name="RowSpacing">3</property>
+                        <property name="ColumnSpacing">3</property>
+                        <child>
+                          <widget class="Gtk.EventBox" id="evnTray">
+                            <property name="MemberName" />
+                            <signal name="ButtonReleaseEvent" handler="pctTray_MouseUp" />
+                            <child>
+                              <widget class="Gtk.Image" id="pctTray">
+                                <property name="MemberName" />
+                                <property name="WidthRequest">75</property>
+                                <property name="HeightRequest">75</property>
+                              </widget>
+                            </child>
+                          </widget>
+                          <packing>
+                            <property name="LeftAttach">2</property>
+                            <property name="RightAttach">3</property>
+                            <property name="AutoSize">True</property>
+                            <property name="XOptions">Fill</property>
+                            <property name="YOptions">Fill</property>
+                            <property name="XExpand">False</property>
+                            <property name="XFill">True</property>
+                            <property name="XShrink">False</property>
+                            <property name="YExpand">False</property>
+                            <property name="YFill">True</property>
+                            <property name="YShrink">False</property>
+                          </packing>
+                        </child>
                         <child>
                           <widget class="Gtk.Frame" id="grpTrayDown">
                             <property name="MemberName" />
@@ -4397,8 +4397,8 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                                     <property name="MemberName" />
                                     <property name="NRows">3</property>
                                     <property name="NColumns">3</property>
-                                    <property name="RowSpacing">6</property>
-                                    <property name="ColumnSpacing">6</property>
+                                    <property name="RowSpacing">3</property>
+                                    <property name="ColumnSpacing">3</property>
                                     <child>
                                       <placeholder />
                                     </child>
@@ -4556,11 +4556,15 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                             </child>
                           </widget>
                           <packing>
-                            <property name="Position">0</property>
                             <property name="AutoSize">True</property>
-                            <property name="Expand">False</property>
-                            <property name="Fill">False</property>
-                            <property name="Padding">3</property>
+                            <property name="XOptions">Fill</property>
+                            <property name="YOptions">Fill</property>
+                            <property name="XExpand">False</property>
+                            <property name="XFill">True</property>
+                            <property name="XShrink">False</property>
+                            <property name="YExpand">False</property>
+                            <property name="YFill">True</property>
+                            <property name="YShrink">False</property>
                           </packing>
                         </child>
                         <child>
@@ -4581,8 +4585,8 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                                     <property name="MemberName" />
                                     <property name="NRows">3</property>
                                     <property name="NColumns">3</property>
-                                    <property name="RowSpacing">6</property>
-                                    <property name="ColumnSpacing">6</property>
+                                    <property name="RowSpacing">3</property>
+                                    <property name="ColumnSpacing">3</property>
                                     <child>
                                       <placeholder />
                                     </child>
@@ -4740,11 +4744,17 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                             </child>
                           </widget>
                           <packing>
-                            <property name="Position">1</property>
+                            <property name="LeftAttach">1</property>
+                            <property name="RightAttach">2</property>
                             <property name="AutoSize">True</property>
-                            <property name="Expand">False</property>
-                            <property name="Fill">False</property>
-                            <property name="Padding">3</property>
+                            <property name="XOptions">Fill</property>
+                            <property name="YOptions">Fill</property>
+                            <property name="XExpand">False</property>
+                            <property name="XFill">True</property>
+                            <property name="XShrink">False</property>
+                            <property name="YExpand">False</property>
+                            <property name="YFill">True</property>
+                            <property name="YShrink">False</property>
                           </packing>
                         </child>
                       </widget>
@@ -4790,7 +4800,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
       <widget class="Gtk.HButtonBox" id="pnlColorButtons">
         <property name="MemberName" />
         <property name="Spacing">10</property>
-        <property name="BorderWidth">5</property>
+        <property name="BorderWidth">3</property>
         <property name="Size">2</property>
         <property name="LayoutStyle">End</property>
         <child>

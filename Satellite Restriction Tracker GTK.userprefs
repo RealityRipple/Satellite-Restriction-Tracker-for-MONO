@@ -1,20 +1,17 @@
 ﻿<Properties GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="RestrictionTrackerGTK/Forms/frmMain.cs">
-    <Files>
-      <File FileName="RestrictionTrackerGTK/Forms/frmMain.cs" Line="652" Column="92" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="RestrictionTrackerGTK" expanded="True">
             <Node name="Classes" expanded="True">
+              <Node name="MacInterop" expanded="True" />
               <Node name="Visual Elements" expanded="True" />
             </Node>
-            <Node name="Forms" expanded="True">
-              <Node name="frmMain.cs" selected="True" />
-            </Node>
+            <Node name="Forms" expanded="True" />
             <Node name="Modules" expanded="True" />
+            <Node name="AssemblyInfo.cs" selected="True" />
           </Node>
         </State>
       </Pad>

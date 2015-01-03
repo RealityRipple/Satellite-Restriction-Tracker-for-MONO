@@ -496,6 +496,7 @@ namespace RestrictionTrackerGTK
 
       NextGrabTick = long.MinValue;
 
+
       cmdRefresh.ButtonReleaseEvent += cmdRefresh_Click;
       cmdHistory.Clicked += cmdHistory_Click;
       cmdConfig.Clicked += cmdConfig_Click;
@@ -836,7 +837,7 @@ namespace RestrictionTrackerGTK
             }
           }
           SetFontSize(ref baseBox, (int)Math.Ceiling(fontSize * 1024f));
-          sbMainStatus.HeightRequest = (int)Math.Ceiling((GetFontSize() / 1024d) * 2.0d);
+          sbMainStatus.HeightRequest = (int)Math.Ceiling((GetFontSize() / 1024d) * 2.5d);
         }
         else
         {
@@ -2830,8 +2831,8 @@ namespace RestrictionTrackerGTK
         bStatus.BorderWidth = 0;
         Label lStatus = (Label)bStatus.Children[0];
         lStatus.Markup = "<span size=\"" + GetFontSize() + "\">" + sTitle + "</span>";
-        lStatus.Yalign = 0f;
-        sbMainStatus.HeightRequest = (int)Math.Ceiling((GetFontSize() / 1024d) * 2.0d);
+        lStatus.Yalign = 0.25f;
+        sbMainStatus.HeightRequest = (int)Math.Ceiling((GetFontSize() / 1024d) * 2.5d);
       }
       if (!String.IsNullOrEmpty(sSubtitle))
       {
