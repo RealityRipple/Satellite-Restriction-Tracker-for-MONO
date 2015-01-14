@@ -119,26 +119,11 @@ namespace RestrictionTrackerGTK
 			this.cmdDownload.CanFocus = true;
 			this.cmdDownload.Name = "cmdDownload";
 			this.cmdDownload.UseUnderline = true;
-			// Container child cmdDownload.Gtk.Container+ContainerChild
-			global::Gtk.Alignment w10 = new global::Gtk.Alignment (0.5F, 0.5F, 0F, 0F);
-			// Container child GtkAlignment.Gtk.Container+ContainerChild
-			global::Gtk.HBox w11 = new global::Gtk.HBox ();
-			w11.Spacing = 2;
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Image w12 = new global::Gtk.Image ();
-			w12.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("RestrictionTrackerGTK.Resources.web.png");
-			w11.Add (w12);
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Label w14 = new global::Gtk.Label ();
-			w14.LabelProp = global::Mono.Unix.Catalog.GetString ("Download _Update");
-			w14.UseUnderline = true;
-			w11.Add (w14);
-			w10.Add (w11);
-			this.cmdDownload.Add (w10);
+			this.cmdDownload.Label = global::Mono.Unix.Catalog.GetString ("Download _Update");
 			this.AddActionWidget (this.cmdDownload, -5);
-			global::Gtk.ButtonBox.ButtonBoxChild w18 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w9 [this.cmdDownload]));
-			w18.Expand = false;
-			w18.Fill = false;
+			global::Gtk.ButtonBox.ButtonBoxChild w10 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w9 [this.cmdDownload]));
+			w10.Expand = false;
+			w10.Fill = false;
 			// Container child pnlUpdateButtons.Gtk.ButtonBox+ButtonBoxChild
 			this.cmdCancel = new global::Gtk.Button ();
 			this.cmdCancel.TooltipMarkup = "Ignore the new version for now.";
@@ -146,54 +131,24 @@ namespace RestrictionTrackerGTK
 			this.cmdCancel.CanFocus = true;
 			this.cmdCancel.Name = "cmdCancel";
 			this.cmdCancel.UseUnderline = true;
-			// Container child cmdCancel.Gtk.Container+ContainerChild
-			global::Gtk.Alignment w19 = new global::Gtk.Alignment (0.5F, 0.5F, 0F, 0F);
-			// Container child GtkAlignment.Gtk.Container+ContainerChild
-			global::Gtk.HBox w20 = new global::Gtk.HBox ();
-			w20.Spacing = 2;
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Image w21 = new global::Gtk.Image ();
-			w21.Pixbuf = global::Stetic.IconLoader.LoadIcon (this, "gtk-cancel", global::Gtk.IconSize.Button);
-			w20.Add (w21);
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Label w23 = new global::Gtk.Label ();
-			w23.LabelProp = global::Mono.Unix.Catalog.GetString ("_Not Now");
-			w23.UseUnderline = true;
-			w20.Add (w23);
-			w19.Add (w20);
-			this.cmdCancel.Add (w19);
+			this.cmdCancel.Label = global::Mono.Unix.Catalog.GetString ("_Not Now");
 			this.AddActionWidget (this.cmdCancel, -6);
-			global::Gtk.ButtonBox.ButtonBoxChild w27 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w9 [this.cmdCancel]));
-			w27.Position = 1;
-			w27.Expand = false;
-			w27.Fill = false;
+			global::Gtk.ButtonBox.ButtonBoxChild w11 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w9 [this.cmdCancel]));
+			w11.Position = 1;
+			w11.Expand = false;
+			w11.Fill = false;
 			// Container child pnlUpdateButtons.Gtk.ButtonBox+ButtonBoxChild
 			this.cmdChanges = new global::Gtk.Button ();
 			this.cmdChanges.TooltipMarkup = "View the latest version's Change Log.";
 			this.cmdChanges.CanFocus = true;
 			this.cmdChanges.Name = "cmdChanges";
 			this.cmdChanges.UseUnderline = true;
-			// Container child cmdChanges.Gtk.Container+ContainerChild
-			global::Gtk.Alignment w28 = new global::Gtk.Alignment (0.5F, 0.5F, 0F, 0F);
-			// Container child GtkAlignment.Gtk.Container+ContainerChild
-			global::Gtk.HBox w29 = new global::Gtk.HBox ();
-			w29.Spacing = 2;
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Image w30 = new global::Gtk.Image ();
-			w30.Pixbuf = global::Stetic.IconLoader.LoadIcon (this, "gtk-indent", global::Gtk.IconSize.Button);
-			w29.Add (w30);
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Label w32 = new global::Gtk.Label ();
-			w32.LabelProp = global::Mono.Unix.Catalog.GetString ("_Changes >>");
-			w32.UseUnderline = true;
-			w29.Add (w32);
-			w28.Add (w29);
-			this.cmdChanges.Add (w28);
+			this.cmdChanges.Label = global::Mono.Unix.Catalog.GetString ("_Changes >>");
 			w9.Add (this.cmdChanges);
-			global::Gtk.ButtonBox.ButtonBoxChild w36 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w9 [this.cmdChanges]));
-			w36.Position = 2;
-			w36.Expand = false;
-			w36.Fill = false;
+			global::Gtk.ButtonBox.ButtonBoxChild w12 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w9 [this.cmdChanges]));
+			w12.Position = 2;
+			w12.Expand = false;
+			w12.Fill = false;
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}

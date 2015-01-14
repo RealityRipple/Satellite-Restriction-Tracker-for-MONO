@@ -137,6 +137,7 @@ namespace RestrictionTrackerGTK
         txtKey4.Text = "";
         txtKey5.Text = "";
       }
+      modFunctions.PrepareLink(lblPurchaseKey);
       if (txtKey1.Text.Length < 6 || txtKey2.Text.Length < 4 || txtKey3.Text.Length < 4 || txtKey4.Text.Length < 4 || txtKey5.Text.Length < 6)
       {
         bRemoteAcct = false;

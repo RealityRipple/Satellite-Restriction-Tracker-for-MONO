@@ -41,6 +41,33 @@ namespace RestrictionTrackerGTK
           fMain.ShowFromTray();
           e.Handled = true;
         };
+        ApplicationEvents.Prefs += delegate(object sender, ApplicationEventArgs e) 
+        {
+          fMain.cmdConfig_Click(new object(), new EventArgs());
+          e.Handled=true;
+        };
+        var appGroup = IgeMacMenu.AddAppMenuGroup();
+        MenuItem mnuAbout = new MenuItem();
+        mnuAbout.Activated += delegate(object sender, EventArgs e)
+        {
+          fMain.cmdAbout_Click(new object(), new EventArgs());
+        };
+        appGroup.AddMenuItem(mnuAbout, "About " + modFunctions.ProductName());
+        appGroup.AddMenuItem(new MenuItem(), "-");
+
+        MenuItem mnuHistory = new MenuItem();
+        mnuHistory.Activated += delegate(object sender, EventArgs e)
+        {
+          fMain.cmdHistory_Click(new object(), new EventArgs());
+        };
+        appGroup.AddMenuItem(mnuHistory, "Usage History");
+
+        MenuItem mnuConfig = new MenuItem();
+        mnuConfig.Activated += delegate(object sender, EventArgs e)
+        {
+          fMain.cmdConfig_Click(new object(), new EventArgs());
+        };
+        appGroup.AddMenuItem(mnuConfig, "Preferences...");
       }
       fMain.Show();
       Application.Run();

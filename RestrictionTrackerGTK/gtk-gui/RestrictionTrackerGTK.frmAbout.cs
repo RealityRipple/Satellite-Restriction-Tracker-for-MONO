@@ -139,61 +139,31 @@ namespace RestrictionTrackerGTK
 			this.cmdDonate.CanFocus = true;
 			this.cmdDonate.Name = "cmdDonate";
 			this.cmdDonate.UseUnderline = true;
-			// Container child cmdDonate.Gtk.Container+ContainerChild
-			global::Gtk.Alignment w10 = new global::Gtk.Alignment (0.5F, 0.5F, 0F, 0F);
-			// Container child GtkAlignment.Gtk.Container+ContainerChild
-			global::Gtk.HBox w11 = new global::Gtk.HBox ();
-			w11.Spacing = 2;
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Image w12 = new global::Gtk.Image ();
-			w12.Pixbuf = global::Stetic.IconLoader.LoadIcon (this, "gtk-apply", global::Gtk.IconSize.Button);
-			w11.Add (w12);
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Label w14 = new global::Gtk.Label ();
-			w14.LabelProp = global::Mono.Unix.Catalog.GetString ("Make a Donation");
-			w14.UseUnderline = true;
-			w11.Add (w14);
-			w10.Add (w11);
-			this.cmdDonate.Add (w10);
+			this.cmdDonate.Label = global::Mono.Unix.Catalog.GetString ("Make a _Donation");
 			this.pnlButtons.Add (this.cmdDonate);
-			global::Gtk.Box.BoxChild w18 = ((global::Gtk.Box.BoxChild)(this.pnlButtons [this.cmdDonate]));
-			w18.Position = 0;
-			w18.Fill = false;
+			global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.pnlButtons [this.cmdDonate]));
+			w10.Position = 0;
+			w10.Fill = false;
 			// Container child pnlButtons.Gtk.Box+BoxChild
 			this.cmdOK = new global::Gtk.Button ();
 			this.cmdOK.WidthRequest = 75;
 			this.cmdOK.CanFocus = true;
 			this.cmdOK.Name = "cmdOK";
 			this.cmdOK.UseUnderline = true;
-			// Container child cmdOK.Gtk.Container+ContainerChild
-			global::Gtk.Alignment w19 = new global::Gtk.Alignment (0.5F, 0.5F, 0F, 0F);
-			// Container child GtkAlignment.Gtk.Container+ContainerChild
-			global::Gtk.HBox w20 = new global::Gtk.HBox ();
-			w20.Spacing = 2;
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Image w21 = new global::Gtk.Image ();
-			w21.Pixbuf = global::Stetic.IconLoader.LoadIcon (this, "gtk-ok", global::Gtk.IconSize.Button);
-			w20.Add (w21);
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Label w23 = new global::Gtk.Label ();
-			w23.LabelProp = global::Mono.Unix.Catalog.GetString ("_OK");
-			w23.UseUnderline = true;
-			w20.Add (w23);
-			w19.Add (w20);
-			this.cmdOK.Add (w19);
+			this.cmdOK.Label = global::Mono.Unix.Catalog.GetString ("_OK");
 			this.pnlButtons.Add (this.cmdOK);
-			global::Gtk.Box.BoxChild w27 = ((global::Gtk.Box.BoxChild)(this.pnlButtons [this.cmdOK]));
-			w27.PackType = ((global::Gtk.PackType)(1));
-			w27.Position = 1;
-			w27.Fill = false;
+			global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.pnlButtons [this.cmdOK]));
+			w11.PackType = ((global::Gtk.PackType)(1));
+			w11.Position = 1;
+			w11.Fill = false;
 			this.pnlText.Add (this.pnlButtons);
-			global::Gtk.Box.BoxChild w28 = ((global::Gtk.Box.BoxChild)(this.pnlText [this.pnlButtons]));
-			w28.Position = 5;
-			w28.Expand = false;
-			w28.Fill = false;
+			global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.pnlText [this.pnlButtons]));
+			w12.Position = 5;
+			w12.Expand = false;
+			w12.Fill = false;
 			this.pnlAbout.Add (this.pnlText);
-			global::Gtk.Box.BoxChild w29 = ((global::Gtk.Box.BoxChild)(this.pnlAbout [this.pnlText]));
-			w29.Position = 1;
+			global::Gtk.Box.BoxChild w13 = ((global::Gtk.Box.BoxChild)(this.pnlAbout [this.pnlText]));
+			w13.Position = 1;
 			this.Add (this.pnlAbout);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();

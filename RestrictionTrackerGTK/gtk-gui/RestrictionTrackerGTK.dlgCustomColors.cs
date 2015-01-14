@@ -271,6 +271,7 @@ namespace RestrictionTrackerGTK
 			this.grpHistoryDown.Add (this.algnHistoryDown);
 			this.lblHistoryDownTitle = new global::Gtk.Label ();
 			this.lblHistoryDownTitle.Name = "lblHistoryDownTitle";
+			this.lblHistoryDownTitle.Xalign = 0F;
 			this.lblHistoryDownTitle.LabelProp = global::Mono.Unix.Catalog.GetString ("Download Colors");
 			this.lblHistoryDownTitle.UseMarkup = true;
 			this.grpHistoryDown.LabelWidget = this.lblHistoryDownTitle;
@@ -396,6 +397,7 @@ namespace RestrictionTrackerGTK
 			this.grpHistoryUp.Add (this.algnHistoryUp);
 			this.lblHistoryUpTitle = new global::Gtk.Label ();
 			this.lblHistoryUpTitle.Name = "lblHistoryUpTitle";
+			this.lblHistoryUpTitle.Xalign = 0F;
 			this.lblHistoryUpTitle.LabelProp = global::Mono.Unix.Catalog.GetString ("Upload Colors");
 			this.lblHistoryUpTitle.UseMarkup = true;
 			this.grpHistoryUp.LabelWidget = this.lblHistoryUpTitle;
@@ -464,6 +466,7 @@ namespace RestrictionTrackerGTK
 			this.grpHistory.Add (this.algnHistory);
 			this.lblHistoryTitle = new global::Gtk.Label ();
 			this.lblHistoryTitle.Name = "lblHistoryTitle";
+			this.lblHistoryTitle.Xalign = 0F;
 			this.lblHistoryTitle.LabelProp = global::Mono.Unix.Catalog.GetString ("History Window Graphs");
 			this.lblHistoryTitle.UseMarkup = true;
 			this.grpHistory.LabelWidget = this.lblHistoryTitle;
@@ -597,6 +600,7 @@ namespace RestrictionTrackerGTK
 			this.grpMainDown.Add (this.algnMainDown);
 			this.lblMainDownTitle = new global::Gtk.Label ();
 			this.lblMainDownTitle.Name = "lblMainDownTitle";
+			this.lblMainDownTitle.Xalign = 0F;
 			this.lblMainDownTitle.LabelProp = global::Mono.Unix.Catalog.GetString ("Download Colors");
 			this.lblMainDownTitle.UseMarkup = true;
 			this.grpMainDown.LabelWidget = this.lblMainDownTitle;
@@ -697,6 +701,7 @@ namespace RestrictionTrackerGTK
 			this.grpMainUp.Add (this.algnMainUp);
 			this.lblMainUpTitle = new global::Gtk.Label ();
 			this.lblMainUpTitle.Name = "lblMainUpTitle";
+			this.lblMainUpTitle.Xalign = 0F;
 			this.lblMainUpTitle.LabelProp = global::Mono.Unix.Catalog.GetString ("Upload Colors");
 			this.lblMainUpTitle.UseMarkup = true;
 			this.grpMainUp.LabelWidget = this.lblMainUpTitle;
@@ -766,6 +771,7 @@ namespace RestrictionTrackerGTK
 			this.grpMain.Add (this.algnMain);
 			this.lblMainTitle = new global::Gtk.Label ();
 			this.lblMainTitle.Name = "lblMainTitle";
+			this.lblMainTitle.Xalign = 0F;
 			this.lblMainTitle.LabelProp = global::Mono.Unix.Catalog.GetString ("Main Window Current Usage Graphs");
 			this.lblMainTitle.UseMarkup = true;
 			this.grpMain.LabelWidget = this.lblMainTitle;
@@ -897,6 +903,7 @@ namespace RestrictionTrackerGTK
 			this.grpTrayDown.Add (this.algnTrayDown);
 			this.lblTrayDownTitle = new global::Gtk.Label ();
 			this.lblTrayDownTitle.Name = "lblTrayDownTitle";
+			this.lblTrayDownTitle.Xalign = 0F;
 			this.lblTrayDownTitle.LabelProp = global::Mono.Unix.Catalog.GetString ("Download Colors");
 			this.lblTrayDownTitle.UseMarkup = true;
 			this.grpTrayDown.LabelWidget = this.lblTrayDownTitle;
@@ -998,6 +1005,7 @@ namespace RestrictionTrackerGTK
 			this.grpTrayUp.Add (this.algnTrayUp);
 			this.lblTrayUpTitle = new global::Gtk.Label ();
 			this.lblTrayUpTitle.Name = "lblTrayUpTitle";
+			this.lblTrayUpTitle.Xalign = 0F;
 			this.lblTrayUpTitle.LabelProp = global::Mono.Unix.Catalog.GetString ("Upload Colors");
 			this.lblTrayUpTitle.UseMarkup = true;
 			this.grpTrayUp.LabelWidget = this.lblTrayUpTitle;
@@ -1011,6 +1019,7 @@ namespace RestrictionTrackerGTK
 			this.grpTray.Add (this.algnTray);
 			this.lblTrayTitle = new global::Gtk.Label ();
 			this.lblTrayTitle.Name = "lblTrayTitle";
+			this.lblTrayTitle.Xalign = 0F;
 			this.lblTrayTitle.LabelProp = global::Mono.Unix.Catalog.GetString ("Tray Icon Current Usage Graph Overlay");
 			this.lblTrayTitle.UseMarkup = true;
 			this.grpTray.LabelWidget = this.lblTrayTitle;
@@ -1037,53 +1046,23 @@ namespace RestrictionTrackerGTK
 			this.cmdSave.CanFocus = true;
 			this.cmdSave.Name = "cmdSave";
 			this.cmdSave.UseUnderline = true;
-			// Container child cmdSave.Gtk.Container+ContainerChild
-			global::Gtk.Alignment w87 = new global::Gtk.Alignment (0.5F, 0.5F, 0F, 0F);
-			// Container child GtkAlignment.Gtk.Container+ContainerChild
-			global::Gtk.HBox w88 = new global::Gtk.HBox ();
-			w88.Spacing = 2;
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Image w89 = new global::Gtk.Image ();
-			w89.Pixbuf = global::Stetic.IconLoader.LoadIcon (this, "gtk-save", global::Gtk.IconSize.Button);
-			w88.Add (w89);
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Label w91 = new global::Gtk.Label ();
-			w91.LabelProp = global::Mono.Unix.Catalog.GetString ("_Save");
-			w91.UseUnderline = true;
-			w88.Add (w91);
-			w87.Add (w88);
-			this.cmdSave.Add (w87);
+			this.cmdSave.Label = global::Mono.Unix.Catalog.GetString ("_Save");
 			w86.Add (this.cmdSave);
-			global::Gtk.ButtonBox.ButtonBoxChild w95 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w86 [this.cmdSave]));
-			w95.Expand = false;
-			w95.Fill = false;
+			global::Gtk.ButtonBox.ButtonBoxChild w87 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w86 [this.cmdSave]));
+			w87.Expand = false;
+			w87.Fill = false;
 			// Container child pnlColorButtons.Gtk.ButtonBox+ButtonBoxChild
 			this.cmdClose = new global::Gtk.Button ();
 			this.cmdClose.CanDefault = true;
 			this.cmdClose.CanFocus = true;
 			this.cmdClose.Name = "cmdClose";
 			this.cmdClose.UseUnderline = true;
-			// Container child cmdClose.Gtk.Container+ContainerChild
-			global::Gtk.Alignment w96 = new global::Gtk.Alignment (0.5F, 0.5F, 0F, 0F);
-			// Container child GtkAlignment.Gtk.Container+ContainerChild
-			global::Gtk.HBox w97 = new global::Gtk.HBox ();
-			w97.Spacing = 2;
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Image w98 = new global::Gtk.Image ();
-			w98.Pixbuf = global::Stetic.IconLoader.LoadIcon (this, "gtk-close", global::Gtk.IconSize.Button);
-			w97.Add (w98);
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Label w100 = new global::Gtk.Label ();
-			w100.LabelProp = global::Mono.Unix.Catalog.GetString ("_Close");
-			w100.UseUnderline = true;
-			w97.Add (w100);
-			w96.Add (w97);
-			this.cmdClose.Add (w96);
+			this.cmdClose.Label = global::Mono.Unix.Catalog.GetString ("_Close");
 			w86.Add (this.cmdClose);
-			global::Gtk.ButtonBox.ButtonBoxChild w104 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w86 [this.cmdClose]));
-			w104.Position = 1;
-			w104.Expand = false;
-			w104.Fill = false;
+			global::Gtk.ButtonBox.ButtonBoxChild w88 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w86 [this.cmdClose]));
+			w88.Position = 1;
+			w88.Expand = false;
+			w88.Fill = false;
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}

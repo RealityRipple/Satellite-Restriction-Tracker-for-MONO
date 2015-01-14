@@ -31,8 +31,7 @@
                 <property name="Tooltip" translatable="yes">Reload bandwidth level information immediately.
 (Hold CTRL to reload database.)</property>
                 <property name="CanFocus">True</property>
-                <property name="Type">TextAndIcon</property>
-                <property name="Icon">stock:gtk-refresh Button</property>
+                <property name="Type">TextOnly</property>
                 <property name="Label" translatable="yes">Refresh</property>
                 <property name="UseUnderline">True</property>
               </widget>
@@ -46,8 +45,7 @@
                 <property name="MemberName" />
                 <property name="Tooltip" translatable="yes">View your bandwidth history.</property>
                 <property name="CanFocus">True</property>
-                <property name="Type">TextAndIcon</property>
-                <property name="Icon">stock:gtk-harddisk Button</property>
+                <property name="Type">TextOnly</property>
                 <property name="Label" translatable="yes">History</property>
                 <property name="UseUnderline">True</property>
               </widget>
@@ -61,8 +59,7 @@
                 <property name="MemberName" />
                 <property name="Tooltip" translatable="yes">Change program settings.</property>
                 <property name="CanFocus">True</property>
-                <property name="Type">TextAndIcon</property>
-                <property name="Icon">stock:gtk-preferences Button</property>
+                <property name="Type">TextOnly</property>
                 <property name="Label" translatable="yes">Configuration</property>
                 <property name="UseUnderline">True</property>
               </widget>
@@ -76,8 +73,7 @@
                 <property name="MemberName" />
                 <property name="Tooltip" translatable="yes">View information about Satellite Restriction Tracker and check for updates.</property>
                 <property name="CanFocus">True</property>
-                <property name="Type">TextAndIcon</property>
-                <property name="Icon">stock:gtk-about Button</property>
+                <property name="Type">TextOnly</property>
                 <property name="Label" translatable="yes">About</property>
                 <property name="UseUnderline">True</property>
               </widget>
@@ -315,6 +311,7 @@
                             <child>
                               <widget class="Gtk.Label" id="lblDld">
                                 <property name="MemberName" />
+                                <property name="Xalign">0</property>
                                 <property name="LabelProp" translatable="yes">Download (X%)</property>
                                 <property name="UseMarkup">True</property>
                               </widget>
@@ -492,6 +489,7 @@
                             <child>
                               <widget class="Gtk.Label" id="lblUld">
                                 <property name="MemberName" />
+                                <property name="Xalign">0</property>
                                 <property name="LabelProp" translatable="yes">Upload (X%)</property>
                                 <property name="UseMarkup">True</property>
                               </widget>
@@ -891,6 +889,7 @@
             <child>
               <widget class="Gtk.Label" id="lblStatus">
                 <property name="MemberName" />
+                <property name="Xalign">0</property>
                 <property name="LabelProp" translatable="yes">Usage Levels</property>
                 <property name="UseMarkup">True</property>
               </widget>
@@ -1086,9 +1085,8 @@
                   <widget class="Gtk.Button" id="cmdDonate">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextAndIcon</property>
-                    <property name="Icon">stock:gtk-apply Button</property>
-                    <property name="Label" translatable="yes">Make a Donation</property>
+                    <property name="Type">TextOnly</property>
+                    <property name="Label" translatable="yes">Make a _Donation</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="cmdDonate_Click" />
                   </widget>
@@ -1103,8 +1101,7 @@
                     <property name="MemberName" />
                     <property name="WidthRequest">75</property>
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextAndIcon</property>
-                    <property name="Icon">stock:gtk-ok Button</property>
+                    <property name="Type">TextOnly</property>
                     <property name="Label" translatable="yes">_OK</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="cmdOK_Click" />
@@ -1133,7 +1130,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Window" id="RestrictionTrackerGTK.frmHistory" design-size="571 356">
+  <widget class="Gtk.Window" id="RestrictionTrackerGTK.frmHistory" design-size="583 399">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Satellite Restriction Tracker Usage History</property>
     <property name="Icon">resource:RestrictionTrackerGTK.Resources.norm.ico</property>
@@ -1211,11 +1208,9 @@
                         <property name="MemberName" />
                         <property name="Tooltip" translatable="yes">Query the database to get the last 30 days' history.</property>
                         <property name="CanFocus">True</property>
-                        <property name="Type">TextAndIcon</property>
-                        <property name="Icon">resource:RestrictionTrackerGTK.Resources.cal30.png</property>
+                        <property name="Type">TextOnly</property>
                         <property name="Label" translatable="yes">30 Days</property>
                         <property name="UseUnderline">True</property>
-                        <property name="Xalign">0</property>
                         <signal name="Clicked" handler="cmd30Days_Click" />
                       </widget>
                       <packing>
@@ -1239,11 +1234,9 @@
                         <property name="MemberName" />
                         <property name="Tooltip" translatable="yes">Query the database to get the last 60 days' history.</property>
                         <property name="CanFocus">True</property>
-                        <property name="Type">TextAndIcon</property>
-                        <property name="Icon">resource:RestrictionTrackerGTK.Resources.cal60.png</property>
+                        <property name="Type">TextOnly</property>
                         <property name="Label" translatable="yes">60 Days</property>
                         <property name="UseUnderline">True</property>
-                        <property name="Xalign">0</property>
                         <signal name="Clicked" handler="cmd60Days_Click" />
                       </widget>
                       <packing>
@@ -1265,11 +1258,9 @@
                         <property name="MemberName" />
                         <property name="Tooltip" translatable="yes">Query the database to get the entire history.</property>
                         <property name="CanFocus">True</property>
-                        <property name="Type">TextAndIcon</property>
-                        <property name="Icon">resource:RestrictionTrackerGTK.Resources.calall.png</property>
+                        <property name="Type">TextOnly</property>
                         <property name="Label" translatable="yes">All Time</property>
                         <property name="UseUnderline">True</property>
-                        <property name="Xalign">0</property>
                         <signal name="Clicked" handler="cmdAllTime_Click" />
                       </widget>
                       <packing>
@@ -1293,8 +1284,7 @@
                         <property name="MemberName" />
                         <property name="Tooltip" translatable="yes">Query the database to get your requested history.</property>
                         <property name="CanFocus">True</property>
-                        <property name="Type">TextAndIcon</property>
-                        <property name="Icon">stock:gtk-find Button</property>
+                        <property name="Type">TextOnly</property>
                         <property name="Label" translatable="yes">Query</property>
                         <property name="UseUnderline">True</property>
                         <signal name="Clicked" handler="cmdQuery_Click" />
@@ -1318,11 +1308,9 @@
                         <property name="MemberName" />
                         <property name="Tooltip" translatable="yes">Query the database to get today's history.</property>
                         <property name="CanFocus">True</property>
-                        <property name="Type">TextAndIcon</property>
-                        <property name="Icon">resource:RestrictionTrackerGTK.Resources.cal1.png</property>
+                        <property name="Type">TextOnly</property>
                         <property name="Label" translatable="yes">Today</property>
                         <property name="UseUnderline">True</property>
-                        <property name="Xalign">0</property>
                         <signal name="Clicked" handler="cmdToday_Click" />
                       </widget>
                       <packing>
@@ -1537,8 +1525,7 @@
                 <property name="MemberName" />
                 <property name="Tooltip" translatable="yes">Read a DataBase, XML, or CSV file into the history.</property>
                 <property name="CanFocus">True</property>
-                <property name="Type">TextAndIcon</property>
-                <property name="Icon">stock:gtk-open Button</property>
+                <property name="Type">TextOnly</property>
                 <property name="Label" translatable="yes">Import Database</property>
                 <property name="UseUnderline">True</property>
                 <signal name="Clicked" handler="cmdImport_Click" />
@@ -1555,8 +1542,7 @@
                 <property name="MemberName" />
                 <property name="Tooltip" translatable="yes">Make a backup DataBase, XML, or CSV file.</property>
                 <property name="CanFocus">True</property>
-                <property name="Type">TextAndIcon</property>
-                <property name="Icon">stock:gtk-save-as Button</property>
+                <property name="Type">TextOnly</property>
                 <property name="Label" translatable="yes">Export Database</property>
                 <property name="UseUnderline">True</property>
                 <signal name="Clicked" handler="cmdExport_Click" />
@@ -1573,8 +1559,7 @@
                 <property name="MemberName" />
                 <property name="Tooltip" translatable="yes">Close the History window.</property>
                 <property name="CanFocus">True</property>
-                <property name="Type">TextAndIcon</property>
-                <property name="Icon">stock:gtk-close Button</property>
+                <property name="Type">TextOnly</property>
                 <property name="Label" translatable="yes">_Close</property>
                 <property name="UseUnderline">True</property>
                 <signal name="Clicked" handler="cmdClose_Click" />
@@ -1773,8 +1758,7 @@
               <widget class="Gtk.Button" id="cmdAlertStyle">
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
-                <property name="Type">TextAndIcon</property>
-                <property name="Icon">stock:gtk-select-font Button</property>
+                <property name="Type">TextOnly</property>
                 <property name="Label" translatable="yes">Set Alert Style</property>
                 <property name="UseUnderline">True</property>
               </widget>
@@ -1783,14 +1767,14 @@
                 <property name="BottomAttach">12</property>
                 <property name="RightAttach">2</property>
                 <property name="AutoSize">False</property>
-                <property name="XOptions">Expand</property>
-                <property name="YOptions">0</property>
+                <property name="XOptions">Expand, Shrink</property>
+                <property name="YOptions">Expand, Shrink</property>
                 <property name="XExpand">True</property>
                 <property name="XFill">False</property>
-                <property name="XShrink">False</property>
-                <property name="YExpand">False</property>
+                <property name="XShrink">True</property>
+                <property name="YExpand">True</property>
                 <property name="YFill">False</property>
-                <property name="YShrink">False</property>
+                <property name="YShrink">True</property>
               </packing>
             </child>
             <child>
@@ -1798,8 +1782,7 @@
                 <property name="MemberName" />
                 <property name="Tooltip" translatable="yes">Change the colors of the Main Window, Tray Icon, and History Graphs.</property>
                 <property name="CanFocus">True</property>
-                <property name="Type">TextAndIcon</property>
-                <property name="Icon">stock:gtk-select-color Button</property>
+                <property name="Type">TextOnly</property>
                 <property name="Label" translatable="yes">Graph _Colors</property>
                 <property name="UseUnderline">True</property>
               </widget>
@@ -1809,12 +1792,12 @@
                 <property name="LeftAttach">2</property>
                 <property name="RightAttach">3</property>
                 <property name="AutoSize">False</property>
-                <property name="XOptions">Expand</property>
-                <property name="YOptions">0</property>
+                <property name="XOptions">Expand, Shrink</property>
+                <property name="YOptions">Expand</property>
                 <property name="XExpand">True</property>
                 <property name="XFill">False</property>
-                <property name="XShrink">False</property>
-                <property name="YExpand">False</property>
+                <property name="XShrink">True</property>
+                <property name="YExpand">True</property>
                 <property name="YFill">False</property>
                 <property name="YShrink">False</property>
               </packing>
@@ -2889,8 +2872,7 @@ URL</property>
             <property name="Tooltip" translatable="yes">Save Changes to the Configuration.</property>
             <property name="CanDefault">True</property>
             <property name="CanFocus">True</property>
-            <property name="Type">TextAndIcon</property>
-            <property name="Icon">stock:gtk-save Button</property>
+            <property name="Type">TextOnly</property>
             <property name="Label" translatable="yes">_Save</property>
             <property name="UseUnderline">True</property>
             <property name="ResponseId">-1</property>
@@ -2906,8 +2888,7 @@ URL</property>
             <property name="Tooltip" translatable="yes">Close the Configuration window.</property>
             <property name="CanDefault">True</property>
             <property name="CanFocus">True</property>
-            <property name="Type">TextAndIcon</property>
-            <property name="Icon">stock:gtk-close Button</property>
+            <property name="Type">TextOnly</property>
             <property name="Label" translatable="yes">_Close</property>
             <property name="UseUnderline">True</property>
             <property name="ResponseId">-1</property>
@@ -3054,8 +3035,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
             <property name="Tooltip" translatable="yes">Download the new version.</property>
             <property name="CanDefault">True</property>
             <property name="CanFocus">True</property>
-            <property name="Type">TextAndIcon</property>
-            <property name="Icon">resource:RestrictionTrackerGTK.Resources.web.png</property>
+            <property name="Type">TextOnly</property>
             <property name="Label" translatable="yes">Download _Update</property>
             <property name="UseUnderline">True</property>
             <property name="ResponseId">-5</property>
@@ -3072,8 +3052,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
             <property name="Tooltip" translatable="yes">Ignore the new version for now.</property>
             <property name="CanDefault">True</property>
             <property name="CanFocus">True</property>
-            <property name="Type">TextAndIcon</property>
-            <property name="Icon">stock:gtk-cancel Button</property>
+            <property name="Type">TextOnly</property>
             <property name="Label" translatable="yes">_Not Now</property>
             <property name="UseUnderline">True</property>
             <property name="ResponseId">-6</property>
@@ -3090,8 +3069,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
             <property name="MemberName" />
             <property name="Tooltip" translatable="yes">View the latest version's Change Log.</property>
             <property name="CanFocus">True</property>
-            <property name="Type">TextAndIcon</property>
-            <property name="Icon">stock:gtk-indent Button</property>
+            <property name="Type">TextOnly</property>
             <property name="Label" translatable="yes">_Changes &gt;&gt;</property>
             <property name="UseUnderline">True</property>
             <property name="ResponseId">-1</property>
@@ -3388,6 +3366,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                             <child>
                               <widget class="Gtk.Label" id="lblHistoryDownTitle">
                                 <property name="MemberName" />
+                                <property name="Xalign">0</property>
                                 <property name="LabelProp" translatable="yes">Download Colors</property>
                                 <property name="UseMarkup">True</property>
                               </widget>
@@ -3622,6 +3601,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                             <child>
                               <widget class="Gtk.Label" id="lblHistoryUpTitle">
                                 <property name="MemberName" />
+                                <property name="Xalign">0</property>
                                 <property name="LabelProp" translatable="yes">Upload Colors</property>
                                 <property name="UseMarkup">True</property>
                               </widget>
@@ -3757,6 +3737,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                 <child>
                   <widget class="Gtk.Label" id="lblHistoryTitle">
                     <property name="MemberName" />
+                    <property name="Xalign">0</property>
                     <property name="LabelProp" translatable="yes">History Window Graphs</property>
                     <property name="UseMarkup">True</property>
                   </widget>
@@ -3992,6 +3973,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                             <child>
                               <widget class="Gtk.Label" id="lblMainDownTitle">
                                 <property name="MemberName" />
+                                <property name="Xalign">0</property>
                                 <property name="LabelProp" translatable="yes">Download Colors</property>
                                 <property name="UseMarkup">True</property>
                               </widget>
@@ -4179,6 +4161,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                             <child>
                               <widget class="Gtk.Label" id="lblMainUpTitle">
                                 <property name="MemberName" />
+                                <property name="Xalign">0</property>
                                 <property name="LabelProp" translatable="yes">Upload Colors</property>
                                 <property name="UseMarkup">True</property>
                               </widget>
@@ -4315,6 +4298,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                 <child>
                   <widget class="Gtk.Label" id="lblMainTitle">
                     <property name="MemberName" />
+                    <property name="Xalign">0</property>
                     <property name="LabelProp" translatable="yes">Main Window Current Usage Graphs</property>
                     <property name="UseMarkup">True</property>
                   </widget>
@@ -4547,6 +4531,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                             <child>
                               <widget class="Gtk.Label" id="lblTrayDownTitle">
                                 <property name="MemberName" />
+                                <property name="Xalign">0</property>
                                 <property name="LabelProp" translatable="yes">Download Colors</property>
                                 <property name="UseMarkup">True</property>
                               </widget>
@@ -4735,6 +4720,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                             <child>
                               <widget class="Gtk.Label" id="lblTrayUpTitle">
                                 <property name="MemberName" />
+                                <property name="Xalign">0</property>
                                 <property name="LabelProp" translatable="yes">Upload Colors</property>
                                 <property name="UseMarkup">True</property>
                               </widget>
@@ -4764,6 +4750,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                 <child>
                   <widget class="Gtk.Label" id="lblTrayTitle">
                     <property name="MemberName" />
+                    <property name="Xalign">0</property>
                     <property name="LabelProp" translatable="yes">Tray Icon Current Usage Graph Overlay</property>
                     <property name="UseMarkup">True</property>
                   </widget>
@@ -4808,8 +4795,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
             <property name="MemberName" />
             <property name="CanDefault">True</property>
             <property name="CanFocus">True</property>
-            <property name="Type">TextAndIcon</property>
-            <property name="Icon">stock:gtk-save Button</property>
+            <property name="Type">TextOnly</property>
             <property name="Label" translatable="yes">_Save</property>
             <property name="UseUnderline">True</property>
             <property name="ResponseId">-1</property>
@@ -4825,8 +4811,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
             <property name="MemberName" />
             <property name="CanDefault">True</property>
             <property name="CanFocus">True</property>
-            <property name="Type">TextAndIcon</property>
-            <property name="Icon">stock:gtk-close Button</property>
+            <property name="Type">TextOnly</property>
             <property name="Label" translatable="yes">_Close</property>
             <property name="UseUnderline">True</property>
             <property name="ResponseId">-1</property>
@@ -4841,7 +4826,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Dialog" id="RestrictionTrackerGTK.dlgAlertSelection" design-size="436 131">
+  <widget class="Gtk.Dialog" id="RestrictionTrackerGTK.dlgAlertSelection" design-size="436 91">
     <property name="MemberName" />
     <property name="Visible">False</property>
     <property name="Title" translatable="yes">Select Alert Window Style</property>
@@ -4879,8 +4864,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                       <widget class="Gtk.Button" id="cmdAdd">
                         <property name="MemberName" />
                         <property name="CanFocus">True</property>
-                        <property name="Type">TextAndIcon</property>
-                        <property name="Icon">stock:gtk-add Button</property>
+                        <property name="Type">TextOnly</property>
                         <property name="Label" translatable="yes">_Add</property>
                         <property name="UseUnderline">True</property>
                         <signal name="Clicked" handler="cmdAdd_Clicked" />
@@ -4894,8 +4878,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                       <widget class="Gtk.Button" id="cmdRemove">
                         <property name="MemberName" />
                         <property name="CanFocus">True</property>
-                        <property name="Type">TextAndIcon</property>
-                        <property name="Icon">stock:gtk-remove Button</property>
+                        <property name="Type">TextOnly</property>
                         <property name="Label" translatable="yes">_Remove</property>
                         <property name="UseUnderline">True</property>
                         <signal name="Clicked" handler="cmdRemove_Clicked" />
@@ -4909,7 +4892,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
                   <packing>
                     <property name="PackType">End</property>
                     <property name="Position">1</property>
-                    <property name="AutoSize">True</property>
+                    <property name="AutoSize">False</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
                   </packing>
@@ -4988,8 +4971,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
             <property name="Tooltip" translatable="yes">Save your Alert Window Style selection.</property>
             <property name="CanDefault">True</property>
             <property name="CanFocus">True</property>
-            <property name="Type">TextAndIcon</property>
-            <property name="Icon">stock:gtk-save Button</property>
+            <property name="Type">TextOnly</property>
             <property name="Label" translatable="yes">_Save</property>
             <property name="UseUnderline">True</property>
             <property name="ResponseId">-1</property>
@@ -5006,11 +4988,10 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
             <property name="Tooltip" translatable="yes">Close the Select Alert Style window.</property>
             <property name="CanDefault">True</property>
             <property name="CanFocus">True</property>
-            <property name="Type">TextAndIcon</property>
-            <property name="Icon">stock:gtk-close Button</property>
+            <property name="Type">TextOnly</property>
             <property name="Label" translatable="yes">_Close</property>
             <property name="UseUnderline">True</property>
-            <property name="ResponseId">-7</property>
+            <property name="ResponseId">-1</property>
           </widget>
           <packing>
             <property name="Position">3</property>

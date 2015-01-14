@@ -47,7 +47,50 @@ namespace MacInterop
     }
     
     #endregion
+
     
+    #region ShowPreferences
+
+    static EventHandler<ApplicationEventArgs> prefs;
+    static IntPtr prefsHandlerRef = IntPtr.Zero;
+
+    public static event EventHandler<ApplicationEventArgs> Prefs
+    {
+      add
+      {
+        lock (lockObj)
+        {
+          prefs += value;
+          if (prefsHandlerRef == IntPtr.Zero)
+          {
+            prefsHandlerRef = Carbon.InstallApplicationEventHandler(HandlePrefs, CarbonEventApple.ShowPreferences);
+          }
+        }
+      }
+      remove
+      {
+        lock (lockObj)
+        {
+          prefs -= value;
+          if (prefs == null && prefsHandlerRef != IntPtr.Zero)
+          {
+            Carbon.RemoveEventHandler(prefsHandlerRef);
+            prefsHandlerRef = IntPtr.Zero;
+          }
+        }
+      }
+    }
+
+    static CarbonEventHandlerStatus HandlePrefs(IntPtr callRef, IntPtr eventRef, IntPtr user_data)
+    {
+      var args = new ApplicationEventArgs();
+      prefs(null, args);
+      return args.HandledStatus;
+    }
+
+    #endregion
+
+
     #region Reopen
     
     static EventHandler<ApplicationEventArgs> reopen;

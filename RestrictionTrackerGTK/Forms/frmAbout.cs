@@ -20,8 +20,11 @@ namespace RestrictionTrackerGTK
       this.Build();
       this.WindowStateEvent += HandleWindowStateEvent;
       this.Title = "About " + modFunctions.ProductName();
+      modFunctions.PrepareLink(lblProduct);
       lblProduct.Markup = "<a href=\"http://srt.realityripple.com/For_MONO/\">" + modFunctions.ProductName() + "</a>";
+      modFunctions.PrepareLink(lblVersion);
       lblVersion.Markup = "<a href=\"http://srt.realityripple.com/changes.php\">Version " + modFunctions.DisplayVersion(modFunctions.ProductVersion()) + "</a>";
+      modFunctions.PrepareLink(lblCompany);
       lblCompany.Markup = "<a href=\"http://realityripple.com/\">" + modFunctions.CompanyName() + "</a>";
       txtDescription.Buffer.Text = "The RestrictionTracker utility monitors and logs ViaSat network usage and limits. It includes graphing software to let you monitor your usage history and predict future usage levels. All application coding by Andrew Sachen. This application is not endorsed by ViaSat, WildBlue, Exede, or any affiliate companies.";
       pctUpdate.PixbufAnimation = new Gdk.PixbufAnimation(null, "RestrictionTrackerGTK.Resources.throbber.gif");
@@ -30,18 +33,10 @@ namespace RestrictionTrackerGTK
       cmdUpdate = new Gtk.Button();
       cmdUpdate.Name = "cmdUpdate";
       cmdUpdate.UseUnderline = true;
-      Gtk.Alignment cuAlign = new Gtk.Alignment(0.5f, 0.5f, 0f, 0f);
-      Gtk.HBox cuBox = new Gtk.HBox();
-      cuBox.Spacing = 2;
-      Gtk.Image cuImage = new Gtk.Image();
-      cuImage.Pixbuf = new Gdk.Pixbuf(null, "RestrictionTrackerGTK.Resources.web.png");
-      cuBox.Add(cuImage);
       Gtk.Label cuLabel = new Gtk.Label();
-      cuLabel.LabelProp = "Check for Updates";
+      cuLabel.LabelProp = "Check for _Updates";
       cuLabel.UseUnderline = true;
-      cuBox.Add(cuLabel);
-      cuAlign.Add(cuBox);
-      cmdUpdate.Add(cuAlign);
+      cmdUpdate.Add(cuLabel);
       pnlUpdate.Add(cmdUpdate);
       ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).Position = 2;
       cmdUpdate.ShowAll();
@@ -93,54 +88,66 @@ namespace RestrictionTrackerGTK
     #region "Updates"
     protected void cmdUpdate_Click(object sender, EventArgs e)
     {
-      if (((Gtk.Label)((Gtk.HBox)((Gtk.Alignment)cmdUpdate.Child).Child).Children[1]).Text == "Check for Updates")
+      switch (GetUpdateValue())
       {
-        byte lState = modDB.LOG_State;
-        switch (lState)
-        {
-          case 0:
-            SetUpdateValue("Update Skipped: Log is being read", false);
-            RestartReset();
-            break;
-          case 1:
-            SetUpdateValue("Initializing Update Check", true);
-            MethodInvoker checkInvoker = BeginCheck;
-            checkInvoker.BeginInvoke(null, null);
-            break;
-          case 2:
-            SetUpdateValue("Update Skipped: Log is being saved", false);
-            RestartReset();
-            break;
-          default:
-            SetUpdateValue("Update Skipped: Log is being edited", false);
-            RestartReset();
-            break;
-        }
-      }
-      else if (((Gtk.Label)((Gtk.HBox)((Gtk.Alignment)cmdUpdate.Child).Child).Children[1]).Text == "New Update Available")
-      {
-        updateChecker.DownloadUpdate(sUpdatePath);
-      }
-      else if (((Gtk.Label)((Gtk.HBox)((Gtk.Alignment)cmdUpdate.Child).Child).Children[1]).Text == "New BETA Available")
-      {
-        updateChecker.DownloadUpdate(sUpdatePath);
-      }
-      else if (((Gtk.Label)((Gtk.HBox)((Gtk.Alignment)cmdUpdate.Child).Child).Children[1]).Text == "Apply Update")
-      {
-        try
-        {
-          if (System.IO.File.Exists(sUpdatePath))
+        case "Check for Updates":
+          byte lState = modDB.LOG_State;
+          switch (lState)
           {
-            if (CurrentOS.IsMac)
-              System.Diagnostics.Process.Start(sUpdatePath);
-            else if (CurrentOS.IsLinux)
-              System.Diagnostics.Process.Start("bash", "\"" + sUpdatePath + "\"");
-            else
-              System.Diagnostics.Process.Start(sUpdatePath);
+            case 0:
+              SetUpdateValue("Update Skipped: Log is being read", false);
+              RestartReset();
+              break;
+            case 1:
+              SetUpdateValue("Initializing Update Check", true);
+              MethodInvoker checkInvoker = BeginCheck;
+              checkInvoker.BeginInvoke(null, null);
+              break;
+            case 2:
+              SetUpdateValue("Update Skipped: Log is being saved", false);
+              RestartReset();
+              break;
+            default:
+              SetUpdateValue("Update Skipped: Log is being edited", false);
+              RestartReset();
+              break;
           }
-        }
-        catch {}
-        Gtk.Application.Quit();
+          break;
+        case "New Update Available":
+          updateChecker.DownloadUpdate(sUpdatePath);
+          break;
+        case "New BETA Available":
+          updateChecker.DownloadUpdate(sUpdatePath);
+          break;
+        case "Apply Update":
+          try
+          {
+            if (System.IO.File.Exists(sUpdatePath))
+            {
+              if (CurrentOS.IsMac)
+                System.Diagnostics.Process.Start(sUpdatePath);
+              else if (CurrentOS.IsLinux)
+              {
+                if (System.IO.File.Exists("/usr/bin/xfce4-terminal"))
+                  System.Diagnostics.Process.Start("xfce4-terminal", "-e 'bash \"" + sUpdatePath + "\"'");
+                else if (System.IO.File.Exists("/usr/bin/gnome-terminal"))
+                  System.Diagnostics.Process.Start("gnome-terminal", "-e 'bash \"" + sUpdatePath + "\"'");
+                else if (System.IO.File.Exists("/usr/bin/konsole"))
+                  System.Diagnostics.Process.Start("konsole", "-e \"" + sUpdatePath + "\"");
+                else
+                  System.Diagnostics.Process.Start("bash", "\"" + sUpdatePath + "\"");
+              }
+              else
+                System.Diagnostics.Process.Start(sUpdatePath);
+            }
+          }
+          catch (Exception ex)
+          {
+            System.Diagnostics.Process.Start(System.IO.Path.GetDirectoryName(sUpdatePath));
+            modFunctions.ShowMessageBox(this, "The Update Failed to start.\n\n" + ex.Message + "\n\nPlease run " + System.IO.Path.GetFileName(sUpdatePath) + " manually to update.", "Error Running Update", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+          }
+          Gtk.Application.Quit();
+          break;
       }
     }
     private void RestartReset()
@@ -172,7 +179,7 @@ namespace RestrictionTrackerGTK
         GLib.Source.Remove(tReset);
         tReset = 0;
       }
-      SetButtonUpdate("Check for Updates", "Check for a new version of Satellite Restriction Tracker.");
+      SetButtonUpdate("Check for _Updates", "Check for a new version of Satellite Restriction Tracker.");
       return false;
     }
     private bool NewUpdate()
@@ -193,7 +200,7 @@ namespace RestrictionTrackerGTK
       }
       if (CurrentOS.IsLinux)
         System.Diagnostics.Process.Start("chmod", "+x \"" + sUpdatePath + "\"");
-      SetButtonUpdate("Apply Update", modFunctions.ProductName() + " must be restarted before the update can be applied.");
+      SetButtonUpdate("Apply _Update", modFunctions.ProductName() + " must be restarted before the update can be applied.");
     }
     private void BeginCheck()
     {
@@ -227,6 +234,10 @@ namespace RestrictionTrackerGTK
         else
           ToolTip = tt;
       }
+    }
+    private string GetUpdateValue()
+    {
+      return ((Gtk.Label)cmdUpdate.Child).Text;
     }
     private void SetUpdateValue(string Message, bool Throbber)
     {
@@ -278,8 +289,7 @@ namespace RestrictionTrackerGTK
         ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).Expand = false;
         cmdUpdate.Visible = true;
       }
-      //((Gtk.Image)((Gtk.HBox)((Gtk.Alignment)cmdUpdate.Child).Child).Children[0]).Pixbuf = e.Image;
-      ((Gtk.Label)((Gtk.HBox)((Gtk.Alignment)cmdUpdate.Child).Child).Children[1]).Text = e.Message;
+      ((Gtk.Label)cmdUpdate.Child).LabelProp = e.Message;
       cmdUpdate.TooltipText = e.ToolTip;
     }
     protected void updateChecker_CheckingVersion(object sender, EventArgs e)
@@ -328,7 +338,7 @@ namespace RestrictionTrackerGTK
           switch (e.Result)
           {
             case clsUpdate.CheckEventArgs.ResultType.NewUpdate:
-              SetButtonUpdate("New Update Available", "Click to begin download.");
+              SetButtonUpdate("_New Update Available", "Click to begin download.");
               System.Threading.Thread.Sleep(0);
               fUpdate = new dlgUpdate();
               fUpdate.NewUpdate(e.Version, false);
@@ -358,7 +368,7 @@ namespace RestrictionTrackerGTK
             case clsUpdate.CheckEventArgs.ResultType.NewBeta:
               if (mySettings.BetaCheck)
               {
-                SetButtonUpdate("New BETA Available", "Click to begin download.");
+                SetButtonUpdate("_New BETA Available", "Click to begin download.");
                 System.Threading.Thread.Sleep(0);
                 fUpdate = new dlgUpdate();
                 fUpdate.NewUpdate(e.Version, true);
@@ -421,12 +431,14 @@ namespace RestrictionTrackerGTK
         SetUpdateValue(e.Error.Message,false);
       else if (e.Cancelled)
       {
-        updateChecker.Dispose();
+        if (updateChecker != null)
+          updateChecker.Dispose();
         SetUpdateValue("Download Cancelled",false);
       }
       else
       {
-        updateChecker.Dispose();
+        if (updateChecker != null)
+          updateChecker.Dispose();
         SetUpdateValue("Download Complete",false);
         System.Threading.Thread.Sleep(0);
         if (System.IO.File.Exists(sUpdatePath))

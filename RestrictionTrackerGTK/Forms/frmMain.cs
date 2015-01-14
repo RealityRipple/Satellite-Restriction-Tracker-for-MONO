@@ -1024,6 +1024,7 @@ namespace RestrictionTrackerGTK
       else if (myPanel == localRestrictionTracker.SatHostTypes.Other)
       {
         lblNothing.Text = modFunctions.ProductName();
+        modFunctions.PrepareLink(lblRRS);
         if (markupList.ContainsKey(lblRRS.Name + lblRRS.Handle.ToString("x")))
         {
           string markup = markupList[lblRRS.Name + lblRRS.Handle.ToString("x")];
@@ -2591,7 +2592,7 @@ namespace RestrictionTrackerGTK
         modFunctions.ShowMessageBox(null, "Please enter your account details in the configuration window.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Warning, Gtk.ButtonsType.Ok);
       }
     }
-    protected void cmdHistory_Click(object sender, EventArgs e)
+    public void cmdHistory_Click(object sender, EventArgs e)
     {
       mySettings.Save();
       if (MainClass.fHistory != null)
@@ -2607,7 +2608,7 @@ namespace RestrictionTrackerGTK
       MainClass.fHistory.Show();
       MainClass.fHistory.Present();
     }
-    protected void cmdConfig_Click(object sender, EventArgs e)
+    public void cmdConfig_Click(object sender, EventArgs e)
     {
       bool bReRun = false;
       if (remoteData != null)
@@ -2727,7 +2728,7 @@ namespace RestrictionTrackerGTK
           break;
       }
     }
-    protected void cmdAbout_Click(object sender, EventArgs e)
+    public void cmdAbout_Click(object sender, EventArgs e)
     {
       if (MainClass.fAbout != null)
       {

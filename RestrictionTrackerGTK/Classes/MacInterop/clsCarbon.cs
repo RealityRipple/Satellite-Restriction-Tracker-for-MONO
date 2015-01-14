@@ -65,7 +65,8 @@ namespace MacInterop
   internal enum CarbonEventApple
   {
     ReopenApplication = 1918988400,
-    QuitApplication =  1903520116
+    QuitApplication =  1903520116,
+    ShowPreferences = 1886545254
   }
   
   [StructLayout(LayoutKind.Sequential, Pack = 2)]

@@ -90,183 +90,105 @@ namespace RestrictionTrackerGTK
 			this.cmd30Days.CanFocus = true;
 			this.cmd30Days.Name = "cmd30Days";
 			this.cmd30Days.UseUnderline = true;
-			this.cmd30Days.Xalign = 0F;
-			// Container child cmd30Days.Gtk.Container+ContainerChild
-			global::Gtk.Alignment w3 = new global::Gtk.Alignment (0F, 0.5F, 0F, 0F);
-			// Container child GtkAlignment.Gtk.Container+ContainerChild
-			global::Gtk.HBox w4 = new global::Gtk.HBox ();
-			w4.Spacing = 2;
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Image w5 = new global::Gtk.Image ();
-			w5.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("RestrictionTrackerGTK.Resources.cal30.png");
-			w4.Add (w5);
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Label w7 = new global::Gtk.Label ();
-			w7.LabelProp = global::Mono.Unix.Catalog.GetString ("30 Days");
-			w7.UseUnderline = true;
-			w4.Add (w7);
-			w3.Add (w4);
-			this.cmd30Days.Add (w3);
+			this.cmd30Days.Label = global::Mono.Unix.Catalog.GetString ("30 Days");
 			this.pnlAge.Add (this.cmd30Days);
-			global::Gtk.Table.TableChild w11 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.cmd30Days]));
-			w11.TopAttach = ((uint)(1));
-			w11.BottomAttach = ((uint)(2));
-			w11.LeftAttach = ((uint)(4));
-			w11.RightAttach = ((uint)(5));
-			w11.XOptions = ((global::Gtk.AttachOptions)(4));
-			w11.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w3 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.cmd30Days]));
+			w3.TopAttach = ((uint)(1));
+			w3.BottomAttach = ((uint)(2));
+			w3.LeftAttach = ((uint)(4));
+			w3.RightAttach = ((uint)(5));
+			w3.XOptions = ((global::Gtk.AttachOptions)(4));
+			w3.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAge.Gtk.Table+TableChild
 			this.cmd60Days = new global::Gtk.Button ();
 			this.cmd60Days.TooltipMarkup = "Query the database to get the last 60 days' history.";
 			this.cmd60Days.CanFocus = true;
 			this.cmd60Days.Name = "cmd60Days";
 			this.cmd60Days.UseUnderline = true;
-			this.cmd60Days.Xalign = 0F;
-			// Container child cmd60Days.Gtk.Container+ContainerChild
-			global::Gtk.Alignment w12 = new global::Gtk.Alignment (0F, 0.5F, 0F, 0F);
-			// Container child GtkAlignment.Gtk.Container+ContainerChild
-			global::Gtk.HBox w13 = new global::Gtk.HBox ();
-			w13.Spacing = 2;
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Image w14 = new global::Gtk.Image ();
-			w14.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("RestrictionTrackerGTK.Resources.cal60.png");
-			w13.Add (w14);
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Label w16 = new global::Gtk.Label ();
-			w16.LabelProp = global::Mono.Unix.Catalog.GetString ("60 Days");
-			w16.UseUnderline = true;
-			w13.Add (w16);
-			w12.Add (w13);
-			this.cmd60Days.Add (w12);
+			this.cmd60Days.Label = global::Mono.Unix.Catalog.GetString ("60 Days");
 			this.pnlAge.Add (this.cmd60Days);
-			global::Gtk.Table.TableChild w20 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.cmd60Days]));
-			w20.LeftAttach = ((uint)(5));
-			w20.RightAttach = ((uint)(6));
-			w20.XOptions = ((global::Gtk.AttachOptions)(4));
-			w20.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w4 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.cmd60Days]));
+			w4.LeftAttach = ((uint)(5));
+			w4.RightAttach = ((uint)(6));
+			w4.XOptions = ((global::Gtk.AttachOptions)(4));
+			w4.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAge.Gtk.Table+TableChild
 			this.cmdAllTime = new global::Gtk.Button ();
 			this.cmdAllTime.TooltipMarkup = "Query the database to get the entire history.";
 			this.cmdAllTime.CanFocus = true;
 			this.cmdAllTime.Name = "cmdAllTime";
 			this.cmdAllTime.UseUnderline = true;
-			this.cmdAllTime.Xalign = 0F;
-			// Container child cmdAllTime.Gtk.Container+ContainerChild
-			global::Gtk.Alignment w21 = new global::Gtk.Alignment (0F, 0.5F, 0F, 0F);
-			// Container child GtkAlignment.Gtk.Container+ContainerChild
-			global::Gtk.HBox w22 = new global::Gtk.HBox ();
-			w22.Spacing = 2;
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Image w23 = new global::Gtk.Image ();
-			w23.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("RestrictionTrackerGTK.Resources.calall.png");
-			w22.Add (w23);
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Label w25 = new global::Gtk.Label ();
-			w25.LabelProp = global::Mono.Unix.Catalog.GetString ("All Time");
-			w25.UseUnderline = true;
-			w22.Add (w25);
-			w21.Add (w22);
-			this.cmdAllTime.Add (w21);
+			this.cmdAllTime.Label = global::Mono.Unix.Catalog.GetString ("All Time");
 			this.pnlAge.Add (this.cmdAllTime);
-			global::Gtk.Table.TableChild w29 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.cmdAllTime]));
-			w29.TopAttach = ((uint)(1));
-			w29.BottomAttach = ((uint)(2));
-			w29.LeftAttach = ((uint)(5));
-			w29.RightAttach = ((uint)(6));
-			w29.XOptions = ((global::Gtk.AttachOptions)(4));
-			w29.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w5 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.cmdAllTime]));
+			w5.TopAttach = ((uint)(1));
+			w5.BottomAttach = ((uint)(2));
+			w5.LeftAttach = ((uint)(5));
+			w5.RightAttach = ((uint)(6));
+			w5.XOptions = ((global::Gtk.AttachOptions)(4));
+			w5.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAge.Gtk.Table+TableChild
 			this.cmdQuery = new global::Gtk.Button ();
 			this.cmdQuery.TooltipMarkup = "Query the database to get your requested history.";
 			this.cmdQuery.CanFocus = true;
 			this.cmdQuery.Name = "cmdQuery";
 			this.cmdQuery.UseUnderline = true;
-			// Container child cmdQuery.Gtk.Container+ContainerChild
-			global::Gtk.Alignment w30 = new global::Gtk.Alignment (0.5F, 0.5F, 0F, 0F);
-			// Container child GtkAlignment.Gtk.Container+ContainerChild
-			global::Gtk.HBox w31 = new global::Gtk.HBox ();
-			w31.Spacing = 2;
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Image w32 = new global::Gtk.Image ();
-			w32.Pixbuf = global::Stetic.IconLoader.LoadIcon (this, "gtk-find", global::Gtk.IconSize.Button);
-			w31.Add (w32);
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Label w34 = new global::Gtk.Label ();
-			w34.LabelProp = global::Mono.Unix.Catalog.GetString ("Query");
-			w34.UseUnderline = true;
-			w31.Add (w34);
-			w30.Add (w31);
-			this.cmdQuery.Add (w30);
+			this.cmdQuery.Label = global::Mono.Unix.Catalog.GetString ("Query");
 			this.pnlAge.Add (this.cmdQuery);
-			global::Gtk.Table.TableChild w38 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.cmdQuery]));
-			w38.LeftAttach = ((uint)(3));
-			w38.RightAttach = ((uint)(4));
-			w38.XOptions = ((global::Gtk.AttachOptions)(4));
-			w38.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w6 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.cmdQuery]));
+			w6.LeftAttach = ((uint)(3));
+			w6.RightAttach = ((uint)(4));
+			w6.XOptions = ((global::Gtk.AttachOptions)(4));
+			w6.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAge.Gtk.Table+TableChild
 			this.cmdToday = new global::Gtk.Button ();
 			this.cmdToday.TooltipMarkup = "Query the database to get today's history.";
 			this.cmdToday.CanFocus = true;
 			this.cmdToday.Name = "cmdToday";
 			this.cmdToday.UseUnderline = true;
-			this.cmdToday.Xalign = 0F;
-			// Container child cmdToday.Gtk.Container+ContainerChild
-			global::Gtk.Alignment w39 = new global::Gtk.Alignment (0F, 0.5F, 0F, 0F);
-			// Container child GtkAlignment.Gtk.Container+ContainerChild
-			global::Gtk.HBox w40 = new global::Gtk.HBox ();
-			w40.Spacing = 2;
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Image w41 = new global::Gtk.Image ();
-			w41.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("RestrictionTrackerGTK.Resources.cal1.png");
-			w40.Add (w41);
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Label w43 = new global::Gtk.Label ();
-			w43.LabelProp = global::Mono.Unix.Catalog.GetString ("Today");
-			w43.UseUnderline = true;
-			w40.Add (w43);
-			w39.Add (w40);
-			this.cmdToday.Add (w39);
+			this.cmdToday.Label = global::Mono.Unix.Catalog.GetString ("Today");
 			this.pnlAge.Add (this.cmdToday);
-			global::Gtk.Table.TableChild w47 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.cmdToday]));
-			w47.LeftAttach = ((uint)(4));
-			w47.RightAttach = ((uint)(5));
-			w47.XOptions = ((global::Gtk.AttachOptions)(4));
-			w47.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w7 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.cmdToday]));
+			w7.LeftAttach = ((uint)(4));
+			w7.RightAttach = ((uint)(5));
+			w7.XOptions = ((global::Gtk.AttachOptions)(4));
+			w7.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAge.Gtk.Table+TableChild
 			this.lblFrom = new global::Gtk.Label ();
 			this.lblFrom.Name = "lblFrom";
 			this.lblFrom.Xalign = 0F;
 			this.lblFrom.LabelProp = global::Mono.Unix.Catalog.GetString ("From:");
 			this.pnlAge.Add (this.lblFrom);
-			global::Gtk.Table.TableChild w48 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.lblFrom]));
-			w48.XOptions = ((global::Gtk.AttachOptions)(4));
-			w48.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w8 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.lblFrom]));
+			w8.XOptions = ((global::Gtk.AttachOptions)(4));
+			w8.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAge.Gtk.Table+TableChild
 			this.lblTo = new global::Gtk.Label ();
 			this.lblTo.Name = "lblTo";
 			this.lblTo.Xalign = 0F;
 			this.lblTo.LabelProp = global::Mono.Unix.Catalog.GetString ("To:");
 			this.pnlAge.Add (this.lblTo);
-			global::Gtk.Table.TableChild w49 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.lblTo]));
-			w49.TopAttach = ((uint)(1));
-			w49.BottomAttach = ((uint)(2));
-			w49.XOptions = ((global::Gtk.AttachOptions)(4));
-			w49.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w9 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.lblTo]));
+			w9.TopAttach = ((uint)(1));
+			w9.BottomAttach = ((uint)(2));
+			w9.XOptions = ((global::Gtk.AttachOptions)(4));
+			w9.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAge.Gtk.Table+TableChild
 			this.optGraph = new global::Gtk.RadioButton (global::Mono.Unix.Catalog.GetString ("Graph"));
 			this.optGraph.TooltipMarkup = "Display history in a line graph.";
 			this.optGraph.CanFocus = true;
 			this.optGraph.Name = "optGraph";
+			this.optGraph.Active = true;
 			this.optGraph.DrawIndicator = true;
 			this.optGraph.UseUnderline = true;
 			this.optGraph.Yalign = 0F;
 			this.optGraph.Group = new global::GLib.SList (global::System.IntPtr.Zero);
 			this.pnlAge.Add (this.optGraph);
-			global::Gtk.Table.TableChild w50 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.optGraph]));
-			w50.LeftAttach = ((uint)(2));
-			w50.RightAttach = ((uint)(3));
-			w50.XOptions = ((global::Gtk.AttachOptions)(4));
-			w50.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w10 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.optGraph]));
+			w10.LeftAttach = ((uint)(2));
+			w10.RightAttach = ((uint)(3));
+			w10.XOptions = ((global::Gtk.AttachOptions)(4));
+			w10.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAge.Gtk.Table+TableChild
 			this.optGrid = new global::Gtk.RadioButton (global::Mono.Unix.Catalog.GetString ("Grid"));
 			this.optGrid.TooltipMarkup = "Display history in a grid.";
@@ -277,26 +199,26 @@ namespace RestrictionTrackerGTK
 			this.optGrid.Yalign = 0F;
 			this.optGrid.Group = this.optGraph.Group;
 			this.pnlAge.Add (this.optGrid);
-			global::Gtk.Table.TableChild w51 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.optGrid]));
-			w51.TopAttach = ((uint)(1));
-			w51.BottomAttach = ((uint)(2));
-			w51.LeftAttach = ((uint)(2));
-			w51.RightAttach = ((uint)(3));
-			w51.XOptions = ((global::Gtk.AttachOptions)(4));
-			w51.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w11 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.optGrid]));
+			w11.TopAttach = ((uint)(1));
+			w11.BottomAttach = ((uint)(2));
+			w11.LeftAttach = ((uint)(2));
+			w11.RightAttach = ((uint)(3));
+			w11.XOptions = ((global::Gtk.AttachOptions)(4));
+			w11.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAge.Gtk.Table+TableChild
 			this.pctErr = new global::Gtk.Image ();
 			this.pctErr.WidthRequest = 16;
 			this.pctErr.HeightRequest = 16;
 			this.pctErr.Name = "pctErr";
 			this.pnlAge.Add (this.pctErr);
-			global::Gtk.Table.TableChild w52 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.pctErr]));
-			w52.TopAttach = ((uint)(1));
-			w52.BottomAttach = ((uint)(2));
-			w52.LeftAttach = ((uint)(3));
-			w52.RightAttach = ((uint)(4));
-			w52.XOptions = ((global::Gtk.AttachOptions)(0));
-			w52.YOptions = ((global::Gtk.AttachOptions)(0));
+			global::Gtk.Table.TableChild w12 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.pctErr]));
+			w12.TopAttach = ((uint)(1));
+			w12.BottomAttach = ((uint)(2));
+			w12.LeftAttach = ((uint)(3));
+			w12.RightAttach = ((uint)(4));
+			w12.XOptions = ((global::Gtk.AttachOptions)(0));
+			w12.YOptions = ((global::Gtk.AttachOptions)(0));
 			this.algnAge.Add (this.pnlAge);
 			this.grpAge.Add (this.algnAge);
 			this.GtkLabel8 = new global::Gtk.Label ();
@@ -306,10 +228,10 @@ namespace RestrictionTrackerGTK
 			this.GtkLabel8.UseMarkup = true;
 			this.grpAge.LabelWidget = this.GtkLabel8;
 			this.pnlHistory.Add (this.grpAge);
-			global::Gtk.Box.BoxChild w55 = ((global::Gtk.Box.BoxChild)(this.pnlHistory [this.grpAge]));
-			w55.Position = 0;
-			w55.Expand = false;
-			w55.Fill = false;
+			global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.pnlHistory [this.grpAge]));
+			w15.Position = 0;
+			w15.Expand = false;
+			w15.Fill = false;
 			// Container child pnlHistory.Gtk.Box+BoxChild
 			this.pnlGraph = new global::Gtk.VBox ();
 			this.pnlGraph.Name = "pnlGraph";
@@ -323,8 +245,8 @@ namespace RestrictionTrackerGTK
 			this.pctDld.Name = "pctDld";
 			this.evnDld.Add (this.pctDld);
 			this.pnlGraph.Add (this.evnDld);
-			global::Gtk.Box.BoxChild w57 = ((global::Gtk.Box.BoxChild)(this.pnlGraph [this.evnDld]));
-			w57.Position = 0;
+			global::Gtk.Box.BoxChild w17 = ((global::Gtk.Box.BoxChild)(this.pnlGraph [this.evnDld]));
+			w17.Position = 0;
 			// Container child pnlGraph.Gtk.Box+BoxChild
 			this.evnUld = new global::Gtk.EventBox ();
 			this.evnUld.Name = "evnUld";
@@ -333,11 +255,11 @@ namespace RestrictionTrackerGTK
 			this.pctUld.Name = "pctUld";
 			this.evnUld.Add (this.pctUld);
 			this.pnlGraph.Add (this.evnUld);
-			global::Gtk.Box.BoxChild w59 = ((global::Gtk.Box.BoxChild)(this.pnlGraph [this.evnUld]));
-			w59.Position = 1;
+			global::Gtk.Box.BoxChild w19 = ((global::Gtk.Box.BoxChild)(this.pnlGraph [this.evnUld]));
+			w19.Position = 1;
 			this.pnlHistory.Add (this.pnlGraph);
-			global::Gtk.Box.BoxChild w60 = ((global::Gtk.Box.BoxChild)(this.pnlHistory [this.pnlGraph]));
-			w60.Position = 1;
+			global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(this.pnlHistory [this.pnlGraph]));
+			w20.Position = 1;
 			// Container child pnlHistory.Gtk.Box+BoxChild
 			this.pnlButtons = new global::Gtk.HBox ();
 			this.pnlButtons.Name = "pnlButtons";
@@ -347,92 +269,47 @@ namespace RestrictionTrackerGTK
 			this.lblBackup.Name = "lblBackup";
 			this.lblBackup.LabelProp = global::Mono.Unix.Catalog.GetString ("Backup:");
 			this.pnlButtons.Add (this.lblBackup);
-			global::Gtk.Box.BoxChild w61 = ((global::Gtk.Box.BoxChild)(this.pnlButtons [this.lblBackup]));
-			w61.Position = 0;
-			w61.Expand = false;
-			w61.Fill = false;
+			global::Gtk.Box.BoxChild w21 = ((global::Gtk.Box.BoxChild)(this.pnlButtons [this.lblBackup]));
+			w21.Position = 0;
+			w21.Expand = false;
+			w21.Fill = false;
 			// Container child pnlButtons.Gtk.Box+BoxChild
 			this.cmdImport = new global::Gtk.Button ();
 			this.cmdImport.TooltipMarkup = "Read a DataBase, XML, or CSV file into the history.";
 			this.cmdImport.CanFocus = true;
 			this.cmdImport.Name = "cmdImport";
 			this.cmdImport.UseUnderline = true;
-			// Container child cmdImport.Gtk.Container+ContainerChild
-			global::Gtk.Alignment w62 = new global::Gtk.Alignment (0.5F, 0.5F, 0F, 0F);
-			// Container child GtkAlignment.Gtk.Container+ContainerChild
-			global::Gtk.HBox w63 = new global::Gtk.HBox ();
-			w63.Spacing = 2;
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Image w64 = new global::Gtk.Image ();
-			w64.Pixbuf = global::Stetic.IconLoader.LoadIcon (this, "gtk-open", global::Gtk.IconSize.Button);
-			w63.Add (w64);
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Label w66 = new global::Gtk.Label ();
-			w66.LabelProp = global::Mono.Unix.Catalog.GetString ("Import Database");
-			w66.UseUnderline = true;
-			w63.Add (w66);
-			w62.Add (w63);
-			this.cmdImport.Add (w62);
+			this.cmdImport.Label = global::Mono.Unix.Catalog.GetString ("Import Database");
 			this.pnlButtons.Add (this.cmdImport);
-			global::Gtk.Box.BoxChild w70 = ((global::Gtk.Box.BoxChild)(this.pnlButtons [this.cmdImport]));
-			w70.Position = 1;
-			w70.Expand = false;
-			w70.Fill = false;
+			global::Gtk.Box.BoxChild w22 = ((global::Gtk.Box.BoxChild)(this.pnlButtons [this.cmdImport]));
+			w22.Position = 1;
+			w22.Expand = false;
+			w22.Fill = false;
 			// Container child pnlButtons.Gtk.Box+BoxChild
 			this.cmdExport = new global::Gtk.Button ();
 			this.cmdExport.TooltipMarkup = "Make a backup DataBase, XML, or CSV file.";
 			this.cmdExport.CanFocus = true;
 			this.cmdExport.Name = "cmdExport";
 			this.cmdExport.UseUnderline = true;
-			// Container child cmdExport.Gtk.Container+ContainerChild
-			global::Gtk.Alignment w71 = new global::Gtk.Alignment (0.5F, 0.5F, 0F, 0F);
-			// Container child GtkAlignment.Gtk.Container+ContainerChild
-			global::Gtk.HBox w72 = new global::Gtk.HBox ();
-			w72.Spacing = 2;
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Image w73 = new global::Gtk.Image ();
-			w73.Pixbuf = global::Stetic.IconLoader.LoadIcon (this, "gtk-save-as", global::Gtk.IconSize.Button);
-			w72.Add (w73);
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Label w75 = new global::Gtk.Label ();
-			w75.LabelProp = global::Mono.Unix.Catalog.GetString ("Export Database");
-			w75.UseUnderline = true;
-			w72.Add (w75);
-			w71.Add (w72);
-			this.cmdExport.Add (w71);
+			this.cmdExport.Label = global::Mono.Unix.Catalog.GetString ("Export Database");
 			this.pnlButtons.Add (this.cmdExport);
-			global::Gtk.Box.BoxChild w79 = ((global::Gtk.Box.BoxChild)(this.pnlButtons [this.cmdExport]));
-			w79.Position = 2;
-			w79.Expand = false;
-			w79.Fill = false;
+			global::Gtk.Box.BoxChild w23 = ((global::Gtk.Box.BoxChild)(this.pnlButtons [this.cmdExport]));
+			w23.Position = 2;
+			w23.Expand = false;
+			w23.Fill = false;
 			// Container child pnlButtons.Gtk.Box+BoxChild
 			this.cmdClose = new global::Gtk.Button ();
 			this.cmdClose.TooltipMarkup = "Close the History window.";
 			this.cmdClose.CanFocus = true;
 			this.cmdClose.Name = "cmdClose";
 			this.cmdClose.UseUnderline = true;
-			// Container child cmdClose.Gtk.Container+ContainerChild
-			global::Gtk.Alignment w80 = new global::Gtk.Alignment (0.5F, 0.5F, 0F, 0F);
-			// Container child GtkAlignment.Gtk.Container+ContainerChild
-			global::Gtk.HBox w81 = new global::Gtk.HBox ();
-			w81.Spacing = 2;
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Image w82 = new global::Gtk.Image ();
-			w82.Pixbuf = global::Stetic.IconLoader.LoadIcon (this, "gtk-close", global::Gtk.IconSize.Button);
-			w81.Add (w82);
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Label w84 = new global::Gtk.Label ();
-			w84.LabelProp = global::Mono.Unix.Catalog.GetString ("_Close");
-			w84.UseUnderline = true;
-			w81.Add (w84);
-			w80.Add (w81);
-			this.cmdClose.Add (w80);
+			this.cmdClose.Label = global::Mono.Unix.Catalog.GetString ("_Close");
 			this.pnlButtons.Add (this.cmdClose);
-			global::Gtk.Box.BoxChild w88 = ((global::Gtk.Box.BoxChild)(this.pnlButtons [this.cmdClose]));
-			w88.PackType = ((global::Gtk.PackType)(1));
-			w88.Position = 3;
-			w88.Expand = false;
-			w88.Fill = false;
+			global::Gtk.Box.BoxChild w24 = ((global::Gtk.Box.BoxChild)(this.pnlButtons [this.cmdClose]));
+			w24.PackType = ((global::Gtk.PackType)(1));
+			w24.Position = 3;
+			w24.Expand = false;
+			w24.Fill = false;
 			// Container child pnlButtons.Gtk.Box+BoxChild
 			this.chkExportRange = new global::Gtk.CheckButton ();
 			this.chkExportRange.TooltipMarkup = "Export only the data within the Age Parameters range.";
@@ -442,14 +319,14 @@ namespace RestrictionTrackerGTK
 			this.chkExportRange.DrawIndicator = true;
 			this.chkExportRange.UseUnderline = true;
 			this.pnlButtons.Add (this.chkExportRange);
-			global::Gtk.Box.BoxChild w89 = ((global::Gtk.Box.BoxChild)(this.pnlButtons [this.chkExportRange]));
-			w89.PackType = ((global::Gtk.PackType)(1));
-			w89.Position = 4;
+			global::Gtk.Box.BoxChild w25 = ((global::Gtk.Box.BoxChild)(this.pnlButtons [this.chkExportRange]));
+			w25.PackType = ((global::Gtk.PackType)(1));
+			w25.Position = 4;
 			this.pnlHistory.Add (this.pnlButtons);
-			global::Gtk.Box.BoxChild w90 = ((global::Gtk.Box.BoxChild)(this.pnlHistory [this.pnlButtons]));
-			w90.Position = 2;
-			w90.Expand = false;
-			w90.Fill = false;
+			global::Gtk.Box.BoxChild w26 = ((global::Gtk.Box.BoxChild)(this.pnlHistory [this.pnlButtons]));
+			w26.Position = 2;
+			w26.Expand = false;
+			w26.Fill = false;
 			// Container child pnlHistory.Gtk.Box+BoxChild
 			this.sbHistoryStatus = new global::Gtk.Statusbar ();
 			this.sbHistoryStatus.Name = "sbHistoryStatus";
@@ -458,29 +335,29 @@ namespace RestrictionTrackerGTK
 			this.pbHistoryStatus = new global::Gtk.ProgressBar ();
 			this.pbHistoryStatus.Name = "pbHistoryStatus";
 			this.sbHistoryStatus.Add (this.pbHistoryStatus);
-			global::Gtk.Box.BoxChild w91 = ((global::Gtk.Box.BoxChild)(this.sbHistoryStatus [this.pbHistoryStatus]));
-			w91.Position = 1;
+			global::Gtk.Box.BoxChild w27 = ((global::Gtk.Box.BoxChild)(this.sbHistoryStatus [this.pbHistoryStatus]));
+			w27.Position = 1;
 			// Container child sbHistoryStatus.Gtk.Box+BoxChild
 			this.lblHistoryStatus = new global::Gtk.Label ();
 			this.lblHistoryStatus.Name = "lblHistoryStatus";
 			this.lblHistoryStatus.Xalign = 0F;
 			this.lblHistoryStatus.SingleLineMode = true;
 			this.sbHistoryStatus.Add (this.lblHistoryStatus);
-			global::Gtk.Box.BoxChild w92 = ((global::Gtk.Box.BoxChild)(this.sbHistoryStatus [this.lblHistoryStatus]));
-			w92.Position = 2;
-			w92.Expand = false;
-			w92.Fill = false;
+			global::Gtk.Box.BoxChild w28 = ((global::Gtk.Box.BoxChild)(this.sbHistoryStatus [this.lblHistoryStatus]));
+			w28.Position = 2;
+			w28.Expand = false;
+			w28.Fill = false;
 			this.pnlHistory.Add (this.sbHistoryStatus);
-			global::Gtk.Box.BoxChild w93 = ((global::Gtk.Box.BoxChild)(this.pnlHistory [this.sbHistoryStatus]));
-			w93.Position = 3;
-			w93.Expand = false;
-			w93.Fill = false;
+			global::Gtk.Box.BoxChild w29 = ((global::Gtk.Box.BoxChild)(this.pnlHistory [this.sbHistoryStatus]));
+			w29.Position = 3;
+			w29.Expand = false;
+			w29.Fill = false;
 			this.Add (this.pnlHistory);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			this.DefaultWidth = 571;
-			this.DefaultHeight = 356;
+			this.DefaultWidth = 583;
+			this.DefaultHeight = 399;
 			this.Show ();
 			this.cmdToday.Clicked += new global::System.EventHandler (this.cmdToday_Click);
 			this.cmdQuery.Clicked += new global::System.EventHandler (this.cmdQuery_Click);

@@ -87,20 +87,17 @@ namespace RestrictionTrackerGTK
         case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
         case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
         case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
-          ((Label)((HBox)((Alignment)cmd30Days.Children[0]).Children[0]).Children[1]).LabelProp = "This Period";
-          ((Label)((HBox)((Alignment)cmd60Days.Children[0]).Children[0]).Children[1]).LabelProp = "Last Period";
+          ((Gtk.Label) cmd30Days.Child).LabelProp = "This Period";
+          ((Gtk.Label) cmd60Days.Child).LabelProp = "Last Period";
           break;
         default:
-          ((Label)((HBox)((Alignment)cmd30Days.Children[0]).Children[0]).Children[1]).LabelProp = "30 Days";
-          ((Label)((HBox)((Alignment)cmd60Days.Children[0]).Children[0]).Children[1]).LabelProp = "60 Days";
+          ((Gtk.Label) cmd30Days.Child).LabelProp = "30 Days";
+          ((Gtk.Label) cmd60Days.Child).LabelProp = "60 Days";
           break;
       }
 
-
-
       this.SizeAllocated += frmHistory_ResizeBegin;
       this.Hidden += frmHistory_Hidden;
-
 
       switch (mySettings.Ago)
       {

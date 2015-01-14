@@ -15,10 +15,12 @@ namespace RestrictionTrackerGTK
     {
       AlertStyle = style;
       this.Build();
+      ((Gtk.Box.BoxChild)this.ActionArea[lblMore]).Position = 0;
+      ((Gtk.Box.BoxChild)this.ActionArea[vsButtons]).Position = 1;
       if (CurrentOS.IsMac)
       {
-        ((Gtk.Box.BoxChild)this.ActionArea[cmdSave]).Position = 3;
         ((Gtk.Box.BoxChild)this.ActionArea[cmdClose]).Position = 2;
+        ((Gtk.Box.BoxChild)this.ActionArea[cmdSave]).Position = 3;
       }
       else
       {
@@ -32,7 +34,10 @@ namespace RestrictionTrackerGTK
       sclStyles = new ScrolledWindow();
       sclStyles.Add(lstStyles);
       pnlListBox.Add(sclStyles);
+      lstStyles.SetSizeRequest(150, 0);
       ((Gtk.Box.BoxChild)pnlListBox[sclStyles]).Position = 1;
+      ((Gtk.Box.BoxChild)pnlListBox[sclStyles]).Expand = true;
+      ((Gtk.Box.BoxChild)pnlListBox[sclStyles]).Fill = true;
       ((Gtk.Box.BoxChild)pnlListBox[pnlListButtons]).Position = 2;
       sclStyles.Visible = true;
       lstStyles.Visible = true;
@@ -49,7 +54,7 @@ namespace RestrictionTrackerGTK
       evntPreview.AddEvents((int)Gdk.EventMask.ButtonReleaseMask);
       evntPreview.ButtonReleaseEvent += evntPreview_ButtonRelease;
 
-      lstStyles.WidthRequest = 100;
+
       lstStyles.ClearItems();
       lstStyles.AddItem("Default");
       TreeIter iter;
@@ -60,10 +65,8 @@ namespace RestrictionTrackerGTK
         lstStyles.Selection.SelectIter(iter);
       }
 
-      //int index = 0;
       foreach (string sFile in System.IO.Directory.GetFiles(modFunctions.AppData))
       {
-        //index++;
         string sTitle = System.IO.Path.GetFileNameWithoutExtension(sFile);
         string sExt = System.IO.Path.GetExtension(sFile).ToLower();
         while (!string.IsNullOrEmpty(System.IO.Path.GetExtension(sTitle)))
@@ -77,12 +80,12 @@ namespace RestrictionTrackerGTK
           lstStyles.Model.IterNext(ref iter);
           if (sTitle.ToLower() == AlertStyle.ToLower())
           {
-            //lstStyles.Model.GetIterFromString(out iter, index.ToString());
             lstStyles.Selection.SelectIter(iter);
           }
         }
       }
       lstStyles.TooltipMarkup = "Select the Alert Window Style you want to use.\n<b>Drag and Drop:</b> Add an Alert Style from a Tarball or GZipped TAR (*.tar, *.tar.gz, *.tgz).\n<b>Delete:</b> Remove an Alert Style from the list.";
+      modFunctions.PrepareLink(lblMore);
       lblMore.Markup = "<a href=\"http://srt.realityripple.com/Alert_Styles\">Get More Styles</a>";
       lblMore.TooltipText = "Download new Alert Window Styles from RealityRipple.com.";
       Changed = false;

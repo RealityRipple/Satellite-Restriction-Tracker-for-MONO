@@ -807,6 +807,26 @@ namespace RestrictionTrackerGTK
       }
     }
 
+
+    class ActivateLinkEventArgs : GLib.SignalArgs
+    {
+      public string Url { get { return (string) base.Args[0]; }}
+    }
+
+    [GLib.ConnectBefore]
+    static void HandleActivateLink(object o, ActivateLinkEventArgs e)
+    {
+      System.Diagnostics.Process.Start(e.Url);
+      e.RetVal = true;
+    }
+
+    public static void PrepareLink(Gtk.Label label)
+    {
+      var signal = GLib.Signal.Lookup(label, "activate-link", typeof(ActivateLinkEventArgs));
+      signal.AddDelegate(new EventHandler<ActivateLinkEventArgs>(HandleActivateLink));
+    }
+
+
     #region "Graphs"
     #region "History"
     private static Rectangle dGraph;

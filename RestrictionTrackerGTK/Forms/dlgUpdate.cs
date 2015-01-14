@@ -98,13 +98,13 @@ namespace RestrictionTrackerGTK
     {
       if (scrInfo.Visible)
       {
-        ((Gtk.Label)((Gtk.HBox)((Gtk.Alignment) cmdChanges.Children[0]).Children[0]).Children[1]).LabelProp = "_Changes >>";
+        ((Gtk.Label) cmdChanges.Child).LabelProp = "_Changes >>";
         scrInfo.Visible = false;
       }
       else
       {
         txtInfo.HeightRequest = 100;
-        ((Gtk.Label)((Gtk.HBox)((Gtk.Alignment) cmdChanges.Children[0]).Children[0]).Children[1]).LabelProp = "_Changes <<";
+        ((Gtk.Label) cmdChanges.Child).LabelProp = "_Changes <<";
         scrInfo.Visible = true;
         if (!txtInfo.Buffer.Text.StartsWith("Released:"))
         {

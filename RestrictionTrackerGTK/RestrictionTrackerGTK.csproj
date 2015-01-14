@@ -11,7 +11,7 @@
     <AssemblyName>RestrictionTracker</AssemblyName>
     <StartupObject>RestrictionTrackerGTK.MainClass</StartupObject>
     <ApplicationIcon>Resources\sat.ico</ApplicationIcon>
-    <ReleaseVersion>1.1.0.3</ReleaseVersion>
+    <ReleaseVersion>1.2</ReleaseVersion>
     <Description>Satellite Restriction Tracker</Description>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>trackergtk.snk</AssemblyOriginatorKeyFile>
@@ -38,7 +38,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="Mono.Posix" />
     <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <Package>gtk-sharp-2.0</Package>
       <Private>False</Private>
@@ -77,6 +76,7 @@
     <Reference Include="RestrictionTrackerLib">
       <HintPath>..\RestrictionTrackerLib.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Posix" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="gtk-gui\gui.stetic">
@@ -90,11 +90,6 @@
     <EmbeddedResource Include="Resources\throbber.gif" />
     <EmbeddedResource Include="Resources\ok.png" />
     <EmbeddedResource Include="Resources\error.png" />
-    <EmbeddedResource Include="Resources\web.png" />
-    <EmbeddedResource Include="Resources\cal1.png" />
-    <EmbeddedResource Include="Resources\cal30.png" />
-    <EmbeddedResource Include="Resources\cal60.png" />
-    <EmbeddedResource Include="Resources\calall.png" />
     <EmbeddedResource Include="Resources\tray_16\free.ico" />
     <EmbeddedResource Include="Resources\tray_16\norm.ico" />
     <EmbeddedResource Include="Resources\tray_16\restricted.ico" />
@@ -152,6 +147,7 @@
     <Compile Include="Classes\Visual Elements\clsListView.cs" />
     <Compile Include="Classes\Visual Elements\clsTaskbarNotifier.cs" />
     <Compile Include="Modules\modCreds.cs" />
+    <Compile Include="Classes\MacInterop\clsIgeMacMenu.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
