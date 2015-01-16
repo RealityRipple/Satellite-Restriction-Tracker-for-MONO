@@ -128,14 +128,23 @@ namespace RestrictionTrackerGTK
                 System.Diagnostics.Process.Start(sUpdatePath);
               else if (CurrentOS.IsLinux)
               {
+                string sConsoleTitle = "-T \"" + modFunctions.ProductName() + " Update\"";
+                string sConsoleTitleL = "-t \"" + modFunctions.ProductName() + " Update\"";
+                string sConsolePath = "\"" + sUpdatePath + "\"";
                 if (System.IO.File.Exists("/usr/bin/xfce4-terminal"))
-                  System.Diagnostics.Process.Start("xfce4-terminal", "-e 'bash \"" + sUpdatePath + "\"'");
+                  System.Diagnostics.Process.Start("xfce4-terminal", "--hide-menubar --hide-toolbar " + sConsoleTitle + " -e 'bash " + sConsolePath + "'");
                 else if (System.IO.File.Exists("/usr/bin/gnome-terminal"))
-                  System.Diagnostics.Process.Start("gnome-terminal", "-e 'bash \"" + sUpdatePath + "\"'");
+                  System.Diagnostics.Process.Start("gnome-terminal", "--hide-menubar " + sConsoleTitleL + " -e 'bash " + sConsolePath + "'");
                 else if (System.IO.File.Exists("/usr/bin/konsole"))
-                  System.Diagnostics.Process.Start("konsole", "-e \"" + sUpdatePath + "\"");
+                  System.Diagnostics.Process.Start("konsole", "--hide-menubar --hide-tabbar -e " + sConsolePath + "");
+                else if (System.IO.File.Exists("/usr/bin/mate-terminal"))
+                  System.Diagnostics.Process.Start("mate-terminal", "--hide-menubar " + sConsoleTitleL + " -e 'bash " + sConsolePath + "'");
+                else if (System.IO.File.Exists("/usr/bin/xterm"))
+                  System.Diagnostics.Process.Start("xterm", "-e 'bash " + sConsolePath + "'");
+                else if (System.IO.File.Exists("/usr/bin/x-terminal-emulator"))
+                  System.Diagnostics.Process.Start("x-terminal-emulator", sConsoleTitle + " -e 'bash " + sConsolePath + "'");
                 else
-                  System.Diagnostics.Process.Start("bash", "\"" + sUpdatePath + "\"");
+                  System.Diagnostics.Process.Start("bash", sConsolePath);
               }
               else
                 System.Diagnostics.Process.Start(sUpdatePath);

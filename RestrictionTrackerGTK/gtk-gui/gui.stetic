@@ -5,8 +5,8 @@
     <target-gtk-version>2.12</target-gtk-version>
   </configuration>
   <import>
-    <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <widget-library name="../../appindicator-sharp.dll" />
+    <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <widget-library name="../bin/Debug/RestrictionTracker.exe" internal="true" />
   </import>
   <widget class="Gtk.Window" id="RestrictionTrackerGTK.frmMain" design-size="463 385">
@@ -1735,6 +1735,10 @@
             <child>
               <widget class="Gtk.ComboBoxEntry" id="cmbProvider">
                 <property name="MemberName" />
+                <property name="Tooltip" translatable="yes">Your ViaSat Provider domain.
+If you were given an E-Mail address, this is everything after the @ symbol.
+You can choose a domain from the dropdown or enter your own to add it to the list.</property>
+                <property name="CanFocus">True</property>
                 <property name="IsTextCombo">True</property>
                 <property name="Items" translatable="yes" />
               </widget>
@@ -1757,6 +1761,7 @@
             <child>
               <widget class="Gtk.Button" id="cmdAlertStyle">
                 <property name="MemberName" />
+                <property name="Tooltip" translatable="yes">Choose a style for the Alert Windows used for Usage Alerts and Parse Failures.</property>
                 <property name="CanFocus">True</property>
                 <property name="Type">TextOnly</property>
                 <property name="Label" translatable="yes">Set Alert Style</property>
@@ -1853,6 +1858,7 @@
  &lt;b&gt;System:&lt;/b&gt; Default System Proxy Settings
  &lt;b&gt;IP:&lt;/b&gt; HTTP Proxy by IP Address and Port
  &lt;b&gt;URL:&lt;/b&gt; HTTP Proxy by Web URL</property>
+                            <property name="CanFocus">True</property>
                             <property name="IsTextCombo">True</property>
                             <property name="Items" translatable="yes">None
 System
@@ -2170,6 +2176,7 @@ URL</property>
                 <child>
                   <widget class="Gtk.CheckButton" id="chkProtocolSSL">
                     <property name="MemberName" />
+                    <property name="Tooltip" translatable="yes">Check this box to use the older SSL 3.0 instead of TLS 1.0 for secure connections.</property>
                     <property name="CanFocus">True</property>
                     <property name="Label" translatable="yes">Use Legacy SSL 3.0</property>
                     <property name="DrawIndicator">True</property>
@@ -2806,7 +2813,8 @@ URL</property>
             <child>
               <widget class="Gtk.Entry" id="txtAccount">
                 <property name="MemberName" />
-                <property name="Tooltip" translatable="yes">Your ViaSat E-Mail address.</property>
+                <property name="Tooltip" translatable="yes">Your ViaSat Username.
+If you were provided with an E-Mail address, this is the first half of that address.</property>
                 <property name="CanFocus">True</property>
                 <property name="IsEditable">True</property>
                 <property name="InvisibleChar">●</property>
@@ -2829,6 +2837,7 @@ URL</property>
               <widget class="Gtk.FileChooserButton" id="txtHistoryDir">
                 <property name="MemberName" />
                 <property name="Tooltip" translatable="yes">Directory used to save History Data.</property>
+                <property name="CanFocus">True</property>
                 <property name="Title" translatable="yes">Select a Directory</property>
                 <property name="Action">SelectFolder</property>
                 <property name="ShowHidden">True</property>

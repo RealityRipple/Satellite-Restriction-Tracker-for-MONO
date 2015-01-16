@@ -46,7 +46,7 @@ namespace RestrictionTrackerGTK
           fMain.cmdConfig_Click(new object(), new EventArgs());
           e.Handled=true;
         };
-        var appGroup = IgeMacMenu.AddAppMenuGroup();
+        IgeMacMenuGroup appGroup = IgeMacMenu.AddAppMenuGroup();
         MenuItem mnuAbout = new MenuItem();
         mnuAbout.Activated += delegate(object sender, EventArgs e)
         {
@@ -54,7 +54,6 @@ namespace RestrictionTrackerGTK
         };
         appGroup.AddMenuItem(mnuAbout, "About " + modFunctions.ProductName());
         appGroup.AddMenuItem(new MenuItem(), "-");
-
         MenuItem mnuHistory = new MenuItem();
         mnuHistory.Activated += delegate(object sender, EventArgs e)
         {

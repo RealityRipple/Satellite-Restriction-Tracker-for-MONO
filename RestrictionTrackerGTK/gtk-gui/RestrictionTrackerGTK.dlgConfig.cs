@@ -140,6 +140,8 @@ namespace RestrictionTrackerGTK
 			w4.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlConfigFields.Gtk.Table+TableChild
 			this.cmbProvider = global::Gtk.ComboBoxEntry.NewText ();
+			this.cmbProvider.TooltipMarkup = "Your ViaSat Provider domain.\nIf you were given an E-Mail address, this is everything after the @ symbol.\nYou can choose a domain from the dropdown or enter your own to add it to the list.";
+			this.cmbProvider.CanFocus = true;
 			this.cmbProvider.Name = "cmbProvider";
 			this.pnlConfigFields.Add (this.cmbProvider);
 			global::Gtk.Table.TableChild w5 = ((global::Gtk.Table.TableChild)(this.pnlConfigFields [this.cmbProvider]));
@@ -151,6 +153,7 @@ namespace RestrictionTrackerGTK
 			w5.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlConfigFields.Gtk.Table+TableChild
 			this.cmdAlertStyle = new global::Gtk.Button ();
+			this.cmdAlertStyle.TooltipMarkup = "Choose a style for the Alert Windows used for Usage Alerts and Parse Failures.";
 			this.cmdAlertStyle.CanFocus = true;
 			this.cmdAlertStyle.Name = "cmdAlertStyle";
 			this.cmdAlertStyle.UseUnderline = true;
@@ -213,6 +216,7 @@ namespace RestrictionTrackerGTK
 			this.cmbProxyType.AppendText (global::Mono.Unix.Catalog.GetString ("IP"));
 			this.cmbProxyType.AppendText (global::Mono.Unix.Catalog.GetString ("URL"));
 			this.cmbProxyType.TooltipMarkup = "Type of Proxy to Use\n <b>None:</b> No Proxy\n <b>System:</b> Default System Proxy Settings\n <b>IP:</b> HTTP Proxy by IP Address and Port\n <b>URL:</b> HTTP Proxy by Web URL";
+			this.cmbProxyType.CanFocus = true;
 			this.cmbProxyType.Name = "cmbProxyType";
 			this.cmbProxyType.Active = 0;
 			this.pnlProxy.Add (this.cmbProxyType);
@@ -395,6 +399,7 @@ namespace RestrictionTrackerGTK
 			w25.Fill = false;
 			// Container child hbox1.Gtk.Box+BoxChild
 			this.chkProtocolSSL = new global::Gtk.CheckButton ();
+			this.chkProtocolSSL.TooltipMarkup = "Check this box to use the older SSL 3.0 instead of TLS 1.0 for secure connections.";
 			this.chkProtocolSSL.CanFocus = true;
 			this.chkProtocolSSL.Name = "chkProtocolSSL";
 			this.chkProtocolSSL.Label = global::Mono.Unix.Catalog.GetString ("Use Legacy SSL 3.0");
@@ -825,7 +830,7 @@ namespace RestrictionTrackerGTK
 			w69.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlConfigFields.Gtk.Table+TableChild
 			this.txtAccount = new global::Gtk.Entry ();
-			this.txtAccount.TooltipMarkup = "Your ViaSat E-Mail address.";
+			this.txtAccount.TooltipMarkup = "Your ViaSat Username.\nIf you were provided with an E-Mail address, this is the first half of that address.";
 			this.txtAccount.CanFocus = true;
 			this.txtAccount.Name = "txtAccount";
 			this.txtAccount.IsEditable = true;
@@ -839,6 +844,7 @@ namespace RestrictionTrackerGTK
 			// Container child pnlConfigFields.Gtk.Table+TableChild
 			this.txtHistoryDir = new global::Gtk.FileChooserButton (global::Mono.Unix.Catalog.GetString ("Select a Directory"), ((global::Gtk.FileChooserAction)(2)));
 			this.txtHistoryDir.TooltipMarkup = "Directory used to save History Data.";
+			this.txtHistoryDir.CanFocus = true;
 			this.txtHistoryDir.Name = "txtHistoryDir";
 			this.txtHistoryDir.ShowHidden = true;
 			this.pnlConfigFields.Add (this.txtHistoryDir);
