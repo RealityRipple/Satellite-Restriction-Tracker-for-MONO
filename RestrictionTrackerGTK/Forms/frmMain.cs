@@ -379,7 +379,7 @@ namespace RestrictionTrackerGTK
           SetDefaultColors();
         }
         mySettings.Save();
-        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Current Connection...", false);
+        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Connection...", false);
         if (localData != null)
         {
           localDataEvent(false);
@@ -427,7 +427,7 @@ namespace RestrictionTrackerGTK
           SetDefaultColors();
         }
         mySettings.Save();
-        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing First Connection...", false);
+        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Connection...", false);
         if (localData != null)
         {
           localDataEvent(false);
@@ -1188,7 +1188,7 @@ namespace RestrictionTrackerGTK
           return;
         }
         DisplayUsage(false, false);
-        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Reloaded Connection...", false);
+        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Connection...", false);
         GetUsage();
       }
       if (ClosingTime)
@@ -1322,7 +1322,7 @@ namespace RestrictionTrackerGTK
                 updateFull = false;
                 NextGrabTick = long.MaxValue;
                 EnableProgressIcon();
-                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Next Connection...", false);
+                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Connection...", false);
                 MethodInvoker UsageInvoker = GetUsage;
                 UsageInvoker.BeginInvoke(null, null);
                 return true;
@@ -1388,8 +1388,9 @@ namespace RestrictionTrackerGTK
             localData.Dispose();
             localData = null;
           }
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Connection Timed Out!", true);
+          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Connection...", false);
           DisplayUsage(false, false);
+          NextGrabTick = modFunctions.TickCount() + 5000;
         }
       }
     }
@@ -2695,7 +2696,7 @@ namespace RestrictionTrackerGTK
           {
             SetNextLoginTime();
             EnableProgressIcon();
-            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Re-Preparing New Connection...", false);
+            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Connection...", false);
             MethodInvoker UsageInvoker = GetUsage;
             UsageInvoker.BeginInvoke(null, null);
           }
@@ -2717,7 +2718,7 @@ namespace RestrictionTrackerGTK
           {
             SetNextLoginTime();
             EnableProgressIcon();
-            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Re-Preparing Connection...", false);
+            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Connection...", false);
             MethodInvoker UsageInvoker = GetUsage;
             UsageInvoker.BeginInvoke(null, null);
           }
