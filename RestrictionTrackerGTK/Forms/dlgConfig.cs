@@ -418,7 +418,6 @@ namespace RestrictionTrackerGTK
       Gtk.Entry txtSender = (Gtk.Entry)o;
       if ((e.Event.Key == Gdk.Key.v) && ((e.Event.State & Gdk.ModifierType.ControlMask) == Gdk.ModifierType.ControlMask))
       {
-        Console.WriteLine((e.Event.State & Gdk.ModifierType.ControlMask));
         Gtk.Clipboard cb = Gtk.Clipboard.Get(Gdk.Selection.Clipboard);
 
         if (!String.IsNullOrEmpty(cb.WaitForText()))

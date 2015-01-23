@@ -612,7 +612,6 @@ namespace RestrictionTrackerGTK
 
     private void pctMain_MouseUp(object sender, Gtk.ButtonReleaseEventArgs  e)
     {
-      Console.WriteLine("Main MouseUp: " + e.Event.Button);
       if (e.Event.Button == 1)
       {
         if (dDown)
@@ -656,7 +655,6 @@ namespace RestrictionTrackerGTK
 
     private void pctTray_MouseUp(object sender, Gtk.ButtonReleaseEventArgs  e)
     {
-      Console.WriteLine("Tray MouseUp: " + e.Event.Button);
       if (e.Event.Button == 1)
       {
         if (dDown)
@@ -962,9 +960,8 @@ namespace RestrictionTrackerGTK
         }
         return null;
       }
-      catch (Exception ex)
+      catch (Exception)
       {
-        Console.WriteLine(ex.Message);
         return null;
       }
     }
@@ -996,9 +993,8 @@ namespace RestrictionTrackerGTK
         }
         return null;
       }
-      catch (Exception ex)
+      catch (Exception)
       {
-        Console.WriteLine(ex.Message);
         return null;
       }
     }

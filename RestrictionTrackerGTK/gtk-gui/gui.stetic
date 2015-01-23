@@ -5,8 +5,8 @@
     <target-gtk-version>2.12</target-gtk-version>
   </configuration>
   <import>
-    <widget-library name="../../appindicator-sharp.dll" />
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <widget-library name="../../appindicator-sharp.dll" />
     <widget-library name="../bin/Debug/RestrictionTracker.exe" internal="true" />
   </import>
   <widget class="Gtk.Window" id="RestrictionTrackerGTK.frmMain" design-size="463 385">
@@ -1738,7 +1738,6 @@
                 <property name="Tooltip" translatable="yes">Your ViaSat Provider domain.
 If you were given an E-Mail address, this is everything after the @ symbol.
 You can choose a domain from the dropdown or enter your own to add it to the list.</property>
-                <property name="CanFocus">True</property>
                 <property name="IsTextCombo">True</property>
                 <property name="Items" translatable="yes" />
               </widget>
@@ -1813,6 +1812,7 @@ You can choose a domain from the dropdown or enter your own to add it to the lis
                 <child>
                   <widget class="Gtk.Image" id="pctSRT">
                     <property name="MemberName" />
+                    <property name="Tooltip" translatable="yes">Beep... Beep... Beep...</property>
                   </widget>
                 </child>
               </widget>
@@ -1858,7 +1858,6 @@ You can choose a domain from the dropdown or enter your own to add it to the lis
  &lt;b&gt;System:&lt;/b&gt; Default System Proxy Settings
  &lt;b&gt;IP:&lt;/b&gt; HTTP Proxy by IP Address and Port
  &lt;b&gt;URL:&lt;/b&gt; HTTP Proxy by Web URL</property>
-                            <property name="CanFocus">True</property>
                             <property name="IsTextCombo">True</property>
                             <property name="Items" translatable="yes">None
 System

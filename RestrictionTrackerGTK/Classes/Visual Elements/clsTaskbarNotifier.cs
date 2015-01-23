@@ -378,7 +378,6 @@ namespace RestrictionTrackerGTK
 
         if (displayRect.Width == 200)
         {
-          Console.WriteLine("Still Bad");
           displayRect.Location = Gdk.Point.Zero;
           displayRect.Width = windowRect.Width;
           displayRect.Height = windowRect.Height - 32;
@@ -463,10 +462,6 @@ namespace RestrictionTrackerGTK
       {
         if (CurrentOS.IsMac)
           wndMax.Maximize();
-      }
-      else
-      {
-        Console.WriteLine(args.Allocation.Width);
       }
     }
 

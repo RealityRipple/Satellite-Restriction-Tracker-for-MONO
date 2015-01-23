@@ -141,7 +141,6 @@ namespace RestrictionTrackerGTK
 			// Container child pnlConfigFields.Gtk.Table+TableChild
 			this.cmbProvider = global::Gtk.ComboBoxEntry.NewText ();
 			this.cmbProvider.TooltipMarkup = "Your ViaSat Provider domain.\nIf you were given an E-Mail address, this is everything after the @ symbol.\nYou can choose a domain from the dropdown or enter your own to add it to the list.";
-			this.cmbProvider.CanFocus = true;
 			this.cmbProvider.Name = "cmbProvider";
 			this.pnlConfigFields.Add (this.cmbProvider);
 			global::Gtk.Table.TableChild w5 = ((global::Gtk.Table.TableChild)(this.pnlConfigFields [this.cmbProvider]));
@@ -185,6 +184,7 @@ namespace RestrictionTrackerGTK
 			this.evnSRT.Name = "evnSRT";
 			// Container child evnSRT.Gtk.Container+ContainerChild
 			this.pctSRT = new global::Gtk.Image ();
+			this.pctSRT.TooltipMarkup = "Beep... Beep... Beep...";
 			this.pctSRT.Name = "pctSRT";
 			this.evnSRT.Add (this.pctSRT);
 			this.pnlConfigFields.Add (this.evnSRT);
@@ -216,7 +216,6 @@ namespace RestrictionTrackerGTK
 			this.cmbProxyType.AppendText (global::Mono.Unix.Catalog.GetString ("IP"));
 			this.cmbProxyType.AppendText (global::Mono.Unix.Catalog.GetString ("URL"));
 			this.cmbProxyType.TooltipMarkup = "Type of Proxy to Use\n <b>None:</b> No Proxy\n <b>System:</b> Default System Proxy Settings\n <b>IP:</b> HTTP Proxy by IP Address and Port\n <b>URL:</b> HTTP Proxy by Web URL";
-			this.cmbProxyType.CanFocus = true;
 			this.cmbProxyType.Name = "cmbProxyType";
 			this.cmbProxyType.Active = 0;
 			this.pnlProxy.Add (this.cmbProxyType);

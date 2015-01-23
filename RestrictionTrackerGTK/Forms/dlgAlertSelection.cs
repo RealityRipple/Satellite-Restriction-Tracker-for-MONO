@@ -126,7 +126,6 @@ namespace RestrictionTrackerGTK
             }
           } while (lstStyles.Model.IterNext (ref iter));
           string sIndex = lstStyles.Model.GetStringFromIter(iter);
-          Console.WriteLine("Selected Row: " + sIndex);
           if (sIndex == "0")
           {
             GdkWindow.Beep();
@@ -476,7 +475,6 @@ namespace RestrictionTrackerGTK
           }
         } while (lstStyles.Model.IterNext (ref iter));
         string sIndex = lstStyles.Model.GetStringFromIter(iter);
-        Console.WriteLine("Selected Row: " + sIndex);
         if (sIndex == "0")
         {
           GdkWindow.Beep();

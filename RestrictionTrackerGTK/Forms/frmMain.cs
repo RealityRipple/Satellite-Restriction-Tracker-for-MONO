@@ -168,10 +168,6 @@ namespace RestrictionTrackerGTK
           {
             TypeDetermined(Sender, new TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes.DishNet_EXEDE));
           }
-          else
-          {
-            Console.WriteLine("ONO");
-          }
         }
         else if (Provider.ToLower() == "exede.com" | Provider.ToLower() == "exede.net")
         {
@@ -184,10 +180,6 @@ namespace RestrictionTrackerGTK
           if (TypeDetermined != null)
           {
             TypeDetermined(Sender, new TypeDeterminedEventArgs(localRestrictionTracker.SatHostTypes.WildBlue_EXEDE));
-          }
-          else
-          {
-            Console.WriteLine("ONO");
           }
         }
         else
@@ -522,26 +514,29 @@ namespace RestrictionTrackerGTK
     {
       if (((StatusIcon)trayIcon).Embedded)
       {
-        if (TrayStyle == 0)
+        if (e.Size > 7)
         {
-          TrayStyle = 1;
-          trayRes = e.Size;
-          MakeIconListing();
-          if (tmrShow != 0)
+          if (TrayStyle == 0)
           {
-            GLib.Source.Remove(tmrShow);
-            tmrShow = 0;
-            ((StatusIcon)trayIcon).Activate += OnTrayIconActivate;
-            ((StatusIcon)trayIcon).PopupMenu += OnTrayIconPopup;
-            SetTrayText(modFunctions.ProductName());
-            firstRestore = false;
-            StartupCleanup();
+            TrayStyle = 1;
+            trayRes = e.Size;
+            MakeIconListing();
+            if (tmrShow != 0)
+            {
+              GLib.Source.Remove(tmrShow);
+              tmrShow = 0;
+              ((StatusIcon)trayIcon).Activate += OnTrayIconActivate;
+              ((StatusIcon)trayIcon).PopupMenu += OnTrayIconPopup;
+              SetTrayText(modFunctions.ProductName());
+              firstRestore = false;
+              StartupCleanup();
+            }
           }
-        }
-        else
-        {
-          trayRes = e.Size;
-          MakeIconListing();
+          else
+          {
+            trayRes = e.Size;
+            MakeIconListing();
+          }
         }
       }
     }
@@ -555,6 +550,8 @@ namespace RestrictionTrackerGTK
         {
           TrayStyle = 1;
           trayRes = ((StatusIcon)trayIcon).Size;
+          if (trayRes < 8)
+            trayRes = 8;
           MakeIconListing();
           ((StatusIcon)trayIcon).Activate += OnTrayIconActivate;
           ((StatusIcon)trayIcon).PopupMenu += OnTrayIconPopup;
@@ -587,8 +584,10 @@ namespace RestrictionTrackerGTK
     }
     private void MakeIconListing()
     {
+      if (trayRes < 8)
+        trayRes = 8;
       string[] sFiles = System.IO.Directory.GetFiles(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString());
-      foreach(string sFile in sFiles)
+      foreach (string sFile in sFiles)
       {
         if (System.IO.Path.GetExtension(sFile).ToLower() == ".png")
           System.IO.File.Delete(sFile);
@@ -610,6 +609,8 @@ namespace RestrictionTrackerGTK
     }
     private System.Drawing.Bitmap ResizeIcon(string resource)
     {
+      if (trayRes < 8)
+        trayRes = 8;
       Bitmap imgTray = new Bitmap(trayRes, trayRes);
       using (Graphics g = Graphics.FromImage(imgTray))
       {
@@ -625,6 +626,8 @@ namespace RestrictionTrackerGTK
     }
     private System.Drawing.Bitmap ResizePng(string resource)
     {
+      if (trayRes < 8)
+        trayRes = 8;
       Bitmap imgTray = new Bitmap(trayRes, trayRes);
       using (Graphics g = Graphics.FromImage(imgTray))
       {
@@ -636,6 +639,8 @@ namespace RestrictionTrackerGTK
     }
     private void MakeCustomIconListing()
     {
+      if (trayRes < 8)
+        trayRes = 8;
       bool doBoth = true;
       bool doWB = false;
       if (mySettings != null)
@@ -648,7 +653,7 @@ namespace RestrictionTrackerGTK
         }
       }
       string[] sFiles = System.IO.Directory.GetFiles(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString());
-      foreach(string sFile in sFiles)
+      foreach (string sFile in sFiles)
       {
         if ((System.IO.Path.GetExtension(sFile).ToLower() == ".png") && (System.IO.Path.GetFileName(sFile).ToLower().Substring(0, 6) == "graph_"))
           System.IO.File.Delete(sFile);
@@ -988,6 +993,8 @@ namespace RestrictionTrackerGTK
     }
     private void ResizePanels()
     {
+      if (trayRes < 8)
+        trayRes = 8;
       if (myPanel == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY || myPanel == localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY || myPanel == localRestrictionTracker.SatHostTypes.DishNet_EXEDE)
       {
         if (lblDldUsed.Text == " -- ")
@@ -1134,12 +1141,17 @@ namespace RestrictionTrackerGTK
       modDB.LOG_Terminate(false);
       if (TrayStyle == 2)
       {
-        ((AppIndicator.ApplicationIndicator)trayIcon).Status = AppIndicator.Status.Passive;
+        try
+        {
+          ((AppIndicator.ApplicationIndicator)trayIcon).Status = AppIndicator.Status.Passive;
+        }
+        catch (Exception)
+        {
+          TrayStyle = 1;
+        }
       }
-      else if (TrayStyle == 1)
-      {
+      if (TrayStyle == 1)
         ((StatusIcon)trayIcon).Visible = false;
-      }
       if (tmrStatus != 0)
       {
         GLib.Source.Remove(tmrStatus);
@@ -1530,7 +1542,7 @@ namespace RestrictionTrackerGTK
             case localRestrictionTracker.ConnectionSubStates.Authenticate:
               SetStatusText(modDB.LOG_GetLast().ToString("g"), "Authenticating...", false);
               break;
-            case localRestrictionTracker.ConnectionSubStates.AuthenticateRetry :
+            case localRestrictionTracker.ConnectionSubStates.AuthenticateRetry:
               SetStatusText(modDB.LOG_GetLast().ToString("g"), "Re-Authenticating...", false);
               break;
             case localRestrictionTracker.ConnectionSubStates.Verify:
@@ -1548,7 +1560,7 @@ namespace RestrictionTrackerGTK
               SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Home Page...", false);
               break;
             case localRestrictionTracker.ConnectionSubStates.LoadAJAX:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading AJAX Data (" + modFunctions.FormatPercent((double) e.SubPercentage, 0) + ")...", false);
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading AJAX Data (" + modFunctions.FormatPercent((double)e.SubPercentage, 0) + ")...", false);
               break;
             case localRestrictionTracker.ConnectionSubStates.LoadTable:
               SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Usage Table...", false);
@@ -2033,7 +2045,7 @@ namespace RestrictionTrackerGTK
         {
           majorDif = 8237;
         }
-        else 
+        else
         {
           majorDif = 38671;
         }
@@ -2196,6 +2208,8 @@ namespace RestrictionTrackerGTK
         GLib.Source.Remove(tmrIcon);
         tmrIcon = 0;
       }
+      if (trayRes < 8)
+        trayRes = 8;
       int u = (int)Math.Round(((double)lDown / lDownLim) * trayRes);
       if (u > trayRes)
         u = trayRes;
@@ -2314,6 +2328,8 @@ namespace RestrictionTrackerGTK
         GLib.Source.Remove(tmrIcon);
         tmrIcon = 0;
       }
+      if (trayRes < 8)
+        trayRes = 8;
       int d = (int)Math.Round(((double)lDown / lDownLim) * trayRes);
       int u = (int)Math.Round(((double)lUp / lUpLim) * trayRes);
       SetTrayIcon("graph_wb_" + d + "x" + u);
@@ -2444,9 +2460,10 @@ namespace RestrictionTrackerGTK
         GLib.Source.Remove(tmrIcon);
         tmrIcon = 0;
       }
+      if (trayRes < 8)
+        trayRes = 8;
       int d = (int)Math.Round(((double)lDown / lDownLim) * trayRes);
       int u = (int)Math.Round(((double)lUp / lUpLim) * trayRes);
-
       SetTrayIcon("graph_wb_" + d + "x" + u);
       SetTrayText(sTTT);
       if (mySettings.Overuse > 0)
@@ -2976,23 +2993,34 @@ namespace RestrictionTrackerGTK
     }
     private void SetTrayIcon(string resource)
     {
+      if (TrayStyle == 2)
+      {
+        try
+        {
+          ((AppIndicator.ApplicationIndicator)trayIcon).IconName = resource;
+        }
+        catch (Exception)
+        {
+          TrayStyle = 1;
+        }
+      }
       if (TrayStyle == 1)
-      {
         ((StatusIcon)trayIcon).File = IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + resource + ".png";
-      }
-      else if (TrayStyle == 2)
-      {
-        ((AppIndicator.ApplicationIndicator)trayIcon).IconName = resource;
-      }
     }
     private void SetTrayText(string tooltip)
     {
-
       if (TrayStyle == 2)
       {
-        ((AppIndicator.ApplicationIndicator)trayIcon).Title = tooltip;
+        try
+        {
+          ((AppIndicator.ApplicationIndicator)trayIcon).Title = tooltip;
+        }
+        catch (Exception)
+        {
+          TrayStyle = 1;
+        }
       }
-      else if (TrayStyle == 1)
+      if (TrayStyle == 1)
       {
         ((StatusIcon)trayIcon).Tooltip = tooltip;
         ((StatusIcon)trayIcon).Blinking = false;
@@ -3014,6 +3042,8 @@ namespace RestrictionTrackerGTK
     #region "Graphs"
     private Gdk.Pixbuf CreateTrayIcon(long lDown, long lDownLim, long lUp, long lUpLim)
     {
+      if (trayRes < 8)
+        trayRes = 8;
       Bitmap imgTray = new Bitmap(trayRes, trayRes);
       Graphics g = Graphics.FromImage(imgTray);
 
@@ -3054,6 +3084,8 @@ namespace RestrictionTrackerGTK
     }
     private Gdk.Pixbuf CreateRTrayIcon(long lUsed, long lLim)
     {
+      if (trayRes < 8)
+        trayRes = 8;
       Bitmap imgTray = new Bitmap(trayRes, trayRes);
       Graphics g = Graphics.FromImage(imgTray);
       g.Clear(Color.Transparent);
@@ -3132,7 +3164,7 @@ namespace RestrictionTrackerGTK
       if (Ret)
         sRet = "T";
       ResolveEventArgs ea = new ResolveEventArgs(sRet);
-      Gtk.Application.Invoke(null, (EventArgs) ea, Main_FailResponse);
+      Gtk.Application.Invoke(null, (EventArgs)ea, Main_FailResponse);
     }
     private void Main_FailResponse(object sender, EventArgs ea)
     {
