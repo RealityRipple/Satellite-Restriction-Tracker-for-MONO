@@ -291,12 +291,14 @@ namespace RestrictionTrackerGTK
 
       DoCheck();
       string hD = mySettings.HistoryDir;
+      if (string.IsNullOrEmpty(hD))
+        hD = modFunctions.AppDataPath;
       if (!hD.EndsWith(System.IO.Path.DirectorySeparatorChar.ToString()))
         hD += System.IO.Path.DirectorySeparatorChar;
       if (string.Compare(hD, modFunctions.AppDataAllPath, true) == 0)
         optHistorySharedConfig.Active = true;
       else if (string.Compare(hD, modFunctions.AppDataPath, true) == 0)
-        optHistoryLocalConfig.Active = true;
+        optHistoryLocalConfig.  Active = true;
       else
         optHistoryCustom.Active = true;
       txtHistoryDir.SetCurrentFolder(mySettings.HistoryDir);

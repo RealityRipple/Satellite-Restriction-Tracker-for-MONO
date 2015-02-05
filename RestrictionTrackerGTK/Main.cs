@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Gtk;
 using MacInterop;
 
@@ -19,17 +20,37 @@ namespace RestrictionTrackerGTK
       Application.Init();
       if (!modFunctions.RunningLock())
         return;
+      if (CurrentOS.IsMac)
+      {
+        try
+        {
+          string sOldConfig = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), modFunctions.CompanyName);
+          if (Directory.Exists(sOldConfig))
+          {
+            modFunctions.MoveDirectory(sOldConfig, Path.Combine(modFunctions.LocalAppData, modFunctions.CompanyName));
+            AppSettings cSettings = new AppSettings();
+            cSettings.HistoryDir = modFunctions.AppData;
+            cSettings.Save();
+            Directory.Delete(sOldConfig, true);
+          }
+        }
+        catch (Exception)
+        {
+        }
+      }
       try
       {
-        string sUpdatePath = System.IO.Path.Combine(modFunctions.AppData, "Setup");
+        string sUpdatePath = Path.Combine(modFunctions.AppData, "Setup");
         if (CurrentOS.IsMac)
           sUpdatePath += ".dmg";
         else if (CurrentOS.IsLinux)
           sUpdatePath += ".bz2.sh";
-        if (System.IO.File.Exists(sUpdatePath))
-          System.IO.File.Delete(sUpdatePath);
+        if (File.Exists(sUpdatePath))
+          File.Delete(sUpdatePath);
       }
-      catch {}
+      catch(Exception)
+      {
+      }
       fMain = new frmMain();
       if (CurrentOS.IsMac)
       {

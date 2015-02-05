@@ -148,8 +148,8 @@ namespace RestrictionTrackerGTK
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);
-			// Widget RestrictionTrackerGTK.dlgCFG
-			this.Name = "RestrictionTrackerGTK.dlgCFG";
+			// Widget RestrictionTrackerGTK.dlgConfig
+			this.Name = "RestrictionTrackerGTK.dlgConfig";
 			this.Title = global::Mono.Unix.Catalog.GetString ("Satellite Restriction Tracker Configuration");
 			this.Icon = global::Gdk.Pixbuf.LoadFromResource ("RestrictionTrackerGTK.Resources.norm.ico");
 			this.TypeHint = ((global::Gdk.WindowTypeHint)(1));
@@ -159,7 +159,7 @@ namespace RestrictionTrackerGTK
 			this.AllowGrow = false;
 			this.SkipPagerHint = true;
 			this.SkipTaskbarHint = true;
-			// Internal child RestrictionTrackerGTK.dlgCFG.VBox
+			// Internal child RestrictionTrackerGTK.dlgConfig.VBox
 			global::Gtk.VBox w1 = this.VBox;
 			w1.Name = "pnlDialog";
 			w1.BorderWidth = ((uint)(2));
@@ -469,6 +469,7 @@ namespace RestrictionTrackerGTK
 			this.optAccountTypeDNX.TooltipMarkup = "Exede package through Dish.";
 			this.optAccountTypeDNX.CanFocus = true;
 			this.optAccountTypeDNX.Name = "optAccountTypeDNX";
+			this.optAccountTypeDNX.Active = true;
 			this.optAccountTypeDNX.DrawIndicator = true;
 			this.optAccountTypeDNX.UseUnderline = true;
 			this.optAccountTypeDNX.Group = new global::GLib.SList (global::System.IntPtr.Zero);
@@ -1758,6 +1759,7 @@ namespace RestrictionTrackerGTK
 			this.optHistoryCustom.TooltipMarkup = "Save History Data to a custom directory.";
 			this.optHistoryCustom.CanFocus = true;
 			this.optHistoryCustom.Name = "optHistoryCustom";
+			this.optHistoryCustom.Active = true;
 			this.optHistoryCustom.DrawIndicator = true;
 			this.optHistoryCustom.UseUnderline = true;
 			this.optHistoryCustom.Group = new global::GLib.SList (global::System.IntPtr.Zero);
@@ -1895,7 +1897,7 @@ namespace RestrictionTrackerGTK
 			w1.Add (this.tbsConfig);
 			global::Gtk.Box.BoxChild w143 = ((global::Gtk.Box.BoxChild)(w1 [this.tbsConfig]));
 			w143.Position = 0;
-			// Internal child RestrictionTrackerGTK.dlgCFG.ActionArea
+			// Internal child RestrictionTrackerGTK.dlgConfig.ActionArea
 			global::Gtk.HButtonBox w144 = this.ActionArea;
 			w144.Name = "dialog1_ActionArea";
 			w144.Spacing = 10;

@@ -876,6 +876,23 @@ namespace RestrictionTrackerGTK
       }
     }
 
+    public static void MoveDirectory(string FromDir, string ToDir)
+    {
+      if (Directory.Exists(FromDir))
+      {
+        if (!Directory.Exists(ToDir))
+          Directory.CreateDirectory(ToDir);
+        foreach (string sDir in Directory.GetDirectories(FromDir))
+        {
+          MoveDirectory(sDir, Path.Combine(ToDir, Path.GetFileName(sDir)));
+        }
+        foreach (string sFile in Directory.GetFiles(FromDir))
+        {
+          File.Move(sFile, Path.Combine(ToDir, Path.GetFileName(sFile)));
+        }
+      }
+    }
+
     public static string NetError(string Message)
     {
       if (Message.StartsWith("Error: ConnectFailure (") & Message.EndsWith(")"))
