@@ -151,7 +151,7 @@ namespace RestrictionTrackerGTK
           }
         }
       }
-      sDesc += "\r\nVersion " + modFunctions.ProductVersion();
+      sDesc += "\r\nVersion " + modFunctions.ProductVersion;
       string sSteps = null;
       string sInfo = null;
       if (e.InnerException != null)

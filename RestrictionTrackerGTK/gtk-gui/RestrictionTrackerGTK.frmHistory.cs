@@ -178,7 +178,6 @@ namespace RestrictionTrackerGTK
 			this.optGraph.TooltipMarkup = "Display history in a line graph.";
 			this.optGraph.CanFocus = true;
 			this.optGraph.Name = "optGraph";
-			this.optGraph.Active = true;
 			this.optGraph.DrawIndicator = true;
 			this.optGraph.UseUnderline = true;
 			this.optGraph.Yalign = 0F;

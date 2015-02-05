@@ -1,9 +1,11 @@
 using System;
+using System.IO;
+
 namespace RestrictionTrackerGTK
 {
   public partial class frmAbout : Gtk.Window
   {
-    private string sUpdatePath = modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + "Setup";
+    private string sUpdatePath = System.IO.Path.Combine(modFunctions.AppData, "Setup");
     private clsUpdate updateChecker;
     private uint tReset;
     private uint tSpeed;
@@ -12,20 +14,20 @@ namespace RestrictionTrackerGTK
     #region "Form Events"
     public frmAbout() : base(Gtk.WindowType.Toplevel)
     {
-      sUpdatePath = modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + "Setup";
+      sUpdatePath = System.IO.Path.Combine(modFunctions.AppData, "Setup");
       if (CurrentOS.IsMac)
         sUpdatePath += ".dmg";
       else if (CurrentOS.IsLinux)
         sUpdatePath += ".bz2.sh";
       this.Build();
       this.WindowStateEvent += HandleWindowStateEvent;
-      this.Title = "About " + modFunctions.ProductName();
+      this.Title = "About " + modFunctions.ProductName;
       modFunctions.PrepareLink(lblProduct);
-      lblProduct.Markup = "<a href=\"http://srt.realityripple.com/For_MONO/\">" + modFunctions.ProductName() + "</a>";
+      lblProduct.Markup = "<a href=\"http://srt.realityripple.com/For_MONO/\">" + modFunctions.ProductName + "</a>";
       modFunctions.PrepareLink(lblVersion);
-      lblVersion.Markup = "<a href=\"http://srt.realityripple.com/changes.php\">Version " + modFunctions.DisplayVersion(modFunctions.ProductVersion()) + "</a>";
+      lblVersion.Markup = "<a href=\"http://srt.realityripple.com/changes.php\">Version " + modFunctions.DisplayVersion(modFunctions.ProductVersion) + "</a>";
       modFunctions.PrepareLink(lblCompany);
-      lblCompany.Markup = "<a href=\"http://realityripple.com/\">" + modFunctions.CompanyName() + "</a>";
+      lblCompany.Markup = "<a href=\"http://realityripple.com/\">" + modFunctions.CompanyName + "</a>";
       txtDescription.Buffer.Text = "The RestrictionTracker utility monitors and logs ViaSat network usage and limits. It includes graphing software to let you monitor your usage history and predict future usage levels. All application coding by Andrew Sachen. This application is not endorsed by ViaSat, WildBlue, Exede, or any affiliate companies.";
       pctUpdate.PixbufAnimation = new Gdk.PixbufAnimation(null, "RestrictionTrackerGTK.Resources.throbber.gif");
       pctUpdate.Visible = false;
@@ -41,7 +43,7 @@ namespace RestrictionTrackerGTK
       ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).Position = 2;
       cmdUpdate.ShowAll();
       cmdUpdate.Visible = true;
-      cmdUpdate.TooltipText = "Check for a new version of " + modFunctions.ProductName() + ".";
+      cmdUpdate.TooltipText = "Check for a new version of " + modFunctions.ProductName + ".";
       ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).PackType = Gtk.PackType.Start;
       ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).Fill = false;
       ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).Expand = false;
@@ -120,42 +122,21 @@ namespace RestrictionTrackerGTK
           updateChecker.DownloadUpdate(sUpdatePath);
           break;
         case "Apply Update":
-          try
+          if (File.Exists(sUpdatePath))
           {
-            if (System.IO.File.Exists(sUpdatePath))
+            if (modFunctions.RunTerminal(sUpdatePath))
+              Gtk.Application.Quit();
+            else
             {
-              if (CurrentOS.IsMac)
-                System.Diagnostics.Process.Start(sUpdatePath);
-              else if (CurrentOS.IsLinux)
-              {
-                string sConsoleTitle = "-T \"" + modFunctions.ProductName() + " Update\"";
-                string sConsoleTitleL = "-t \"" + modFunctions.ProductName() + " Update\"";
-                string sConsolePath = "\"" + sUpdatePath + "\"";
-                if (System.IO.File.Exists("/usr/bin/xfce4-terminal"))
-                  System.Diagnostics.Process.Start("xfce4-terminal", "--hide-menubar --hide-toolbar " + sConsoleTitle + " -e 'bash " + sConsolePath + "'");
-                else if (System.IO.File.Exists("/usr/bin/gnome-terminal"))
-                  System.Diagnostics.Process.Start("gnome-terminal", "--hide-menubar " + sConsoleTitleL + " -e 'bash " + sConsolePath + "'");
-                else if (System.IO.File.Exists("/usr/bin/konsole"))
-                  System.Diagnostics.Process.Start("konsole", "--hide-menubar --hide-tabbar -e " + sConsolePath + "");
-                else if (System.IO.File.Exists("/usr/bin/mate-terminal"))
-                  System.Diagnostics.Process.Start("mate-terminal", "--hide-menubar " + sConsoleTitleL + " -e 'bash " + sConsolePath + "'");
-                else if (System.IO.File.Exists("/usr/bin/xterm"))
-                  System.Diagnostics.Process.Start("xterm", "-e 'bash " + sConsolePath + "'");
-                else if (System.IO.File.Exists("/usr/bin/x-terminal-emulator"))
-                  System.Diagnostics.Process.Start("x-terminal-emulator", sConsoleTitle + " -e 'bash " + sConsolePath + "'");
-                else
-                  System.Diagnostics.Process.Start("bash", sConsolePath);
-              }
-              else
-                System.Diagnostics.Process.Start(sUpdatePath);
+              System.Diagnostics.Process.Start(System.IO.Path.GetDirectoryName(sUpdatePath));
+              modFunctions.ShowMessageBox(this, "The Update failed to start.\n\nPlease run " + System.IO.Path.GetFileName(sUpdatePath) + " manually to update.", "Error Running Update", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
             }
           }
-          catch (Exception ex)
+          else
           {
-            System.Diagnostics.Process.Start(System.IO.Path.GetDirectoryName(sUpdatePath));
-            modFunctions.ShowMessageBox(this, "The Update Failed to start.\n\n" + ex.Message + "\n\nPlease run " + System.IO.Path.GetFileName(sUpdatePath) + " manually to update.", "Error Running Update", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+            SetUpdateValue("Update Failed: File was not saved", false);
+            RestartReset();
           }
-          Gtk.Application.Quit();
           break;
       }
     }
@@ -209,7 +190,7 @@ namespace RestrictionTrackerGTK
       }
       if (CurrentOS.IsLinux)
         System.Diagnostics.Process.Start("chmod", "+x \"" + sUpdatePath + "\"");
-      SetButtonUpdate("Apply _Update", modFunctions.ProductName() + " must be restarted before the update can be applied.");
+      SetButtonUpdate("Apply _Update", modFunctions.ProductName + " must be restarted before the update can be applied.");
     }
     private void BeginCheck()
     {
@@ -336,21 +317,51 @@ namespace RestrictionTrackerGTK
         }
       }
       else if (e.Cancelled)
+      {
+        SetUpdateValue("Update Check Cancelled", false);
+        RestartReset();
+      }
+      else
+      {
+        AppSettings mySettings = new AppSettings();
+        dlgUpdate fUpdate;
+        switch (e.Result)
         {
-          SetUpdateValue("Update Check Cancelled", false);
-          RestartReset();
-        }
-        else
-        {
-          AppSettings mySettings = new AppSettings();
-          dlgUpdate fUpdate;
-          switch (e.Result)
-          {
-            case clsUpdate.CheckEventArgs.ResultType.NewUpdate:
-              SetButtonUpdate("_New Update Available", "Click to begin download.");
+          case clsUpdate.CheckEventArgs.ResultType.NewUpdate:
+            SetButtonUpdate("_New Update Available", "Click to begin download.");
+            System.Threading.Thread.Sleep(0);
+            fUpdate = new dlgUpdate();
+            fUpdate.NewUpdate(e.Version, false);
+            switch ((Gtk.ResponseType) fUpdate.Run())
+            {
+              case Gtk.ResponseType.Yes:
+                updateChecker.DownloadUpdate(sUpdatePath);
+                break;
+              case Gtk.ResponseType.No:
+                break;
+              case Gtk.ResponseType.Ok:
+                updateChecker.DownloadUpdate(sUpdatePath);
+                mySettings.UpdateBETA = false;
+                mySettings.Save();
+                break;
+              case Gtk.ResponseType.Cancel:
+              mySettings.UpdateBETA = false;
+                mySettings.Save();
+                break;
+              default:
+                break;
+            }
+            fUpdate.Destroy();
+            fUpdate.Dispose();
+            fUpdate = null;
+            break;
+          case clsUpdate.CheckEventArgs.ResultType.NewBeta:
+          if (mySettings.UpdateBETA)
+            {
+              SetButtonUpdate("_New BETA Available", "Click to begin download.");
               System.Threading.Thread.Sleep(0);
               fUpdate = new dlgUpdate();
-              fUpdate.NewUpdate(e.Version, false);
+              fUpdate.NewUpdate(e.Version, true);
               switch ((Gtk.ResponseType)fUpdate.Run())
               {
                 case Gtk.ResponseType.Yes:
@@ -360,12 +371,13 @@ namespace RestrictionTrackerGTK
                   break;
                 case Gtk.ResponseType.Ok:
                   updateChecker.DownloadUpdate(sUpdatePath);
-                  mySettings.BetaCheck = false;
+                  mySettings.UpdateBETA = false;
                   mySettings.Save();
                   break;
                 case Gtk.ResponseType.Cancel:
-                  mySettings.BetaCheck = false;
+                  mySettings.UpdateBETA = false;
                   mySettings.Save();
+                  SetUpdateValue("No New Updates", false);
                   break;
                 default:
                   break;
@@ -373,51 +385,20 @@ namespace RestrictionTrackerGTK
               fUpdate.Destroy();
               fUpdate.Dispose();
               fUpdate = null;
-              break;
-            case clsUpdate.CheckEventArgs.ResultType.NewBeta:
-              if (mySettings.BetaCheck)
-              {
-                SetButtonUpdate("_New BETA Available", "Click to begin download.");
-                System.Threading.Thread.Sleep(0);
-                fUpdate = new dlgUpdate();
-                fUpdate.NewUpdate(e.Version, true);
-                switch ((Gtk.ResponseType)fUpdate.Run())
-                {
-                  case Gtk.ResponseType.Yes:
-                    updateChecker.DownloadUpdate(sUpdatePath);
-                    break;
-                  case Gtk.ResponseType.No:
-                    break;
-                  case Gtk.ResponseType.Ok:
-                    updateChecker.DownloadUpdate(sUpdatePath);
-                    mySettings.BetaCheck = false;
-                    mySettings.Save();
-                    break;
-                  case Gtk.ResponseType.Cancel:
-                    mySettings.BetaCheck = false;
-                    mySettings.Save();
-                    SetUpdateValue("No New Updates", false);
-                    break;
-                  default:
-                    break;
-                }
-                fUpdate.Destroy();
-                fUpdate.Dispose();
-                fUpdate = null;
-              }
-              else
-              {
-                SetUpdateValue("No New Updates", false);
-                RestartReset();
-              }
-              break;
-            case clsUpdate.CheckEventArgs.ResultType.NoUpdate:
+            }
+            else
+            {
               SetUpdateValue("No New Updates", false);
               RestartReset();
-              break;
-          }
-          mySettings = null;
+            }
+            break;
+          case clsUpdate.CheckEventArgs.ResultType.NoUpdate:
+            SetUpdateValue("No New Updates", false);
+            RestartReset();
+            break;
         }
+        mySettings = null;
+      }
     }
     void updateChecker_DownloadingUpdate (object sender, EventArgs e)
     {
@@ -450,7 +431,7 @@ namespace RestrictionTrackerGTK
           updateChecker.Dispose();
         SetUpdateValue("Download Complete",false);
         System.Threading.Thread.Sleep(0);
-        if (System.IO.File.Exists(sUpdatePath))
+        if (File.Exists(sUpdatePath))
           UpdateReset();
         else
           SetUpdateValue("Update Failure",false);

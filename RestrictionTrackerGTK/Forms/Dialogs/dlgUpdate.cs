@@ -50,18 +50,18 @@ namespace RestrictionTrackerGTK
       if (BETA)
       {
         this.Title = "New BETA Version Available";
-        lblTitle.LabelProp = modFunctions.ProductName() + " BETA Update";
+        lblTitle.LabelProp = modFunctions.ProductName + " BETA Update";
       }
       else
       {
         this.Title = "New Version Available";
-        lblTitle.LabelProp = modFunctions.ProductName() + " Update";
+        lblTitle.LabelProp = modFunctions.ProductName + " Update";
       }
       string newVer = "Version %v has been released and is available for download.\n" +
         "To keep up-to-date with the latest features, improvements, bug fixes, and\n" +
         "meter compliance, please update %p immediately.";
       newVer = newVer.Replace("%v", modFunctions.DisplayVersion(Version));
-      newVer = newVer.Replace("%p", modFunctions.ProductName());
+      newVer = newVer.Replace("%p", modFunctions.ProductName);
       lblNewVer.LabelProp = newVer;
       txtInfo.Buffer.Text = "Loading Update Information\n\nPlease Wait...";
       lblBETA.Visible = BETA;

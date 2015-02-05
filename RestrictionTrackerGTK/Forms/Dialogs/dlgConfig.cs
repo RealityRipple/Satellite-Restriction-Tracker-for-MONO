@@ -1,5 +1,5 @@
 using System;
-
+using System.IO;
 namespace RestrictionTrackerGTK
 {
   public partial class dlgConfig : Gtk.Dialog
@@ -10,18 +10,30 @@ namespace RestrictionTrackerGTK
     private AppSettings mySettings;
     private uint pChecker;
     private string checkKey;
-    private uint tmrAnim;
-    private const string LINK_PURCHASE = "<a href=\"http://srt.realityripple.com/c_signup.php\">Purchase a Key</a>";
+    private const string LINK_PURCHASE = "<a href=\"http://srt.realityripple.com/c_signup.php\">Purchase a Remote Usage Service Subscription</a>";
     private const string LINK_PURCHASE_TT = "If you do not have a Product Key for the Remote Usage Service, you can purchase one online for as little as $15.00 a year.";
-    private const string LINK_PANEL = "User Panel";
+    private const string LINK_PANEL = "Visit the Remote Usage Service User Panel Page";
     private const string LINK_PANEL_TT = "Manage your Remote Usage Service account online.";
-#region "Form Events"
+    #region "Form Events"
     public dlgConfig()
     {
       bLoaded = false;
       this.Build();
       if (CurrentOS.IsMac)
       {
+        pctAccountViaSatIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.account_user.png");
+        pctAccountProviderIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.account_provider.png");
+        pctAccountKeyIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.account_key.png");
+        pctPrefStartIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.prefs_power.png");
+        pctPrefAccuracyIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.prefs_accuracy.png");
+        pctPrefAlertIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.prefs_notify.png");
+        pctPrefColorIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.prefs_colors.png");
+        pctNetworkTimeoutIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.net_network.png");
+        pctNetworkProxyIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.net_proxy.png");
+        pctNetworkProtocolIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_security.png");
+        pctNetworkUpdateIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.net_update.png");
+        pctAdvancedDataIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_data.png");
+        pctAdvancedInterfaceIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_interface.png");
         ((Gtk.Box.BoxChild)this.ActionArea[cmdSave]).Position = 1;
         ((Gtk.Box.BoxChild)this.ActionArea[cmdClose]).Position = 0;
       }
@@ -30,63 +42,22 @@ namespace RestrictionTrackerGTK
         ((Gtk.Box.BoxChild)this.ActionArea[cmdSave]).Position = 0;
         ((Gtk.Box.BoxChild)this.ActionArea[cmdClose]).Position = 1;
       }
-      DrawTitle();
-      this.WindowStateEvent += HandleWindowStateEvent;
-      txtAccount.Changed += txtAccount_Changed;
-      txtPassword.ClipboardPasted += txtPassword_ClipboardPasted;
-
-      cmbProvider.Changed += ValuesChanged;
-      txtPassword.Changed += ValuesChanged;
-      txtInterval.Changed += ValuesChanged;
-      cmdPassDisplay.Toggled += cmdPassDisplay_Toggled;
-      txtAccuracy.Changed += ValuesChanged;
-      txtTimeout.Changed += ValuesChanged;
-      chkScaleScreen.Clicked += ValuesChanged;
-      txtHistoryDir.CurrentFolderChanged += txtHistoryDir_CurrentFolderChanged;
-      txtOverSize.Changed += ValuesChanged;
-      txtOverTime.Changed += ValuesChanged;
-      chkBeta.Clicked += ValuesChanged;
-      txtProxyAddress.Changed += ValuesChanged;
-      txtProxyPort.Changed += ValuesChanged;
-      txtProxyUser.Changed += ValuesChanged;
-      txtProxyPassword.Changed += ValuesChanged;
-      txtProxyDomain.Changed += ValuesChanged;
-      chkProtocolSSL.Toggled += ValuesChanged;
-
-      txtKey1.AddEvents((int)Gdk.EventType.KeyPress);
-      txtKey1.Changed += txtProductKey_Changed;
-      txtKey1.KeyPressEvent += txtProductKey_KeyPressEvent;
-      txtKey1.TextInserted += txtProductKey_InsertText;
-      txtKey2.AddEvents((int)Gdk.EventType.KeyPress);
-      txtKey2.Changed += txtProductKey_Changed;
-      txtKey2.KeyPressEvent += txtProductKey_KeyPressEvent;
-      txtKey2.TextInserted += txtProductKey_InsertText;
-      txtKey3.AddEvents((int)Gdk.EventType.KeyPress);
-      txtKey3.Changed += txtProductKey_Changed;
-      txtKey3.KeyPressEvent += txtProductKey_KeyPressEvent;
-      txtKey3.TextInserted += txtProductKey_InsertText;
-      txtKey4.AddEvents((int)Gdk.EventType.KeyPress);
-      txtKey4.Changed += txtProductKey_Changed;
-      txtKey4.KeyPressEvent += txtProductKey_KeyPressEvent;
-      txtKey4.TextInserted += txtProductKey_InsertText;
-      txtKey5.AddEvents((int)Gdk.EventType.KeyPress);
-      txtKey5.Changed += txtProductKey_Changed;
-      txtKey5.KeyPressEvent += txtProductKey_KeyPressEvent;
-      txtKey5.TextInserted += txtProductKey_InsertText;
-
-      chkOverAlert.Clicked += chkOverAlert_Activated;
-      cmbProxyType.Changed += cmbProxyType_Changed;
-
-      evnKeyState.ButtonPressEvent += evnKeyState_ButtonPressEvent;
-
-
-
-      evnSRT.EnterNotifyEvent += evnSRT_EnterNotifyEvent;
-      cmdAlertStyle.Clicked += cmdAlertStyle_Click;
-      cmdColors.Clicked += cmdColors_Click;
-      cmdSave.Clicked += cmdSave_Click;
-      cmdClose.Clicked += cmdClose_Click;
-
+      string sSharedPath = modFunctions.CommonAppData;
+      if (sSharedPath.EndsWith("."))
+        sSharedPath = sSharedPath.Substring(0, sSharedPath.Length - 1);
+      string sLocalPath = modFunctions.LocalAppData;
+      if (sLocalPath.StartsWith(Environment.GetFolderPath(Environment.SpecialFolder.Personal)))
+        sLocalPath = "~" + sLocalPath.Substring(Environment.GetFolderPath(Environment.SpecialFolder.Personal).Length);
+      if (sLocalPath.EndsWith("."))
+        sLocalPath = sLocalPath.Substring(0, sLocalPath.Length - 1);
+      optHistorySharedConfig.Label = sSharedPath;
+      optHistorySharedConfig.TooltipMarkup = "Save History Data to the shared <b>" + sSharedPath + "</b> directory.";
+      optHistoryLocalConfig.Label = sLocalPath;
+      optHistoryLocalConfig.TooltipMarkup = "Save History Data to the local <b>" + sLocalPath + "</b> directory.";
+      lblAdvancedDataDescription.LabelProp = "Your usage data will be stored in this directory. " +
+        "If you use multiple accounts on your computer, data should be stored in the " + sSharedPath + " folder in order to be shared. " +
+        "Otherwise, " + sLocalPath + " is recommended.";
+      AddEventHandlers();
       mySettings = new AppSettings();
       string sAccount = mySettings.Account;
       string sUsername, sProvider;
@@ -108,6 +79,25 @@ namespace RestrictionTrackerGTK
         txtPassword.Text = RestrictionLibrary.StoredPassword.DecryptApp(mySettings.PassCrypt);
       }
       txtPassword.Visibility = false;
+      switch (mySettings.AccountType)
+      {
+        case RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_LEGACY:
+          optAccountTypeWBL.Active = true;
+          break;
+        case RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
+          optAccountTypeWBX.Active = true;
+          break;
+        case RestrictionLibrary.localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
+          optAccountTypeDNX.Active = true;
+          break;
+        case RestrictionLibrary.localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
+          optAccountTypeRPL.Active = true;
+          break;
+        case RestrictionLibrary.localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
+          optAccountTypeRPX.Active = true;
+          break;
+      }
+      chkAccountTypeAuto.Active = !mySettings.AccountTypeForced;
       string sKey = mySettings.RemoteKey;
       if (sKey.Contains("-"))
       {
@@ -151,10 +141,21 @@ namespace RestrictionTrackerGTK
       {
         bRemoteAcct = true;
         pctKeyState.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.ok.png");
-        pctKeyState.TooltipText = "Thank you for purchasing the Remote Usage Service for " + modFunctions.ProductName() + "!";
+        pctKeyState.TooltipText = "Thank you for purchasing the Remote Usage Service for " + modFunctions.ProductName + "!";
         lblPurchaseKey.Markup = "<a href=\"http://wb.realityripple.com?wbEMail=" + mySettings.Account + "&amp;wbKey=" + mySettings.RemoteKey + "&amp;wbSubmit=\">" + LINK_PANEL + "</a>";
         lblPurchaseKey.TooltipText = LINK_PANEL_TT;
       }
+      if (mySettings.StartWait > (int)txtStartWait.Adjustment.Upper)
+      {
+        mySettings.StartWait = (int)txtStartWait.Adjustment.Upper;
+      }
+      if (mySettings.StartWait < (int)txtStartWait.Adjustment.Lower)
+      {
+        mySettings.StartWait = (int)txtStartWait.Adjustment.Lower;
+      }
+      txtStartWait.Value = (int)mySettings.StartWait;
+      txtStartWait.Adjustment.PageIncrement = 1;
+      chkStartup.Active = modFunctions.RunOnStartup;
       if (mySettings.Interval > (int)txtInterval.Adjustment.Upper)
       {
         mySettings.Interval = (int)txtInterval.Adjustment.Upper;
@@ -175,23 +176,6 @@ namespace RestrictionTrackerGTK
       }
       txtAccuracy.Value = (int)mySettings.Accuracy;
       txtAccuracy.Adjustment.PageIncrement = 1;
-      if (mySettings.Timeout > (int)txtTimeout.Adjustment.Upper)
-      {
-        mySettings.Timeout = (int)txtTimeout.Adjustment.Upper;
-      }
-      if (mySettings.Timeout < (int)txtTimeout.Adjustment.Lower)
-      {
-        mySettings.Timeout = (int)txtTimeout.Adjustment.Lower;
-      }
-      txtTimeout.Value = (int)mySettings.Timeout;
-      txtTimeout.Adjustment.PageIncrement = 15;
-      chkScaleScreen.Active = mySettings.ScaleScreen;
-      DoCheck();
-      if (String.IsNullOrEmpty(mySettings.HistoryDir))
-      {
-        mySettings.HistoryDir = modFunctions.MySaveDir;
-      }
-      txtHistoryDir.SetCurrentFolder(mySettings.HistoryDir);
       if (mySettings.Overuse == 0)
       {
         chkOverAlert.Active = false;
@@ -204,7 +188,16 @@ namespace RestrictionTrackerGTK
       }
       chkOverAlert_Activated(null, null);
       txtOverTime.Value = mySettings.Overtime;
-      chkBeta.Active = mySettings.BetaCheck;
+      if (mySettings.Timeout > (int)txtTimeout.Adjustment.Upper)
+      {
+        mySettings.Timeout = (int)txtTimeout.Adjustment.Upper;
+      }
+      if (mySettings.Timeout < (int)txtTimeout.Adjustment.Lower)
+      {
+        mySettings.Timeout = (int)txtTimeout.Adjustment.Lower;
+      }
+      txtTimeout.Value = (int)mySettings.Timeout;
+      txtTimeout.Adjustment.PageIncrement = 15;
       if (mySettings.Proxy == null)
       {
         cmbProxyType.Active = 0;
@@ -260,20 +253,156 @@ namespace RestrictionTrackerGTK
         }
       }
       cmbProxyType_Changed(null, null);
-      chkProtocolSSL.Active = (mySettings.Protocol == System.Net.SecurityProtocolType.Ssl3);
+      chkNetworkProtocolSSL.Active = (mySettings.Protocol == System.Net.SecurityProtocolType.Ssl3);
+      switch (mySettings.UpdateType)
+      {
+        case AppSettings.UpdateTypes.Auto:
+          cmbUpdateAutomation.Active = 0;
+          break;
+        case AppSettings.UpdateTypes.Ask:
+          cmbUpdateAutomation.Active = 1;
+          break;
+        case AppSettings.UpdateTypes.None:
+          cmbUpdateAutomation.Active = 2;
+          break;
+      }
+      chkUpdateBETA.Active = mySettings.UpdateBETA;
+      switch (mySettings.UpdateTime)
+      {
+        case 1:
+          cmbUpdateInterval.Active = 0;
+          break;
+        case 3:
+          cmbUpdateInterval.Active = 1;
+          break;
+        case 7:
+          cmbUpdateInterval.Active = 2;
+          break;
+        case 15:
+          cmbUpdateInterval.Active = 3;
+          break;
+        case 30:
+          cmbUpdateInterval.Active = 4;
+          break;
+        default:
+          cmbUpdateInterval.Active = 3;
+          break;
+      }
+
+      DoCheck();
+      string hD = mySettings.HistoryDir;
+      if (!hD.EndsWith(System.IO.Path.DirectorySeparatorChar.ToString()))
+        hD += System.IO.Path.DirectorySeparatorChar;
+      if (string.Compare(hD, modFunctions.AppDataAllPath, true) == 0)
+        optHistorySharedConfig.Active = true;
+      else if (string.Compare(hD, modFunctions.AppDataPath, true) == 0)
+        optHistoryLocalConfig.Active = true;
+      else
+        optHistoryCustom.Active = true;
+      txtHistoryDir.SetCurrentFolder(mySettings.HistoryDir);
+
+
+      chkScaleScreen.Active = mySettings.ScaleScreen;
+
       bSaved = false;
       bAccount = false;
       cmdSave.Sensitive = false;
       this.Show();
       this.GdkWindow.SetDecorations(Gdk.WMDecoration.All | Gdk.WMDecoration.Maximize | Gdk.WMDecoration.Minimize | Gdk.WMDecoration.Resizeh | Gdk.WMDecoration.Menu);
       this.GdkWindow.Functions = Gdk.WMFunction.All | Gdk.WMFunction.Maximize | Gdk.WMFunction.Minimize | Gdk.WMFunction.Resize;
-      DrawTitle();
       if (!CurrentOS.IsMac)
       {
         bLoaded = true;
       }
       this.Response += dlgConfig_Response;
       PopulateHostList();
+    }
+
+    private void AddEventHandlers()
+    {
+      this.WindowStateEvent += HandleWindowStateEvent;
+      //
+      // Account
+      //
+      txtAccount.Changed += txtAccount_Changed;
+      txtPassword.ClipboardPasted += txtPassword_ClipboardPasted;
+      txtPassword.Changed += ValuesChanged;
+      cmdPassDisplay.Toggled += cmdPassDisplay_Toggled;
+      //
+      cmbProvider.Changed += ValuesChanged;
+      chkAccountTypeAuto.Clicked += chkAccountTypeAuto_Clicked;
+      optAccountTypeWBL.Clicked += ValuesChanged;
+      optAccountTypeWBX.Clicked += ValuesChanged;
+      optAccountTypeDNX.Clicked += ValuesChanged;
+      optAccountTypeRPL.Clicked += ValuesChanged;
+      optAccountTypeRPX.Clicked += ValuesChanged;
+      //
+      txtKey1.AddEvents((int)Gdk.EventType.KeyPress);
+      txtKey1.Changed += txtProductKey_Changed;
+      txtKey1.KeyPressEvent += txtProductKey_KeyPressEvent;
+      txtKey1.TextInserted += txtProductKey_InsertText;
+      txtKey2.AddEvents((int)Gdk.EventType.KeyPress);
+      txtKey2.Changed += txtProductKey_Changed;
+      txtKey2.KeyPressEvent += txtProductKey_KeyPressEvent;
+      txtKey2.TextInserted += txtProductKey_InsertText;
+      txtKey3.AddEvents((int)Gdk.EventType.KeyPress);
+      txtKey3.Changed += txtProductKey_Changed;
+      txtKey3.KeyPressEvent += txtProductKey_KeyPressEvent;
+      txtKey3.TextInserted += txtProductKey_InsertText;
+      txtKey4.AddEvents((int)Gdk.EventType.KeyPress);
+      txtKey4.Changed += txtProductKey_Changed;
+      txtKey4.KeyPressEvent += txtProductKey_KeyPressEvent;
+      txtKey4.TextInserted += txtProductKey_InsertText;
+      txtKey5.AddEvents((int)Gdk.EventType.KeyPress);
+      txtKey5.Changed += txtProductKey_Changed;
+      txtKey5.KeyPressEvent += txtProductKey_KeyPressEvent;
+      txtKey5.TextInserted += txtProductKey_InsertText;
+      evnKeyState.ButtonPressEvent += evnKeyState_ButtonPressEvent;
+      //
+      // Preferences
+      //
+      chkStartup.Clicked += ValuesChanged;
+      txtStartWait.Changed += ValuesChanged;
+      //
+      txtInterval.Changed += ValuesChanged;
+      txtAccuracy.Changed += ValuesChanged;
+      //
+      txtOverSize.Changed += ValuesChanged;
+      txtOverTime.Changed += ValuesChanged;
+      chkOverAlert.Clicked += chkOverAlert_Activated;
+      cmdAlertStyle.Clicked += cmdAlertStyle_Click;
+      //
+      cmdColors.Clicked += cmdColors_Click;
+      //
+      // Network
+      //
+      txtTimeout.Changed += ValuesChanged;
+      //
+      cmbProxyType.Changed += cmbProxyType_Changed;
+      txtProxyAddress.Changed += ValuesChanged;
+      txtProxyPort.Changed += ValuesChanged;
+      txtProxyUser.Changed += ValuesChanged;
+      txtProxyPassword.Changed += ValuesChanged;
+      txtProxyDomain.Changed += ValuesChanged;
+      //
+      chkNetworkProtocolSSL.Toggled += ValuesChanged;
+      //
+      cmbUpdateAutomation.Changed += cmbUpdateAutomation_Changed;
+      chkUpdateBETA.Clicked += ValuesChanged;
+      cmbUpdateInterval.Changed += ValuesChanged;
+      //
+      // Adavnced
+      //
+      optHistorySharedConfig.Clicked += optHistorySharedConfig_Clicked;
+      optHistoryLocalConfig.Clicked += optHistoryLocalConfig_Clicked;
+      optHistoryCustom.Clicked += optHistoryCustom_Clicked;
+      txtHistoryDir.CurrentFolderChanged += txtHistoryDir_CurrentFolderChanged;
+      cmdHistoryDirOpen.Clicked += cmdHistoryDirOpen_Clicked;
+      //
+      chkScaleScreen.Clicked += ValuesChanged;
+      
+      cmdSave.Clicked += cmdSave_Click;
+      cmdClose.Clicked += cmdClose_Click;
     }
 
     void HandleWindowStateEvent(object o, Gtk.WindowStateEventArgs args)
@@ -328,13 +457,13 @@ namespace RestrictionTrackerGTK
           if (bAccount)
             this.Respond(Gtk.ResponseType.Yes);
           else
-            this.Respond(Gtk.ResponseType.No);
+            this.Respond(Gtk.ResponseType.Ok);
         }
         else if (saveRet == Gtk.ResponseType.No)
         {
           this.Respond(Gtk.ResponseType.No);
         }
-      else if (saveRet == Gtk.ResponseType.Cancel)
+        else if (saveRet == Gtk.ResponseType.Cancel)
         {
           this.Respond(Gtk.ResponseType.None);
           this.Response += dlgConfig_Response;
@@ -345,24 +474,43 @@ namespace RestrictionTrackerGTK
         this.Respond(Gtk.ResponseType.No);
       }
     }
-#endregion
+    #endregion
 
-#region "Inputs"
+    #region "Inputs"
     protected void txtPassword_ClipboardPasted(object sender, EventArgs e)
     {
       txtPassword.Text = txtPassword.Text.Trim();
     }
 
-    void txtHistoryDir_CurrentFolderChanged(object sender, EventArgs e)
+    protected void txtHistoryDir_CurrentFolderChanged(object sender, EventArgs e)
     {
       if (bLoaded)
       {
-        cmdSave.Sensitive = true;
+        cmdSave.Sensitive = SettingsChanged();
       }
       else if (CurrentOS.IsMac)
       {
         bLoaded = true;
       }
+    }
+
+    protected void cmdHistoryDirOpen_Clicked(object sender, EventArgs e)
+    {
+      if (optHistorySharedConfig.Active)
+      if (Directory.Exists(modFunctions.AppDataAllPath))
+        System.Diagnostics.Process.Start(modFunctions.AppDataAllPath);
+      else
+        modFunctions.ShowMessageBox(this, "The directory \"" + modFunctions.AppDataAllPath + "\" does not exist.\nPlease save the configuration first.", "Missing Directory", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+      else if (optHistoryLocalConfig.Active)
+        if (Directory.Exists(modFunctions.AppDataPath))
+          System.Diagnostics.Process.Start(modFunctions.AppDataPath);
+        else
+          modFunctions.ShowMessageBox(this, "The directory \"" + modFunctions.AppDataPath + "\" does not exist.\nPlease save the configuration first.", "Missing Directory", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+      else
+        if (Directory.Exists(txtHistoryDir.CurrentFolder))
+          System.Diagnostics.Process.Start(txtHistoryDir.CurrentFolder);
+        else
+          modFunctions.ShowMessageBox(this, "The directory \"" + txtHistoryDir.CurrentFolder + "\" does not exist.\nPlease save the configuration first.", "Missing Directory", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
     }
 
     protected void ValuesChanged(object sender, EventArgs e)
@@ -395,7 +543,7 @@ namespace RestrictionTrackerGTK
       lblPurchaseKey.TooltipText = LINK_PURCHASE_TT;
       if (txtKey1.Text.Length < 6 || txtKey2.Text.Length < 4 || txtKey3.Text.Length < 4 || txtKey4.Text.Length < 4 || txtKey5.Text.Length < 6)
       {
-        cmdSave.Sensitive = true;
+        cmdSave.Sensitive = SettingsChanged();
       }
       else
       {
@@ -488,7 +636,7 @@ namespace RestrictionTrackerGTK
             txtKey4.SelectRegion(txtKey4.Text.Length, txtKey4.Text.Length);
             e.RetVal = true;
           }
-      
+
         }
       }
       else
@@ -552,7 +700,7 @@ namespace RestrictionTrackerGTK
         pctKeyState.Pixbuf = null;
         pctKeyState.PixbufAnimation = null;
         pctKeyState.TooltipText = "";
-        cmdSave.Sensitive = true;
+        cmdSave.Sensitive = SettingsChanged();
         DoCheck();
       }
       else
@@ -566,15 +714,31 @@ namespace RestrictionTrackerGTK
       txtPassword.Visibility = !(txtPassword.Visibility);
     }
 
+    protected void chkAccountTypeAuto_Clicked(object sender, EventArgs e)
+    {
+      optAccountTypeWBL.Sensitive = !chkAccountTypeAuto.Active;
+      optAccountTypeDNX.Sensitive = !chkAccountTypeAuto.Active;
+      optAccountTypeWBX.Sensitive = !chkAccountTypeAuto.Active;
+      optAccountTypeRPL.Sensitive = !chkAccountTypeAuto.Active;
+      optAccountTypeRPX.Sensitive = !chkAccountTypeAuto.Active;
+      if (bLoaded)
+      {
+        cmdSave.Sensitive = SettingsChanged();
+      }
+    }
+
     protected void chkOverAlert_Activated(object sender, EventArgs e)
     {
       txtOverSize.Sensitive = chkOverAlert.Active;
-      lblOverSize.Sensitive = chkOverAlert.Active;
+      lblOverSize1.Sensitive = chkOverAlert.Active;
+      lblOverSize2.Sensitive = chkOverAlert.Active;
       txtOverTime.Sensitive = chkOverAlert.Active;
-      lblOverTime.Sensitive = chkOverAlert.Active;
+      lblOverTime1.Sensitive = chkOverAlert.Active;
+      lblOverTime2.Sensitive = chkOverAlert.Active;
+      cmdAlertStyle.Sensitive = chkOverAlert.Active;
       if (bLoaded)
       {
-        cmdSave.Sensitive = true;
+        cmdSave.Sensitive = SettingsChanged();
       }
     }
 
@@ -633,7 +797,68 @@ namespace RestrictionTrackerGTK
       }
       if (bLoaded)
       {
-        cmdSave.Sensitive = true;
+        cmdSave.Sensitive = SettingsChanged();
+      }
+    }
+
+    protected void cmbUpdateAutomation_Changed(object sender, EventArgs e)
+    {
+      switch (cmbUpdateAutomation.Active)
+      {
+        case 0:
+          lblUpdateInterval.Sensitive = true;
+          cmbUpdateInterval.Sensitive = true;
+          chkUpdateBETA.Sensitive = true;
+          break;
+        case 1:
+          lblUpdateInterval.Sensitive = true;
+          cmbUpdateInterval.Sensitive = true;
+          chkUpdateBETA.Sensitive = true;
+          break;
+        case 2:
+          lblUpdateInterval.Sensitive = false;
+          cmbUpdateInterval.Sensitive = false;
+          chkUpdateBETA.Sensitive = false;
+          break;
+        default:
+          lblUpdateInterval.Sensitive = false;
+          cmbUpdateInterval.Sensitive = false;
+          chkUpdateBETA.Sensitive = false;
+          break;
+      }
+      if (bLoaded)
+      {
+        cmdSave.Sensitive = SettingsChanged();
+      }
+    }
+
+    protected void optHistorySharedConfig_Clicked(object sender, EventArgs e)
+    {
+      if (optHistorySharedConfig.Active)
+      {
+        txtHistoryDir.Sensitive = optHistoryCustom.Active;
+        txtHistoryDir.SetCurrentFolder(modFunctions.AppDataAllPath);
+        cmdSave.Sensitive = SettingsChanged();
+      }
+    }
+
+    protected void optHistoryLocalConfig_Clicked(object sender, EventArgs e)
+    {
+      if (optHistoryLocalConfig.Active)
+      {
+        txtHistoryDir.Sensitive = optHistoryCustom.Active;
+        txtHistoryDir.SetCurrentFolder(modFunctions.AppDataPath);
+        cmdSave.Sensitive = SettingsChanged();
+      }
+    }
+
+    protected void optHistoryCustom_Clicked(object sender, EventArgs e)
+    {
+      if (optHistoryCustom.Active)
+      {
+        txtHistoryDir.Sensitive = optHistoryCustom.Active;
+        txtHistoryDir.SetCurrentFolder(modFunctions.MySaveDir());
+        cmdSave.Sensitive = SettingsChanged();
       }
     }
 
@@ -659,25 +884,25 @@ namespace RestrictionTrackerGTK
         case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadLogin:
           sErr = "There was a server error. Please try again later.";
           break;
-        case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadPassword:
+          case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadPassword:
           sErr = "Your password is incorrect!";
           break;
-        case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadProduct:
+          case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadProduct:
           sErr = "Your Product Key is incorrect!";
           break;
-        case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadServer:
+          case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadServer:
           sErr = "There was a fault double-checking the server. You may have a security issue.";
           break;
-        case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.NoData:
+          case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.NoData:
           sErr = "There is no data on your account yet!";
           break;
-        case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.NoPassword:
+          case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.NoPassword:
           sErr = "Your account has no password registered to it!";
           break;
-        case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.NoUsername:
+          case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.NoUsername:
           sErr = "Your account is not registered!";
           break;
-        case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.Network:
+          case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.Network:
           sErr = "There was a connection related error. Please check your Internet connection. (" + e.Details + ")";
           break;
       }
@@ -815,13 +1040,13 @@ namespace RestrictionTrackerGTK
       wsHostList = new RestrictionLibrary.CookieAwareWebClient();
       wsHostList.DownloadDataAsync(new Uri("http://wb.realityripple.com/hosts/?add=" + Provider), "UPDATE");
     }
-#endregion
+    #endregion
 
-#region "Remote Service Results"
+    #region "Remote Service Results"
     protected void evnKeyState_ButtonPressEvent(object sender, Gtk.ButtonPressEventArgs e)
     {
       if(txtKey1.Text.Length == 6 && txtKey2.Text.Length == 4 && txtKey3.Text.Length == 4 && txtKey4.Text.Length == 4 && txtKey5.Text.Length == 6)
-      KeyCheck();
+        KeyCheck();
     }
     bool CheckState;
     private void KeyCheck()
@@ -840,9 +1065,9 @@ namespace RestrictionTrackerGTK
       checkKey = sKeyTest;
       pChecker = GLib.Timeout.Add(500, RunAccountTest);
     }
-#endregion
+    #endregion
 
-#region "Save/Close Buttons"
+    #region "Save/Close Buttons"
     protected void cmdAlertStyle_Click(object sender, EventArgs e)
     {
       if (MainClass.fAlertSelection != null)
@@ -863,7 +1088,7 @@ namespace RestrictionTrackerGTK
       {
         mySettings.AlertStyle = MainClass.fAlertSelection.AlertStyle;
         bHardChange = true;
-        cmdSave.Sensitive = true;
+        cmdSave.Sensitive = SettingsChanged();
       }
       MainClass.fAlertSelection.Destroy();
     }
@@ -891,7 +1116,7 @@ namespace RestrictionTrackerGTK
       {
         mySettings = MainClass.fCustomColors.mySettings;
         bHardChange = true;
-        cmdSave.Sensitive = true;
+        cmdSave.Sensitive = SettingsChanged();
       }
       MainClass.fCustomColors.Destroy();
     }
@@ -918,7 +1143,7 @@ namespace RestrictionTrackerGTK
       }
       if (String.IsNullOrEmpty(txtHistoryDir.CurrentFolder))
       {
-        txtHistoryDir.SetCurrentFolder(modFunctions.MySaveDir);
+        txtHistoryDir.SetCurrentFolder(modFunctions.MySaveDir(true));
       }
       foreach (char c in System.IO.Path.GetInvalidPathChars())
       {
@@ -930,10 +1155,10 @@ namespace RestrictionTrackerGTK
         }
       }
       if (cmbProvider.Entry.Text.ToLower().Contains("excede") ||
-        cmbProvider.Entry.Text.ToLower().Contains("force") ||
-        cmbProvider.Entry.Text.ToLower().Contains("mysso") ||
-        cmbProvider.Entry.Text.ToLower().Contains("myexede") ||
-        cmbProvider.Entry.Text.ToLower().Contains("my.exede"))
+          cmbProvider.Entry.Text.ToLower().Contains("force") ||
+          cmbProvider.Entry.Text.ToLower().Contains("mysso") ||
+          cmbProvider.Entry.Text.ToLower().Contains("myexede") ||
+          cmbProvider.Entry.Text.ToLower().Contains("my.exede"))
         cmbProvider.Entry.Text = "exede.net";
       if (string.Compare(mySettings.Account,txtAccount.Text + "@" + cmbProvider.Entry.Text, true) != 0)
       {
@@ -958,65 +1183,132 @@ namespace RestrictionTrackerGTK
         }
         bAccount = true;
       }
+      modFunctions.RunOnStartup = chkStartup.Active;
+      mySettings.StartWait = txtStartWait.ValueAsInt;
       mySettings.Interval = txtInterval.ValueAsInt;
       mySettings.Accuracy = txtAccuracy.ValueAsInt;
       mySettings.Timeout = txtTimeout.ValueAsInt;
       mySettings.ScaleScreen = chkScaleScreen.Active;
       if (String.IsNullOrEmpty(mySettings.HistoryDir))
       {
-        mySettings.HistoryDir = modFunctions.MySaveDir;
+        mySettings.HistoryDir = modFunctions.MySaveDir(true);
       }
       if (mySettings.HistoryDir != txtHistoryDir.CurrentFolder)
       {
-        string[] sOldFiles = System.IO.Directory.GetFiles(mySettings.HistoryDir);
+        bool continueChange = true;
+        string[] sOldFiles = Directory.GetFiles(mySettings.HistoryDir);
         string[] sNewFiles = {};
-        if (System.IO.Directory.Exists(txtHistoryDir.CurrentFolder))
+        if (Directory.Exists(txtHistoryDir.CurrentFolder))
         {
-          sNewFiles = System.IO.Directory.GetFiles(txtHistoryDir.CurrentFolder);
+          sNewFiles = Directory.GetFiles(txtHistoryDir.CurrentFolder);
         }
         else
         {
-          System.IO.Directory.CreateDirectory(txtHistoryDir.CurrentFolder);
-        }
-        modDB.LOG_Terminate(true);
-        if (sOldFiles.Length > 0)
-        {
-          if (sNewFiles.Length > 0)
+          string histParent = System.IO.Path.GetDirectoryName(txtHistoryDir.CurrentFolder);
+          if (!Directory.Exists(histParent))
           {
-            System.Collections.Generic.List<string> sOverWrites = new System.Collections.Generic.List<string>();
-            foreach (string sOld in sOldFiles)
+            if (CurrentOS.IsMac)
             {
-              foreach (string sNew in sNewFiles)
+              Directory.CreateDirectory(histParent);
+            }
+            else
+            {
+              string mkvlpath = System.IO.Path.Combine(modFunctions.AppData, "mkvlpath.sh");
+              File.WriteAllText(mkvlpath, "#!/bin/sh\n" +
+                                "\necho " + modFunctions.ProductName + " needs to create\necho the directory \\\"" + histParent + "\\\".\n" +
+                                "sudo mkdir \"" + histParent + "\" -m +666\n");
+              Mono.Unix.Native.Syscall.chmod (mkvlpath, Mono.Unix.Native.FilePermissions.ACCESSPERMS);
+              modFunctions.RunTerminal (mkvlpath);
+              long waitStart = modFunctions.TickCount();
+              do
               {
-                if (System.IO.Path.GetFileName(sNew) == System.IO.Path.GetFileName(sOld))
-                {
-                  if (System.IO.Path.GetFileName(sNew).ToLower() == "user.config")
-                  {
-                    continue;
-                  }
-                  if (System.IO.Path.GetFileName(sNew).ToLower() == "del.bat")
-                  {
-                    continue;
-                  }
-                  sOverWrites.Add(System.IO.Path.GetFileName(sNew));
-                }
+                Gtk.Main.Iteration();
+                System.Threading.Thread.Sleep(0);
+                if (modFunctions.TickCount() - waitStart > 30000)
+                  break;
+              } while(!Directory.Exists(histParent));
+              File.Delete(mkvlpath);
+              if (!Directory.Exists(histParent))
+              {
+                modFunctions.ShowMessageBox(this, modFunctions.ProductName + " was unable to create the directory \"" + histParent + "\"!", modFunctions.ProductName, Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+                continueChange = false;
               }
             }
-            if (sOverWrites.Count > 0)
+          }
+          if (continueChange)
+          {
+            try
             {
-              if (modFunctions.ShowMessageBox(this, "Files exist in the new Data Directory:\n" + String.Join("\n", sOverWrites.ToArray()) + "\n\nOverwrite them?", "Overwrite Files?", Gtk.DialogFlags.Modal, Gtk.MessageType.Question, Gtk.ButtonsType.YesNo) == Gtk.ResponseType.Yes)
+            Directory.CreateDirectory(txtHistoryDir.CurrentFolder);
+            }
+            catch (Exception)
+            {
+              modFunctions.ShowMessageBox(this, modFunctions.ProductName + " was unable to create the directory \"" + txtHistoryDir.CurrentFolder + "\"!", modFunctions.ProductName, Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+              continueChange = false;
+            }
+          }
+        }
+        if (continueChange)
+        {
+          modDB.LOG_Terminate(true);
+          if (sOldFiles.Length > 0)
+          {
+            if (sNewFiles.Length > 0)
+            {
+              System.Collections.Generic.List<string> sOverWrites = new System.Collections.Generic.List<string>();
+              foreach (string sOld in sOldFiles)
               {
-                foreach (string sFile in sOldFiles)
+                foreach (string sNew in sNewFiles)
                 {
-                  if (System.IO.Path.GetFileName(sFile).ToLower() == "user.config")
+                  if (System.IO.Path.GetFileName(sNew) == System.IO.Path.GetFileName(sOld))
                   {
-                    continue;
+                    if (System.IO.Path.GetFileName(sNew).ToLower() == "user.config")
+                    {
+                      continue;
+                    }
+                    if (System.IO.Path.GetFileName(sNew).ToLower() == "del.bat")
+                    {
+                      continue;
+                    }
+                    sOverWrites.Add(System.IO.Path.GetFileName(sNew));
                   }
-                  if (System.IO.Path.GetFileName(sFile).ToLower() == "del.bat")
+                }
+              }
+              if (sOverWrites.Count > 0)
+              {
+                if (modFunctions.ShowMessageBox(this, "Files exist in the new Data Directory:\n" + String.Join("\n", sOverWrites.ToArray()) + "\n\nOverwrite them?", "Overwrite Files?", Gtk.DialogFlags.Modal, Gtk.MessageType.Question, Gtk.ButtonsType.YesNo) == Gtk.ResponseType.Yes)
+                {
+                  foreach (string sFile in sOldFiles)
                   {
-                    continue;
+                    if (System.IO.Path.GetFileName(sFile).ToLower() == "user.config")
+                    {
+                      continue;
+                    }
+                    if (System.IO.Path.GetFileName(sFile).ToLower() == "del.bat")
+                    {
+                      continue;
+                    }
+                    File.Move(sFile, System.IO.Path.Combine(txtHistoryDir.CurrentFolder, System.IO.Path.GetFileName(sFile)));
                   }
-                  System.IO.File.Move(sFile, txtHistoryDir.CurrentFolder + System.IO.Path.DirectorySeparatorChar + System.IO.Path.GetFileName(sFile));
+                }
+                else
+                {
+                  foreach (string sFile in sOldFiles)
+                  {
+                    if (System.IO.Path.GetFileName(sFile).ToLower() == "user.config")
+                    {
+                      continue;
+                    }
+                    if (System.IO.Path.GetFileName(sFile).ToLower() == "del.bat")
+                    {
+                      continue;
+                    }
+                    if (File.Exists(System.IO.Path.Combine(txtHistoryDir.CurrentFolder, System.IO.Path.GetFileName(sFile))))
+                    {
+                      continue;
+                    }
+                    File.Move(sFile, System.IO.Path.Combine(txtHistoryDir.CurrentFolder, System.IO.Path.GetFileName(sFile)));
+                  }
                 }
               }
               else
@@ -1031,11 +1323,7 @@ namespace RestrictionTrackerGTK
                   {
                     continue;
                   }
-                  if (System.IO.File.Exists(txtHistoryDir.CurrentFolder + System.IO.Path.DirectorySeparatorChar + System.IO.Path.GetFileName(sFile)))
-                  {
-                    continue;
-                  }
-                  System.IO.File.Move(sFile, txtHistoryDir.CurrentFolder + System.IO.Path.DirectorySeparatorChar + System.IO.Path.GetFileName(sFile));
+                  File.Move(sFile, System.IO.Path.Combine(txtHistoryDir.CurrentFolder, System.IO.Path.GetFileName(sFile)));
                 }
               }
             }
@@ -1051,29 +1339,28 @@ namespace RestrictionTrackerGTK
                 {
                   continue;
                 }
-                System.IO.File.Move(sFile, txtHistoryDir.CurrentFolder + System.IO.Path.DirectorySeparatorChar + System.IO.Path.GetFileName(sFile));
+                File.Move(sFile, System.IO.Path.Combine(txtHistoryDir.CurrentFolder, System.IO.Path.GetFileName(sFile)));
               }
             }
           }
-          else
-          {
-            foreach (string sFile in sOldFiles)
-            {
-              if (System.IO.Path.GetFileName(sFile).ToLower() == "user.config")
-              {
-                continue;
-              }
-              if (System.IO.Path.GetFileName(sFile).ToLower() == "del.bat")
-              {
-                continue;
-              }
-              System.IO.File.Move(sFile, txtHistoryDir.CurrentFolder + System.IO.Path.DirectorySeparatorChar + System.IO.Path.GetFileName(sFile));
-            }
-          }
+          mySettings.HistoryDir = txtHistoryDir.CurrentFolder;
+          bAccount = true;
         }
-        mySettings.HistoryDir = txtHistoryDir.CurrentFolder;
-        bAccount = true;
+        else
+        {
+          string hD = mySettings.HistoryDir;
+          if (!hD.EndsWith(System.IO.Path.DirectorySeparatorChar.ToString()))
+            hD += System.IO.Path.DirectorySeparatorChar;
+          if (string.Compare(hD, modFunctions.AppDataAllPath, true) == 0)
+            optHistorySharedConfig.Active = true;
+          else if (string.Compare(hD, modFunctions.AppDataPath, true) == 0)
+            optHistoryLocalConfig.Active = true;
+          else
+            optHistoryCustom.Active = true;
+          txtHistoryDir.SetCurrentFolder(mySettings.HistoryDir);
+        }
       }
+
       if (chkOverAlert.Active)
       {
         mySettings.Overuse = txtOverSize.ValueAsInt;
@@ -1083,7 +1370,38 @@ namespace RestrictionTrackerGTK
         mySettings.Overuse = 0;
       }
       mySettings.Overtime = txtOverTime.ValueAsInt;
-      mySettings.BetaCheck = chkBeta.Active;
+      switch (cmbUpdateAutomation.Active)
+      {
+        case 0:
+          mySettings.UpdateType = AppSettings.UpdateTypes.Auto;
+          break;
+        case 1:
+          mySettings.UpdateType = AppSettings.UpdateTypes.Ask;
+          break;
+        case 2:
+          mySettings.UpdateType = AppSettings.UpdateTypes.None;
+          break;
+      }
+      mySettings.UpdateBETA = chkUpdateBETA.Active;
+      switch (cmbUpdateInterval.Active)
+      {
+        case 0:
+          mySettings.UpdateTime = 1;
+          break;
+        case 1:
+          mySettings.UpdateTime = 3;
+          break;
+        case 2:
+          mySettings.UpdateTime = 7;
+          break;
+        case 3:
+          mySettings.UpdateTime = 15;
+          break;
+        case 4:
+          mySettings.UpdateTime = 30;
+          break;
+      }
+
       if (cmbProxyType.Active == 0)
       {
         mySettings.Proxy = null;
@@ -1142,7 +1460,7 @@ namespace RestrictionTrackerGTK
           }
         }
       }
-      if (chkProtocolSSL.Active)
+      if (chkNetworkProtocolSSL.Active)
       {
         mySettings.Protocol = System.Net.SecurityProtocolType.Ssl3;
       }
@@ -1160,24 +1478,58 @@ namespace RestrictionTrackerGTK
     {
       this.Respond(Gtk.ResponseType.Close);
     }
-#endregion 
+    #endregion 
 
     private bool SettingsChanged()
     {
+      if (mySettings == null)
+        return false;
       if (bHardChange)
         return true;
       if (String.Compare(mySettings.Account, txtAccount.Text + "@" + cmbProvider.Entry.Text, true) != 0)
         return true;
       if (mySettings.PassCrypt != RestrictionLibrary.StoredPassword.EncryptApp(txtPassword.Text))
         return true;
+      if (mySettings.AccountTypeForced == chkAccountTypeAuto.Active)
+        return true;
+      if (!chkAccountTypeAuto.Active)
+      {
+        switch (mySettings.AccountType)
+        {
+          case RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_LEGACY:
+            if (!optAccountTypeWBL.Active)
+              return true;
+            break;
+          case RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
+            if (!optAccountTypeWBX.Active)
+              return true;
+            break;
+          case RestrictionLibrary.localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
+            if (!optAccountTypeDNX.Active)
+              return true;
+            break;
+          case RestrictionLibrary.localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
+            if (!optAccountTypeRPL.Active)
+              return true;
+            break;
+          case RestrictionLibrary.localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
+            if (!optAccountTypeRPX.Active)
+              return true;
+            break;
+        }
+      }
       string sKey = txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text;
       if (string.Compare(mySettings.RemoteKey, sKey, true) != 0)
+        return true;
+      if ((int)mySettings.StartWait - txtStartWait.Value != 0)
         return true;
       if ((int) mySettings.Interval - txtInterval.Value != 0)
         return true;
       if ((int) mySettings.Accuracy - txtAccuracy.Value != 0)
         return true;
       if ((int) mySettings.Timeout - txtTimeout.Value != 0)
+        return true;
+      if (chkStartup.Active ^ File.Exists(modFunctions.StartupPath))
         return true;
       if (mySettings.ScaleScreen != chkScaleScreen.Active)
         return true;
@@ -1192,9 +1544,46 @@ namespace RestrictionTrackerGTK
       }
       if ((int) mySettings.Overtime - txtOverTime.Value != 0)
         return true;
-      if (mySettings.BetaCheck != chkBeta.Active)
+      if (mySettings.UpdateBETA != chkUpdateBETA.Active)
         return true;
-
+      switch (cmbUpdateAutomation.Active)
+      {
+        case 0:
+          if (mySettings.UpdateType != AppSettings.UpdateTypes.Auto)
+            return true;
+          break;
+        case 1:
+          if (mySettings.UpdateType != AppSettings.UpdateTypes.Ask)
+            return true;
+          break;
+        case 2:
+          if (mySettings.UpdateType != AppSettings.UpdateTypes.None)
+            return true;
+          break;
+      }
+      switch (cmbUpdateInterval.Active)
+      {
+        case 0:
+          if (mySettings.UpdateTime != 1)
+            return true;
+          break;
+        case 1:
+          if (mySettings.UpdateTime != 3)
+            return true;
+          break;
+        case 2:
+          if (mySettings.UpdateTime != 7)
+            return true;
+          break;
+        case 3:
+          if (mySettings.UpdateTime != 15)
+            return true;
+          break;
+        case 4:
+          if (mySettings.UpdateTime != 30)
+            return true;
+          break;
+      }
       if (mySettings.Proxy == null)
       {
         if (cmbProxyType.Active != 0)
@@ -1207,56 +1596,56 @@ namespace RestrictionTrackerGTK
       }
       else
       {
-          if (cmbProxyType.Active == 0)
+        if (cmbProxyType.Active == 0)
+          return true;
+        if (cmbProxyType.Active == 1)
+          return true;
+        Uri addr = ((System.Net.WebProxy)mySettings.Proxy).Address;
+        if (cmbProxyType.Active == 2)
+        {
+          if (String.Compare(txtProxyAddress.Text, addr.Host) != 0)
             return true;
-          if (cmbProxyType.Active == 1)
-            return true;
-          Uri addr = ((System.Net.WebProxy)mySettings.Proxy).Address;
-          if (cmbProxyType.Active == 2)
-          {
-            if (String.Compare(txtProxyAddress.Text, addr.Host) != 0)
-              return true;
           if ((int) txtProxyPort.Value - addr.Port != 0)
-              return true;
-          }
-          if (cmbProxyType.Active == 3)
-          {
-            if (string.Compare(txtProxyAddress.Text, addr.OriginalString) != 0)
-              return true;
-          }
-          if (mySettings.Proxy.Credentials == null)
-          {
-            if (!string.IsNullOrEmpty(txtProxyUser.Text))
-              return true;
-            if (!string.IsNullOrEmpty(txtProxyPassword.Text))
-              return true;
-            if (!string.IsNullOrEmpty(txtProxyDomain.Text))
-              return true;
-          }
+            return true;
+        }
+        if (cmbProxyType.Active == 3)
+        {
+          if (string.Compare(txtProxyAddress.Text, addr.OriginalString) != 0)
+            return true;
+        }
+        if (mySettings.Proxy.Credentials == null)
+        {
+          if (!string.IsNullOrEmpty(txtProxyUser.Text))
+            return true;
+          if (!string.IsNullOrEmpty(txtProxyPassword.Text))
+            return true;
+          if (!string.IsNullOrEmpty(txtProxyDomain.Text))
+            return true;
+        }
+        else
+        {
+          if (string.IsNullOrEmpty(txtProxyUser.Text) && string.IsNullOrEmpty(txtProxyPassword.Text) && string.IsNullOrEmpty(txtProxyDomain.Text))
+            return true;
           else
           {
-            if (string.IsNullOrEmpty(txtProxyUser.Text) && string.IsNullOrEmpty(txtProxyPassword.Text) && string.IsNullOrEmpty(txtProxyDomain.Text))
-              return true;
+            if (string.IsNullOrEmpty(txtProxyDomain.Text))
+            {
+              if (mySettings.Proxy.Credentials != new System.Net.NetworkCredential(txtProxyUser.Text, txtProxyPassword.Text))
+                return true;
+            }
             else
             {
-              if (string.IsNullOrEmpty(txtProxyDomain.Text))
-              {
-                if (mySettings.Proxy.Credentials != new System.Net.NetworkCredential(txtProxyUser.Text, txtProxyPassword.Text))
-                  return true;
-              }
-              else
-              {
-                if (mySettings.Proxy.Credentials != new System.Net.NetworkCredential(txtProxyUser.Text, txtProxyPassword.Text, txtProxyDomain.Text))
-                  return true;
-              }
+              if (mySettings.Proxy.Credentials != new System.Net.NetworkCredential(txtProxyUser.Text, txtProxyPassword.Text, txtProxyDomain.Text))
+                return true;
             }
           }
+        }
       }
-      if (mySettings.Protocol == System.Net.SecurityProtocolType.Ssl3 && !chkProtocolSSL.Active)
+      if (mySettings.Protocol == System.Net.SecurityProtocolType.Ssl3 && !chkNetworkProtocolSSL.Active)
       {
         return true;
       }
-      else if (mySettings.Protocol == System.Net.SecurityProtocolType.Tls && chkProtocolSSL.Active)
+      else if (mySettings.Protocol == System.Net.SecurityProtocolType.Tls && chkNetworkProtocolSSL.Active)
       {
         return true;
       }
@@ -1278,103 +1667,7 @@ namespace RestrictionTrackerGTK
         txtInterval.Value = txtInterval.Adjustment.Lower;
       }
     }
-
-    private int drawPos;
-
-    private bool tmrAnim_Tick()
-    {
-      Gdk.Size imgSize = new Gdk.Size(evnSRT.Allocation.Width, 45);
-      int iPos = drawPos;
-      if (iPos >= imgSize.Width)
-      {
-        DrawTitle();
-        return true;
-      }
-      else
-      {
-        iPos += 2;
-      }
-      using (System.Drawing.Bitmap bmpAnim = new System.Drawing.Bitmap(imgSize.Width, imgSize.Height))
-      {
-        using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bmpAnim))
-        {
-          g.Clear(System.Drawing.Color.Black);
-          g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-          g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-          g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-          g.FillRectangle(new System.Drawing.Drawing2D.LinearGradientBrush(new System.Drawing.Rectangle(0, 0, imgSize.Width, imgSize.Height), System.Drawing.Color.Black, System.Drawing.Color.DeepSkyBlue, System.Drawing.Drawing2D.LinearGradientMode.Vertical), 0, 0, imgSize.Width, imgSize.Height);
-          try
-          {
-            System.Drawing.Font a12 = new System.Drawing.Font("Arial", 12);
-            System.Drawing.Font a8 = new System.Drawing.Font("Arial", 8);
-            System.Drawing.SizeF appSize = g.MeasureString("@" + modFunctions.ProductName() + "@", a12);
-            System.Drawing.SizeF cmpSize = g.MeasureString("@" + modFunctions.CompanyName() + "@", a8);
-            g.DrawString("                Restriction", a12, System.Drawing.Brushes.Black, new System.Drawing.RectangleF(5, 7, (float)appSize.Width, (float)appSize.Height));
-            g.DrawString("                Restriction", a12, System.Drawing.Brushes.White, new System.Drawing.RectangleF(4, 6, (float)appSize.Width, (float)appSize.Height));
-            g.DrawIconUnstretched(new System.Drawing.Icon(GetType(), "Resources.norm.ico"), new System.Drawing.Rectangle(iPos, (imgSize.Height / 2) - 16, 32, 32));
-            g.DrawString("Satellite                      Tracker", a12, System.Drawing.Brushes.Black, new System.Drawing.RectangleF(5, 7, appSize.Width, appSize.Height));
-            g.DrawString("Satellite                      Tracker", a12, System.Drawing.Brushes.White, new System.Drawing.RectangleF(4, 6, appSize.Width, appSize.Height));
-            g.DrawString("by " + modFunctions.CompanyName(), a8, System.Drawing.Brushes.RoyalBlue, new System.Drawing.RectangleF(imgSize.Width - cmpSize.Width - 3, imgSize.Height - cmpSize.Height - 3, cmpSize.Width + 4, cmpSize.Height + 4));
-            g.DrawString("by " + modFunctions.CompanyName(), a8, System.Drawing.Brushes.White, new System.Drawing.RectangleF(imgSize.Width - cmpSize.Width - 4, imgSize.Height - cmpSize.Height - 4, cmpSize.Width + 4, cmpSize.Height + 4));
-          }
-          catch (Exception)
-          {
-            g.DrawIconUnstretched(new System.Drawing.Icon(GetType(), "Resources.norm.ico"), new System.Drawing.Rectangle(iPos, (imgSize.Height / 2) - 16, 32, 32));
-          }
-        }
-        pctSRT.Pixbuf = modFunctions.ImageToPixbuf(bmpAnim);
-      }
-      drawPos = iPos;
-      return true;
-    }
-
-    protected void evnSRT_EnterNotifyEvent(object sender, Gtk.EnterNotifyEventArgs e)
-    {
-      if (tmrAnim == 0)
-      {
-        tmrAnim = GLib.Timeout.Add(75, tmrAnim_Tick);
-      }
-    }
-
-    private void DrawTitle()
-    {
-      drawPos = -32;
-      if (tmrAnim != 0)
-      {
-        GLib.Source.Remove(tmrAnim);
-        tmrAnim = 0;
-      }
-      Gdk.Size imgSize = new Gdk.Size(evnSRT.Allocation.Width, 45);
-      using (System.Drawing.Bitmap bmpAnim = new System.Drawing.Bitmap(imgSize.Width, imgSize.Height))
-      {
-        using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bmpAnim))
-        {
-          g.Clear(System.Drawing.Color.Black);
-          g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-          g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-          g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-          g.FillRectangle(new System.Drawing.Drawing2D.LinearGradientBrush(new System.Drawing.Rectangle(0, 0, imgSize.Width, imgSize.Height), System.Drawing.Color.Black, System.Drawing.Color.DeepSkyBlue, System.Drawing.Drawing2D.LinearGradientMode.Vertical), 0, 0, imgSize.Width, imgSize.Height);
-          try
-          {
-            System.Drawing.Font a12 = new System.Drawing.Font("Arial", 12);
-            System.Drawing.Font a8 = new System.Drawing.Font("Arial", 8);
-            System.Drawing.SizeF appSize = g.MeasureString("@" + modFunctions.ProductName() + "@", a12);
-            System.Drawing.SizeF cmpSize = g.MeasureString("@" + modFunctions.CompanyName() + "@", a8);
-            g.DrawString("                Restriction", a12, System.Drawing.Brushes.Black, new System.Drawing.RectangleF(5, 7, (float)appSize.Width, (float)appSize.Height));
-            g.DrawString("                Restriction", a12, System.Drawing.Brushes.White, new System.Drawing.RectangleF(4, 6, (float)appSize.Width, (float)appSize.Height));
-            g.DrawString("Satellite                      Tracker", a12, System.Drawing.Brushes.Black, new System.Drawing.RectangleF(5, 7, appSize.Width, appSize.Height));
-            g.DrawString("Satellite                      Tracker", a12, System.Drawing.Brushes.White, new System.Drawing.RectangleF(4, 6, appSize.Width, appSize.Height));
-            g.DrawString("by " + modFunctions.CompanyName(), a8, System.Drawing.Brushes.RoyalBlue, new System.Drawing.RectangleF(imgSize.Width - cmpSize.Width - 3, imgSize.Height - cmpSize.Height - 3, cmpSize.Width + 4, cmpSize.Height + 4));
-            g.DrawString("by " + modFunctions.CompanyName(), a8, System.Drawing.Brushes.White, new System.Drawing.RectangleF(imgSize.Width - cmpSize.Width - 4, imgSize.Height - cmpSize.Height - 4, cmpSize.Width + 4, cmpSize.Height + 4));
-          }
-          catch (Exception)
-          {
-
-          }
-        }
-        pctSRT.Pixbuf = modFunctions.ImageToPixbuf(bmpAnim);
-      }
-    }
+   
   }
 }
 

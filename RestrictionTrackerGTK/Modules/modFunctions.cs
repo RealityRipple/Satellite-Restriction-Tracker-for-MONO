@@ -1,6 +1,8 @@
 using System;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
 using System.IO.Compression;
 using RestrictionLibrary;
@@ -27,17 +29,17 @@ namespace RestrictionTrackerGTK
     public static NotifierStyle NOTIFIER_STYLE = null;
     public static NotifierStyle LoadAlertStyle(string Path)
     {
-      if (File.Exists(AppData + System.IO.Path.DirectorySeparatorChar + Path + ".tgz"))
+      if (File.Exists(AppDataPath + Path + ".tgz"))
       {
-        Path = AppData + System.IO.Path.DirectorySeparatorChar + Path + ".tgz";
+        Path = AppDataPath + Path + ".tgz";
       }
-      else if (File.Exists(AppData + System.IO.Path.DirectorySeparatorChar + Path + ".tar.gz"))
+      else if (File.Exists(AppDataPath + Path + ".tar.gz"))
       {
-        Path = AppData + System.IO.Path.DirectorySeparatorChar + Path + ".tar.gz";
+        Path = AppDataPath + Path + ".tar.gz";
       }
-      else if (File.Exists(AppData + System.IO.Path.DirectorySeparatorChar + Path + ".tar"))
+      else if (File.Exists(AppDataPath + Path + ".tar"))
       {
-        Path = AppData + System.IO.Path.DirectorySeparatorChar + Path + ".tar";
+        Path = AppDataPath + Path + ".tar";
       }
       else
       {
@@ -102,9 +104,13 @@ namespace RestrictionTrackerGTK
       {
         Directory.CreateDirectory(sDestPath);
       }
-      if (!sDestPath.EndsWith("" + System.IO.Path.DirectorySeparatorChar))
+      if (!sDestPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
       {
-        sDestPath += System.IO.Path.DirectorySeparatorChar;
+        sDestPath += Path.DirectorySeparatorChar.ToString();
+      }
+      else if (!sDestPath.EndsWith("" + Path.DirectorySeparatorChar))
+      {
+        sDestPath += Path.DirectorySeparatorChar.ToString();
       }
       using (FileStream sourceTAR = new FileStream(sTAR, FileMode.Open,FileAccess.Read,FileShare.Read))
       {
@@ -164,44 +170,119 @@ namespace RestrictionTrackerGTK
       taskNotifier.HoverContentColor = customStyle.ContentHoverColor;
     }
     #endregion 
-
+    public static string LocalAppData
+    {
+      get
+      {
+        if (CurrentOS.IsMac)
+        {
+          return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal) , "Library" , "Application Support") + Path.DirectorySeparatorChar.ToString();
+        }
+        else
+        {
+          return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + Path.DirectorySeparatorChar.ToString();
+        }
+      }
+    }
     static string static_AppData_sTmp;
-
+    public static string AppDataPath
+    {
+      get
+      {
+        return Path.Combine(LocalAppData, CompanyName, ProductName) + Path.DirectorySeparatorChar.ToString();
+      }
+    }
     public static string AppData
     {
       get
       {
-        if (!System.IO.Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + System.IO.Path.DirectorySeparatorChar.ToString() + CompanyName()))
+        if (!Directory.Exists(LocalAppData + CompanyName))
         {
-          System.IO.Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + System.IO.Path.DirectorySeparatorChar.ToString() + CompanyName());
+          Directory.CreateDirectory(LocalAppData + CompanyName);
         }
-        if (!System.IO.Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + System.IO.Path.DirectorySeparatorChar.ToString() + CompanyName() + System.IO.Path.DirectorySeparatorChar.ToString() + ProductName()))
+        if (!Directory.Exists(AppDataPath))
         {
-          System.IO.Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + System.IO.Path.DirectorySeparatorChar.ToString() + CompanyName() + System.IO.Path.DirectorySeparatorChar.ToString() + ProductName());
+          Directory.CreateDirectory(AppDataPath);
         }
         if (string.IsNullOrEmpty(static_AppData_sTmp))
         {
-          static_AppData_sTmp = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + System.IO.Path.DirectorySeparatorChar.ToString() + CompanyName() + System.IO.Path.DirectorySeparatorChar.ToString() + ProductName();
+          static_AppData_sTmp = AppDataPath;
         }
         return static_AppData_sTmp;
       }
     }
-
-    public static string MySaveDir
+    public static string CommonAppData
     {
       get
       {
-        AppSettings mySettings = new AppSettings();
-        if (string.IsNullOrEmpty(mySettings.HistoryDir))
+        if (CurrentOS.IsMac)
         {
-          mySettings.HistoryDir = AppData;
+          return Path.DirectorySeparatorChar.ToString() + Path.Combine("Library", "Application Support") + Path.DirectorySeparatorChar.ToString();
         }
-        if (!System.IO.Directory.Exists(mySettings.HistoryDir))
+        else
         {
-          System.IO.Directory.CreateDirectory(mySettings.HistoryDir);
+          return Path.DirectorySeparatorChar.ToString() + Path.Combine("var", "lib") + Path.DirectorySeparatorChar.ToString();
         }
-        return mySettings.HistoryDir;
       }
+    }
+    static string static_AppDataAll_sTmp;
+    public static string AppDataAllPath
+    {
+      get
+      {
+        return Path.Combine(CommonAppData, CompanyName, ProductName) + Path.DirectorySeparatorChar.ToString();
+      }
+    }
+    public static string AppDataAll
+    {
+      get
+      {
+        if (!Directory.Exists(Path.Combine(CommonAppData, CompanyName)))
+        {
+          if (CurrentOS.IsMac)
+          {
+            Directory.CreateDirectory(Path.Combine(CommonAppData, CompanyName));
+          }
+          else
+          {
+            string mkvlpath = Path.Combine(AppData, "mkvlpath.sh");
+            File.WriteAllText(mkvlpath, "#!/bin/sh\n" +
+              "\necho " + ProductName + " needs to create\necho the directory \\\"" + Path.Combine(CommonAppData, CompanyName) + "\\\".\n" +
+              "sudo mkdir \"" + Path.Combine(CommonAppData, CompanyName) + "\" -m +666\n");
+            RunTerminal (mkvlpath);
+            File.Delete(mkvlpath);
+          }
+        }
+        if (!Directory.Exists(AppDataAllPath))
+        {
+          Directory.CreateDirectory(AppDataAllPath);
+        }
+        if (string.IsNullOrEmpty(static_AppDataAll_sTmp))
+        {
+          static_AppDataAll_sTmp = AppDataAllPath;
+        }
+        return static_AppDataAll_sTmp;
+      }
+    }
+
+    public static string MySaveDir(bool Create = false)
+    {
+      AppSettings mySettings = new AppSettings();
+      if (string.IsNullOrEmpty(mySettings.HistoryDir))
+      {
+        if (Create)
+          mySettings.HistoryDir = AppData;
+        else
+          mySettings.HistoryDir = AppDataPath;
+      }
+      if (Create)
+      {
+        if (!Directory.Exists(mySettings.HistoryDir))
+        {
+          Directory.CreateDirectory(mySettings.HistoryDir);
+        }
+      }
+      return mySettings.HistoryDir;
     }
 
     public static string ByteSize(UInt64 InBytes)
@@ -497,7 +578,7 @@ namespace RestrictionTrackerGTK
 
     public static bool CompareVersions(string sRemote)
     {
-      string sLocal = ProductVersion();
+      string sLocal = ProductVersion;
       string[] LocalVer = new string[4];
       if (sLocal.Contains("."))
       {
@@ -637,14 +718,14 @@ namespace RestrictionTrackerGTK
     {
       try
       {
-        string sFailFile = "WB-ReadFail-" + DateTime.Now.ToString("G") + "-v" + ProductVersion() + ".txt";
+        string sFailFile = "WB-ReadFail-" + DateTime.Now.ToString("G") + "-v" + ProductVersion + ".txt";
         sFailFile = sFailFile.Replace("/", "-");
         sFailFile = sFailFile.Replace(":", "-");
         System.Net.WebRequest ftpSave = System.Net.FtpWebRequest.Create("ftp://realityripple.com/" + sFailFile);
         ftpSave.Proxy = new System.Net.WebProxy();
         ftpSave.Credentials = modCreds.FTPCredentials(); //Use [new System.Net.NetworkCredential("FTPUSER", "FTPPASS");] to upload failures to a FTP location.
         ftpSave.Method = System.Net.WebRequestMethods.Ftp.UploadFile;
-        using (System.IO.Stream ftpStream = ftpSave.GetRequestStream())
+        using (Stream ftpStream = ftpSave.GetRequestStream())
         {
           byte[] bHTTP = System.Text.Encoding.UTF8.GetBytes(sData.ToString());
           ftpStream.Write(bHTTP, 0, bHTTP.Length);
@@ -688,15 +769,15 @@ namespace RestrictionTrackerGTK
 
     public static byte CopyDirectory(string FromDir, string ToDir)
     {
-      if (System.IO.Directory.Exists(FromDir))
+      if (Directory.Exists(FromDir))
       {
         bool bDidSomething = false;
-        if (System.IO.Directory.Exists(ToDir))
+        if (Directory.Exists(ToDir))
         {
-          string[] wbFiles = System.IO.Directory.GetFiles(FromDir);
+          string[] wbFiles = Directory.GetFiles(FromDir);
           if (wbFiles.Length > 0)
           {
-            string[] srtFiles = System.IO.Directory.GetFiles(ToDir);
+            string[] srtFiles = Directory.GetFiles(ToDir);
             System.Collections.ObjectModel.Collection<string> spareFiles = null;
             if (srtFiles.Length > 0)
             {
@@ -706,7 +787,7 @@ namespace RestrictionTrackerGTK
                 bool isUnique = true;
                 for (int J = 0; J <= srtFiles.Length - 1; J++)
                 {
-                  if (System.IO.Path.GetFileName(srtFiles [J]).CompareTo(System.IO.Path.GetFileName(wbFiles [I])) == 0)
+                  if (Path.GetFileName(srtFiles [J]).CompareTo(Path.GetFileName(wbFiles [I])) == 0)
                   {
                     isUnique = false;
                     break;
@@ -724,12 +805,12 @@ namespace RestrictionTrackerGTK
             }
             if (spareFiles.Count > 0)
             {
-              System.IO.Directory.CreateDirectory(ToDir);
+              Directory.CreateDirectory(ToDir);
               for (int I = 0; I <= spareFiles.Count - 1; I++)
               {
                 string file = spareFiles [I];
-                string sFName = System.IO.Path.GetFileName(file);
-                System.IO.File.Copy(file, ToDir + System.IO.Path.DirectorySeparatorChar.ToString() + sFName, true);
+                string sFName = Path.GetFileName(file);
+                File.Copy(file, Path.Combine(ToDir, sFName), true);
                 bDidSomething = true;
               }
             }
@@ -741,15 +822,15 @@ namespace RestrictionTrackerGTK
         }
         else
         {
-          string[] wbFiles = System.IO.Directory.GetFiles(FromDir);
+          string[] wbFiles = Directory.GetFiles(FromDir);
           if (wbFiles.Length > 0)
           {
-            System.IO.Directory.CreateDirectory(ToDir);
+            Directory.CreateDirectory(ToDir);
             for (int I = 0; I <= wbFiles.Length - 1; I++)
             {
               string file = wbFiles [I];
-              string sFName = System.IO.Path.GetFileName(file);
-              System.IO.File.Copy(file, ToDir + System.IO.Path.DirectorySeparatorChar.ToString() + sFName, true);
+              string sFName = Path.GetFileName(file);
+              File.Copy(file, Path.Combine(ToDir, sFName), true);
               bDidSomething = true;
             }
           }
@@ -758,14 +839,14 @@ namespace RestrictionTrackerGTK
         {
           return 2;
         }
-        string[] wFileTmp = System.IO.Directory.GetFiles(FromDir);
-        string[] sFileTmp = System.IO.Directory.GetFiles(ToDir);
+        string[] wFileTmp = Directory.GetFiles(FromDir);
+        string[] sFileTmp = Directory.GetFiles(ToDir);
         bool Equal = true;
         if (wFileTmp.Length == sFileTmp.Length)
         {
           for (int I = 0; I <= wFileTmp.Length - 1; I++)
           {
-            if ((System.IO.Path.GetFileName(wFileTmp [I]).CompareTo(System.IO.Path.GetFileName(sFileTmp [I])) == 0) & (new FileInfo(wFileTmp [I]).Length == new FileInfo(sFileTmp [I]).Length))
+            if ((Path.GetFileName(wFileTmp [I]).CompareTo(Path.GetFileName(sFileTmp [I])) == 0) & (new FileInfo(wFileTmp [I]).Length == new FileInfo(sFileTmp [I]).Length))
             {
               continue;
             }
@@ -825,7 +906,6 @@ namespace RestrictionTrackerGTK
       var signal = GLib.Signal.Lookup(label, "activate-link", typeof(ActivateLinkEventArgs));
       signal.AddDelegate(new EventHandler<ActivateLinkEventArgs>(HandleActivateLink));
     }
-
 
     #region "Graphs"
     #region "History"
@@ -922,7 +1002,7 @@ namespace RestrictionTrackerGTK
       Image iPic = new Bitmap(ImgSize.Width, ImgSize.Height);
       Graphics g = Graphics.FromImage(iPic);
       Font tFont = new Font(FontFamily.GenericSansSerif, 7);
-      g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+      g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
       int lYWidth = (int)g.MeasureString(yMax.ToString().Trim() + " MB", tFont).Width + 10;
       int lXHeight = (int)g.MeasureString(DateTime.Now.ToString("g"), tFont).Height + 10;
       g.Clear(ColorBG);
@@ -1217,7 +1297,7 @@ namespace RestrictionTrackerGTK
       Image iPic = new Bitmap(ImgSize.Width, ImgSize.Height);
       Graphics g = Graphics.FromImage(iPic);
       Font tFont = new Font(FontFamily.GenericSansSerif, 7);
-      g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+      g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
       int lYWidth = (int)g.MeasureString(yMax.ToString().Trim() + " MB", tFont).Width + 10;
       int lXHeight = (int)g.MeasureString(DateTime.Now.ToString("g"), tFont).Height + 10;
       g.Clear(ColorBG);
@@ -1454,16 +1534,16 @@ namespace RestrictionTrackerGTK
     #endregion
 
     #region "Progress"
-    public static System.Drawing.Font MonospaceFont(float Size)
+    public static Font MonospaceFont(float Size)
     {
       try
       {
-        if (System.Drawing.FontFamily.GenericMonospace.IsStyleAvailable(FontStyle.Regular))
-          return (new Font(System.Drawing.FontFamily.GenericMonospace, Size));
+        if (FontFamily.GenericMonospace.IsStyleAvailable(FontStyle.Regular))
+          return (new Font(FontFamily.GenericMonospace, Size));
         else
         {
           System.Collections.Generic.List<string> fontList = new System.Collections.Generic.List<string>();
-          foreach (System.Drawing.FontFamily fam in System.Drawing.FontFamily.Families)
+          foreach (FontFamily fam in FontFamily.Families)
           {
             if (fam.IsStyleAvailable(FontStyle.Regular))
               fontList.Add(fam.Name);
@@ -1520,7 +1600,7 @@ namespace RestrictionTrackerGTK
         }
         using (Graphics g = Graphics.FromImage(bmpTmp))
         {
-          g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+          g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
           g.Clear(ColorBG);
           Font fFont = MonospaceFont(fontSize);
           LinearGradientBrush linGrBrush = TriGradientBrush(new Point(0, 0), new Point(0, ImgSize.Height), ColorA, ColorB, ColorC);
@@ -1567,7 +1647,7 @@ namespace RestrictionTrackerGTK
         {
           using (Graphics g = Graphics.FromImage(bmpTmp))
           {
-            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+            g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
             g.Clear(ColorBG);
             if (Total > 0 & Current > 0)
             {
@@ -1593,7 +1673,7 @@ namespace RestrictionTrackerGTK
         {
           using (Graphics g = Graphics.FromImage(bmpTmp))
           {
-            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+            g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
             g.Clear(ColorBG);
             if (Total > 0 & Current > 0)
             {
@@ -1656,7 +1736,7 @@ namespace RestrictionTrackerGTK
       {
         using (Graphics g = Graphics.FromImage(bmpTmp))
         {
-          g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+          g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
           g.Clear(ColorBG);
           if (Total > 0 & (Down > 0 | Up > 0))
           {
@@ -1691,7 +1771,7 @@ namespace RestrictionTrackerGTK
       {
         using (Graphics g = Graphics.FromImage(bmpTmp))
         {
-          g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+          g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
           g.Clear(ColorBG);
           if (Total > 0 & (Down > 0 | Up > 0))
           {
@@ -1764,7 +1844,7 @@ namespace RestrictionTrackerGTK
       {
         using (Graphics g = Graphics.FromImage(bmpTmp))
         {
-          g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+          g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
           g.Clear(ColorBG);
           if (Total > 0 & Down > 0)
           {
@@ -1790,7 +1870,7 @@ namespace RestrictionTrackerGTK
       {
         using (Graphics g = Graphics.FromImage(bmpTmp))
         {
-          g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+          g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
           g.Clear(ColorBG);
           if (Total > 0 & Down > 0)
           {
@@ -1922,9 +2002,9 @@ namespace RestrictionTrackerGTK
     /// <param name="access">Write permissions required for checking.</param>
     /// <returns>True on available, false on in use.</returns>
     /// <remarks></remarks>
-    public static bool InUseChecker(string Filename, System.IO.FileAccess access)
+    public static bool InUseChecker(string Filename, FileAccess access)
     {
-      if (!System.IO.File.Exists(Filename))
+      if (!File.Exists(Filename))
       {
         return true;
       }
@@ -1937,7 +2017,7 @@ namespace RestrictionTrackerGTK
           {
             case FileAccess.Read:
               //only check for ability to read
-              using (FileStream fs = System.IO.File.Open(Filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
+              using (FileStream fs = File.Open(Filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
               {
                 if (fs.CanRead)
                 {
@@ -1949,7 +2029,7 @@ namespace RestrictionTrackerGTK
               case FileAccess.Write:
               case FileAccess.ReadWrite:
               //check for ability to write
-              using (FileStream fs = System.IO.File.Open(Filename, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite | FileShare.Delete))
+              using (FileStream fs = File.Open(Filename, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite | FileShare.Delete))
               {
                 if (fs.CanWrite)
                 {
@@ -2057,33 +2137,43 @@ namespace RestrictionTrackerGTK
       return (System.Diagnostics.Stopwatch.GetTimestamp() / System.Diagnostics.Stopwatch.Frequency) * 1000;
     }
 
-    public static string ProductVersion()
+    public static string ProductVersion
     {
-      System.Reflection.Assembly srt = System.Reflection.Assembly.GetExecutingAssembly();
-      System.Diagnostics.FileVersionInfo fInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(srt.Location);
-      return fInfo.FileVersion;
+      get
+      {
+        System.Reflection.Assembly srt = System.Reflection.Assembly.GetExecutingAssembly();
+        System.Diagnostics.FileVersionInfo fInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(srt.Location);
+        return fInfo.FileVersion;
+      }
     }
 
-    public static string CompanyName()
+    public static string CompanyName
     {
-      System.Reflection.Assembly srt = System.Reflection.Assembly.GetExecutingAssembly();
-      System.Diagnostics.FileVersionInfo fInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(srt.Location);
-      return fInfo.CompanyName;
+      get
+      {
+        System.Reflection.Assembly srt = System.Reflection.Assembly.GetExecutingAssembly();
+        System.Diagnostics.FileVersionInfo fInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(srt.Location);
+        return fInfo.CompanyName;
+      }
     }
 
-    public static string ProductName()
+    public static string ProductName
     {
-      System.Reflection.Assembly srt = System.Reflection.Assembly.GetExecutingAssembly();
-      System.Diagnostics.FileVersionInfo fInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(srt.Location);
-      return fInfo.ProductName;
+      get
+      {
+        System.Reflection.Assembly srt = System.Reflection.Assembly.GetExecutingAssembly();
+        System.Diagnostics.FileVersionInfo fInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(srt.Location);
+        return fInfo.ProductName;
+      }
     }
 
+    #region "MsgBox"
     public static Gtk.ResponseType ShowMessageBox(Gtk.Window parent, string text, string title, Gtk.DialogFlags flags, Gtk.MessageType icon, Gtk.ButtonsType buttons)
     {
       Gtk.MessageDialog dlg = new Gtk.MessageDialog(parent, flags, icon, buttons, text);
       if (String.IsNullOrEmpty(title))
       {
-        dlg.Title = modFunctions.ProductName();
+        dlg.Title = modFunctions.ProductName;
       }
       else
       {
@@ -2102,7 +2192,7 @@ namespace RestrictionTrackerGTK
       dlg.AddButton(Gtk.Stock.Cancel, Gtk.ResponseType.Cancel);
       if (String.IsNullOrEmpty(title))
       {
-        dlg.Title = modFunctions.ProductName();
+        dlg.Title = modFunctions.ProductName;
       }
       else
       {
@@ -2112,7 +2202,9 @@ namespace RestrictionTrackerGTK
       dlg.Destroy();
       return ret;
     }
+    #endregion
 
+    #region "Image Stuff"
     public static Bitmap GetScreenRect(Rectangle rectIn)
     {
       Gdk.Window window = Gdk.Global.DefaultRootWindow;
@@ -2127,7 +2219,7 @@ namespace RestrictionTrackerGTK
 
     public static Bitmap ReplaceColors(Bitmap bitIn, Color TransparencyKey, Bitmap bitBG)
     {
-      Bitmap bitOut = new Bitmap(bitIn.Width, bitIn.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+      Bitmap bitOut = new Bitmap(bitIn.Width, bitIn.Height, PixelFormat.Format32bppArgb);
       using (Graphics g = Graphics.FromImage(bitOut))
       {
         g.DrawImageUnscaled(bitIn, 0, 0);
@@ -2159,7 +2251,7 @@ namespace RestrictionTrackerGTK
 
     public static Bitmap SwapColors(Bitmap bitIn, Color InColor, Color OutColor)
     {
-      Bitmap bitOut = new Bitmap(bitIn.Width, bitIn.Height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+      Bitmap bitOut = new Bitmap(bitIn.Width, bitIn.Height, PixelFormat.Format32bppPArgb);
       using (Graphics g = Graphics.FromImage(bitOut))
       {
         g.DrawImageUnscaled(bitIn, 0, 0);
@@ -2199,6 +2291,8 @@ namespace RestrictionTrackerGTK
       return new Gdk.Size(s.Width, s.Height);
     }
 
+
+    #region "Colors Conversions"
     public static bool CompareColors(Color a, Color b, bool IgnoreAlpha)
     {
       bool ret = true;
@@ -2249,14 +2343,13 @@ namespace RestrictionTrackerGTK
         ret = false;
       return(ret);
     }
-
-
+    #endregion
 
     public static Gdk.Pixbuf ImageToPixbuf(Image img)
     {
-      using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
+      using (MemoryStream ms = new MemoryStream())
       {
-        img.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+        img.Save(ms, ImageFormat.Bmp);
         ms.Position = 0;
         Gdk.Pixbuf ret = new Gdk.Pixbuf(ms);
         return ret;
@@ -2266,10 +2359,197 @@ namespace RestrictionTrackerGTK
     public static Image PixbufToImage(Gdk.Pixbuf pbf)
     {
       byte[] img = pbf.SaveToBuffer("bmp");
-      using (System.IO.MemoryStream ms = new System.IO.MemoryStream(img))
+      using (MemoryStream ms = new MemoryStream(img))
       {
         Image ret = Image.FromStream(ms);
         return ret;
+      }
+    }
+    #endregion 
+
+    #region "Startup"
+    private static string LinStartup = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/.config/autostart/";
+    private static string OSXStartup = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "~/Library/LaunchAgents/";
+    private static string LinShortcut = "restriction-tracker.desktop";
+    private static string OSXShortcut = "com.realityripple.restrictiontracker.agent.plist";
+    public static bool RunOnStartup
+    {
+      get
+      {
+        if (CurrentOS.IsMac)
+        {
+          if (Directory.Exists(OSXStartup))
+            return File.Exists(OSXStartup + OSXShortcut);
+        }
+        else
+        {
+          if (Directory.Exists(LinStartup))
+            return File.Exists(LinStartup + LinShortcut);
+        }
+        return false;
+      }
+      set
+      {
+        if (CurrentOS.IsMac)
+        {
+          if (value)
+          {
+            GenerateOSXStartupFile();
+          }
+          else
+          {
+            if (Directory.Exists(OSXStartup))
+              if (File.Exists(OSXStartup + OSXShortcut))
+                File.Delete(OSXStartup + OSXShortcut);
+          }
+        }
+        else
+        {
+          if (value)
+          {
+            GenerateLinuxStartupFile();
+          }
+          else
+          {
+            try
+            {
+              if (Directory.Exists(LinStartup))
+                if (File.Exists(LinStartup + LinShortcut))
+                  File.Delete(LinStartup + LinShortcut);
+            }
+            catch (Exception)
+            {
+            }
+          }
+        }
+      }
+    }
+    private static void GenerateLinuxStartupFile()
+    {
+      if (!Directory.Exists(LinStartup))
+        Directory.CreateDirectory(LinStartup);
+      if (!File.Exists(LinStartup + LinShortcut))
+      {
+        try
+        {
+          string sIcon;
+          if (File.Exists("/usr/lib/restrictiontracker/RestrictionTracker-32.png"))
+            sIcon = "Icon=/usr/lib/restrictiontracker/RestrictionTracker-32.png\n";
+          else if (File.Exists("/usr/lib/restrictiontracker/RestrictionTracker-256.png"))
+            sIcon = "Icon=/usr/lib/restrictiontracker/RestrictionTracker-256.png\n";
+          else
+            sIcon = "";
+          string sLink = "[Desktop Entry]\n" + 
+            "Name=" + ProductName + "\n" + 
+            "GenericName=Bandwidth Monitor\n" +
+            "Comment=Monitor and record your ViaSat Satellite network usage\n" +
+            sIcon +
+            "Encoding=ISO-8859-1\n" +
+            "Type=Application\n" +
+            "Version=" + DisplayVersion(ProductVersion) + "\n" +
+            "Exec=mono /usr/lib/restrictiontracker/RestrictionTracker.exe\n" +
+            "Categories=Network;System;Monitor\n" +
+            "StartupNotify=true\n" +
+            "Terminal=0\n" +
+            "TerminalOptions=";
+          File.WriteAllText(LinStartup + LinShortcut, sLink, System.Text.Encoding.GetEncoding(28591));
+        }
+        catch (Exception)
+        {
+        }
+      }
+    }
+    private static void GenerateOSXStartupFile()
+    {
+      if (!Directory.Exists(OSXStartup))
+        Directory.CreateDirectory(OSXStartup);
+      if (!File.Exists(OSXStartup + OSXShortcut))
+      {
+        try
+        {
+          string sLink = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+            "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n" +
+            "<plist version=\"1.0\">\n" +
+            " <dict>\n" +
+            "  <key>Label</key>\n" +
+            "  <string>com.realityripple.restrictiontracker</string>\n" +
+            "  <key>ProgramArguments</key>\n" +
+            "  <array>\n" +
+            "   <string>open</string>\n" +
+            "   <string>-a</string>\n" +
+            "   <string>" + ProductName + "</string>\n" +
+            "  </array>\n" +
+            "  <key>RunAtLoad</key>\n" +
+            "  <true/>\n" +
+            "  <key>KeepAlive</key>\n" +
+            "  <false/>\n" +
+            " </dict>\n" +
+            "</plist>\n";
+          File.WriteAllText(OSXStartup + OSXShortcut, sLink, System.Text.Encoding.UTF8);
+        }
+        catch (Exception)
+        {
+        }
+      }
+    }
+    public static string StartupPath
+    {
+      get
+      {
+        if (CurrentOS.IsMac)
+          return (OSXStartup + OSXShortcut);
+        else
+          return (LinStartup + LinShortcut);
+      }
+    }
+    #endregion
+
+    public static bool RunTerminal(string command)
+    {
+      try
+      {
+        if (CurrentOS.IsMac)
+          System.Diagnostics.Process.Start(command);
+        else if (CurrentOS.IsLinux)
+        {
+          string sConsolePath = "\"" + command + "\"";
+          if (File.Exists("/usr/bin/xfce4-terminal"))
+            System.Diagnostics.Process.Start("xfce4-terminal", "-e 'bash " + sConsolePath + "'");
+          else if (File.Exists("/usr/bin/gnome-terminal"))
+            System.Diagnostics.Process.Start("gnome-terminal", "-e 'bash " + sConsolePath + "'");
+          else if (File.Exists("/usr/bin/konsole"))
+            System.Diagnostics.Process.Start("konsole", "-e " + sConsolePath + "");
+          else if (File.Exists("/usr/bin/mate-terminal"))
+            System.Diagnostics.Process.Start("mate-terminal", "-e 'bash " + sConsolePath + "'");
+          else if (File.Exists("/usr/bin/xterm"))
+            System.Diagnostics.Process.Start("xterm", "-e 'bash " + sConsolePath + "'");
+          else if (File.Exists("/usr/bin/x-terminal-emulator"))
+            System.Diagnostics.Process.Start("x-terminal-emulator", "-e 'bash " + sConsolePath + "'");
+          else
+            System.Diagnostics.Process.Start("bash", sConsolePath);
+        }
+        else
+          System.Diagnostics.Process.Start(command);
+        return true;
+      }
+      catch(Exception)
+      {
+        return false;
+      }
+    }
+
+    private static System.Net.Sockets.TcpListener sckOpen;
+    public static bool RunningLock()
+    {
+      try
+      {
+        sckOpen = new System.Net.Sockets.TcpListener(new System.Net.IPAddress(0x100007F), 23208);
+        sckOpen.Start();
+        return true;
+      }
+      catch(Exception)
+      {
+        return false;
       }
     }
 

@@ -17,9 +17,11 @@ namespace RestrictionTrackerGTK
 		public static void Main(string[] args)
     {
       Application.Init();
+      if (!modFunctions.RunningLock())
+        return;
       try
       {
-        string sUpdatePath = modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + "Setup";
+        string sUpdatePath = System.IO.Path.Combine(modFunctions.AppData, "Setup");
         if (CurrentOS.IsMac)
           sUpdatePath += ".dmg";
         else if (CurrentOS.IsLinux)
@@ -52,7 +54,7 @@ namespace RestrictionTrackerGTK
         {
           fMain.cmdAbout_Click(new object(), new EventArgs());
         };
-        appGroup.AddMenuItem(mnuAbout, "About " + modFunctions.ProductName());
+        appGroup.AddMenuItem(mnuAbout, "About " + modFunctions.ProductName);
         appGroup.AddMenuItem(new MenuItem(), "-");
         MenuItem mnuHistory = new MenuItem();
         mnuHistory.Activated += delegate(object sender, EventArgs e)

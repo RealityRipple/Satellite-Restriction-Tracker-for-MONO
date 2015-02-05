@@ -875,28 +875,6 @@ namespace RestrictionTrackerGTK
       cdlOpen.Destroy();
       if (ret == ResponseType.Ok)
       {
-        if (fRet == fCSV)
-        {
-          if (!sRet.ToLower().EndsWith(".csv"))
-          {
-            sRet = System.IO.Path.GetDirectoryName(sRet) + System.IO.Path.DirectorySeparatorChar + System.IO.Path.GetFileNameWithoutExtension(sRet) + ".csv";
-          }
-        }
-        else if (fRet == fWB)
-        {
-          if (!sRet.ToLower().EndsWith(".wb"))
-          {
-            sRet = System.IO.Path.GetDirectoryName(sRet) + System.IO.Path.DirectorySeparatorChar + System.IO.Path.GetFileNameWithoutExtension(sRet) + ".wb";
-          }
-        }
-        else
-        {
-          if (!sRet.ToLower().EndsWith(".xml"))
-          {
-            sRet = System.IO.Path.GetDirectoryName(sRet) + System.IO.Path.DirectorySeparatorChar + System.IO.Path.GetFileNameWithoutExtension(sRet) + ".xml";
-          }
-        }
-
         ShowProgress("Importing DataBase...", "Opening File...");
         DataBase wbImport = new DataBase(sRet, true);
         wbImport.ProgressState += usageDB_ProgressState;
@@ -961,21 +939,21 @@ namespace RestrictionTrackerGTK
         {
           if (!sRet.ToLower().EndsWith(".csv"))
           {
-            sRet = System.IO.Path.GetDirectoryName(sRet) + System.IO.Path.DirectorySeparatorChar + System.IO.Path.GetFileNameWithoutExtension(sRet) + ".csv";
+            sRet += ".csv";
           }
         }
         else if (fRet == fWB)
         {
           if (!sRet.ToLower().EndsWith(".wb"))
           {
-            sRet = System.IO.Path.GetDirectoryName(sRet) + System.IO.Path.DirectorySeparatorChar + System.IO.Path.GetFileNameWithoutExtension(sRet) + ".wb";
+            sRet += ".wb";
           }
         }
         else
         {
           if (!sRet.ToLower().EndsWith(".xml"))
           {
-            sRet = System.IO.Path.GetDirectoryName(sRet) + System.IO.Path.DirectorySeparatorChar + System.IO.Path.GetFileNameWithoutExtension(sRet) + ".xml";
+            sRet += ".xml";
           }
         }
 

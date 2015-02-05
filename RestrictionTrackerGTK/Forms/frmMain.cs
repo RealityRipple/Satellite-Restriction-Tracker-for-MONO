@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Gtk;
 using RestrictionLibrary;
 using System.Drawing;
@@ -25,21 +26,40 @@ namespace RestrictionTrackerGTK
       {
         if (String.IsNullOrEmpty(_IconFolder))
         {
-          _IconFolder = modFunctions.AppData + System.IO.Path.DirectorySeparatorChar.ToString() + "trayIcons";
+          _IconFolder = System.IO.Path.Combine(modFunctions.AppData, "trayIcons") + System.IO.Path.DirectorySeparatorChar.ToString();
         }
-        if (!System.IO.Directory.Exists(_IconFolder))
+        if (!Directory.Exists(_IconFolder))
         {
-          System.IO.Directory.CreateDirectory(_IconFolder);
+          Directory.CreateDirectory(_IconFolder);
         }
         return _IconFolder;
       }
     }
     private uint tmrUpdate;
     private uint tmrIcon;
+    private uint tmrSpeed;
     private uint tmrStatus;
     private uint tmrShow;
     private delegate void MethodInvoker();
     private delegate void ParamaterizedInvoker(object parameter);
+    private clsUpdate updateChecker;
+    private void updateCheckerEvent(bool Add)
+    {
+      if (Add)
+      {
+        updateChecker.CheckResult += updateChecker_CheckResult;
+        updateChecker.DownloadingUpdate += updateChecker_DownloadingUpdate;
+        updateChecker.DownloadResult += updateChecker_DownloadResult;
+        updateChecker.UpdateProgressChanged += updateChecker_UpdateProgressChanged;
+      }
+      else
+      {
+        updateChecker.CheckResult -= updateChecker_CheckResult;
+        updateChecker.DownloadingUpdate -= updateChecker_DownloadingUpdate;
+        updateChecker.DownloadResult -= updateChecker_DownloadResult;
+        updateChecker.UpdateProgressChanged -= updateChecker_UpdateProgressChanged;
+      }
+    }
     private TaskbarNotifier taskNotifier;
     private void taskNotifierEvent(bool Add)
     {
@@ -112,6 +132,7 @@ namespace RestrictionTrackerGTK
     private string sDisp_TT_M = sDISPLAY_TT_NEXT.Replace("%t", sDISPLAY_TT_T_SOON);
     private string sDisp_TT_T = sDISPLAY_TT_T_SOON;
     private string sDisp_TT_E = "";
+    private string sUpdatePath = System.IO.Path.Combine(modFunctions.AppDataPath, "Setup");
     private AppSettings mySettings;
     private string sAccount;
     private string sPassword;
@@ -436,6 +457,11 @@ namespace RestrictionTrackerGTK
     #region "Form Events"
     public frmMain(): base (Gtk.WindowType.Toplevel)
     {
+      sUpdatePath = modFunctions.AppDataPath + "Setup";
+      if (CurrentOS.IsMac)
+        sUpdatePath += ".dmg";
+      else if (CurrentOS.IsLinux)
+        sUpdatePath += ".bz2.sh";
       Gdk.Geometry minGeo = new Gdk.Geometry();
       minGeo.MinWidth = 450;
       minGeo.MinHeight = 200;
@@ -527,7 +553,7 @@ namespace RestrictionTrackerGTK
               tmrShow = 0;
               ((StatusIcon)trayIcon).Activate += OnTrayIconActivate;
               ((StatusIcon)trayIcon).PopupMenu += OnTrayIconPopup;
-              SetTrayText(modFunctions.ProductName());
+              SetTrayText(modFunctions.ProductName);
               firstRestore = false;
               StartupCleanup();
             }
@@ -555,7 +581,7 @@ namespace RestrictionTrackerGTK
           MakeIconListing();
           ((StatusIcon)trayIcon).Activate += OnTrayIconActivate;
           ((StatusIcon)trayIcon).PopupMenu += OnTrayIconPopup;
-          SetTrayText(modFunctions.ProductName());
+          SetTrayText(modFunctions.ProductName);
           firstRestore = false;
         }
         else
@@ -568,12 +594,12 @@ namespace RestrictionTrackerGTK
             TrayStyle = 2;
             ((AppIndicator.ApplicationIndicator)trayIcon).Menu = mnuTray;
             ((AppIndicator.ApplicationIndicator)trayIcon).Status = AppIndicator.Status.Active;
-            SetTrayText(modFunctions.ProductName());
+            SetTrayText(modFunctions.ProductName);
             firstRestore = false;
           }
           catch (Exception)
           {
-            System.IO.Directory.Delete(IconFolder, true);
+            Directory.Delete(IconFolder, true);
             TrayStyle = 0;
             firstRestore = true;
           }
@@ -586,25 +612,25 @@ namespace RestrictionTrackerGTK
     {
       if (trayRes < 8)
         trayRes = 8;
-      string[] sFiles = System.IO.Directory.GetFiles(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString());
+      string[] sFiles = Directory.GetFiles(IconFolder);
       foreach (string sFile in sFiles)
       {
         if (System.IO.Path.GetExtension(sFile).ToLower() == ".png")
-          System.IO.File.Delete(sFile);
+          File.Delete(sFile);
       }
-      ResizeIcon("norm.ico").Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "norm.png", System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("free.ico").Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "free.png", System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("restricted.ico").Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "restricted.png", System.Drawing.Imaging.ImageFormat.Png);
-      ResizePng("error.png").Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "error.png", System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("throbsprite.1.ico").Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "throb_1.png", System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("throbsprite.2.ico").Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "throb_2.png", System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("throbsprite.3.ico").Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "throb_3.png", System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("throbsprite.4.ico").Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "throb_4.png", System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("throbsprite.5.ico").Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "throb_5.png", System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("throbsprite.7.ico").Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "throb_7.png", System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("throbsprite.8.ico").Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "throb_8.png", System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("throbsprite.9.ico").Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "throb_9.png", System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("throbsprite.10.ico").Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "throb_10.png", System.Drawing.Imaging.ImageFormat.Png);
+      ResizeIcon("norm.ico").Save(System.IO.Path.Combine(IconFolder, "norm.png"), System.Drawing.Imaging.ImageFormat.Png);
+      ResizeIcon("free.ico").Save(System.IO.Path.Combine(IconFolder, "free.png"), System.Drawing.Imaging.ImageFormat.Png);
+      ResizeIcon("restricted.ico").Save(System.IO.Path.Combine(IconFolder, "restricted.png"), System.Drawing.Imaging.ImageFormat.Png);
+      ResizePng("error.png").Save(System.IO.Path.Combine(IconFolder, "error.png"), System.Drawing.Imaging.ImageFormat.Png);
+      ResizeIcon("throbsprite.1.ico").Save(System.IO.Path.Combine(IconFolder, "throb_1.png"), System.Drawing.Imaging.ImageFormat.Png);
+      ResizeIcon("throbsprite.2.ico").Save(System.IO.Path.Combine(IconFolder, "throb_2.png"), System.Drawing.Imaging.ImageFormat.Png);
+      ResizeIcon("throbsprite.3.ico").Save(System.IO.Path.Combine(IconFolder, "throb_3.png"), System.Drawing.Imaging.ImageFormat.Png);
+      ResizeIcon("throbsprite.4.ico").Save(System.IO.Path.Combine(IconFolder, "throb_4.png"), System.Drawing.Imaging.ImageFormat.Png);
+      ResizeIcon("throbsprite.5.ico").Save(System.IO.Path.Combine(IconFolder, "throb_5.png"), System.Drawing.Imaging.ImageFormat.Png);
+      ResizeIcon("throbsprite.7.ico").Save(System.IO.Path.Combine(IconFolder, "throb_7.png"), System.Drawing.Imaging.ImageFormat.Png);
+      ResizeIcon("throbsprite.8.ico").Save(System.IO.Path.Combine(IconFolder, "throb_8.png"), System.Drawing.Imaging.ImageFormat.Png);
+      ResizeIcon("throbsprite.9.ico").Save(System.IO.Path.Combine(IconFolder, "throb_9.png"), System.Drawing.Imaging.ImageFormat.Png);
+      ResizeIcon("throbsprite.10.ico").Save(System.IO.Path.Combine(IconFolder, "throb_10.png"), System.Drawing.Imaging.ImageFormat.Png);
       MakeCustomIconListing();
     }
     private System.Drawing.Bitmap ResizeIcon(string resource)
@@ -652,11 +678,11 @@ namespace RestrictionTrackerGTK
             doWB = true;
         }
       }
-      string[] sFiles = System.IO.Directory.GetFiles(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString());
+      string[] sFiles = Directory.GetFiles(IconFolder);
       foreach (string sFile in sFiles)
       {
         if ((System.IO.Path.GetExtension(sFile).ToLower() == ".png") && (System.IO.Path.GetFileName(sFile).ToLower().Substring(0, 6) == "graph_"))
-          System.IO.File.Delete(sFile);
+          File.Delete(sFile);
       }
       if (doBoth)
       {
@@ -666,12 +692,12 @@ namespace RestrictionTrackerGTK
           {
             using (Gdk.Pixbuf pIco = CreateTrayIcon(down, trayRes, up, trayRes))
             {
-              pIco.Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "graph_wb_" + down + "x" + up + ".png", "png");
+              pIco.Save(System.IO.Path.Combine(IconFolder, "graph_wb_" + down + "x" + up + ".png"), "png");
             }
           }
           using (Gdk.Pixbuf pIco = CreateRTrayIcon(up, trayRes))
           {
-            pIco.Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "graph_r_" + up + ".png", "png");
+            pIco.Save(System.IO.Path.Combine(IconFolder, "graph_r_" + up + ".png"), "png");
           }
         }
       }
@@ -683,7 +709,7 @@ namespace RestrictionTrackerGTK
           {
             using (Gdk.Pixbuf pIco = CreateTrayIcon(down, trayRes, up, trayRes))
             {
-              pIco.Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "graph_wb_" + down + "x" + up + ".png", "png");
+              pIco.Save(System.IO.Path.Combine(IconFolder, "graph_wb_" + down + "x" + up + ".png"), "png");
             }
           }
         }
@@ -694,7 +720,7 @@ namespace RestrictionTrackerGTK
         {
           using (Gdk.Pixbuf pIco = CreateRTrayIcon(up, trayRes))
           {
-            pIco.Save(IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + "graph_r_" + up + ".png", "png");
+            pIco.Save(System.IO.Path.Combine(IconFolder, "graph_r_" + up + ".png"), "png");
           }
         }
       }
@@ -1030,7 +1056,7 @@ namespace RestrictionTrackerGTK
       }
       else if (myPanel == localRestrictionTracker.SatHostTypes.Other)
       {
-        lblNothing.Text = modFunctions.ProductName();
+        lblNothing.Text = modFunctions.ProductName;
         modFunctions.PrepareLink(lblRRS);
         if (markupList.ContainsKey(lblRRS.Name + lblRRS.Handle.ToString("x")))
         {
@@ -1041,12 +1067,12 @@ namespace RestrictionTrackerGTK
             markupColor = markup.Substring(markup.IndexOf("foreground="));
             markupColor = " " + markupColor.Substring(0, markupColor.IndexOf("\">") + 1);
           }
-          markupList[lblRRS.Name + lblRRS.Handle.ToString("x")] = "<a href=\"http://realityripple.com/\"><span size=\"" + GetFontSize() + "\"" + markupColor + ">by " + modFunctions.CompanyName() + "</span></a>";
+          markupList[lblRRS.Name + lblRRS.Handle.ToString("x")] = "<a href=\"http://realityripple.com/\"><span size=\"" + GetFontSize() + "\"" + markupColor + ">by " + modFunctions.CompanyName + "</span></a>";
           lblRRS.Markup = markupList[lblRRS.Name + lblRRS.Handle.ToString("x")];
         }
         else
         {
-          markupList.Add(lblRRS.Name + lblRRS.Handle.ToString("x"), "<a href=\"http://realityripple.com/\">by " + modFunctions.CompanyName() + "</a>");
+          markupList.Add(lblRRS.Name + lblRRS.Handle.ToString("x"), "<a href=\"http://realityripple.com/\">by " + modFunctions.CompanyName + "</a>");
           lblRRS.Markup = markupList[lblRRS.Name + lblRRS.Handle.ToString("x")];
         }
         lblRRS.TooltipText = "Visit RealityRipple.com.";
@@ -1308,40 +1334,45 @@ namespace RestrictionTrackerGTK
           {
             NextGrabTick = modFunctions.TickCount();
           }
-          if (NextGrabTick - modFunctions.TickCount() < 5 * 60 * 1000)
+          if (NextGrabTick - modFunctions.TickCount() < mySettings.StartWait * 60 * 1000)
           {
-            NextGrabTick = modFunctions.TickCount() + (5 * 60 * 1000);
+            NextGrabTick = modFunctions.TickCount() + (mySettings.StartWait * 60 * 1000);
           }
         }
         if (modFunctions.TickCount() >= NextGrabTick)
         {
-          if (!String.IsNullOrEmpty(sAccount))
+          if ((mySettings.UpdateType != AppSettings.UpdateTypes.None) && (Math.Abs(DateTime.Now.Subtract(mySettings.LastUpdate).TotalDays) > mySettings.UpdateTime))
+            CheckForUpdates();
+          else
           {
-            if (String.IsNullOrEmpty(sProvider))
+            if (!String.IsNullOrEmpty(sAccount))
             {
-              sProvider = sAccount.Substring(sAccount.LastIndexOf("@") + 1).ToLower();
-              SetStatusText("Reloading", "Reloading History...", false);
-              modDB.LOG_Initialize(sAccount, false);
-              if (ClosingTime)
+              if (String.IsNullOrEmpty(sProvider))
               {
-                return true;
+                sProvider = sAccount.Substring(sAccount.LastIndexOf("@") + 1).ToLower();
+                SetStatusText("Reloading", "Reloading History...", false);
+                modDB.LOG_Initialize(sAccount, false);
+                if (ClosingTime)
+                {
+                  return true;
+                }
+              }
+              if (Math.Abs(modFunctions.DateDiff(modFunctions.DateInterval.Minute, modDB.LOG_GetLast(), DateTime.Now)) > 10)
+              {
+                if (!string.IsNullOrEmpty(sProvider) && !string.IsNullOrEmpty(sPassword))
+                {
+                  updateFull = false;
+                  NextGrabTick = long.MaxValue;
+                  EnableProgressIcon();
+                  SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Connection...", false);
+                  MethodInvoker UsageInvoker = GetUsage;
+                  UsageInvoker.BeginInvoke(null, null);
+                  return true;
+                }
               }
             }
-            if (Math.Abs(modFunctions.DateDiff(modFunctions.DateInterval.Minute, modDB.LOG_GetLast(), DateTime.Now)) > 10)
-            {
-              if (!string.IsNullOrEmpty(sProvider) && !string.IsNullOrEmpty(sPassword))
-              {
-                updateFull = false;
-                NextGrabTick = long.MaxValue;
-                EnableProgressIcon();
-                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Connection...", false);
-                MethodInvoker UsageInvoker = GetUsage;
-                UsageInvoker.BeginInvoke(null, null);
-                return true;
-              }
-            }
+            NextGrabTick = modFunctions.TickCount() + msInterval;
           }
-          NextGrabTick = modFunctions.TickCount() + msInterval;
         }
       }
       return true;
@@ -2235,7 +2266,7 @@ namespace RestrictionTrackerGTK
               if (taskNotifier != null)
               {
                 taskNotifierEvent(true);
-                taskNotifier.Show("Excessive Usage Detected", modFunctions.ProductName() + " has logged a usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
+                taskNotifier.Show("Excessive Usage Detected", modFunctions.ProductName + " has logged a usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
               }
               lastBalloon = modFunctions.TickCount();
               break;
@@ -2354,7 +2385,7 @@ namespace RestrictionTrackerGTK
               if (taskNotifier != null)
               {
                 taskNotifierEvent(true);
-                taskNotifier.Show("Excessive Usage Detected", modFunctions.ProductName() + " has logged a usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
+                taskNotifier.Show("Excessive Usage Detected", modFunctions.ProductName + " has logged a usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
               }
               lastBalloon = modFunctions.TickCount();
               break;
@@ -2367,7 +2398,7 @@ namespace RestrictionTrackerGTK
               if (taskNotifier != null)
               {
                 taskNotifierEvent(true);
-                taskNotifier.Show("Excessive Off-Peak Usage Detected", modFunctions.ProductName() + " has logged an Off-Peak usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
+                taskNotifier.Show("Excessive Off-Peak Usage Detected", modFunctions.ProductName + " has logged an Off-Peak usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
               }
               lastBalloon = modFunctions.TickCount();
               break;
@@ -2486,7 +2517,7 @@ namespace RestrictionTrackerGTK
               if (taskNotifier != null)
               {
                 taskNotifierEvent(true);
-                taskNotifier.Show("Excessive Download Detected", modFunctions.ProductName() + " has logged a download of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
+                taskNotifier.Show("Excessive Download Detected", modFunctions.ProductName + " has logged a download of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
               }
               lastBalloon = modFunctions.TickCount();
               break;
@@ -2499,7 +2530,7 @@ namespace RestrictionTrackerGTK
               if (taskNotifier != null)
               {
                 taskNotifierEvent(true);
-                taskNotifier.Show("Excessive Upload Detected", modFunctions.ProductName() + " has logged an upload usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
+                taskNotifier.Show("Excessive Upload Detected", modFunctions.ProductName + " has logged an upload usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
               }
               lastBalloon = modFunctions.TickCount();
               break;
@@ -3005,7 +3036,7 @@ namespace RestrictionTrackerGTK
         }
       }
       if (TrayStyle == 1)
-        ((StatusIcon)trayIcon).File = IconFolder + System.IO.Path.DirectorySeparatorChar.ToString() + resource + ".png";
+        ((StatusIcon)trayIcon).File = System.IO.Path.Combine(IconFolder, resource + ".png");
     }
     private void SetTrayText(string tooltip)
     {
@@ -3132,6 +3163,343 @@ namespace RestrictionTrackerGTK
     }
     #endregion
     #endregion
+    #region "Update Events"
+    private void CheckForUpdates()
+    {
+      if (MainClass.fAbout != null)
+      {
+        if (MainClass.fAbout.Visible)
+        {
+          return;
+        }
+      }
+      SetStatusText(modDB.LOG_GetLast().ToString("g"), "Checking for Software Update...", false);
+      NextGrabTick = modFunctions.TickCount() + (mySettings.Timeout * 1000);
+      if (updateChecker != null)
+      {
+        updateCheckerEvent(false);
+        updateChecker.Dispose();
+        updateChecker = null;
+      }
+      updateChecker = new clsUpdate();
+      updateCheckerEvent(true);
+      updateChecker.CheckVersion();
+    }
+    private void updateChecker_CheckResult(object sender, clsUpdate.CheckEventArgs e)
+    {
+      EventArgs ea = (EventArgs)e;
+      Gtk.Application.Invoke(sender, ea, Main_UpdateCheckerCheckResult);
+    }
+    private void Main_UpdateCheckerCheckResult(object sender, EventArgs ea)
+    {
+      clsUpdate.CheckEventArgs e = (clsUpdate.CheckEventArgs) ea;
+      mySettings.LastUpdate = DateTime.Now;
+      mySettings.Save();
+      if (e.Error == null && !e.Cancelled)
+      {
+        if (mySettings.UpdateType == AppSettings.UpdateTypes.Ask)
+        {
+          dlgUpdate fUpdate;
+          switch (e.Result)
+          {
+            case clsUpdate.CheckEventArgs.ResultType.NewUpdate:
+              fUpdate = new dlgUpdate();
+              fUpdate.NewUpdate(e.Version, false);
+              switch ((Gtk.ResponseType)fUpdate.Run())
+              {
+                case ResponseType.Yes:
+                  if (remoteData != null)
+                  {
+                    remoteData.Dispose();
+                    remoteData = null;
+                  }
+                  if (localData != null)
+                  {
+                    localData.Dispose();
+                    localData = null;
+                  }
+                  updateChecker.DownloadUpdate(sUpdatePath);
+                  break;
+                case ResponseType.No:
+                  if (updateChecker != null)
+                  {
+                    updateCheckerEvent(false);
+                    updateChecker.Dispose();
+                    updateChecker = null;
+                  }
+                  NextGrabTick = long.MinValue;
+                  break;
+                case ResponseType.Ok:
+                  if (remoteData != null)
+                  {
+                    remoteData.Dispose();
+                    remoteData = null;
+                  }
+                  if (localData != null)
+                  {
+                    localData.Dispose();
+                    localData = null;
+                  }
+                  updateChecker.DownloadUpdate(sUpdatePath);
+                  mySettings.UpdateBETA = false;
+                  mySettings.Save();
+                  break;
+                case ResponseType.Cancel:
+                  mySettings.UpdateBETA = false;
+                  mySettings.Save();
+                  if (updateChecker != null)
+                  {
+                    updateCheckerEvent(false);
+                    updateChecker.Dispose();
+                    updateChecker = null;
+                  }
+                  NextGrabTick = long.MinValue;
+                  break;
+                default:
+                  if (updateChecker != null)
+                  {
+                    updateCheckerEvent(false);
+                    updateChecker.Dispose();
+                    updateChecker = null;
+                  }
+                  NextGrabTick = long.MinValue;
+                  break;
+              }
+              fUpdate.Destroy();
+              fUpdate.Dispose();
+              fUpdate = null;
+              break;
+            case clsUpdate.CheckEventArgs.ResultType.NewBeta:
+              if (mySettings.UpdateBETA)
+              {
+                fUpdate = new dlgUpdate();
+                fUpdate.NewUpdate(e.Version, true);
+                switch ((Gtk.ResponseType)fUpdate.Run())
+                {
+                  case ResponseType.Yes:
+                    if (remoteData != null)
+                    {
+                      remoteData.Dispose();
+                      remoteData = null;
+                    }
+                    if (localData != null)
+                    {
+                      localData.Dispose();
+                      localData = null;
+                    }
+                    updateChecker.DownloadUpdate(sUpdatePath);
+                    break;
+                    case ResponseType.No:
+                    if (updateChecker != null)
+                    {
+                      updateCheckerEvent(false);
+                      updateChecker.Dispose();
+                      updateChecker = null;
+                    }
+                    NextGrabTick = long.MinValue;
+                    break;
+                    case ResponseType.Ok:
+                    if (remoteData != null)
+                    {
+                      remoteData.Dispose();
+                      remoteData = null;
+                    }
+                    if (localData != null)
+                    {
+                      localData.Dispose();
+                      localData = null;
+                    }
+                    updateChecker.DownloadUpdate(sUpdatePath);
+                    mySettings.UpdateBETA = false;
+                    mySettings.Save();
+                    break;
+                    case ResponseType.Cancel:
+                    mySettings.UpdateBETA = false;
+                    mySettings.Save();
+                    if (updateChecker != null)
+                    {
+                      updateCheckerEvent(false);
+                      updateChecker.Dispose();
+                      updateChecker = null;
+                    }
+                    NextGrabTick = long.MinValue;
+                    break;
+                    default:
+                    if (updateChecker != null)
+                    {
+                      updateCheckerEvent(false);
+                      updateChecker.Dispose();
+                      updateChecker = null;
+                    }
+                    NextGrabTick = long.MinValue;
+                    break;
+                }
+                fUpdate.Destroy();
+                fUpdate.Dispose();
+                fUpdate = null;
+              }
+              break;
+            default:
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), string.Empty, false);
+              if (updateChecker != null)
+              {
+                updateCheckerEvent(false);
+                updateChecker.Dispose();
+                updateChecker = null;
+              }
+              NextGrabTick = long.MinValue;
+              break;
+          }
+        }
+        else
+        {
+          switch (e.Result)
+          {
+            case clsUpdate.CheckEventArgs.ResultType.NewUpdate:
+              if (remoteData != null)
+              {
+                remoteData.Dispose();
+                remoteData = null;
+              }
+              if (localData != null)
+              {
+                localData.Dispose();
+                localData = null;
+              }
+              updateChecker.DownloadUpdate(sUpdatePath);
+              break;
+            case clsUpdate.CheckEventArgs.ResultType.NewBeta:
+              if (mySettings.UpdateBETA)
+              {
+                if (remoteData != null)
+                {
+                  remoteData.Dispose();
+                  remoteData = null;
+                }
+                if (localData != null)
+                {
+                  localData.Dispose();
+                  localData = null;
+                }
+                updateChecker.DownloadUpdate(sUpdatePath);
+              }
+              break;
+            default:
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), string.Empty, false);
+              if (updateChecker != null)
+              {
+                updateCheckerEvent(false);
+                updateChecker.Dispose();
+                updateChecker = null;
+              }
+              NextGrabTick = long.MinValue;
+              break;
+          }
+        }
+      }
+    }
+    private void updateChecker_DownloadingUpdate(object sender, EventArgs e)
+    {
+      Gtk.Application.Invoke(sender, e, Main_UpdateCheckerDownloadingUpdate);
+    }
+    private void Main_UpdateCheckerDownloadingUpdate(object sender, EventArgs e)
+    {
+      tmrSpeed = GLib.Timeout.Add(1000, tmrUpdate_Tick);
+      SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Software Update...", false);
+    }
+    private void updateChecker_DownloadResult(object sender, clsUpdate.DownloadEventArgs e)
+    {
+      EventArgs ea = (EventArgs)e;
+      Gtk.Application.Invoke(sender, ea, Main_UpdateCheckerDownloadResult);
+    }
+    private void Main_UpdateCheckerDownloadResult(object sender, EventArgs ea)
+    {
+      clsUpdate.DownloadEventArgs e = (clsUpdate.DownloadEventArgs) ea;
+      if (tmrSpeed != 0)
+      {
+        GLib.Source.Remove(tmrSpeed);
+        tmrSpeed = 0;
+      }
+      if (e.Error != null)
+      {
+        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Software Update Error: " + e.Error.Message, true);
+        NextGrabTick = long.MinValue;
+      }
+      else if (e.Cancelled)
+      {
+        if (updateChecker != null)
+        {
+          updateCheckerEvent(false);
+          updateChecker.Dispose();
+          updateChecker = null;
+        }
+        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Software Update Cancelled!", true);
+        NextGrabTick = long.MinValue;
+      }
+      else
+      {
+        if (updateChecker != null)
+        {
+          updateCheckerEvent(false);
+          updateChecker.Dispose();
+          updateChecker = null;
+        }
+        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Software Update Download Complete", false);
+        if (File.Exists(sUpdatePath))
+        {
+          if (modFunctions.RunTerminal(sUpdatePath))
+          {
+            Gtk.Application.Quit();
+          }
+          else
+          {
+            System.Diagnostics.Process.Start(System.IO.Path.GetDirectoryName(sUpdatePath));
+            modFunctions.ShowMessageBox(this, "The Update failed to start.\n\nPlease run " + System.IO.Path.GetFileName(sUpdatePath) + " manually to update.", "Error Running Update", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+          }
+        }
+        else
+        {
+          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Software Update Failure!", true);
+          NextGrabTick = long.MinValue;
+        }
+      }
+    }
+    private long upCurSize;
+    private long upTotalSize;
+    private ulong upDownSpeed;
+    private uint upCurPercent;
+    private void updateChecker_UpdateProgressChanged(object sender, clsUpdate.ProgressEventArgs e)
+    {
+      EventArgs ea = (EventArgs)e;
+      Gtk.Application.Invoke(sender, ea, Main_UpdateCheckerUpdateProgressChanged);
+    }
+    private void Main_UpdateCheckerUpdateProgressChanged(object sender, EventArgs ea)
+    {
+      clsUpdate.ProgressEventArgs e = (clsUpdate.ProgressEventArgs) ea;
+      upCurSize = e.BytesReceived;
+      upTotalSize = e.TotalBytesToReceive;
+      upCurPercent = (uint) e.ProgressPercentage;
+    }
+    long upLastSize;
+    private bool tmrSpeed_Tick()
+    {
+      if (upCurSize > upLastSize)
+        upDownSpeed = (ulong) (upCurSize - upLastSize);
+      else
+        upDownSpeed = 0;
+      upLastSize = upCurSize;
+      string sProgress = "(" + upCurPercent + "%)";
+      string sStatus = modFunctions.ByteSize((ulong) upCurSize) + " of " + modFunctions.ByteSize((ulong) upTotalSize) + " at " + modFunctions.ByteSize(upDownSpeed) + "/s...";
+      if (upTotalSize == 0)
+      {
+        sStatus = "Downloading Update (Waiting for Response)...";
+        sProgress = "(Waiting for Response)";
+      }
+      SetStatusText("Downloading Update " + sProgress, sStatus, false);
+      return upCurSize < upTotalSize;
+    }
+
+    #endregion
     #region "Useful Functions"
     private long StrToVal(string str)
     {
@@ -3175,9 +3543,9 @@ namespace RestrictionTrackerGTK
       {
         taskNotifierEvent(true);
         if (ret)
-          taskNotifier.Show("Error Report Sent", "Your report has been received by " + modFunctions.CompanyName() + ".\nThank you for helping to improve " + modFunctions.ProductName() + "!", 200, 15 * 1000, 100);
+          taskNotifier.Show("Error Report Sent", "Your report has been received by " + modFunctions.CompanyName + ".\nThank you for helping to improve " + modFunctions.ProductName + "!", 200, 15 * 1000, 100);
         else
-          taskNotifier.Show("Error Reporting Error", modFunctions.ProductName() + " was unable to contact the " + modFunctions.CompanyName() + " servers. Please check your internet connection.", 200, 30 * 1000, 100);
+          taskNotifier.Show("Error Reporting Error", modFunctions.ProductName + " was unable to contact the " + modFunctions.CompanyName + " servers. Please check your internet connection.", 200, 30 * 1000, 100);
       }
     }
     private void FailFile(string sFail)
@@ -3189,7 +3557,7 @@ namespace RestrictionTrackerGTK
         if (taskNotifier != null)
         {
           taskNotifierEvent(true);
-          taskNotifier.Show("Error Reading Page Data", modFunctions.ProductName() + " encountered data it does not understand.\nClick this alert to report the problem to " + modFunctions.CompanyName() + ".", 200, 3 * 60 * 1000, 100);
+          taskNotifier.Show("Error Reading Page Data", modFunctions.ProductName + " encountered data it does not understand.\nClick this alert to report the problem to " + modFunctions.CompanyName + ".", 200, 3 * 60 * 1000, 100);
         }
       }
     }

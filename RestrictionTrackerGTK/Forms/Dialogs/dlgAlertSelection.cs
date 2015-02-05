@@ -1,6 +1,7 @@
 using System;
-using Gtk;
 using System.Drawing;
+using System.IO;
+using Gtk;
 
 namespace RestrictionTrackerGTK
 {
@@ -65,7 +66,7 @@ namespace RestrictionTrackerGTK
         lstStyles.Selection.SelectIter(iter);
       }
 
-      foreach (string sFile in System.IO.Directory.GetFiles(modFunctions.AppData))
+      foreach (string sFile in Directory.GetFiles(modFunctions.AppData))
       {
         string sTitle = System.IO.Path.GetFileNameWithoutExtension(sFile);
         string sExt = System.IO.Path.GetExtension(sFile).ToLower();
@@ -134,22 +135,22 @@ namespace RestrictionTrackerGTK
           {
             TreeIter iFirst = new TreeIter();
             lstStyles.Model.GetIterFirst(out iFirst);
-            if (System.IO.File.Exists(modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + sTitle + ".tar.gz"))
+            if (File.Exists(System.IO.Path.Combine(modFunctions.AppDataPath, sTitle + ".tar.gz")))
             {
               lstStyles.Selection.SelectIter(iFirst);
-              System.IO.File.Delete(modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + sTitle + ".tar.gz");
+              File.Delete(System.IO.Path.Combine(modFunctions.AppDataPath, sTitle + ".tar.gz"));
               lstStyles.RemoveItem(sTitle);
             }
-            else if (System.IO.File.Exists(modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + sTitle + ".tgz"))
+            else if (File.Exists(System.IO.Path.Combine(modFunctions.AppDataPath, sTitle + ".tgz")))
             {
               lstStyles.Selection.SelectIter(iFirst);
-              System.IO.File.Delete(modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + sTitle + ".tgz");
+              File.Delete(System.IO.Path.Combine(modFunctions.AppDataPath, sTitle + ".tgz"));
               lstStyles.RemoveItem(sTitle);
             }
-            else if (System.IO.File.Exists(modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + sTitle + ".tar"))
+            else if (File.Exists(System.IO.Path.Combine(modFunctions.AppDataPath, sTitle + ".tar")))
             {
               lstStyles.Selection.SelectIter(iFirst);
-              System.IO.File.Delete(modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + sTitle + ".tar");
+              File.Delete(System.IO.Path.Combine(modFunctions.AppDataPath, sTitle + ".tar"));
               lstStyles.RemoveItem(sTitle);
             }
             else
@@ -328,7 +329,7 @@ namespace RestrictionTrackerGTK
             }
             if (sExt == ".tgz" || sExt == ".tar.gz" || sExt == ".tar")
             {
-              System.IO.File.Copy(StylePath, modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + sTitle + sExt, true);
+              File.Copy(StylePath, System.IO.Path.Combine(modFunctions.AppData, sTitle + sExt), true);
               TreeIter iter;
               lstStyles.Model.GetIterFirst(out iter);
               bool Add = true;
@@ -419,7 +420,7 @@ namespace RestrictionTrackerGTK
             }
             if (sExt == ".tgz" || sExt == ".tar.gz" || sExt == ".tar")
             {
-              System.IO.File.Copy(StylePath, modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + sTitle + sExt, true);
+              File.Copy(StylePath, System.IO.Path.Combine(modFunctions.AppData, sTitle + sExt), true);
               TreeIter iter;
               lstStyles.Model.GetIterFirst(out iter);
               bool Add = true;
@@ -483,22 +484,22 @@ namespace RestrictionTrackerGTK
         {
           TreeIter iFirst = new TreeIter();
           lstStyles.Model.GetIterFirst(out iFirst);
-          if (System.IO.File.Exists(modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + sTitle + ".tar.gz"))
+          if (File.Exists(System.IO.Path.Combine(modFunctions.AppData, sTitle + ".tar.gz")))
           {
             lstStyles.Selection.SelectIter(iFirst);
-            System.IO.File.Delete(modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + sTitle + ".tar.gz");
+            File.Delete(System.IO.Path.Combine(modFunctions.AppData, sTitle + ".tar.gz"));
             lstStyles.RemoveItem(sTitle);
           }
-          else if (System.IO.File.Exists(modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + sTitle + ".tgz"))
+          else if (File.Exists(System.IO.Path.Combine(modFunctions.AppData, sTitle + ".tgz")))
           {
             lstStyles.Selection.SelectIter(iFirst);
-            System.IO.File.Delete(modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + sTitle + ".tgz");
+            File.Delete(System.IO.Path.Combine(modFunctions.AppData, sTitle + ".tgz"));
             lstStyles.RemoveItem(sTitle);
           }
-          else if (System.IO.File.Exists(modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + sTitle + ".tar"))
+          else if (File.Exists(System.IO.Path.Combine(modFunctions.AppData, sTitle + ".tar")))
           {
             lstStyles.Selection.SelectIter(iFirst);
-            System.IO.File.Delete(modFunctions.AppData + System.IO.Path.DirectorySeparatorChar + sTitle + ".tar");
+            File.Delete(System.IO.Path.Combine(modFunctions.AppData, sTitle + ".tar"));
             lstStyles.RemoveItem(sTitle);
           }
           else

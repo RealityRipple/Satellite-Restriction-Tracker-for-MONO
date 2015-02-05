@@ -1,5 +1,8 @@
 using System;
 using System.Drawing;
+using System.Globalization;
+using System.IO;
+using System.Net;
 using System.Xml;
 using RestrictionLibrary;
 namespace RestrictionTrackerGTK
@@ -8,13 +11,18 @@ namespace RestrictionTrackerGTK
   {
     private string m_Account;
     private localRestrictionTracker.SatHostTypes m_AccountType;
+    private bool m_AccountTypeF;
+    private int m_StartWait;
     private int m_Interval;
     private string m_Gr;
-    private System.DateTime m_LastSyncTime;
+    private DateTime m_LastUpdate;
+    private DateTime m_LastSyncTime;
     private int m_Accuracy;
     private uint m_Ago;
     private string m_HistoryDir;
-    private bool m_BetaCheck;
+    private bool m_UpdateBETA;
+    private UpdateTypes m_UpdateType;
+    private byte m_UpdateTime;
     private bool m_ScaleScreen;
     private Gdk.Size m_MainSize;
     private string m_RemoteKey;
@@ -24,15 +32,16 @@ namespace RestrictionTrackerGTK
     private int m_Overtime;
     private string m_AlertStyle;
     private string m_ProxySetting;
-    private System.Net.SecurityProtocolType m_Protocol;
+    private SecurityProtocolType m_Protocol;
     public bool Loaded;
     public AppColors Colors;
+    public enum UpdateTypes{Auto = 1,Ask,None};
 
     private string ConfigFile
     {
       get
       {
-        return modFunctions.AppData + System.IO.Path.DirectorySeparatorChar.ToString() + "user.config";
+        return modFunctions.AppData + "user.config";
       }
     }
 
@@ -40,7 +49,7 @@ namespace RestrictionTrackerGTK
     {
       get
       {
-        return modFunctions.AppData + System.IO.Path.DirectorySeparatorChar.ToString() + "backup.config";
+        return modFunctions.AppData + "backup.config";
       }
     }
 
@@ -48,7 +57,7 @@ namespace RestrictionTrackerGTK
     {
       Loaded = false;
       BackupCheckup();
-      if (System.IO.File.Exists(ConfigFile))
+      if (File.Exists(ConfigFile))
       {
         XmlDocument m_xmld = new XmlDocument();
         m_xmld.Load(ConfigFile);
@@ -76,11 +85,27 @@ namespace RestrictionTrackerGTK
                       m_Account = xValue;
                       if (m_node.Attributes.Count > 1)
                       {
-                        m_AccountType = modFunctions.StringToHostType(m_node.Attributes[1].InnerText);
+                        m_AccountType = localRestrictionTracker.SatHostTypes.Other;
+                        m_AccountTypeF = false;
+                        foreach (XmlAttribute m_attrib in m_node.Attributes)
+                        {
+                          if (m_attrib.Name.CompareTo("type") == 0)
+                            m_AccountType = modFunctions.StringToHostType(m_attrib.InnerText);
+                          else if (m_attrib.Name.CompareTo("forceType") == 0)
+                            m_AccountTypeF = (m_attrib.InnerText == "True");
+                        }
                       }
                       else
                       {
                         m_AccountType = localRestrictionTracker.SatHostTypes.Other;
+                        m_AccountTypeF = false;
+                      }
+                    }
+                    else if (xName.CompareTo("StartWait") == 0)
+                    {
+                      if (!int.TryParse(xValue, out m_StartWait))
+                      {
+                        m_StartWait = 5;
                       }
                     }
                     else if (xName.CompareTo("Interval") == 0)
@@ -94,9 +119,13 @@ namespace RestrictionTrackerGTK
                     {
                       m_Gr = xValue;
                     }
+                    else if (xName.CompareTo("LastUpdate") == 0)
+                    {
+                      m_LastUpdate = DateTime.FromBinary(long.Parse(xValue));
+                    }
                     else if (xName.CompareTo("LastSyncTime") == 0)
                     {
-                      m_LastSyncTime = System.DateTime.FromBinary(long.Parse(xValue));
+                      m_LastSyncTime = DateTime.FromBinary(long.Parse(xValue));
                     }
                     else if (xName.CompareTo("Accuracy") == 0)
                     {
@@ -116,9 +145,39 @@ namespace RestrictionTrackerGTK
                     {
                       m_HistoryDir = xValue;
                     }
+                    else if (xName.CompareTo("UpdateBETA") == 0)
+                    {
+                      m_UpdateBETA = (xValue.CompareTo("True") == 0);
+                    }
                     else if (xName.CompareTo("BetaCheck") == 0)
                     {
-                      m_BetaCheck = (xValue.CompareTo("True") == 0);
+                      m_UpdateBETA = (xValue.CompareTo("True") == 0);
+                    }
+                    else if (xName.CompareTo("UpdateType") == 0)
+                    {
+                      switch (xValue)
+                      {
+                        case "BETA":
+                          m_UpdateBETA = true;
+                          m_UpdateType = UpdateTypes.Ask;
+                          break;
+                        case "Auto":
+                          m_UpdateType = UpdateTypes.Auto;
+                          break;
+                        case "None":
+                          m_UpdateType = UpdateTypes.None;
+                          break;
+                        default:
+                          m_UpdateType = UpdateTypes.Ask;
+                          break;
+                      }
+                    }
+                    else if (xName.CompareTo("UpdateTime") == 0)
+                    {
+                      if (!byte.TryParse(xValue, out m_UpdateTime))
+                      {
+                        m_UpdateTime = 15;
+                      }
                     }
                     else if (xName.CompareTo("ScaleScreen") == 0)
                     {
@@ -181,11 +240,11 @@ namespace RestrictionTrackerGTK
                     {
                       if (xValue == "TLS")
                       {
-                        m_Protocol = System.Net.SecurityProtocolType.Tls;
+                        m_Protocol = SecurityProtocolType.Tls;
                       }
                       else
                       {
-                        m_Protocol = System.Net.SecurityProtocolType.Ssl3;
+                        m_Protocol = SecurityProtocolType.Ssl3;
                       }
                     }
                   }
@@ -415,13 +474,18 @@ namespace RestrictionTrackerGTK
     {
       m_Account = null;
       m_AccountType = localRestrictionTracker.SatHostTypes.Other;
+      m_AccountTypeF = false;
+      m_StartWait = 5;
       m_Interval = 15;
       m_Gr = "aph";
-      m_LastSyncTime = new System.DateTime(2000, 1, 1);
+      m_LastUpdate = new DateTime(2000, 1, 1);
+      m_LastSyncTime = new DateTime(2000, 1, 1);
       m_Accuracy = 0;
       m_Ago = 30u;
       m_HistoryDir = null;
-      m_BetaCheck = true;
+      m_UpdateBETA = true;
+      m_UpdateType = UpdateTypes.Ask;
+      m_UpdateTime = 15;
       m_ScaleScreen = false;
       m_MainSize = new Gdk.Size(450, 200);
       m_RemoteKey = null;
@@ -431,7 +495,7 @@ namespace RestrictionTrackerGTK
       m_Overtime = 60;
       m_AlertStyle = "Default";
       m_ProxySetting = "System";
-      m_Protocol = System.Net.SecurityProtocolType.Tls;
+      m_Protocol = SecurityProtocolType.Tls;
       Colors = new AppColors();
       ResetColors();
     }
@@ -482,9 +546,27 @@ namespace RestrictionTrackerGTK
     public void Save()
     {
       string sBeta = "False";
-      if (m_BetaCheck)
+      if (m_UpdateBETA)
       {
         sBeta = "True";
+      }
+      string sUpdateType = "Ask";
+      switch (m_UpdateType)
+      {
+        case UpdateTypes.Auto:
+          sUpdateType = "Auto";
+          break;
+        case UpdateTypes.Ask:
+          sUpdateType = "Ask";
+          break;
+        case UpdateTypes.None:
+          sUpdateType = "None";
+          break;
+      }
+      string sAccountTypeF = "False";
+      if (m_AccountTypeF)
+      {
+        sAccountTypeF = "True";
       }
       string sScaleScreen = "False";
       if (m_ScaleScreen)
@@ -492,7 +574,7 @@ namespace RestrictionTrackerGTK
         sScaleScreen = "True";
       }
       string sProtocol = "TLS";
-      if (m_Protocol == System.Net.SecurityProtocolType.Ssl3)
+      if (m_Protocol == SecurityProtocolType.Ssl3)
       {
         sProtocol = "SSL";
       }
@@ -502,17 +584,23 @@ namespace RestrictionTrackerGTK
         "<configuration>" + Environment.NewLine +
         "  <userSettings>" + Environment.NewLine +
         "    <RestrictionTracker.My.MySettings>" + Environment.NewLine +
-        "      <setting name=\"Account\" type=\"" + sAccountType + "\">" + Environment.NewLine +
+        "      <setting name=\"Account\" type=\"" + sAccountType + "\" forceType=\"" + sAccountTypeF + "\">" + Environment.NewLine +
         "        <value>" + m_Account + "</value>" + Environment.NewLine +
         "      </setting>" + Environment.NewLine +
         "      <setting name=\"PassCrypt\">" + Environment.NewLine +
         "        <value>" + m_PassCrypt + "</value>" + Environment.NewLine +
+        "      </setting>" + Environment.NewLine +
+        "      <setting name=\"StartWait\">" + Environment.NewLine + 
+        "        <value>" + m_StartWait.ToString() + "</value>" + Environment.NewLine +
         "      </setting>" + Environment.NewLine +
         "      <setting name=\"Interval\">" + Environment.NewLine + 
         "        <value>" + m_Interval.ToString() + "</value>" + Environment.NewLine +
         "      </setting>" + Environment.NewLine +
         "      <setting name=\"Gr\">" + Environment.NewLine +
         "        <value>" + m_Gr + "</value>" + Environment.NewLine +
+        "      </setting>" + Environment.NewLine +
+        "      <setting name=\"LastUpdate\">" + Environment.NewLine +
+        "        <value>" + m_LastUpdate.ToBinary() + "</value>" + Environment.NewLine + 
         "      </setting>" + Environment.NewLine +
         "      <setting name=\"LastSyncTime\">" + Environment.NewLine +
         "        <value>" + m_LastSyncTime.ToBinary() + "</value>" + Environment.NewLine + 
@@ -526,8 +614,14 @@ namespace RestrictionTrackerGTK
         "      <setting name=\"HistoryDir\">" + Environment.NewLine + 
         "        <value>" + m_HistoryDir + "</value>" + Environment.NewLine + 
         "      </setting>" + Environment.NewLine +
-        "      <setting name=\"BetaCheck\">" + Environment.NewLine + 
+        "      <setting name=\"UpdateBETA\">" + Environment.NewLine + 
         "        <value>" + sBeta + "</value>" + Environment.NewLine +
+        "      </setting>" + Environment.NewLine +
+        "      <setting name=\"UpdateType\">" + Environment.NewLine +
+        "        <value>" + sUpdateType + "</value>" + Environment.NewLine +
+        "      </setting>" + Environment.NewLine +
+        "      <setting name=\"UpdateTime\">" + Environment.NewLine +
+        "        <value>" + m_UpdateTime.ToString() + "</value>" + Environment.NewLine +
         "      </setting>" + Environment.NewLine +
         "      <setting name=\"ScaleScreen\">" + Environment.NewLine +
         "        <value>" + sScaleScreen + "</value>" + Environment.NewLine + 
@@ -652,9 +746,9 @@ namespace RestrictionTrackerGTK
         "  </colorSettings>" + Environment.NewLine +
         "</configuration>";
       MakeBackup();
-      using (System.IO.FileStream ioWriter = new System.IO.FileStream(ConfigFile, System.IO.FileMode.Create, System.IO.FileAccess.Write, System.IO.FileShare.None))
+      using (FileStream ioWriter = new FileStream(ConfigFile, FileMode.Create, FileAccess.Write, FileShare.None))
       {
-        using (System.IO.StreamWriter nOut = new System.IO.StreamWriter(ioWriter))
+        using (StreamWriter nOut = new StreamWriter(ioWriter))
         {
           nOut.Write(sRet);
         }
@@ -752,7 +846,7 @@ namespace RestrictionTrackerGTK
     private Color StrToColor(string s)
     {
       int iColor = 0;
-      if (int.TryParse(s, System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.CurrentCulture, out iColor))
+      if (int.TryParse(s, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out iColor))
       {
         if (!((iColor & 0xFF000000) == 0xFF000000))
           return Color.Transparent;
@@ -766,17 +860,17 @@ namespace RestrictionTrackerGTK
 
     public void MakeBackup()
     {
-      if (System.IO.File.Exists(ConfigFile))
+      if (File.Exists(ConfigFile))
       {
-        System.IO.File.Copy(ConfigFile, ConfigFileBackup, true);
+        File.Copy(ConfigFile, ConfigFileBackup, true);
       }
     }
 
     public void BackupCheckup()
     {
-      if (System.IO.File.Exists(ConfigFile))
+      if (File.Exists(ConfigFile))
       {
-        if (System.IO.File.Exists(ConfigFileBackup))
+        if (File.Exists(ConfigFileBackup))
         {
           try
           {
@@ -785,20 +879,20 @@ namespace RestrictionTrackerGTK
           }
           catch (Exception)
           {
-            System.IO.File.Copy(ConfigFileBackup, ConfigFile, true);
+            File.Copy(ConfigFileBackup, ConfigFile, true);
           }
           finally
           {
-            System.IO.File.Delete(ConfigFileBackup);
+            File.Delete(ConfigFileBackup);
           }
         }
       }
       else
       {
-        if (System.IO.File.Exists(ConfigFileBackup))
+        if (File.Exists(ConfigFileBackup))
         {
-          System.IO.File.Copy(ConfigFileBackup, ConfigFile, true);
-          System.IO.File.Delete(ConfigFileBackup);
+          File.Copy(ConfigFileBackup, ConfigFile, true);
+          File.Delete(ConfigFileBackup);
         }
       }
     }
@@ -827,6 +921,18 @@ namespace RestrictionTrackerGTK
       }
     }
 
+    public bool AccountTypeForced
+    {
+      get
+      {
+        return m_AccountTypeF;
+      }
+      set
+      {
+        m_AccountTypeF = value;
+      }
+    }
+
     public string PassCrypt
     {
       get
@@ -836,6 +942,18 @@ namespace RestrictionTrackerGTK
       set
       {
         m_PassCrypt = value;
+      }
+    }
+
+    public int StartWait
+    {
+      get
+      {
+        return m_StartWait;
+      }
+      set
+      {
+        m_StartWait = value;
       }
     }
 
@@ -863,7 +981,19 @@ namespace RestrictionTrackerGTK
       }
     }
 
-    public System.DateTime LastSyncTime
+    public DateTime LastUpdate
+    {
+      get
+      {
+        return m_LastUpdate;
+      }
+      set
+      {
+        m_LastUpdate = value;
+      }
+    }
+
+    public DateTime LastSyncTime
     {
       get
       {
@@ -911,15 +1041,39 @@ namespace RestrictionTrackerGTK
       }
     }
 
-    public bool BetaCheck
+    public bool UpdateBETA
     {
       get
       {
-        return m_BetaCheck;
+        return m_UpdateBETA;
       }
       set
       {
-        m_BetaCheck = value;
+        m_UpdateBETA = value;
+      }
+    }
+
+    public UpdateTypes UpdateType
+    {
+      get
+      {
+        return m_UpdateType;
+      }
+      set
+      {
+        m_UpdateType = value;
+      }
+    }
+
+    public byte UpdateTime
+    {
+      get
+      {
+        return m_UpdateTime;
+      }
+      set
+      {
+        m_UpdateTime = value;
       }
     }
 
@@ -1007,7 +1161,7 @@ namespace RestrictionTrackerGTK
       }
     }
 
-    public System.Net.IWebProxy Proxy
+    public IWebProxy Proxy
     {
       get
       {
@@ -1032,16 +1186,16 @@ namespace RestrictionTrackerGTK
               if (myProxySettings.Length > 5)
               {
                 string pDomain = myProxySettings[5];
-                return new System.Net.WebProxy(pIP, pPort) { Credentials = new System.Net.NetworkCredential(pUser, pPass, pDomain) };
+                return new WebProxy(pIP, pPort) { Credentials = new NetworkCredential(pUser, pPass, pDomain) };
               }
               else
               {
-                return new System.Net.WebProxy(pIP, pPort) { Credentials = new System.Net.NetworkCredential(pUser, pPass) };
+                return new WebProxy(pIP, pPort) { Credentials = new NetworkCredential(pUser, pPass) };
               }
             }
             else
             {
-              return new System.Net.WebProxy(pIP, pPort);
+              return new WebProxy(pIP, pPort);
             }
           }
           else if (String.Compare(pType.ToLower(), "url") == 0)
@@ -1056,22 +1210,22 @@ namespace RestrictionTrackerGTK
                 if (myProxySettings.Length > 4)
                 {
                   string pDomain = myProxySettings[4];
-                  return new System.Net.WebProxy(pURL, false, null, new System.Net.NetworkCredential(pUser, pPass, pDomain));
+                  return new WebProxy(pURL, false, null, new NetworkCredential(pUser, pPass, pDomain));
                 }
                 else
                 {
-                  return new System.Net.WebProxy(pURL, false, null, new System.Net.NetworkCredential(pUser, pPass));
+                  return new WebProxy(pURL, false, null, new NetworkCredential(pUser, pPass));
                 }
               }
               else
               {
                 int pPort = int.Parse(myProxySettings[2].Replace("/", ""));
-                return new System.Net.WebProxy(pURL, pPort);
+                return new WebProxy(pURL, pPort);
               }
             }
             else
             {
-              return new System.Net.WebProxy(pURL);
+              return new WebProxy(pURL);
             }
           }
           else
@@ -1087,7 +1241,7 @@ namespace RestrictionTrackerGTK
           }
           else if (String.Compare(m_ProxySetting.ToLower(), "system") == 0)
           {
-            return System.Net.WebRequest.DefaultWebProxy;
+            return WebRequest.DefaultWebProxy;
           }
           else
           {
@@ -1101,18 +1255,18 @@ namespace RestrictionTrackerGTK
         {
           m_ProxySetting = "None";
         }
-        else if (value.Equals(System.Net.WebRequest.DefaultWebProxy))
+        else if (value.Equals(WebRequest.DefaultWebProxy))
         {
           m_ProxySetting = "System";
         }
         else
         {
-          System.Net.WebProxy wValue = (System.Net.WebProxy)value;
+          WebProxy wValue = (WebProxy)value;
           if (modFunctions.IsNumeric(wValue.Address.Host.Replace(".", string.Empty)))
           {
             if (value.Credentials != null)
             {
-              System.Net.NetworkCredential mCreds = value.Credentials.GetCredential(null, string.Empty);
+              NetworkCredential mCreds = value.Credentials.GetCredential(null, string.Empty);
               if (string.IsNullOrEmpty(mCreds.Domain))
               {
                 m_ProxySetting = "IP:" + wValue.Address.ToString() + ":" + ":" + mCreds.UserName + ":" + mCreds.Password;
@@ -1131,7 +1285,7 @@ namespace RestrictionTrackerGTK
           {
             if (value.Credentials != null)
             {
-              System.Net.NetworkCredential mCreds = value.Credentials.GetCredential(null, string.Empty);
+              NetworkCredential mCreds = value.Credentials.GetCredential(null, string.Empty);
               if (string.IsNullOrEmpty(mCreds.Domain))
               {
                 m_ProxySetting = "URL:" + wValue.Address.ToString() + ":" + ":" + mCreds.UserName + ":" + mCreds.Password;
@@ -1150,7 +1304,7 @@ namespace RestrictionTrackerGTK
       }
     }
 
-    public System.Net.SecurityProtocolType Protocol
+    public SecurityProtocolType Protocol
     {
       get
       {

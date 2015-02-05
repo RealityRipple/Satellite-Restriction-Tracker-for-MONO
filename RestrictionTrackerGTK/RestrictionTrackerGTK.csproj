@@ -11,7 +11,7 @@
     <AssemblyName>RestrictionTracker</AssemblyName>
     <StartupObject>RestrictionTrackerGTK.MainClass</StartupObject>
     <ApplicationIcon>Resources\sat.ico</ApplicationIcon>
-    <ReleaseVersion>1.2.2</ReleaseVersion>
+    <ReleaseVersion>1.3</ReleaseVersion>
     <Description>Satellite Restriction Tracker</Description>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>trackergtk.snk</AssemblyOriginatorKeyFile>
@@ -111,6 +111,36 @@
     <EmbeddedResource Include="Resources\tray_32\throbsprite\9.ico" />
     <EmbeddedResource Include="Resources\default_alert.png" />
     <EmbeddedResource Include="Resources\default_close.png" />
+    <EmbeddedResource Include="Resources\config\linux\account_key.png" />
+    <EmbeddedResource Include="Resources\config\linux\account_provider.png" />
+    <EmbeddedResource Include="Resources\config\linux\account_user.png" />
+    <EmbeddedResource Include="Resources\config\linux\advanced_data.png" />
+    <EmbeddedResource Include="Resources\config\linux\advanced_portable.png" />
+    <EmbeddedResource Include="Resources\config\linux\net_network.png" />
+    <EmbeddedResource Include="Resources\config\linux\net_proxy.png" />
+    <EmbeddedResource Include="Resources\config\linux\net_update.png" />
+    <EmbeddedResource Include="Resources\config\linux\network_security.png" />
+    <EmbeddedResource Include="Resources\config\linux\pass.png" />
+    <EmbeddedResource Include="Resources\config\linux\prefs_accuracy.png" />
+    <EmbeddedResource Include="Resources\config\linux\prefs_colors.png" />
+    <EmbeddedResource Include="Resources\config\linux\prefs_notify.png" />
+    <EmbeddedResource Include="Resources\config\linux\prefs_power.png" />
+    <EmbeddedResource Include="Resources\config\os x\account_key.png" />
+    <EmbeddedResource Include="Resources\config\os x\account_provider.png" />
+    <EmbeddedResource Include="Resources\config\os x\account_user.png" />
+    <EmbeddedResource Include="Resources\config\os x\advanced_data.png" />
+    <EmbeddedResource Include="Resources\config\os x\advanced_portable.png" />
+    <EmbeddedResource Include="Resources\config\os x\advanced_security.png" />
+    <EmbeddedResource Include="Resources\config\os x\net_network.png" />
+    <EmbeddedResource Include="Resources\config\os x\net_proxy.png" />
+    <EmbeddedResource Include="Resources\config\os x\net_update.png" />
+    <EmbeddedResource Include="Resources\config\os x\pass.png" />
+    <EmbeddedResource Include="Resources\config\os x\prefs_accuracy.png" />
+    <EmbeddedResource Include="Resources\config\os x\prefs_colors.png" />
+    <EmbeddedResource Include="Resources\config\os x\prefs_notify.png" />
+    <EmbeddedResource Include="Resources\config\os x\prefs_power.png" />
+    <EmbeddedResource Include="Resources\config\os x\advanced_interface.png" />
+    <EmbeddedResource Include="Resources\config\linux\advanced_interface.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gtk-gui\generated.cs" />
@@ -126,15 +156,10 @@
     <Compile Include="gtk-gui\RestrictionTrackerGTK.frmAbout.cs" />
     <Compile Include="gtk-gui\RestrictionTrackerGTK.frmHistory.cs" />
     <Compile Include="gtk-gui\RestrictionTrackerGTK.frmMain.cs" />
-    <Compile Include="Forms\dlgConfig.cs" />
-    <Compile Include="gtk-gui\RestrictionTrackerGTK.dlgConfig.cs" />
-    <Compile Include="Forms\dlgUpdate.cs" />
     <Compile Include="gtk-gui\RestrictionTrackerGTK.dlgUpdate.cs" />
-    <Compile Include="Forms\dlgCustomColors.cs" />
     <Compile Include="gtk-gui\RestrictionTrackerGTK.dlgCustomColors.cs" />
     <Compile Include="Forms\frmAbout.cs" />
     <Compile Include="Classes\clsNotifierStyle.cs" />
-    <Compile Include="Forms\dlgAlertSelection.cs" />
     <Compile Include="gtk-gui\RestrictionTrackerGTK.dlgAlertSelection.cs" />
     <Compile Include="Classes\MacInterop\clsCarbon.cs" />
     <Compile Include="Classes\MacInterop\clsApplicationEvents.cs" />
@@ -143,6 +168,11 @@
     <Compile Include="Classes\Visual Elements\clsTaskbarNotifier.cs" />
     <Compile Include="Modules\modCreds.cs" />
     <Compile Include="Classes\MacInterop\clsIgeMacMenu.cs" />
+    <Compile Include="Forms\Dialogs\dlgAlertSelection.cs" />
+    <Compile Include="Forms\Dialogs\dlgCustomColors.cs" />
+    <Compile Include="Forms\Dialogs\dlgUpdate.cs" />
+    <Compile Include="Forms\Dialogs\dlgConfig.cs" />
+    <Compile Include="gtk-gui\RestrictionTrackerGTK.dlgConfig.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -151,5 +181,7 @@
     <Folder Include="Modules\" />
     <Folder Include="Classes\MacInterop\" />
     <Folder Include="Classes\Visual Elements\" />
+    <Folder Include="Forms\Dialogs\" />
+    <Folder Include="Resources\config\" />
   </ItemGroup>
 </Project>

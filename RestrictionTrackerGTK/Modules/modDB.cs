@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using RestrictionLibrary;
 
 namespace RestrictionTrackerGTK
@@ -133,30 +134,30 @@ namespace RestrictionTrackerGTK
 		public static void LOG_Initialize(string sAccount, bool withDisplay)
     {
       isLoaded = false;
-      sFile = modFunctions.MySaveDir + System.IO.Path.DirectorySeparatorChar.ToString() + "History-" + sAccount + ".wb";
-      if (!System.IO.File.Exists(sFile))
+      sFile = Path.Combine(modFunctions.MySaveDir(true), "History-" + sAccount + ".wb");
+      if (!File.Exists(sFile))
       {
-        sFile = modFunctions.MySaveDir + System.IO.Path.DirectorySeparatorChar.ToString() + "History-" + sAccount + ".xml";
+        sFile = Path.Combine(modFunctions.MySaveDir(true), "History-" + sAccount + ".xml");
       }
-      if (System.IO.File.Exists(sFile))
+      if (File.Exists(sFile))
       {
         usageDB = new DataBase(sFile, withDisplay);
         usageDB.StartNew();
-        if (sFile.CompareTo(modFunctions.MySaveDir + System.IO.Path.DirectorySeparatorChar.ToString() + "History-" + sAccount + ".xml") == 0)
+        if (sFile.CompareTo(Path.Combine(modFunctions.MySaveDir(true), "History-" + sAccount + ".xml")) == 0)
         {
-          sFile = modFunctions.MySaveDir + System.IO.Path.DirectorySeparatorChar.ToString() + "History-" + sAccount + ".wb";
+          sFile = Path.Combine(modFunctions.MySaveDir(true), "History-" + sAccount + ".wb");
           usageDB.Save(sFile, withDisplay);
-          if (modFunctions.InUseChecker(modFunctions.MySaveDir + System.IO.Path.DirectorySeparatorChar.ToString() + "History-" + sAccount + ".xml", System.IO.FileAccess.Write))
+          if (modFunctions.InUseChecker(Path.Combine(modFunctions.MySaveDir(true), "History-" + sAccount + ".xml"), FileAccess.Write))
           {
-            System.IO.File.Delete(modFunctions.MySaveDir + System.IO.Path.DirectorySeparatorChar.ToString() + "History-" + sAccount + ".xml");
+            File.Delete(Path.Combine(modFunctions.MySaveDir(true), "History-" + sAccount + ".xml"));
           }
         }
       }
       else
       {
-        if (sFile.CompareTo(modFunctions.MySaveDir + System.IO.Path.DirectorySeparatorChar.ToString() + "History-" + sAccount + ".xml") == 0)
+        if (sFile.CompareTo(Path.Combine(modFunctions.MySaveDir(true), "History-" + sAccount + ".xml")) == 0)
         {
-          sFile = modFunctions.MySaveDir + System.IO.Path.DirectorySeparatorChar.ToString() + "History-" + sAccount + ".wb";
+          sFile = Path.Combine(modFunctions.MySaveDir(true), "History-" + sAccount + ".wb");
         }
       }
       isLoaded = true;
@@ -214,9 +215,9 @@ namespace RestrictionTrackerGTK
 				return;
 			if (!string.IsNullOrEmpty(sFile)) {
 				isSaving = true;
-				if (!System.IO.Directory.Exists(System.IO.Path.GetDirectoryName(sFile)))
-					System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(sFile));
-				if (modFunctions.InUseChecker(sFile, System.IO.FileAccess.Write)) {
+				if (!Directory.Exists(Path.GetDirectoryName(sFile)))
+					Directory.CreateDirectory(Path.GetDirectoryName(sFile));
+				if (modFunctions.InUseChecker(sFile, FileAccess.Write)) {
 					usageDB.Save(sFile, withDisplay);
 				} else {
           modFunctions.ShowMessageBox(null, "Your history file could not be saved because another program is using it!", "History Log in Use", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok );
@@ -227,9 +228,9 @@ namespace RestrictionTrackerGTK
 
 		private static long FileLen(string Path)
     {
-      if (System.IO.File.Exists(Path))
+      if (File.Exists(Path))
       {
-        return new System.IO.FileInfo(Path).Length;
+        return new FileInfo(Path).Length;
       }
       return -1;
     }
