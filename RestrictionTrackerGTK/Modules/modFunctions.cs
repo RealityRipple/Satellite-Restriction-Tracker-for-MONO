@@ -2332,8 +2332,8 @@ namespace RestrictionTrackerGTK
     #endregion 
 
     #region "Startup"
-    private static string LinStartup = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/.config/autostart/";
-    private static string OSXStartup = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "~/Library/LaunchAgents/";
+    private static string LinStartup = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".config", "autostart");
+    private static string OSXStartup = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Library", "LaunchAgents");
     private static string LinShortcut = "restriction-tracker.desktop";
     private static string OSXShortcut = "com.realityripple.restrictiontracker.agent.plist";
     public static bool RunOnStartup
