@@ -211,59 +211,6 @@ namespace RestrictionTrackerGTK
         return static_AppData_sTmp;
       }
     }
-    public static string CommonAppData
-    {
-      get
-      {
-        if (CurrentOS.IsMac)
-        {
-          return Path.DirectorySeparatorChar.ToString() + Path.Combine("Library", "Application Support") + Path.DirectorySeparatorChar.ToString();
-        }
-        else
-        {
-          return Path.DirectorySeparatorChar.ToString() + Path.Combine("var", "lib") + Path.DirectorySeparatorChar.ToString();
-        }
-      }
-    }
-    static string static_AppDataAll_sTmp;
-    public static string AppDataAllPath
-    {
-      get
-      {
-        return Path.Combine(CommonAppData, CompanyName, ProductName) + Path.DirectorySeparatorChar.ToString();
-      }
-    }
-    public static string AppDataAll
-    {
-      get
-      {
-        if (!Directory.Exists(Path.Combine(CommonAppData, CompanyName)))
-        {
-          if (CurrentOS.IsMac)
-          {
-            Directory.CreateDirectory(Path.Combine(CommonAppData, CompanyName));
-          }
-          else
-          {
-            string mkvlpath = Path.Combine(AppData, "mkvlpath.sh");
-            File.WriteAllText(mkvlpath, "#!/bin/sh\n" +
-              "\necho " + ProductName + " needs to create\necho the directory \\\"" + Path.Combine(CommonAppData, CompanyName) + "\\\".\n" +
-              "sudo mkdir \"" + Path.Combine(CommonAppData, CompanyName) + "\" -m +666\n");
-            RunTerminal (mkvlpath);
-            File.Delete(mkvlpath);
-          }
-        }
-        if (!Directory.Exists(AppDataAllPath))
-        {
-          Directory.CreateDirectory(AppDataAllPath);
-        }
-        if (string.IsNullOrEmpty(static_AppDataAll_sTmp))
-        {
-          static_AppDataAll_sTmp = AppDataAllPath;
-        }
-        return static_AppDataAll_sTmp;
-      }
-    }
 
     public static string MySaveDir(bool Create = false)
     {

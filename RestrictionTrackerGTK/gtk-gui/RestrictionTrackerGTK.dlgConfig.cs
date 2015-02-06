@@ -134,7 +134,6 @@ namespace RestrictionTrackerGTK
 		private global::Gtk.Label lblAdvancedDataDescription;
 		private global::Gtk.RadioButton optHistoryCustom;
 		private global::Gtk.RadioButton optHistoryLocalConfig;
-		private global::Gtk.RadioButton optHistorySharedConfig;
 		private global::Gtk.Image pctAdvancedDataIcon;
 		private global::Gtk.FileChooserButton txtHistoryDir;
 		private global::Gtk.Table pnlAdvancedInterface;
@@ -1723,7 +1722,7 @@ namespace RestrictionTrackerGTK
 			w129.XOptions = ((global::Gtk.AttachOptions)(4));
 			w129.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAdvanced.Gtk.Table+TableChild
-			this.pnlAdvancedData = new global::Gtk.Table (((uint)(5)), ((uint)(4)), false);
+			this.pnlAdvancedData = new global::Gtk.Table (((uint)(4)), ((uint)(4)), false);
 			this.pnlAdvancedData.Name = "pnlAdvancedData";
 			this.pnlAdvancedData.RowSpacing = ((uint)(2));
 			this.pnlAdvancedData.ColumnSpacing = ((uint)(2));
@@ -1736,8 +1735,8 @@ namespace RestrictionTrackerGTK
 			this.cmdHistoryDirOpen.Label = global::Mono.Unix.Catalog.GetString ("_Open Data Directory");
 			this.pnlAdvancedData.Add (this.cmdHistoryDirOpen);
 			global::Gtk.Table.TableChild w130 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedData [this.cmdHistoryDirOpen]));
-			w130.TopAttach = ((uint)(4));
-			w130.BottomAttach = ((uint)(5));
+			w130.TopAttach = ((uint)(3));
+			w130.BottomAttach = ((uint)(4));
 			w130.LeftAttach = ((uint)(1));
 			w130.RightAttach = ((uint)(3));
 			w130.XOptions = ((global::Gtk.AttachOptions)(0));
@@ -1746,7 +1745,7 @@ namespace RestrictionTrackerGTK
 			this.lblAdvancedDataDescription = new global::Gtk.Label ();
 			this.lblAdvancedDataDescription.Name = "lblAdvancedDataDescription";
 			this.lblAdvancedDataDescription.Xalign = 0F;
-			this.lblAdvancedDataDescription.LabelProp = global::Mono.Unix.Catalog.GetString ("Your usage data will be stored in this directory. If you use multiple accounts on your computer, data should be stored in the /var/lib folder in order to be shared. Otherwise, ~/.config is recommended.");
+			this.lblAdvancedDataDescription.LabelProp = global::Mono.Unix.Catalog.GetString ("Your usage data will be stored in this directory. By default, data is stored in the ~/.config directory.");
 			this.lblAdvancedDataDescription.Wrap = true;
 			this.pnlAdvancedData.Add (this.lblAdvancedDataDescription);
 			global::Gtk.Table.TableChild w131 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedData [this.lblAdvancedDataDescription]));
@@ -1765,8 +1764,8 @@ namespace RestrictionTrackerGTK
 			this.optHistoryCustom.Group = new global::GLib.SList (global::System.IntPtr.Zero);
 			this.pnlAdvancedData.Add (this.optHistoryCustom);
 			global::Gtk.Table.TableChild w132 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedData [this.optHistoryCustom]));
-			w132.TopAttach = ((uint)(3));
-			w132.BottomAttach = ((uint)(4));
+			w132.TopAttach = ((uint)(2));
+			w132.BottomAttach = ((uint)(3));
 			w132.LeftAttach = ((uint)(1));
 			w132.RightAttach = ((uint)(2));
 			w132.XOptions = ((global::Gtk.AttachOptions)(4));
@@ -1781,28 +1780,12 @@ namespace RestrictionTrackerGTK
 			this.optHistoryLocalConfig.Group = this.optHistoryCustom.Group;
 			this.pnlAdvancedData.Add (this.optHistoryLocalConfig);
 			global::Gtk.Table.TableChild w133 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedData [this.optHistoryLocalConfig]));
-			w133.TopAttach = ((uint)(2));
-			w133.BottomAttach = ((uint)(3));
+			w133.TopAttach = ((uint)(1));
+			w133.BottomAttach = ((uint)(2));
 			w133.LeftAttach = ((uint)(1));
 			w133.RightAttach = ((uint)(3));
 			w133.XOptions = ((global::Gtk.AttachOptions)(4));
 			w133.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlAdvancedData.Gtk.Table+TableChild
-			this.optHistorySharedConfig = new global::Gtk.RadioButton (global::Mono.Unix.Catalog.GetString ("/var/lib"));
-			this.optHistorySharedConfig.TooltipMarkup = "Save History Data to the shared /var/lib directory.";
-			this.optHistorySharedConfig.CanFocus = true;
-			this.optHistorySharedConfig.Name = "optHistorySharedConfig";
-			this.optHistorySharedConfig.DrawIndicator = true;
-			this.optHistorySharedConfig.UseUnderline = true;
-			this.optHistorySharedConfig.Group = this.optHistoryCustom.Group;
-			this.pnlAdvancedData.Add (this.optHistorySharedConfig);
-			global::Gtk.Table.TableChild w134 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedData [this.optHistorySharedConfig]));
-			w134.TopAttach = ((uint)(1));
-			w134.BottomAttach = ((uint)(2));
-			w134.LeftAttach = ((uint)(1));
-			w134.RightAttach = ((uint)(3));
-			w134.XOptions = ((global::Gtk.AttachOptions)(4));
-			w134.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAdvancedData.Gtk.Table+TableChild
 			this.pctAdvancedDataIcon = new global::Gtk.Image ();
 			this.pctAdvancedDataIcon.WidthRequest = 48;
@@ -1813,10 +1796,10 @@ namespace RestrictionTrackerGTK
 			this.pctAdvancedDataIcon.Yalign = 0F;
 			this.pctAdvancedDataIcon.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("RestrictionTrackerGTK.Resources.config.linux.advanced_data.png");
 			this.pnlAdvancedData.Add (this.pctAdvancedDataIcon);
-			global::Gtk.Table.TableChild w135 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedData [this.pctAdvancedDataIcon]));
-			w135.BottomAttach = ((uint)(5));
-			w135.XOptions = ((global::Gtk.AttachOptions)(4));
-			w135.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w134 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedData [this.pctAdvancedDataIcon]));
+			w134.BottomAttach = ((uint)(4));
+			w134.XOptions = ((global::Gtk.AttachOptions)(4));
+			w134.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAdvancedData.Gtk.Table+TableChild
 			this.txtHistoryDir = new global::Gtk.FileChooserButton (global::Mono.Unix.Catalog.GetString ("Select a Directory"), ((global::Gtk.FileChooserAction)(2)));
 			this.txtHistoryDir.TooltipMarkup = "Directory used to save History Data.";
@@ -1824,19 +1807,19 @@ namespace RestrictionTrackerGTK
 			this.txtHistoryDir.Name = "txtHistoryDir";
 			this.txtHistoryDir.ShowHidden = true;
 			this.pnlAdvancedData.Add (this.txtHistoryDir);
-			global::Gtk.Table.TableChild w136 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedData [this.txtHistoryDir]));
-			w136.TopAttach = ((uint)(3));
-			w136.BottomAttach = ((uint)(4));
-			w136.LeftAttach = ((uint)(2));
-			w136.RightAttach = ((uint)(3));
+			global::Gtk.Table.TableChild w135 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedData [this.txtHistoryDir]));
+			w135.TopAttach = ((uint)(2));
+			w135.BottomAttach = ((uint)(3));
+			w135.LeftAttach = ((uint)(2));
+			w135.RightAttach = ((uint)(3));
+			w135.XOptions = ((global::Gtk.AttachOptions)(4));
+			w135.YOptions = ((global::Gtk.AttachOptions)(4));
+			this.pnlAdvanced.Add (this.pnlAdvancedData);
+			global::Gtk.Table.TableChild w136 = ((global::Gtk.Table.TableChild)(this.pnlAdvanced [this.pnlAdvancedData]));
+			w136.TopAttach = ((uint)(1));
+			w136.BottomAttach = ((uint)(2));
 			w136.XOptions = ((global::Gtk.AttachOptions)(4));
 			w136.YOptions = ((global::Gtk.AttachOptions)(4));
-			this.pnlAdvanced.Add (this.pnlAdvancedData);
-			global::Gtk.Table.TableChild w137 = ((global::Gtk.Table.TableChild)(this.pnlAdvanced [this.pnlAdvancedData]));
-			w137.TopAttach = ((uint)(1));
-			w137.BottomAttach = ((uint)(2));
-			w137.XOptions = ((global::Gtk.AttachOptions)(4));
-			w137.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAdvanced.Gtk.Table+TableChild
 			this.pnlAdvancedInterface = new global::Gtk.Table (((uint)(1)), ((uint)(2)), false);
 			this.pnlAdvancedInterface.Name = "pnlAdvancedInterface";
@@ -1851,10 +1834,10 @@ namespace RestrictionTrackerGTK
 			this.chkScaleScreen.DrawIndicator = true;
 			this.chkScaleScreen.UseUnderline = true;
 			this.pnlAdvancedInterface.Add (this.chkScaleScreen);
-			global::Gtk.Table.TableChild w138 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedInterface [this.chkScaleScreen]));
-			w138.LeftAttach = ((uint)(1));
-			w138.RightAttach = ((uint)(2));
-			w138.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w137 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedInterface [this.chkScaleScreen]));
+			w137.LeftAttach = ((uint)(1));
+			w137.RightAttach = ((uint)(2));
+			w137.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAdvancedInterface.Gtk.Table+TableChild
 			this.pctAdvancedInterfaceIcon = new global::Gtk.Image ();
 			this.pctAdvancedInterfaceIcon.WidthRequest = 48;
@@ -1865,29 +1848,29 @@ namespace RestrictionTrackerGTK
 			this.pctAdvancedInterfaceIcon.Yalign = 0F;
 			this.pctAdvancedInterfaceIcon.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("RestrictionTrackerGTK.Resources.config.linux.advanced_interface.png");
 			this.pnlAdvancedInterface.Add (this.pctAdvancedInterfaceIcon);
-			global::Gtk.Table.TableChild w139 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedInterface [this.pctAdvancedInterfaceIcon]));
+			global::Gtk.Table.TableChild w138 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedInterface [this.pctAdvancedInterfaceIcon]));
+			w138.XOptions = ((global::Gtk.AttachOptions)(4));
+			w138.YOptions = ((global::Gtk.AttachOptions)(4));
+			this.pnlAdvanced.Add (this.pnlAdvancedInterface);
+			global::Gtk.Table.TableChild w139 = ((global::Gtk.Table.TableChild)(this.pnlAdvanced [this.pnlAdvancedInterface]));
+			w139.TopAttach = ((uint)(4));
+			w139.BottomAttach = ((uint)(5));
 			w139.XOptions = ((global::Gtk.AttachOptions)(4));
 			w139.YOptions = ((global::Gtk.AttachOptions)(4));
-			this.pnlAdvanced.Add (this.pnlAdvancedInterface);
-			global::Gtk.Table.TableChild w140 = ((global::Gtk.Table.TableChild)(this.pnlAdvanced [this.pnlAdvancedInterface]));
-			w140.TopAttach = ((uint)(4));
-			w140.BottomAttach = ((uint)(5));
-			w140.XOptions = ((global::Gtk.AttachOptions)(4));
-			w140.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAdvanced.Gtk.Table+TableChild
 			this.pnlAdvancedSpace1 = new global::Gtk.Table (((uint)(1)), ((uint)(1)), false);
 			this.pnlAdvancedSpace1.Name = "pnlAdvancedSpace1";
 			this.pnlAdvancedSpace1.RowSpacing = ((uint)(2));
 			this.pnlAdvancedSpace1.ColumnSpacing = ((uint)(2));
 			this.pnlAdvanced.Add (this.pnlAdvancedSpace1);
-			global::Gtk.Table.TableChild w141 = ((global::Gtk.Table.TableChild)(this.pnlAdvanced [this.pnlAdvancedSpace1]));
-			w141.TopAttach = ((uint)(2));
-			w141.BottomAttach = ((uint)(3));
-			w141.XOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w140 = ((global::Gtk.Table.TableChild)(this.pnlAdvanced [this.pnlAdvancedSpace1]));
+			w140.TopAttach = ((uint)(2));
+			w140.BottomAttach = ((uint)(3));
+			w140.XOptions = ((global::Gtk.AttachOptions)(4));
 			this.tbsConfig.Add (this.pnlAdvanced);
-			global::Gtk.Notebook.NotebookChild w142 = ((global::Gtk.Notebook.NotebookChild)(this.tbsConfig [this.pnlAdvanced]));
-			w142.Position = 3;
-			w142.TabExpand = true;
+			global::Gtk.Notebook.NotebookChild w141 = ((global::Gtk.Notebook.NotebookChild)(this.tbsConfig [this.pnlAdvanced]));
+			w141.Position = 3;
+			w141.TabExpand = true;
 			// Notebook tab
 			this.lblAdvancedTitle = new global::Gtk.Label ();
 			this.lblAdvancedTitle.Name = "lblAdvancedTitle";
@@ -1895,14 +1878,14 @@ namespace RestrictionTrackerGTK
 			this.tbsConfig.SetTabLabel (this.pnlAdvanced, this.lblAdvancedTitle);
 			this.lblAdvancedTitle.ShowAll ();
 			w1.Add (this.tbsConfig);
-			global::Gtk.Box.BoxChild w143 = ((global::Gtk.Box.BoxChild)(w1 [this.tbsConfig]));
-			w143.Position = 0;
+			global::Gtk.Box.BoxChild w142 = ((global::Gtk.Box.BoxChild)(w1 [this.tbsConfig]));
+			w142.Position = 0;
 			// Internal child RestrictionTrackerGTK.dlgConfig.ActionArea
-			global::Gtk.HButtonBox w144 = this.ActionArea;
-			w144.Name = "dialog1_ActionArea";
-			w144.Spacing = 10;
-			w144.BorderWidth = ((uint)(5));
-			w144.LayoutStyle = ((global::Gtk.ButtonBoxStyle)(4));
+			global::Gtk.HButtonBox w143 = this.ActionArea;
+			w143.Name = "dialog1_ActionArea";
+			w143.Spacing = 10;
+			w143.BorderWidth = ((uint)(5));
+			w143.LayoutStyle = ((global::Gtk.ButtonBoxStyle)(4));
 			// Container child dialog1_ActionArea.Gtk.ButtonBox+ButtonBoxChild
 			this.cmdSave = new global::Gtk.Button ();
 			this.cmdSave.CanDefault = true;
@@ -1910,10 +1893,10 @@ namespace RestrictionTrackerGTK
 			this.cmdSave.Name = "cmdSave";
 			this.cmdSave.UseUnderline = true;
 			this.cmdSave.Label = global::Mono.Unix.Catalog.GetString ("_Save");
-			w144.Add (this.cmdSave);
-			global::Gtk.ButtonBox.ButtonBoxChild w145 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w144 [this.cmdSave]));
-			w145.Expand = false;
-			w145.Fill = false;
+			w143.Add (this.cmdSave);
+			global::Gtk.ButtonBox.ButtonBoxChild w144 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w143 [this.cmdSave]));
+			w144.Expand = false;
+			w144.Fill = false;
 			// Container child dialog1_ActionArea.Gtk.ButtonBox+ButtonBoxChild
 			this.cmdClose = new global::Gtk.Button ();
 			this.cmdClose.CanDefault = true;
@@ -1921,11 +1904,11 @@ namespace RestrictionTrackerGTK
 			this.cmdClose.Name = "cmdClose";
 			this.cmdClose.UseUnderline = true;
 			this.cmdClose.Label = global::Mono.Unix.Catalog.GetString ("_Close");
-			w144.Add (this.cmdClose);
-			global::Gtk.ButtonBox.ButtonBoxChild w146 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w144 [this.cmdClose]));
-			w146.Position = 1;
-			w146.Expand = false;
-			w146.Fill = false;
+			w143.Add (this.cmdClose);
+			global::Gtk.ButtonBox.ButtonBoxChild w145 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w143 [this.cmdClose]));
+			w145.Position = 1;
+			w145.Expand = false;
+			w145.Fill = false;
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}

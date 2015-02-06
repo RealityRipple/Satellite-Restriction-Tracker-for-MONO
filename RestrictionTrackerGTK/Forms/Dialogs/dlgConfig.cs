@@ -42,21 +42,14 @@ namespace RestrictionTrackerGTK
         ((Gtk.Box.BoxChild)this.ActionArea[cmdSave]).Position = 0;
         ((Gtk.Box.BoxChild)this.ActionArea[cmdClose]).Position = 1;
       }
-      string sSharedPath = modFunctions.CommonAppData;
-      if (sSharedPath.EndsWith("."))
-        sSharedPath = sSharedPath.Substring(0, sSharedPath.Length - 1);
       string sLocalPath = modFunctions.LocalAppData;
       if (sLocalPath.StartsWith(Environment.GetFolderPath(Environment.SpecialFolder.Personal)))
         sLocalPath = "~" + sLocalPath.Substring(Environment.GetFolderPath(Environment.SpecialFolder.Personal).Length);
       if (sLocalPath.EndsWith("."))
         sLocalPath = sLocalPath.Substring(0, sLocalPath.Length - 1);
-      optHistorySharedConfig.Label = sSharedPath;
-      optHistorySharedConfig.TooltipMarkup = "Save History Data to the shared <b>" + sSharedPath + "</b> directory.";
       optHistoryLocalConfig.Label = sLocalPath;
       optHistoryLocalConfig.TooltipMarkup = "Save History Data to the local <b>" + sLocalPath + "</b> directory.";
-      lblAdvancedDataDescription.LabelProp = "Your usage data will be stored in this directory. " +
-        "If you use multiple accounts on your computer, data should be stored in the " + sSharedPath + " folder in order to be shared. " +
-        "Otherwise, " + sLocalPath + " is recommended.";
+      lblAdvancedDataDescription.LabelProp = "Your usage data will be stored in this directory. By default, data is stored in the " + sLocalPath + " directory.";
       AddEventHandlers();
       mySettings = new AppSettings();
       string sAccount = mySettings.Account;
@@ -295,8 +288,6 @@ namespace RestrictionTrackerGTK
         hD = modFunctions.AppDataPath;
       if (!hD.EndsWith(System.IO.Path.DirectorySeparatorChar.ToString()))
         hD += System.IO.Path.DirectorySeparatorChar;
-      if (string.Compare(hD, modFunctions.AppDataAllPath, true) == 0)
-        optHistorySharedConfig.Active = true;
       else if (string.Compare(hD, modFunctions.AppDataPath, true) == 0)
         optHistoryLocalConfig.  Active = true;
       else
@@ -395,7 +386,6 @@ namespace RestrictionTrackerGTK
       //
       // Adavnced
       //
-      optHistorySharedConfig.Clicked += optHistorySharedConfig_Clicked;
       optHistoryLocalConfig.Clicked += optHistoryLocalConfig_Clicked;
       optHistoryCustom.Clicked += optHistoryCustom_Clicked;
       txtHistoryDir.CurrentFolderChanged += txtHistoryDir_CurrentFolderChanged;
@@ -498,12 +488,7 @@ namespace RestrictionTrackerGTK
 
     protected void cmdHistoryDirOpen_Clicked(object sender, EventArgs e)
     {
-      if (optHistorySharedConfig.Active)
-      if (Directory.Exists(modFunctions.AppDataAllPath))
-        System.Diagnostics.Process.Start(modFunctions.AppDataAllPath);
-      else
-        modFunctions.ShowMessageBox(this, "The directory \"" + modFunctions.AppDataAllPath + "\" does not exist.\nPlease save the configuration first.", "Missing Directory", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
-      else if (optHistoryLocalConfig.Active)
+      if (optHistoryLocalConfig.Active)
         if (Directory.Exists(modFunctions.AppDataPath))
           System.Diagnostics.Process.Start(modFunctions.AppDataPath);
         else
@@ -830,16 +815,6 @@ namespace RestrictionTrackerGTK
       }
       if (bLoaded)
       {
-        cmdSave.Sensitive = SettingsChanged();
-      }
-    }
-
-    protected void optHistorySharedConfig_Clicked(object sender, EventArgs e)
-    {
-      if (optHistorySharedConfig.Active)
-      {
-        txtHistoryDir.Sensitive = optHistoryCustom.Active;
-        txtHistoryDir.SetCurrentFolder(modFunctions.AppDataAllPath);
         cmdSave.Sensitive = SettingsChanged();
       }
     }
@@ -1206,42 +1181,11 @@ namespace RestrictionTrackerGTK
         }
         else
         {
-          string histParent = System.IO.Path.GetDirectoryName(txtHistoryDir.CurrentFolder);
-          if (!Directory.Exists(histParent))
-          {
-            if (CurrentOS.IsMac)
-            {
-              Directory.CreateDirectory(histParent);
-            }
-            else
-            {
-              string mkvlpath = System.IO.Path.Combine(modFunctions.AppData, "mkvlpath.sh");
-              File.WriteAllText(mkvlpath, "#!/bin/sh\n" +
-                                "\necho " + modFunctions.ProductName + " needs to create\necho the directory \\\"" + histParent + "\\\".\n" +
-                                "sudo mkdir \"" + histParent + "\" -m +666\n");
-              Mono.Unix.Native.Syscall.chmod (mkvlpath, Mono.Unix.Native.FilePermissions.ACCESSPERMS);
-              modFunctions.RunTerminal (mkvlpath);
-              long waitStart = modFunctions.TickCount();
-              do
-              {
-                Gtk.Main.Iteration();
-                System.Threading.Thread.Sleep(0);
-                if (modFunctions.TickCount() - waitStart > 30000)
-                  break;
-              } while(!Directory.Exists(histParent));
-              File.Delete(mkvlpath);
-              if (!Directory.Exists(histParent))
-              {
-                modFunctions.ShowMessageBox(this, modFunctions.ProductName + " was unable to create the directory \"" + histParent + "\"!", modFunctions.ProductName, Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
-                continueChange = false;
-              }
-            }
-          }
           if (continueChange)
           {
             try
             {
-            Directory.CreateDirectory(txtHistoryDir.CurrentFolder);
+              Directory.CreateDirectory(txtHistoryDir.CurrentFolder);
             }
             catch (Exception)
             {
@@ -1353,9 +1297,7 @@ namespace RestrictionTrackerGTK
           string hD = mySettings.HistoryDir;
           if (!hD.EndsWith(System.IO.Path.DirectorySeparatorChar.ToString()))
             hD += System.IO.Path.DirectorySeparatorChar;
-          if (string.Compare(hD, modFunctions.AppDataAllPath, true) == 0)
-            optHistorySharedConfig.Active = true;
-          else if (string.Compare(hD, modFunctions.AppDataPath, true) == 0)
+          if (string.Compare(hD, modFunctions.AppDataPath, true) == 0)
             optHistoryLocalConfig.Active = true;
           else
             optHistoryCustom.Active = true;
