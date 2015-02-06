@@ -288,8 +288,8 @@ namespace RestrictionTrackerGTK
         hD = modFunctions.AppDataPath;
       if (!hD.EndsWith(System.IO.Path.DirectorySeparatorChar.ToString()))
         hD += System.IO.Path.DirectorySeparatorChar;
-      else if (string.Compare(hD, modFunctions.AppDataPath, true) == 0)
-        optHistoryLocalConfig.  Active = true;
+      if (string.Compare(hD, modFunctions.AppDataPath, true) == 0)
+        optHistoryLocalConfig.Active = true;
       else
         optHistoryCustom.Active = true;
       txtHistoryDir.SetCurrentFolder(mySettings.HistoryDir);
