@@ -2343,12 +2343,12 @@ namespace RestrictionTrackerGTK
         if (CurrentOS.IsMac)
         {
           if (Directory.Exists(OSXStartup))
-            return File.Exists(OSXStartup + OSXShortcut);
+            return File.Exists(Path.Combine(OSXStartup, OSXShortcut));
         }
         else
         {
           if (Directory.Exists(LinStartup))
-            return File.Exists(LinStartup + LinShortcut);
+            return File.Exists(Path.Combine(LinStartup, LinShortcut));
         }
         return false;
       }
@@ -2363,8 +2363,8 @@ namespace RestrictionTrackerGTK
           else
           {
             if (Directory.Exists(OSXStartup))
-              if (File.Exists(OSXStartup + OSXShortcut))
-                File.Delete(OSXStartup + OSXShortcut);
+              if (File.Exists(Path.Combine(OSXStartup, OSXShortcut)))
+                File.Delete(Path.Combine(OSXStartup, OSXShortcut));
           }
         }
         else
@@ -2378,8 +2378,8 @@ namespace RestrictionTrackerGTK
             try
             {
               if (Directory.Exists(LinStartup))
-                if (File.Exists(LinStartup + LinShortcut))
-                  File.Delete(LinStartup + LinShortcut);
+                if (File.Exists(Path.Combine(LinStartup, LinShortcut)))
+                  File.Delete(Path.Combine(LinStartup, LinShortcut));
             }
             catch (Exception)
             {
@@ -2392,7 +2392,7 @@ namespace RestrictionTrackerGTK
     {
       if (!Directory.Exists(LinStartup))
         Directory.CreateDirectory(LinStartup);
-      if (!File.Exists(LinStartup + LinShortcut))
+      if (!File.Exists(Path.Combine(LinStartup, LinShortcut)))
       {
         try
         {
@@ -2408,7 +2408,7 @@ namespace RestrictionTrackerGTK
             "GenericName=Bandwidth Monitor\n" +
             "Comment=Monitor and record your ViaSat Satellite network usage\n" +
             sIcon +
-            "Encoding=ISO-8859-1\n" +
+            "Encoding=UTF-8\n" +
             "Type=Application\n" +
             "Version=" + DisplayVersion(ProductVersion) + "\n" +
             "Exec=mono /usr/lib/restrictiontracker/RestrictionTracker.exe\n" +
@@ -2416,7 +2416,7 @@ namespace RestrictionTrackerGTK
             "StartupNotify=true\n" +
             "Terminal=0\n" +
             "TerminalOptions=";
-          File.WriteAllText(LinStartup + LinShortcut, sLink, System.Text.Encoding.GetEncoding(28591));
+          File.WriteAllText(Path.Combine(LinStartup, LinShortcut), sLink, System.Text.Encoding.GetEncoding(28591));
         }
         catch (Exception)
         {
@@ -2427,7 +2427,7 @@ namespace RestrictionTrackerGTK
     {
       if (!Directory.Exists(OSXStartup))
         Directory.CreateDirectory(OSXStartup);
-      if (!File.Exists(OSXStartup + OSXShortcut))
+      if (!File.Exists(Path.Combine(OSXStartup, OSXShortcut)))
       {
         try
         {
@@ -2449,7 +2449,7 @@ namespace RestrictionTrackerGTK
             "  <false/>\n" +
             " </dict>\n" +
             "</plist>\n";
-          File.WriteAllText(OSXStartup + OSXShortcut, sLink, System.Text.Encoding.UTF8);
+          File.WriteAllText(Path.Combine(OSXStartup, OSXShortcut), sLink, System.Text.Encoding.UTF8);
         }
         catch (Exception)
         {
@@ -2461,9 +2461,9 @@ namespace RestrictionTrackerGTK
       get
       {
         if (CurrentOS.IsMac)
-          return (OSXStartup + OSXShortcut);
+          return (Path.Combine(OSXStartup, OSXShortcut));
         else
-          return (LinStartup + LinShortcut);
+          return (Path.Combine(LinStartup, LinShortcut));
       }
     }
     #endregion
