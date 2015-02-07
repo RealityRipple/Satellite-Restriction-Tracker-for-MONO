@@ -31,12 +31,14 @@ namespace RestrictionTrackerGTK
     private int m_Overuse;
     private int m_Overtime;
     private string m_AlertStyle;
+    private TrayStyles m_TrayIcon;
+    private bool m_AutoHide;
     private string m_ProxySetting;
     private SecurityProtocolType m_Protocol;
     public bool Loaded;
     public AppColors Colors;
     public enum UpdateTypes{Auto = 1,Ask,None};
-
+    public enum TrayStyles{Always, Minimized, Never};
     private string ConfigFile
     {
       get
@@ -231,6 +233,25 @@ namespace RestrictionTrackerGTK
                     else if (xName.CompareTo("AlertStyle") == 0)
                     {
                       m_AlertStyle = xValue;
+                    }
+                    else if (xName.CompareTo("TrayIcon") == 0)
+                    {
+                      switch (xValue)
+                      {
+                        case "Never":
+                          m_TrayIcon = TrayStyles.Never;
+                          break;
+                        case "Minimized":
+                          m_TrayIcon = TrayStyles.Minimized;
+                          break;
+                        default:
+                          m_TrayIcon = TrayStyles.Always;
+                          break;
+                      }
+                    }
+                    else if (xName.CompareTo("AutoHide") == 0)
+                    {
+                      m_AutoHide = (xValue.CompareTo("True") == 0);
                     }
                     else if (xName.CompareTo("Proxy") == 0)
                     {
@@ -494,6 +515,8 @@ namespace RestrictionTrackerGTK
       m_Overuse = 0;
       m_Overtime = 60;
       m_AlertStyle = "Default";
+      m_TrayIcon = TrayStyles.Always;
+      m_AutoHide = true;
       m_ProxySetting = "System";
       m_Protocol = SecurityProtocolType.Tls;
       Colors = new AppColors();
@@ -580,6 +603,14 @@ namespace RestrictionTrackerGTK
       }
       string sAccountType = "Other";
       sAccountType = modFunctions.HostTypeToString(m_AccountType);
+      string sTrayIcon = "Always";
+      if (m_TrayIcon == TrayStyles.Never)
+        sTrayIcon = "Never";
+      else if (m_TrayIcon == TrayStyles.Minimized)
+        sTrayIcon = "Minimized";
+      string sAutoHide = "True";
+      if (!m_AutoHide)
+        sAutoHide = "False";
       string sRet = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + Environment.NewLine +
         "<configuration>" + Environment.NewLine +
         "  <userSettings>" + Environment.NewLine +
@@ -643,6 +674,12 @@ namespace RestrictionTrackerGTK
         "      </setting>" + Environment.NewLine +
         "      <setting name=\"AlertStyle\">" + Environment.NewLine + 
         "        <value>" + m_AlertStyle + "</value>" + Environment.NewLine +
+        "      </setting>" + Environment.NewLine +
+        "      <setting name=\"TrayIcon\">" + Environment.NewLine +
+        "        <value>" + sTrayIcon + "</value>" + Environment.NewLine +
+        "      </setting>" + Environment.NewLine +
+        "      <setting name=\"AutoHide\">" + Environment.NewLine +
+        "        <value>" + sAutoHide + "</value>" + Environment.NewLine +
         "      </setting>" + Environment.NewLine +
         "      <setting name=\"Proxy\">" + Environment.NewLine + 
         "        <value>" + m_ProxySetting + "</value>" + Environment.NewLine + 
@@ -1158,6 +1195,30 @@ namespace RestrictionTrackerGTK
       set
       {
         m_AlertStyle = value;
+      }
+    }
+
+    public TrayStyles TrayIconStyle
+    {
+      get
+      {
+        return m_TrayIcon;
+      }
+      set
+      {
+        m_TrayIcon = value;
+      }
+    }
+
+    public bool AutoHide
+    {
+      get
+      {
+        return m_AutoHide;
+      }
+      set
+      {
+        m_AutoHide = value;
       }
     }
 

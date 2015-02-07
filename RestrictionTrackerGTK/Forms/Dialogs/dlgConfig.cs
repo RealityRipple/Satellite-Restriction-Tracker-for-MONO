@@ -33,7 +33,7 @@ namespace RestrictionTrackerGTK
         pctNetworkProtocolIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_security.png");
         pctNetworkUpdateIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.net_update.png");
         pctAdvancedDataIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_data.png");
-        pctAdvancedInterfaceIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_interface.png");
+        pctPrefsInterfaceIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_interface.png");
         ((Gtk.Box.BoxChild)this.ActionArea[cmdSave]).Position = 1;
         ((Gtk.Box.BoxChild)this.ActionArea[cmdClose]).Position = 0;
       }
@@ -42,11 +42,20 @@ namespace RestrictionTrackerGTK
         ((Gtk.Box.BoxChild)this.ActionArea[cmdSave]).Position = 0;
         ((Gtk.Box.BoxChild)this.ActionArea[cmdClose]).Position = 1;
       }
+      txtStartWait.Alignment = 1;
+      txtInterval.Alignment = 1;
+      txtAccuracy.Alignment = 1;
+      txtOverSize.Alignment = 1;
+      txtOverTime.Alignment = 1;
+      txtTimeout.Alignment = 1;
+      txtProxyPort.Alignment = 1;
       string sLocalPath = modFunctions.LocalAppData;
       if (sLocalPath.StartsWith(Environment.GetFolderPath(Environment.SpecialFolder.Personal)))
         sLocalPath = "~" + sLocalPath.Substring(Environment.GetFolderPath(Environment.SpecialFolder.Personal).Length);
       if (sLocalPath.EndsWith("."))
         sLocalPath = sLocalPath.Substring(0, sLocalPath.Length - 1);
+      if (sLocalPath.Contains("n"))
+        sLocalPath = sLocalPath.Insert(sLocalPath.IndexOf("n"), "_");
       optHistoryLocalConfig.Label = sLocalPath;
       optHistoryLocalConfig.TooltipMarkup = "Save History Data to the local <b>" + sLocalPath + "</b> directory.";
       lblAdvancedDataDescription.LabelProp = "Your usage data will be stored in this directory. By default, data is stored in the " + sLocalPath + " directory.";
@@ -296,6 +305,24 @@ namespace RestrictionTrackerGTK
 
 
       chkScaleScreen.Active = mySettings.ScaleScreen;
+      switch (mySettings.TrayIconStyle)
+      {
+        case AppSettings.TrayStyles.Always:
+          chkTrayIcon.Active = true;
+          chkTrayMin.Active = false;
+          break;
+        case AppSettings.TrayStyles.Minimized:
+          chkTrayIcon.Active = true;
+          chkTrayMin.Active = true;
+          break;
+        case AppSettings.TrayStyles.Never:
+          chkTrayIcon.Active = false;
+          chkTrayMin.Active = false;
+          break;
+      }
+      chkTrayIcon_Clicked(null, null);
+
+      chkAutoHide.Active = mySettings.AutoHide;
 
       bSaved = false;
       bAccount = false;
@@ -392,6 +419,9 @@ namespace RestrictionTrackerGTK
       cmdHistoryDirOpen.Clicked += cmdHistoryDirOpen_Clicked;
       //
       chkScaleScreen.Clicked += ValuesChanged;
+      chkTrayIcon.Clicked += chkTrayIcon_Clicked;
+      chkTrayMin.Clicked += ValuesChanged;
+      chkAutoHide.Clicked += ValuesChanged;
       
       cmdSave.Clicked += cmdSave_Click;
       cmdClose.Clicked += cmdClose_Click;
@@ -757,7 +787,7 @@ namespace RestrictionTrackerGTK
         txtProxyPort.Visible = false;
         lblProxyPort.Sensitive = false;
         txtProxyPort.Sensitive = false;
-        ((Gtk.Table.TableChild)pnlProxy[txtProxyAddress]).RightAttach = 2;
+        ((Gtk.Table.TableChild)pnlProxy[txtProxyAddress]).RightAttach = 3;
         lblProxyUser.Sensitive = true;
         txtProxyUser.Sensitive = true;
         lblProxyPassword.Sensitive = true;
@@ -839,6 +869,16 @@ namespace RestrictionTrackerGTK
       }
     }
 
+    protected void chkTrayIcon_Clicked(object sender, EventArgs e)
+    {
+      chkTrayMin.Sensitive = chkTrayIcon.Active;
+      if (bLoaded)
+      {
+        cmdSave.Sensitive = SettingsChanged();
+      }
+    }
+
+    #region "Remote Service"
     protected void remoteTest_Failure(object sender, RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs e)
     {
       Gtk.Application.Invoke(sender, (EventArgs)e, Main_RemoteTestFailure);
@@ -929,7 +969,9 @@ namespace RestrictionTrackerGTK
       DoCheck();
       cmdSave.Sensitive = bToSave;
     }
+    #endregion
 
+    #region "Providers"
     private void PopulateHostList()
     {
       wsHostList = new RestrictionLibrary.CookieAwareWebClient();
@@ -1017,6 +1059,7 @@ namespace RestrictionTrackerGTK
       wsHostList = new RestrictionLibrary.CookieAwareWebClient();
       wsHostList.DownloadDataAsync(new Uri("http://wb.realityripple.com/hosts/?add=" + Provider), "UPDATE");
     }
+    #endregion
     #endregion
 
     #region "Remote Service Results"
@@ -1166,6 +1209,16 @@ namespace RestrictionTrackerGTK
       mySettings.Accuracy = txtAccuracy.ValueAsInt;
       mySettings.Timeout = txtTimeout.ValueAsInt;
       mySettings.ScaleScreen = chkScaleScreen.Active;
+      if (chkTrayIcon.Active)
+      {
+        if (chkTrayMin.Active)
+          mySettings.TrayIconStyle = AppSettings.TrayStyles.Minimized;
+        else
+          mySettings.TrayIconStyle = AppSettings.TrayStyles.Always;
+      }
+      else
+        mySettings.TrayIconStyle = AppSettings.TrayStyles.Never;
+      mySettings.AutoHide = chkAutoHide.Active;
       if (String.IsNullOrEmpty(mySettings.HistoryDir))
       {
         mySettings.HistoryDir = modFunctions.MySaveDir(true);
@@ -1476,6 +1529,23 @@ namespace RestrictionTrackerGTK
       if (chkStartup.Active ^ File.Exists(modFunctions.StartupPath))
         return true;
       if (mySettings.ScaleScreen != chkScaleScreen.Active)
+        return true;
+      switch (mySettings.TrayIconStyle)
+      {
+        case AppSettings.TrayStyles.Always:
+          if (!chkTrayIcon.Active || chkTrayMin.Active)
+            return true;
+          break;
+        case AppSettings.TrayStyles.Minimized:
+          if (!chkTrayIcon.Active || !chkTrayMin.Active)
+            return true;
+          break;
+        case AppSettings.TrayStyles.Never:
+          if (chkTrayIcon.Active)
+            return true;
+          break;
+      }
+      if (mySettings.AutoHide != chkAutoHide.Active)
         return true;
       if (string.Compare(mySettings.HistoryDir, txtHistoryDir.CurrentFolder, true) != 0)
         return true;
