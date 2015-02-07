@@ -472,7 +472,6 @@ namespace RestrictionTrackerGTK
 			this.optAccountTypeDNX.TooltipMarkup = "Exede package through Dish.";
 			this.optAccountTypeDNX.CanFocus = true;
 			this.optAccountTypeDNX.Name = "optAccountTypeDNX";
-			this.optAccountTypeDNX.Active = true;
 			this.optAccountTypeDNX.DrawIndicator = true;
 			this.optAccountTypeDNX.UseUnderline = true;
 			this.optAccountTypeDNX.Group = new global::GLib.SList (global::System.IntPtr.Zero);
@@ -1856,7 +1855,6 @@ namespace RestrictionTrackerGTK
 			this.optHistoryCustom.TooltipMarkup = "Save History Data to a custom directory.";
 			this.optHistoryCustom.CanFocus = true;
 			this.optHistoryCustom.Name = "optHistoryCustom";
-			this.optHistoryCustom.Active = true;
 			this.optHistoryCustom.DrawIndicator = true;
 			this.optHistoryCustom.UseUnderline = true;
 			this.optHistoryCustom.Group = new global::GLib.SList (global::System.IntPtr.Zero);

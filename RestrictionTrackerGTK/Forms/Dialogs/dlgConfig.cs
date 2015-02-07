@@ -54,11 +54,11 @@ namespace RestrictionTrackerGTK
         sLocalPath = "~" + sLocalPath.Substring(Environment.GetFolderPath(Environment.SpecialFolder.Personal).Length);
       if (sLocalPath.EndsWith("."))
         sLocalPath = sLocalPath.Substring(0, sLocalPath.Length - 1);
+      optHistoryLocalConfig.TooltipMarkup = "Save History Data to the local <b>" + sLocalPath + "</b> directory.";
+      lblAdvancedDataDescription.LabelProp = "Your usage data will be stored in this directory. By default, data is stored in the " + sLocalPath + " directory.";
       if (sLocalPath.Contains("n"))
         sLocalPath = sLocalPath.Insert(sLocalPath.IndexOf("n"), "_");
       optHistoryLocalConfig.Label = sLocalPath;
-      optHistoryLocalConfig.TooltipMarkup = "Save History Data to the local <b>" + sLocalPath + "</b> directory.";
-      lblAdvancedDataDescription.LabelProp = "Your usage data will be stored in this directory. By default, data is stored in the " + sLocalPath + " directory.";
       AddEventHandlers();
       mySettings = new AppSettings();
       string sAccount = mySettings.Account;
