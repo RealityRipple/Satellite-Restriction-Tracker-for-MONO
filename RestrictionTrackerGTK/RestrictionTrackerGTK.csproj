@@ -139,8 +139,8 @@
     <EmbeddedResource Include="Resources\config\os x\prefs_colors.png" />
     <EmbeddedResource Include="Resources\config\os x\prefs_notify.png" />
     <EmbeddedResource Include="Resources\config\os x\prefs_power.png" />
-    <EmbeddedResource Include="Resources\config\os x\advanced_interface.png" />
-    <EmbeddedResource Include="Resources\config\linux\advanced_interface.png" />
+    <EmbeddedResource Include="Resources\config\linux\prefs_interface.png" />
+    <EmbeddedResource Include="Resources\config\os x\prefs_interface.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gtk-gui\generated.cs" />

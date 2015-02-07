@@ -51,7 +51,7 @@ namespace RestrictionTrackerGTK
 		private global::Gtk.Label lblPrefAccuracyTitle;
 		private global::Gtk.Label lblPrefAlertTitle;
 		private global::Gtk.Label lblPrefColorTitle;
-		private global::Gtk.Label lblPrefsInterfaceTitle;
+		private global::Gtk.Label lblPrefInterfaceTitle;
 		private global::Gtk.Label lblPrefStartTitle;
 		private global::Gtk.Table pnlPrefAccuracy;
 		private global::Gtk.Label lblAccuracy1;
@@ -76,11 +76,11 @@ namespace RestrictionTrackerGTK
 		private global::Gtk.Button cmdColors;
 		private global::Gtk.Label lblPrefColorDescription;
 		private global::Gtk.Image pctPrefColorIcon;
-		private global::Gtk.Table pnlPrefsInterface;
+		private global::Gtk.Table pnlPrefInterface;
 		private global::Gtk.CheckButton chkScaleScreen;
 		private global::Gtk.CheckButton chkTrayIcon;
 		private global::Gtk.CheckButton chkTrayMin;
-		private global::Gtk.Image pctPrefsInterfaceIcon;
+		private global::Gtk.Image pctPrefInterfaceIcon;
 		private global::Gtk.Table pnlPrefSpace1;
 		private global::Gtk.Table pnlPrefSpace2;
 		private global::Gtk.Table pnlPrefSpace3;
@@ -744,13 +744,13 @@ namespace RestrictionTrackerGTK
 			w53.XOptions = ((global::Gtk.AttachOptions)(4));
 			w53.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlPrefs.Gtk.Table+TableChild
-			this.lblPrefsInterfaceTitle = new global::Gtk.Label ();
-			this.lblPrefsInterfaceTitle.Name = "lblPrefsInterfaceTitle";
-			this.lblPrefsInterfaceTitle.Xalign = 0F;
-			this.lblPrefsInterfaceTitle.LabelProp = global::Mono.Unix.Catalog.GetString ("<span weight=\"bold\">Main Window Interface Options</span>");
-			this.lblPrefsInterfaceTitle.UseMarkup = true;
-			this.pnlPrefs.Add (this.lblPrefsInterfaceTitle);
-			global::Gtk.Table.TableChild w54 = ((global::Gtk.Table.TableChild)(this.pnlPrefs [this.lblPrefsInterfaceTitle]));
+			this.lblPrefInterfaceTitle = new global::Gtk.Label ();
+			this.lblPrefInterfaceTitle.Name = "lblPrefInterfaceTitle";
+			this.lblPrefInterfaceTitle.Xalign = 0F;
+			this.lblPrefInterfaceTitle.LabelProp = global::Mono.Unix.Catalog.GetString ("<span weight=\"bold\">Main Window Interface Options</span>");
+			this.lblPrefInterfaceTitle.UseMarkup = true;
+			this.pnlPrefs.Add (this.lblPrefInterfaceTitle);
+			global::Gtk.Table.TableChild w54 = ((global::Gtk.Table.TableChild)(this.pnlPrefs [this.lblPrefInterfaceTitle]));
 			w54.TopAttach = ((uint)(9));
 			w54.BottomAttach = ((uint)(10));
 			w54.XOptions = ((global::Gtk.AttachOptions)(4));
@@ -1074,11 +1074,11 @@ namespace RestrictionTrackerGTK
 			w78.BottomAttach = ((uint)(14));
 			w78.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlPrefs.Gtk.Table+TableChild
-			this.pnlPrefsInterface = new global::Gtk.Table (((uint)(3)), ((uint)(3)), false);
-			this.pnlPrefsInterface.Name = "pnlPrefsInterface";
-			this.pnlPrefsInterface.RowSpacing = ((uint)(6));
-			this.pnlPrefsInterface.ColumnSpacing = ((uint)(6));
-			// Container child pnlPrefsInterface.Gtk.Table+TableChild
+			this.pnlPrefInterface = new global::Gtk.Table (((uint)(3)), ((uint)(2)), false);
+			this.pnlPrefInterface.Name = "pnlPrefInterface";
+			this.pnlPrefInterface.RowSpacing = ((uint)(6));
+			this.pnlPrefInterface.ColumnSpacing = ((uint)(6));
+			// Container child pnlPrefInterface.Gtk.Table+TableChild
 			this.chkScaleScreen = new global::Gtk.CheckButton ();
 			this.chkScaleScreen.TooltipMarkup = "Text in the main window of Satellite Restriction Tracker will scale to fit its size.";
 			this.chkScaleScreen.CanFocus = true;
@@ -1086,58 +1086,61 @@ namespace RestrictionTrackerGTK
 			this.chkScaleScreen.Label = global::Mono.Unix.Catalog.GetString ("Scale text to window si_ze");
 			this.chkScaleScreen.DrawIndicator = true;
 			this.chkScaleScreen.UseUnderline = true;
-			this.pnlPrefsInterface.Add (this.chkScaleScreen);
-			global::Gtk.Table.TableChild w79 = ((global::Gtk.Table.TableChild)(this.pnlPrefsInterface [this.chkScaleScreen]));
+			this.pnlPrefInterface.Add (this.chkScaleScreen);
+			global::Gtk.Table.TableChild w79 = ((global::Gtk.Table.TableChild)(this.pnlPrefInterface [this.chkScaleScreen]));
 			w79.LeftAttach = ((uint)(1));
-			w79.RightAttach = ((uint)(3));
+			w79.RightAttach = ((uint)(2));
 			w79.XOptions = ((global::Gtk.AttachOptions)(4));
 			w79.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlPrefsInterface.Gtk.Table+TableChild
+			// Container child pnlPrefInterface.Gtk.Table+TableChild
 			this.chkTrayIcon = new global::Gtk.CheckButton ();
+			this.chkTrayIcon.TooltipMarkup = "Display an icon in the system Notification Area.";
 			this.chkTrayIcon.CanFocus = true;
 			this.chkTrayIcon.Name = "chkTrayIcon";
 			this.chkTrayIcon.Label = global::Mono.Unix.Catalog.GetString ("Show system _tray icon");
 			this.chkTrayIcon.DrawIndicator = true;
 			this.chkTrayIcon.UseUnderline = true;
-			this.pnlPrefsInterface.Add (this.chkTrayIcon);
-			global::Gtk.Table.TableChild w80 = ((global::Gtk.Table.TableChild)(this.pnlPrefsInterface [this.chkTrayIcon]));
+			this.pnlPrefInterface.Add (this.chkTrayIcon);
+			global::Gtk.Table.TableChild w80 = ((global::Gtk.Table.TableChild)(this.pnlPrefInterface [this.chkTrayIcon]));
 			w80.TopAttach = ((uint)(1));
 			w80.BottomAttach = ((uint)(2));
 			w80.LeftAttach = ((uint)(1));
-			w80.RightAttach = ((uint)(3));
+			w80.RightAttach = ((uint)(2));
 			w80.XOptions = ((global::Gtk.AttachOptions)(4));
 			w80.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlPrefsInterface.Gtk.Table+TableChild
+			// Container child pnlPrefInterface.Gtk.Table+TableChild
 			this.chkTrayMin = new global::Gtk.CheckButton ();
+			this.chkTrayMin.TooltipMarkup = "Display the tray icon only when Satellite Restriction Tracker is minimized.";
 			this.chkTrayMin.CanFocus = true;
 			this.chkTrayMin.Name = "chkTrayMin";
 			this.chkTrayMin.Label = global::Mono.Unix.Catalog.GetString ("O_nly when minimized");
 			this.chkTrayMin.DrawIndicator = true;
 			this.chkTrayMin.UseUnderline = true;
-			this.pnlPrefsInterface.Add (this.chkTrayMin);
-			global::Gtk.Table.TableChild w81 = ((global::Gtk.Table.TableChild)(this.pnlPrefsInterface [this.chkTrayMin]));
+			this.pnlPrefInterface.Add (this.chkTrayMin);
+			global::Gtk.Table.TableChild w81 = ((global::Gtk.Table.TableChild)(this.pnlPrefInterface [this.chkTrayMin]));
 			w81.TopAttach = ((uint)(2));
 			w81.BottomAttach = ((uint)(3));
-			w81.LeftAttach = ((uint)(2));
-			w81.RightAttach = ((uint)(3));
+			w81.LeftAttach = ((uint)(1));
+			w81.RightAttach = ((uint)(2));
+			w81.XPadding = ((uint)(16));
 			w81.XOptions = ((global::Gtk.AttachOptions)(4));
 			w81.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlPrefsInterface.Gtk.Table+TableChild
-			this.pctPrefsInterfaceIcon = new global::Gtk.Image ();
-			this.pctPrefsInterfaceIcon.WidthRequest = 48;
-			this.pctPrefsInterfaceIcon.Name = "pctPrefsInterfaceIcon";
-			this.pctPrefsInterfaceIcon.Xpad = 4;
-			this.pctPrefsInterfaceIcon.Ypad = 4;
-			this.pctPrefsInterfaceIcon.Xalign = 1F;
-			this.pctPrefsInterfaceIcon.Yalign = 0F;
-			this.pctPrefsInterfaceIcon.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("RestrictionTrackerGTK.Resources.config.linux.advanced_interface.png");
-			this.pnlPrefsInterface.Add (this.pctPrefsInterfaceIcon);
-			global::Gtk.Table.TableChild w82 = ((global::Gtk.Table.TableChild)(this.pnlPrefsInterface [this.pctPrefsInterfaceIcon]));
+			// Container child pnlPrefInterface.Gtk.Table+TableChild
+			this.pctPrefInterfaceIcon = new global::Gtk.Image ();
+			this.pctPrefInterfaceIcon.WidthRequest = 48;
+			this.pctPrefInterfaceIcon.Name = "pctPrefInterfaceIcon";
+			this.pctPrefInterfaceIcon.Xpad = 4;
+			this.pctPrefInterfaceIcon.Ypad = 4;
+			this.pctPrefInterfaceIcon.Xalign = 1F;
+			this.pctPrefInterfaceIcon.Yalign = 0F;
+			this.pctPrefInterfaceIcon.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("RestrictionTrackerGTK.Resources.config.linux.prefs_interface.png");
+			this.pnlPrefInterface.Add (this.pctPrefInterfaceIcon);
+			global::Gtk.Table.TableChild w82 = ((global::Gtk.Table.TableChild)(this.pnlPrefInterface [this.pctPrefInterfaceIcon]));
 			w82.BottomAttach = ((uint)(3));
 			w82.XOptions = ((global::Gtk.AttachOptions)(4));
 			w82.YOptions = ((global::Gtk.AttachOptions)(4));
-			this.pnlPrefs.Add (this.pnlPrefsInterface);
-			global::Gtk.Table.TableChild w83 = ((global::Gtk.Table.TableChild)(this.pnlPrefs [this.pnlPrefsInterface]));
+			this.pnlPrefs.Add (this.pnlPrefInterface);
+			global::Gtk.Table.TableChild w83 = ((global::Gtk.Table.TableChild)(this.pnlPrefs [this.pnlPrefInterface]));
 			w83.TopAttach = ((uint)(10));
 			w83.BottomAttach = ((uint)(11));
 			w83.XOptions = ((global::Gtk.AttachOptions)(4));
@@ -1189,9 +1192,10 @@ namespace RestrictionTrackerGTK
 			this.pnlPrefStart.ColumnSpacing = ((uint)(2));
 			// Container child pnlPrefStart.Gtk.Table+TableChild
 			this.chkAutoHide = new global::Gtk.CheckButton ();
+			this.chkAutoHide.TooltipMarkup = "Automatically minimize the program when it starts.";
 			this.chkAutoHide.CanFocus = true;
 			this.chkAutoHide.Name = "chkAutoHide";
-			this.chkAutoHide.Label = global::Mono.Unix.Catalog.GetString ("_Minimize Satellite Restriction Tracker on Startup");
+			this.chkAutoHide.Label = global::Mono.Unix.Catalog.GetString ("_Minimize Satellite Restriction Tracker on startup");
 			this.chkAutoHide.DrawIndicator = true;
 			this.chkAutoHide.UseUnderline = true;
 			this.pnlPrefStart.Add (this.chkAutoHide);

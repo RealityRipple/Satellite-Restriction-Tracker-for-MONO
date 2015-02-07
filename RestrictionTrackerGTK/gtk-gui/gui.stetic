@@ -4706,7 +4706,7 @@ If you were provided with an E-Mail address, this is the first half of that addr
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.Label" id="lblPrefsInterfaceTitle">
+                  <widget class="Gtk.Label" id="lblPrefInterfaceTitle">
                     <property name="MemberName" />
                     <property name="Xalign">0</property>
                     <property name="LabelProp" translatable="yes">&lt;span weight="bold"&gt;Main Window Interface Options&lt;/span&gt;</property>
@@ -5289,15 +5289,12 @@ and the Tray Icon.</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.Table" id="pnlPrefsInterface">
+                  <widget class="Gtk.Table" id="pnlPrefInterface">
                     <property name="MemberName" />
                     <property name="NRows">3</property>
-                    <property name="NColumns">3</property>
+                    <property name="NColumns">2</property>
                     <property name="RowSpacing">6</property>
                     <property name="ColumnSpacing">6</property>
-                    <child>
-                      <placeholder />
-                    </child>
                     <child>
                       <widget class="Gtk.CheckButton" id="chkScaleScreen">
                         <property name="MemberName" />
@@ -5310,7 +5307,7 @@ and the Tray Icon.</property>
                       </widget>
                       <packing>
                         <property name="LeftAttach">1</property>
-                        <property name="RightAttach">3</property>
+                        <property name="RightAttach">2</property>
                         <property name="AutoSize">True</property>
                         <property name="XOptions">Fill</property>
                         <property name="YOptions">Fill</property>
@@ -5325,6 +5322,7 @@ and the Tray Icon.</property>
                     <child>
                       <widget class="Gtk.CheckButton" id="chkTrayIcon">
                         <property name="MemberName" />
+                        <property name="Tooltip" translatable="yes">Display an icon in the system Notification Area.</property>
                         <property name="CanFocus">True</property>
                         <property name="Label" translatable="yes">Show system _tray icon</property>
                         <property name="DrawIndicator">True</property>
@@ -5335,7 +5333,7 @@ and the Tray Icon.</property>
                         <property name="TopAttach">1</property>
                         <property name="BottomAttach">2</property>
                         <property name="LeftAttach">1</property>
-                        <property name="RightAttach">3</property>
+                        <property name="RightAttach">2</property>
                         <property name="AutoSize">True</property>
                         <property name="XOptions">Fill</property>
                         <property name="YOptions">Fill</property>
@@ -5350,6 +5348,7 @@ and the Tray Icon.</property>
                     <child>
                       <widget class="Gtk.CheckButton" id="chkTrayMin">
                         <property name="MemberName" />
+                        <property name="Tooltip" translatable="yes">Display the tray icon only when Satellite Restriction Tracker is minimized.</property>
                         <property name="CanFocus">True</property>
                         <property name="Label" translatable="yes">O_nly when minimized</property>
                         <property name="DrawIndicator">True</property>
@@ -5359,8 +5358,9 @@ and the Tray Icon.</property>
                       <packing>
                         <property name="TopAttach">2</property>
                         <property name="BottomAttach">3</property>
-                        <property name="LeftAttach">2</property>
-                        <property name="RightAttach">3</property>
+                        <property name="LeftAttach">1</property>
+                        <property name="RightAttach">2</property>
+                        <property name="XPadding">16</property>
                         <property name="AutoSize">False</property>
                         <property name="XOptions">Fill</property>
                         <property name="YOptions">Fill</property>
@@ -5373,14 +5373,14 @@ and the Tray Icon.</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="Gtk.Image" id="pctPrefsInterfaceIcon">
+                      <widget class="Gtk.Image" id="pctPrefInterfaceIcon">
                         <property name="MemberName" />
                         <property name="WidthRequest">48</property>
                         <property name="Xpad">4</property>
                         <property name="Ypad">4</property>
                         <property name="Xalign">1</property>
                         <property name="Yalign">0</property>
-                        <property name="Pixbuf">resource:RestrictionTrackerGTK.Resources.config.linux.advanced_interface.png</property>
+                        <property name="Pixbuf">resource:RestrictionTrackerGTK.Resources.config.linux.prefs_interface.png</property>
                       </widget>
                       <packing>
                         <property name="BottomAttach">3</property>
@@ -5508,8 +5508,9 @@ and the Tray Icon.</property>
                     <child>
                       <widget class="Gtk.CheckButton" id="chkAutoHide">
                         <property name="MemberName" />
+                        <property name="Tooltip" translatable="yes">Automatically minimize the program when it starts.</property>
                         <property name="CanFocus">True</property>
-                        <property name="Label" translatable="yes">_Minimize Satellite Restriction Tracker on Startup</property>
+                        <property name="Label" translatable="yes">_Minimize Satellite Restriction Tracker on startup</property>
                         <property name="DrawIndicator">True</property>
                         <property name="HasLabel">True</property>
                         <property name="UseUnderline">True</property>
