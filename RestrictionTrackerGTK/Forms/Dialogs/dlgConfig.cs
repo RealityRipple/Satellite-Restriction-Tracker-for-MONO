@@ -903,26 +903,23 @@ namespace RestrictionTrackerGTK
         case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadLogin:
           sErr = "There was a server error. Please try again later.";
           break;
-          case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadPassword:
-          sErr = "Your password is incorrect!";
-          break;
-          case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadProduct:
+        case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadProduct:
           sErr = "Your Product Key is incorrect!";
           break;
-          case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadServer:
+        case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadServer:
           sErr = "There was a fault double-checking the server. You may have a security issue.";
           break;
-          case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.NoData:
-          sErr = "There is no data on your account yet!";
+        case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.NoData:
+          sErr = "There server did not receive login negotiation data!";
           break;
-          case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.NoPassword:
-          sErr = "Your account has no password registered to it!";
-          break;
-          case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.NoUsername:
+        case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.NoUsername:
           sErr = "Your account is not registered!";
           break;
-          case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.Network:
-          sErr = "There was a connection related error. Please check your Internet connection. (" + e.Details + ")";
+        case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.Network:
+          sErr = "There was a connection related error. Please check your Internet connection." + (string.IsNullOrEmpty(e.Details) ? "." : ": " + e.Details);
+          break;
+        case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.NotBase64:
+          sErr = "The server did not respond in the right manner. Please check your Internet connection." + (string.IsNullOrEmpty(e.Details) ? "." : ": " + e.Details);
           break;
       }
       if (pChecker != 0)

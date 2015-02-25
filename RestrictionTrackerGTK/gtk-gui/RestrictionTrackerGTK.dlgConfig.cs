@@ -170,7 +170,7 @@ namespace RestrictionTrackerGTK
 			this.tbsConfig = new global::Gtk.Notebook ();
 			this.tbsConfig.CanFocus = true;
 			this.tbsConfig.Name = "tbsConfig";
-			this.tbsConfig.CurrentPage = 1;
+			this.tbsConfig.CurrentPage = 0;
 			// Container child tbsConfig.Gtk.Notebook+NotebookChild
 			this.pnlAccount = new global::Gtk.Table (((uint)(8)), ((uint)(1)), false);
 			this.pnlAccount.Name = "pnlAccount";
@@ -472,6 +472,7 @@ namespace RestrictionTrackerGTK
 			this.optAccountTypeDNX.TooltipMarkup = "Exede package through Dish.";
 			this.optAccountTypeDNX.CanFocus = true;
 			this.optAccountTypeDNX.Name = "optAccountTypeDNX";
+			this.optAccountTypeDNX.Active = true;
 			this.optAccountTypeDNX.DrawIndicator = true;
 			this.optAccountTypeDNX.UseUnderline = true;
 			this.optAccountTypeDNX.Group = new global::GLib.SList (global::System.IntPtr.Zero);
@@ -1076,8 +1077,8 @@ namespace RestrictionTrackerGTK
 			// Container child pnlPrefs.Gtk.Table+TableChild
 			this.pnlPrefInterface = new global::Gtk.Table (((uint)(3)), ((uint)(2)), false);
 			this.pnlPrefInterface.Name = "pnlPrefInterface";
-			this.pnlPrefInterface.RowSpacing = ((uint)(6));
-			this.pnlPrefInterface.ColumnSpacing = ((uint)(6));
+			this.pnlPrefInterface.RowSpacing = ((uint)(2));
+			this.pnlPrefInterface.ColumnSpacing = ((uint)(2));
 			// Container child pnlPrefInterface.Gtk.Table+TableChild
 			this.chkScaleScreen = new global::Gtk.CheckButton ();
 			this.chkScaleScreen.TooltipMarkup = "Text in the main window of Satellite Restriction Tracker will scale to fit its size.";
@@ -1859,6 +1860,7 @@ namespace RestrictionTrackerGTK
 			this.optHistoryCustom.TooltipMarkup = "Save History Data to a custom directory.";
 			this.optHistoryCustom.CanFocus = true;
 			this.optHistoryCustom.Name = "optHistoryCustom";
+			this.optHistoryCustom.Active = true;
 			this.optHistoryCustom.DrawIndicator = true;
 			this.optHistoryCustom.UseUnderline = true;
 			this.optHistoryCustom.Group = new global::GLib.SList (global::System.IntPtr.Zero);
@@ -1975,8 +1977,8 @@ namespace RestrictionTrackerGTK
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			this.DefaultWidth = 468;
-			this.DefaultHeight = 557;
+			this.DefaultWidth = 401;
+			this.DefaultHeight = 549;
 			this.Show ();
 		}
 	}

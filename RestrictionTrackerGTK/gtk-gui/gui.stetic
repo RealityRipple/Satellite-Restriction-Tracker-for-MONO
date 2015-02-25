@@ -3733,7 +3733,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Dialog" id="RestrictionTrackerGTK.dlgConfig" design-size="468 557">
+  <widget class="Gtk.Dialog" id="RestrictionTrackerGTK.dlgConfig" design-size="401 549">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Satellite Restriction Tracker Configuration</property>
     <property name="Icon">resource:RestrictionTrackerGTK.Resources.norm.ico</property>
@@ -3754,7 +3754,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
           <widget class="Gtk.Notebook" id="tbsConfig">
             <property name="MemberName" />
             <property name="CanFocus">True</property>
-            <property name="CurrentPage">1</property>
+            <property name="CurrentPage">0</property>
             <child>
               <widget class="Gtk.Table" id="pnlAccount">
                 <property name="MemberName" />
@@ -5293,8 +5293,8 @@ and the Tray Icon.</property>
                     <property name="MemberName" />
                     <property name="NRows">3</property>
                     <property name="NColumns">2</property>
-                    <property name="RowSpacing">6</property>
-                    <property name="ColumnSpacing">6</property>
+                    <property name="RowSpacing">2</property>
+                    <property name="ColumnSpacing">2</property>
                     <child>
                       <widget class="Gtk.CheckButton" id="chkScaleScreen">
                         <property name="MemberName" />

@@ -1887,7 +1887,10 @@ namespace RestrictionTrackerGTK
           GetUsageInvoker.BeginInvoke(null, null);
           break;
         case remoteRestrictionTracker.FailureEventArgs.FailType.Network:
-          sErr = "Network Connection Error" + (string.IsNullOrEmpty(e.Details) ? "." : ": (" + e.Details + ")");
+          sErr = "Network Connection Error" + (string.IsNullOrEmpty(e.Details) ? "." : ": " + e.Details);
+          break;
+        case remoteRestrictionTracker.FailureEventArgs.FailType.NotBase64:
+          sErr = "The server did not respond in the right manner. Please check your Internet connection" + (string.IsNullOrEmpty(e.Details) ? "." : ": " + e.Details);
           break;
       }
       if (remoteData != null)
