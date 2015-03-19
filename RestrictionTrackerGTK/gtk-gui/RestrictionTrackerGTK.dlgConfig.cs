@@ -170,7 +170,7 @@ namespace RestrictionTrackerGTK
 			this.tbsConfig = new global::Gtk.Notebook ();
 			this.tbsConfig.CanFocus = true;
 			this.tbsConfig.Name = "tbsConfig";
-			this.tbsConfig.CurrentPage = 0;
+			this.tbsConfig.CurrentPage = 1;
 			// Container child tbsConfig.Gtk.Notebook+NotebookChild
 			this.pnlAccount = new global::Gtk.Table (((uint)(8)), ((uint)(1)), false);
 			this.pnlAccount.Name = "pnlAccount";
@@ -843,6 +843,7 @@ namespace RestrictionTrackerGTK
 			this.txtAccuracy.Adjustment.PageIncrement = 1;
 			this.txtAccuracy.ClimbRate = 1;
 			this.txtAccuracy.Numeric = true;
+			this.txtAccuracy.UpdatePolicy = ((global::Gtk.SpinButtonUpdatePolicy)(1));
 			this.pnlPrefAccuracy.Add (this.txtAccuracy);
 			global::Gtk.Table.TableChild w61 = ((global::Gtk.Table.TableChild)(this.pnlPrefAccuracy [this.txtAccuracy]));
 			w61.TopAttach = ((uint)(1));
@@ -859,6 +860,7 @@ namespace RestrictionTrackerGTK
 			this.txtInterval.Adjustment.PageIncrement = 5;
 			this.txtInterval.ClimbRate = 1;
 			this.txtInterval.Numeric = true;
+			this.txtInterval.UpdatePolicy = ((global::Gtk.SpinButtonUpdatePolicy)(1));
 			this.txtInterval.Value = 15;
 			this.pnlPrefAccuracy.Add (this.txtInterval);
 			global::Gtk.Table.TableChild w62 = ((global::Gtk.Table.TableChild)(this.pnlPrefAccuracy [this.txtInterval]));
@@ -995,6 +997,7 @@ namespace RestrictionTrackerGTK
 			this.txtOverSize.Adjustment.PageIncrement = 100;
 			this.txtOverSize.ClimbRate = 1;
 			this.txtOverSize.Numeric = true;
+			this.txtOverSize.UpdatePolicy = ((global::Gtk.SpinButtonUpdatePolicy)(1));
 			this.txtOverSize.Value = 100;
 			this.pnlPrefAlert.Add (this.txtOverSize);
 			global::Gtk.Table.TableChild w72 = ((global::Gtk.Table.TableChild)(this.pnlPrefAlert [this.txtOverSize]));
@@ -1012,6 +1015,7 @@ namespace RestrictionTrackerGTK
 			this.txtOverTime.Adjustment.PageIncrement = 5;
 			this.txtOverTime.ClimbRate = 1;
 			this.txtOverTime.Numeric = true;
+			this.txtOverTime.UpdatePolicy = ((global::Gtk.SpinButtonUpdatePolicy)(1));
 			this.txtOverTime.Value = 15;
 			this.pnlPrefAlert.Add (this.txtOverTime);
 			global::Gtk.Table.TableChild w73 = ((global::Gtk.Table.TableChild)(this.pnlPrefAlert [this.txtOverTime]));
@@ -1270,6 +1274,7 @@ namespace RestrictionTrackerGTK
 			this.txtStartWait.Adjustment.PageIncrement = 15;
 			this.txtStartWait.ClimbRate = 1;
 			this.txtStartWait.Numeric = true;
+			this.txtStartWait.UpdatePolicy = ((global::Gtk.SpinButtonUpdatePolicy)(1));
 			this.txtStartWait.Value = 5;
 			this.pnlPrefStart.Add (this.txtStartWait);
 			global::Gtk.Table.TableChild w93 = ((global::Gtk.Table.TableChild)(this.pnlPrefStart [this.txtStartWait]));

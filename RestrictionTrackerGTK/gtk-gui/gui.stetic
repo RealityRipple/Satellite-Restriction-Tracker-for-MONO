@@ -3754,7 +3754,7 @@ Please back up your history before using BETAs.&lt;/span&gt;</property>
           <widget class="Gtk.Notebook" id="tbsConfig">
             <property name="MemberName" />
             <property name="CanFocus">True</property>
-            <property name="CurrentPage">0</property>
+            <property name="CurrentPage">1</property>
             <child>
               <widget class="Gtk.Table" id="pnlAccount">
                 <property name="MemberName" />
@@ -4871,6 +4871,7 @@ If you were provided with an E-Mail address, this is the first half of that addr
                         <property name="StepIncrement">1</property>
                         <property name="ClimbRate">1</property>
                         <property name="Numeric">True</property>
+                        <property name="UpdatePolicy">IfValid</property>
                       </widget>
                       <packing>
                         <property name="TopAttach">1</property>
@@ -4899,6 +4900,7 @@ If you were provided with an E-Mail address, this is the first half of that addr
                         <property name="StepIncrement">1</property>
                         <property name="ClimbRate">1</property>
                         <property name="Numeric">True</property>
+                        <property name="UpdatePolicy">IfValid</property>
                         <property name="Value">15</property>
                       </widget>
                       <packing>
@@ -5139,6 +5141,7 @@ usage.</property>
                         <property name="StepIncrement">1</property>
                         <property name="ClimbRate">1</property>
                         <property name="Numeric">True</property>
+                        <property name="UpdatePolicy">IfValid</property>
                         <property name="Value">100</property>
                       </widget>
                       <packing>
@@ -5168,6 +5171,7 @@ usage.</property>
                         <property name="StepIncrement">1</property>
                         <property name="ClimbRate">1</property>
                         <property name="Numeric">True</property>
+                        <property name="UpdatePolicy">IfValid</property>
                         <property name="Value">15</property>
                       </widget>
                       <packing>
@@ -5634,6 +5638,7 @@ and the Tray Icon.</property>
                         <property name="StepIncrement">1</property>
                         <property name="ClimbRate">1</property>
                         <property name="Numeric">True</property>
+                        <property name="UpdatePolicy">IfValid</property>
                         <property name="Value">5</property>
                       </widget>
                       <packing>

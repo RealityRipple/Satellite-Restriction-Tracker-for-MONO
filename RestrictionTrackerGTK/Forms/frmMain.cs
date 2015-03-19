@@ -2016,7 +2016,14 @@ namespace RestrictionTrackerGTK
           long rRemain = rLim - rUsed;
           if (rUsed != 0 | rLim > 0 | rRemain != 0)
           {
-            DoChange(ref lblRuralUsedVal, ref rUsed, !(rRemain > 0));
+            if (rLim == 150000)
+            {
+              DoChange(ref lblRuralUsedVal, ref rUsed, false);
+            }
+            else
+            {
+              DoChange(ref lblRuralUsedVal, ref rUsed, !(rRemain > 0));
+            }
             DoChange(ref lblRuralRemainVal, ref rRemain, false);
             DoChange(ref lblRuralAllowedVal, ref rLim, false);
           }
@@ -2221,9 +2228,23 @@ namespace RestrictionTrackerGTK
       {
         imSlowed = true;
       }
-      if (lDown < lDownLim * 0.7)
+      if ((mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE) || (mySettings.AccountType == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE) || (mySettings.AccountType == localRestrictionTracker.SatHostTypes.DishNet_EXEDE))
       {
-        imSlowed = false;
+        if (lDown < lDownLim)
+        {
+          imSlowed = false;
+        }
+        if (lDownLim == 150000)
+        {
+          imSlowed = false;
+        }
+      }
+      else
+      {
+        if (lDown < lDownLim * 0.7)
+        {
+          imSlowed = false;
+        }
       }
       if (pnlWildBlue.Visible)
       {
@@ -2313,9 +2334,19 @@ namespace RestrictionTrackerGTK
       {
         imSlowed = true;
       }
-      if (lDown < lDownLim * 0.7)
+      if ((mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE) || (mySettings.AccountType == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE) || (mySettings.AccountType == localRestrictionTracker.SatHostTypes.DishNet_EXEDE))
       {
-        imSlowed = false;
+        if (lDown < lDownLim)
+        {
+          imSlowed = false;
+        }
+      }
+      else
+      {
+        if (lDown < lDownLim * 0.7)
+        {
+          imSlowed = false;
+        }
       }
       if (!pnlWildBlue.Visible)
       {
@@ -2445,9 +2476,20 @@ namespace RestrictionTrackerGTK
       {
         imSlowed = true;
       }
-      if ((lDown < lDownLim * 0.7) & (lUp < lUpLim * 0.7))
+
+      if ((mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE) || (mySettings.AccountType == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE) || (mySettings.AccountType == localRestrictionTracker.SatHostTypes.DishNet_EXEDE))
       {
-        imSlowed = false;
+        if ((lDown < lDownLim) & (lUp < lUpLim))
+        {
+          imSlowed = false;
+        }
+      }
+      else
+      {
+        if ((lDown < lDownLim * 0.7) & (lUp < lUpLim * 0.7))
+        {
+          imSlowed = false;
+        }
       }
       if (!pnlWildBlue.Visible)
       {
@@ -3249,7 +3291,7 @@ namespace RestrictionTrackerGTK
     }
     private void Main_UpdateCheckerCheckResult(object sender, EventArgs ea)
     {
-      clsUpdate.CheckEventArgs e = (clsUpdate.CheckEventArgs) ea;
+      clsUpdate.CheckEventArgs e = (clsUpdate.CheckEventArgs)ea;
       mySettings.LastUpdate = DateTime.Now;
       mySettings.Save();
       if (e.Error == null && !e.Cancelled)
@@ -3346,7 +3388,7 @@ namespace RestrictionTrackerGTK
                     }
                     updateChecker.DownloadUpdate(sUpdatePath);
                     break;
-                    case ResponseType.No:
+                  case ResponseType.No:
                     if (updateChecker != null)
                     {
                       updateCheckerEvent(false);
@@ -3355,7 +3397,7 @@ namespace RestrictionTrackerGTK
                     }
                     NextGrabTick = long.MinValue;
                     break;
-                    case ResponseType.Ok:
+                  case ResponseType.Ok:
                     if (remoteData != null)
                     {
                       remoteData.Dispose();
@@ -3370,7 +3412,7 @@ namespace RestrictionTrackerGTK
                     mySettings.UpdateBETA = false;
                     mySettings.Save();
                     break;
-                    case ResponseType.Cancel:
+                  case ResponseType.Cancel:
                     mySettings.UpdateBETA = false;
                     mySettings.Save();
                     if (updateChecker != null)
@@ -3381,7 +3423,7 @@ namespace RestrictionTrackerGTK
                     }
                     NextGrabTick = long.MinValue;
                     break;
-                    default:
+                  default:
                     if (updateChecker != null)
                     {
                       updateCheckerEvent(false);
@@ -3471,7 +3513,7 @@ namespace RestrictionTrackerGTK
     }
     private void Main_UpdateCheckerDownloadResult(object sender, EventArgs ea)
     {
-      clsUpdate.DownloadEventArgs e = (clsUpdate.DownloadEventArgs) ea;
+      clsUpdate.DownloadEventArgs e = (clsUpdate.DownloadEventArgs)ea;
       if (tmrSpeed != 0)
       {
         GLib.Source.Remove(tmrSpeed);
@@ -3532,21 +3574,21 @@ namespace RestrictionTrackerGTK
     }
     private void Main_UpdateCheckerUpdateProgressChanged(object sender, EventArgs ea)
     {
-      clsUpdate.ProgressEventArgs e = (clsUpdate.ProgressEventArgs) ea;
+      clsUpdate.ProgressEventArgs e = (clsUpdate.ProgressEventArgs)ea;
       upCurSize = e.BytesReceived;
       upTotalSize = e.TotalBytesToReceive;
-      upCurPercent = (uint) e.ProgressPercentage;
+      upCurPercent = (uint)e.ProgressPercentage;
     }
     long upLastSize;
     private bool tmrSpeed_Tick()
     {
       if (upCurSize > upLastSize)
-        upDownSpeed = (ulong) (upCurSize - upLastSize);
+        upDownSpeed = (ulong)(upCurSize - upLastSize);
       else
         upDownSpeed = 0;
       upLastSize = upCurSize;
       string sProgress = "(" + upCurPercent + "%)";
-      string sStatus = modFunctions.ByteSize((ulong) upCurSize) + " of " + modFunctions.ByteSize((ulong) upTotalSize) + " at " + modFunctions.ByteSize(upDownSpeed) + "/s...";
+      string sStatus = modFunctions.ByteSize((ulong)upCurSize) + " of " + modFunctions.ByteSize((ulong)upTotalSize) + " at " + modFunctions.ByteSize(upDownSpeed) + "/s...";
       if (upTotalSize == 0)
       {
         sStatus = "Downloading Update (Waiting for Response)...";
@@ -3555,7 +3597,6 @@ namespace RestrictionTrackerGTK
       SetStatusText("Downloading Update " + sProgress, sStatus, false);
       return upCurSize < upTotalSize;
     }
-
     #endregion
     #region "Useful Functions"
     private long StrToVal(string str)

@@ -382,13 +382,13 @@ namespace RestrictionTrackerGTK
       // Preferences
       //
       chkStartup.Clicked += ValuesChanged;
-      txtStartWait.Changed += ValuesChanged;
+      txtStartWait.ValueChanged += ValuesChanged;
       //
-      txtInterval.Changed += ValuesChanged;
-      txtAccuracy.Changed += ValuesChanged;
+      txtInterval.ValueChanged += ValuesChanged;
+      txtAccuracy.ValueChanged += ValuesChanged;
       //
-      txtOverSize.Changed += ValuesChanged;
-      txtOverTime.Changed += ValuesChanged;
+      txtOverSize.ValueChanged += ValuesChanged;
+      txtOverTime.ValueChanged += ValuesChanged;
       chkOverAlert.Clicked += chkOverAlert_Activated;
       cmdAlertStyle.Clicked += cmdAlertStyle_Click;
       //
@@ -400,7 +400,7 @@ namespace RestrictionTrackerGTK
       //
       cmbProxyType.Changed += cmbProxyType_Changed;
       txtProxyAddress.Changed += ValuesChanged;
-      txtProxyPort.Changed += ValuesChanged;
+      txtProxyPort.ValueChanged += ValuesChanged;
       txtProxyUser.Changed += ValuesChanged;
       txtProxyPassword.Changed += ValuesChanged;
       txtProxyDomain.Changed += ValuesChanged;
