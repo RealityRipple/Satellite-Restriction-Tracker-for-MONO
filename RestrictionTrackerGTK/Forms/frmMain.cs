@@ -9,15 +9,9 @@ namespace RestrictionTrackerGTK
   public partial class frmMain: Gtk.Window
   {
     private localRestrictionTracker.SatHostTypes myPanel;
-    private enum LoadStates
-    {
-      Loading,
-      Loaded,
-      Lookup
-    }
-    private static object trayIcon;
+    public static object trayIcon;
     private byte mTrayStyle = 0;
-    private byte TrayStyle
+    public byte TrayStyle
     {
       get
       {
@@ -130,7 +124,8 @@ namespace RestrictionTrackerGTK
         localData.ConnectionWBLResult -= localData_ConnectionWBLResult;
       }
     }
-    private RestrictionLibrary.CookieAwareWebClient wsHostList;
+    private RestrictionLibrary.WebClientEx wsHostList;
+    private clsFavicon wsFavicon;
     private const string sWB = "https://myaccount.{0}/wbisp/{2}/{1}.jsp";
     private const string sRP = "https://{0}.ruralportal.net/us/{1}.do";
     private const string sDISPLAY = "Usage Levels (%lt)";
@@ -403,10 +398,7 @@ namespace RestrictionTrackerGTK
           mySettings.AccountType = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
         else if (e.HostGroup == DetermineType.TypeDeterminedEventArgs.SatHostGroup.Exede)
           mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
-        if (mySettings.Colors.MainDownA == Color.Transparent)
-        {
-          SetDefaultColors();
-        }
+        modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
         mySettings.Save();
         SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Connection...", false);
         if (localData != null)
@@ -451,10 +443,7 @@ namespace RestrictionTrackerGTK
       else
       {
         mySettings.AccountType = e.HostType;
-        if (mySettings.Colors.MainDownA == Color.Transparent)
-        {
-          SetDefaultColors();
-        }
+        modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
         mySettings.Save();
         SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Connection...", false);
         if (localData != null)
@@ -738,7 +727,7 @@ namespace RestrictionTrackerGTK
     }
     private void StartupCleanup()
     {
-      if (mySettings.TrayIconStyle == AppSettings.TrayStyles.Always)
+      if (mySettings.TrayIconStyle == TrayStyles.Always)
         mTrayStyle = aTrayStyle;
       else
         mTrayStyle = 0;
@@ -1100,19 +1089,19 @@ namespace RestrictionTrackerGTK
       }
       if (e.Event.ChangedMask == Gdk.WindowState.Iconified)
       {
-        if (aTrayStyle > 0 && mySettings.TrayIconStyle != AppSettings.TrayStyles.Never)
+        if (aTrayStyle > 0 && mySettings.TrayIconStyle != TrayStyles.Never)
         {
           bool isMinimized = ((e.Event.NewWindowState & Gdk.WindowState.Iconified) == Gdk.WindowState.Iconified);
           if (isMinimized)
           {
-            if (mySettings.TrayIconStyle == AppSettings.TrayStyles.Minimized)
+            if (mySettings.TrayIconStyle == TrayStyles.Minimized)
               TrayStyle = aTrayStyle;
             ((Gtk.Label)mnuRestore.Child).TextWithMnemonic = "_Restore";
             this.SkipTaskbarHint = true;
           }
           else
           {
-            if (mySettings.TrayIconStyle == AppSettings.TrayStyles.Minimized)
+            if (mySettings.TrayIconStyle == TrayStyles.Minimized)
               TrayStyle = 0;
             ((Gtk.Label)mnuRestore.Child).TextWithMnemonic = "_Hide";
             this.SkipTaskbarHint = false;
@@ -1127,12 +1116,12 @@ namespace RestrictionTrackerGTK
       }
       else if (e.Event.ChangedMask == Gdk.WindowState.Withdrawn)
       {
-        if (aTrayStyle > 0 && mySettings.TrayIconStyle != AppSettings.TrayStyles.Never)
+        if (aTrayStyle > 0 && mySettings.TrayIconStyle != TrayStyles.Never)
         {
           bool isWithdrawn = ((e.Event.NewWindowState & Gdk.WindowState.Withdrawn) == Gdk.WindowState.Withdrawn);
           if (isWithdrawn)
           {
-            if (mySettings.TrayIconStyle == AppSettings.TrayStyles.Minimized)
+            if (mySettings.TrayIconStyle == TrayStyles.Minimized)
               TrayStyle = aTrayStyle;
             ((Gtk.Label)mnuRestore.Child).TextWithMnemonic = "_Restore";
             this.SkipTaskbarHint = true;
@@ -1141,9 +1130,9 @@ namespace RestrictionTrackerGTK
       }
       else if (e.Event.ChangedMask == Gdk.WindowState.Maximized)
       {
-        if (aTrayStyle > 0 && mySettings.TrayIconStyle != AppSettings.TrayStyles.Never)
+        if (aTrayStyle > 0 && mySettings.TrayIconStyle != TrayStyles.Never)
         {
-          if (mySettings.TrayIconStyle == AppSettings.TrayStyles.Minimized)
+          if (mySettings.TrayIconStyle == TrayStyles.Minimized)
             TrayStyle = 0;
         }
         bool isMaximized = ((e.Event.NewWindowState & Gdk.WindowState.Maximized) == Gdk.WindowState.Maximized);
@@ -1202,18 +1191,15 @@ namespace RestrictionTrackerGTK
     {
       mySettings = new AppSettings();
       System.Net.ServicePointManager.SecurityProtocol = mySettings.Protocol;
-      if (mySettings.Colors.MainDownA == Color.Transparent)
-      {
-        SetDefaultColors();
-      }
+      modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
       modFunctions.NOTIFIER_STYLE = modFunctions.LoadAlertStyle(mySettings.AlertStyle);
       if (aTrayStyle > 0)
       {
-        if (mySettings.TrayIconStyle == AppSettings.TrayStyles.Always)
+        if (mySettings.TrayIconStyle == TrayStyles.Always)
         {
           TrayStyle = aTrayStyle;
         }
-        else if (mySettings.TrayIconStyle == AppSettings.TrayStyles.Minimized)
+        else if (mySettings.TrayIconStyle == TrayStyles.Minimized)
         {
           if (this.Visible)
             TrayStyle = 0;
@@ -1225,7 +1211,62 @@ namespace RestrictionTrackerGTK
           TrayStyle = 0;
         }
       }
+      if (string.IsNullOrEmpty(mySettings.NetTestURL))
+      {
+        cmdNetTest.Visible = false;
+      }
+      else
+      {
+        cmdNetTest.Visible = true;
+        string sNetTestIco = System.IO.Path.Combine(modFunctions.AppDataPath, "netTest.png");
+        if (File.Exists(sNetTestIco))
+        {
+          ((Gtk.Image)((Gtk.HBox)((Gtk.Alignment) cmdNetTest.Child).Child).Children[0]).Pixbuf = new Gdk.Pixbuf(sNetTestIco);
+        }
+        else
+        {
+          ((Gtk.Image)((Gtk.HBox)((Gtk.Alignment) cmdNetTest.Child).Child).Children[0]).PixbufAnimation = new Gdk.PixbufAnimation(null, "RestrictionTrackerGTK.Resources.throbber.gif");
+          wsFavicon = new clsFavicon(mySettings.NetTestURL);
+          wsFavicon.DownloadIconCompleted += wsFavicon_DownloadIconCompleted;
+        }
+        string sNetTestTitle = mySettings.NetTestURL;
+        if (sNetTestTitle.Contains("://"))
+          sNetTestTitle = sNetTestTitle.Substring(sNetTestTitle.IndexOf("://") + 3);
+        if (sNetTestTitle.StartsWith("www."))
+          sNetTestTitle = sNetTestTitle.Substring(4);
+        if (sNetTestTitle.Contains("/"))
+          sNetTestTitle = sNetTestTitle.Substring(0, sNetTestTitle.IndexOf("/"));
+        cmdNetTest.TooltipMarkup = "Visit " + sNetTestTitle + ".";
+      }
     }
+
+    void wsFavicon_DownloadIconCompleted (object sender, clsFavicon.DownloadIconCompletedEventArgs e)
+    {
+      Gtk.Application.Invoke(sender, e, wsFavicon_DownloadIconCompletedAsync);
+    }
+
+    void wsFavicon_DownloadIconCompletedAsync (object sender, EventArgs ea)
+    {
+      clsFavicon.DownloadIconCompletedEventArgs e = (clsFavicon.DownloadIconCompletedEventArgs)ea;
+      try
+      {
+        cmdNetTest.Visible = true;
+        if (e.Error != null)
+        {
+          ((Gtk.Image)((Gtk.HBox)((Gtk.Alignment) cmdNetTest.Child).Child).Children[0]).Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.error.png");
+        }
+        else
+        {
+          e.Icon16.Save(System.IO.Path.Combine(modFunctions.AppDataPath, "netTest.png"), "png");
+          ((Gtk.Image)((Gtk.HBox)((Gtk.Alignment) cmdNetTest.Child).Child).Children[0]).Pixbuf = e.Icon16;
+        }
+      }
+      catch(Exception)
+      {
+        ((Gtk.Image)((Gtk.HBox)((Gtk.Alignment) cmdNetTest.Child).Child).Children[0]).Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.error.png");
+      }
+    }
+
     private void ReInit()
     {
       Gtk.Application.Invoke(Main_ReInit);
@@ -1352,7 +1393,7 @@ namespace RestrictionTrackerGTK
         long msInterval = mySettings.Interval * 60 * 1000;
         if (NextGrabTick == long.MinValue)
         {
-          long minutesSinceLast = modFunctions.DateDiff(modFunctions.DateInterval.Minute, modDB.LOG_GetLast(), DateTime.Now);
+          long minutesSinceLast = modFunctions.DateDiff(DateInterval.Minute, modDB.LOG_GetLast(), DateTime.Now);
           if (minutesSinceLast < mySettings.Interval)
           {
             long msSinceLast = minutesSinceLast * 60 * 1000;
@@ -1369,7 +1410,7 @@ namespace RestrictionTrackerGTK
         }
         if (modFunctions.TickCount() >= NextGrabTick)
         {
-          if ((mySettings.UpdateType != AppSettings.UpdateTypes.None) && (Math.Abs(DateTime.Now.Subtract(mySettings.LastUpdate).TotalDays) > mySettings.UpdateTime))
+          if ((mySettings.UpdateType != UpdateTypes.None) && (Math.Abs(DateTime.Now.Subtract(mySettings.LastUpdate).TotalDays) > mySettings.UpdateTime))
             CheckForUpdates();
           else
           {
@@ -1385,7 +1426,7 @@ namespace RestrictionTrackerGTK
                   return true;
                 }
               }
-              if (Math.Abs(modFunctions.DateDiff(modFunctions.DateInterval.Minute, modDB.LOG_GetLast(), DateTime.Now)) > 10)
+              if (Math.Abs(modFunctions.DateDiff(DateInterval.Minute, modDB.LOG_GetLast(), DateTime.Now)) > 10)
               {
                 if (!string.IsNullOrEmpty(sProvider) && !string.IsNullOrEmpty(sPassword))
                 {
@@ -1703,10 +1744,7 @@ namespace RestrictionTrackerGTK
       myPanel = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
       mySettings.Save();
-      if (mySettings.Colors.MainDownA == Color.Transparent)
-      {
-        SetDefaultColors();
-      }
+      modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
       DisplayUsage(true, true);
       if (localData != null)
       {
@@ -1729,10 +1767,7 @@ namespace RestrictionTrackerGTK
       myPanel = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
       mySettings.Save();
-      if (mySettings.Colors.MainDownA == Color.Transparent)
-      {
-        SetDefaultColors();
-      }
+      modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
       DisplayUsage(true, true);
       if (localData != null)
       {
@@ -1755,10 +1790,7 @@ namespace RestrictionTrackerGTK
       myPanel = localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY;
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY;
       mySettings.Save();
-      if (mySettings.Colors.MainDownA == Color.Transparent)
-      {
-        SetDefaultColors();
-      }
+      modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
       DisplayUsage(true, true);
       if (localData != null)
       {
@@ -1781,10 +1813,7 @@ namespace RestrictionTrackerGTK
       myPanel = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
       mySettings.Save();
-      if (mySettings.Colors.MainDownA == Color.Transparent)
-      {
-        SetDefaultColors();
-      }
+      modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
       DisplayUsage(true, true);
       if (localData != null)
       {
@@ -1807,10 +1836,7 @@ namespace RestrictionTrackerGTK
       myPanel = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
       mySettings.Save();
-      if (mySettings.Colors.MainDownA == Color.Transparent)
-      {
-        SetDefaultColors();
-      }
+      modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
       DisplayUsage(true, true);
       if (localData != null)
       {
@@ -1837,7 +1863,7 @@ namespace RestrictionTrackerGTK
           wsHostList = null;
         }
         string myProvider = mySettings.Account.Substring(mySettings.Account.LastIndexOf("@") + 1).ToLower();
-        wsHostList = new CookieAwareWebClient();
+        wsHostList = new WebClientEx();
         wsHostList.DownloadDataAsync(new Uri("http://wb.realityripple.com/hosts/?add=" + myProvider), "UPDATE");
         didHostListSave = true;
       }
@@ -1931,10 +1957,7 @@ namespace RestrictionTrackerGTK
       if (e != null)
       {
         mySettings.AccountType = (localRestrictionTracker.SatHostTypes)e.Provider;
-        if (mySettings.Colors.MainDownA == Color.Transparent)
-        {
-          SetDefaultColors();
-        }
+        modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
         mySettings.Save();
         int iPercent = 0;
         int iInterval = 1;
@@ -1966,7 +1989,7 @@ namespace RestrictionTrackerGTK
           }
           else
           {
-            if (modFunctions.DateDiff(modFunctions.DateInterval.Minute, modDB.LOG_GetLast(), Row.Time) > 1)
+            if (modFunctions.DateDiff(DateInterval.Minute, modDB.LOG_GetLast(), Row.Time) > 1)
             {
               modDB.LOG_Add(Row.Time, Row.Down, Row.DownMax, Row.Up, Row.UpMax, (I == e.Results.Length - 1));
             }
@@ -1979,6 +2002,8 @@ namespace RestrictionTrackerGTK
       }
       else
       {
+        if (modDB.LOG_GetCount() == 0)
+          SetStatusText("No History", "No data received from the server!", true);
         DisplayUsage(true, true);
       }
       if (remoteData != null)
@@ -2313,7 +2338,7 @@ namespace RestrictionTrackerGTK
             if (lDown - lItems[I].DOWNLOAD >= mySettings.Overuse)
             {
               long ChangeSize = Math.Abs(lDown - lItems[I].DOWNLOAD);
-              ulong ChangeTime = (ulong)Math.Abs(modFunctions.DateDiff(modFunctions.DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
+              ulong ChangeTime = (ulong)Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
               modFunctions.MakeNotifier(ref taskNotifier, false);
               if (taskNotifier != null)
               {
@@ -2442,7 +2467,7 @@ namespace RestrictionTrackerGTK
             if (lDown - lItems[I].DOWNLOAD >= mySettings.Overuse)
             {
               long ChangeSize = Math.Abs(lDown - lItems[I].DOWNLOAD);
-              ulong ChangeTime = (ulong)Math.Abs(modFunctions.DateDiff(modFunctions.DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
+              ulong ChangeTime = (ulong)Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
               modFunctions.MakeNotifier(ref taskNotifier, false);
               if (taskNotifier != null)
               {
@@ -2455,7 +2480,7 @@ namespace RestrictionTrackerGTK
             else if (lUp - lItems[I].UPLOAD >= mySettings.Overuse)
             {
               long ChangeSize = Math.Abs(lDown - lItems[I].DOWNLOAD);
-              ulong ChangeTime = (ulong)Math.Abs(modFunctions.DateDiff(modFunctions.DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
+              ulong ChangeTime = (ulong)Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
               modFunctions.MakeNotifier(ref taskNotifier, false);
               if (taskNotifier != null)
               {
@@ -2585,7 +2610,7 @@ namespace RestrictionTrackerGTK
             if (lDown - lItems[I].DOWNLOAD >= mySettings.Overuse)
             {
               long ChangeSize = Math.Abs(lDown - lItems[I].DOWNLOAD);
-              ulong ChangeTime = (ulong)Math.Abs(modFunctions.DateDiff(modFunctions.DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
+              ulong ChangeTime = (ulong)Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
               modFunctions.MakeNotifier(ref taskNotifier, false);
               if (taskNotifier != null)
               {
@@ -2598,7 +2623,7 @@ namespace RestrictionTrackerGTK
             else if (lUp - lItems[I].UPLOAD >= mySettings.Overuse)
             {
               long ChangeSize = Math.Abs(lDown - lItems[I].DOWNLOAD);
-              ulong ChangeTime = (ulong)Math.Abs(modFunctions.DateDiff(modFunctions.DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
+              ulong ChangeTime = (ulong)Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
               modFunctions.MakeNotifier(ref taskNotifier, false);
               if (taskNotifier != null)
               {
@@ -2817,6 +2842,7 @@ namespace RestrictionTrackerGTK
           if (MainClass.fHistory != null)
           {
             MainClass.fHistory.mySettings = new AppSettings();
+            modFunctions.ScreenDefaultColors(ref MainClass.fHistory.mySettings.Colors, MainClass.fHistory.mySettings.AccountType);
             MainClass.fHistory.DoResize(true);
           }
           break;
@@ -2916,6 +2942,7 @@ namespace RestrictionTrackerGTK
         if (MainClass.fHistory != null)
         {
           MainClass.fHistory.mySettings = new AppSettings();
+          modFunctions.ScreenDefaultColors(ref MainClass.fHistory.mySettings.Colors, MainClass.fHistory.mySettings.AccountType);
           MainClass.fHistory.DoResize(true);
         }
         MakeCustomIconListing();
@@ -3078,7 +3105,7 @@ namespace RestrictionTrackerGTK
       this.Move((Screen.Width - this.Allocation.Width) / 2, (Screen.Height - this.Allocation.Height) / 2);
       szRestored = mySettings.MainSize;
       tmrRestored = GLib.Timeout.Add(1000, tmrRestored_Tick);
-      if (mySettings.TrayIconStyle == AppSettings.TrayStyles.Minimized)
+      if (mySettings.TrayIconStyle == TrayStyles.Minimized)
         TrayStyle = 0;
     }
     public void HideToTray()
@@ -3296,12 +3323,12 @@ namespace RestrictionTrackerGTK
       mySettings.Save();
       if (e.Error == null && !e.Cancelled)
       {
-        if (mySettings.UpdateType == AppSettings.UpdateTypes.Ask)
+        if (mySettings.UpdateType == UpdateTypes.Ask)
         {
           dlgUpdate fUpdate;
           switch (e.Result)
           {
-            case clsUpdate.CheckEventArgs.ResultType.NewUpdate:
+            case ResultType.NewUpdate:
               fUpdate = new dlgUpdate();
               fUpdate.NewUpdate(e.Version, false);
               switch ((Gtk.ResponseType)fUpdate.Run())
@@ -3368,7 +3395,7 @@ namespace RestrictionTrackerGTK
               fUpdate.Dispose();
               fUpdate = null;
               break;
-            case clsUpdate.CheckEventArgs.ResultType.NewBeta:
+            case ResultType.NewBeta:
               if (mySettings.UpdateBETA)
               {
                 fUpdate = new dlgUpdate();
@@ -3454,7 +3481,7 @@ namespace RestrictionTrackerGTK
         {
           switch (e.Result)
           {
-            case clsUpdate.CheckEventArgs.ResultType.NewUpdate:
+            case ResultType.NewUpdate:
               if (remoteData != null)
               {
                 remoteData.Dispose();
@@ -3467,7 +3494,7 @@ namespace RestrictionTrackerGTK
               }
               updateChecker.DownloadUpdate(sUpdatePath);
               break;
-            case clsUpdate.CheckEventArgs.ResultType.NewBeta:
+            case ResultType.NewBeta:
               if (mySettings.UpdateBETA)
               {
                 if (remoteData != null)
@@ -3648,7 +3675,7 @@ namespace RestrictionTrackerGTK
     }
     private void FailFile(string sFail)
     {
-      if (clsUpdate.QuickCheckVersion() == clsUpdate.CheckEventArgs.ResultType.NoUpdate)
+      if (clsUpdate.QuickCheckVersion() == ResultType.NoUpdate)
       {
         sFailTray = sFail;
         modFunctions.MakeNotifier(ref taskNotifier, true);
@@ -3794,110 +3821,28 @@ namespace RestrictionTrackerGTK
       }
       return true;
     }
-    private void SetDefaultColors()
+
+    protected void cmdNetTest_Clicked (object sender, EventArgs e)
     {
-      Gtk.Application.Invoke(null, null, Main_SetDefaultColors);
-    }
-    private void Main_SetDefaultColors(object o, EventArgs ea)
-    {
-      localRestrictionTracker.SatHostTypes useStyle = myPanel;
-      if (useStyle == localRestrictionTracker.SatHostTypes.Other)
+      try
       {
-        useStyle = mySettings.AccountType;
+        if (mySettings.NetTestURL.Contains("://"))
+        {
+          System.Diagnostics.Process.Start(mySettings.NetTestURL);
+        }
+        else
+        {
+          System.Diagnostics.Process.Start("http://" + mySettings.NetTestURL);
+        }
       }
-      switch (useStyle)
+      catch (Exception ex)
       {
-        case localRestrictionTracker.SatHostTypes.WildBlue_LEGACY:
-        case localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
-          mySettings.Colors.MainDownA = Color.DarkBlue;
-          mySettings.Colors.MainDownB = Color.Blue;
-          mySettings.Colors.MainDownC = Color.Aqua;
-          mySettings.Colors.MainUpA = Color.DarkBlue;
-          mySettings.Colors.MainUpB = Color.Blue;
-          mySettings.Colors.MainUpC = Color.Aqua;
-          mySettings.Colors.MainText = Color.White;
-          mySettings.Colors.MainBackground = Color.Black;
-
-          mySettings.Colors.TrayDownA = Color.DarkBlue;
-          mySettings.Colors.TrayDownB = Color.Blue;
-          mySettings.Colors.TrayDownC = Color.Aqua;
-          mySettings.Colors.TrayUpA = Color.DarkBlue;
-          mySettings.Colors.TrayUpB = Color.Blue;
-          mySettings.Colors.TrayUpC = Color.Aqua;
-
-          mySettings.Colors.HistoryDownA = Color.DarkBlue;
-          mySettings.Colors.HistoryDownB = Color.Blue;
-          mySettings.Colors.HistoryDownC = Color.Aqua;
-          mySettings.Colors.HistoryDownMax = Color.Yellow;
-          mySettings.Colors.HistoryUpA = Color.DarkBlue;
-          mySettings.Colors.HistoryUpB = Color.Blue;
-          mySettings.Colors.HistoryUpC = Color.Aqua;
-          mySettings.Colors.HistoryUpMax = Color.Yellow;
-          mySettings.Colors.HistoryText = Color.Black;
-          mySettings.Colors.HistoryBackground = Color.White;
-          break;
-        case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
-        case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
-          mySettings.Colors.MainDownA = Color.DarkBlue;
-          mySettings.Colors.MainDownB = Color.Blue;
-          mySettings.Colors.MainDownC = Color.Aqua;
-          mySettings.Colors.MainUpA = Color.Transparent;
-          mySettings.Colors.MainUpB = Color.Transparent;
-          mySettings.Colors.MainUpC = Color.Transparent;
-          mySettings.Colors.MainText = Color.White;
-          mySettings.Colors.MainBackground = Color.Black;
-
-          mySettings.Colors.TrayDownA = Color.DarkBlue;
-          mySettings.Colors.TrayDownB = Color.Blue;
-          mySettings.Colors.TrayDownC = Color.Aqua;
-          mySettings.Colors.TrayUpA = Color.Transparent;
-          mySettings.Colors.TrayUpB = Color.Transparent;
-          mySettings.Colors.TrayUpC = Color.Transparent;
-
-          mySettings.Colors.HistoryDownA = Color.DarkBlue;
-          mySettings.Colors.HistoryDownB = Color.Blue;
-          mySettings.Colors.HistoryDownC = Color.Aqua;
-          mySettings.Colors.HistoryDownMax = Color.Yellow;
-          mySettings.Colors.HistoryUpA = Color.Transparent;
-          mySettings.Colors.HistoryUpB = Color.Transparent;
-          mySettings.Colors.HistoryUpC = Color.Transparent;
-          mySettings.Colors.HistoryUpMax = Color.Transparent;
-          mySettings.Colors.HistoryText = Color.Black;
-          mySettings.Colors.HistoryBackground = Color.White;
-          break;
-        case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
-          mySettings.Colors.MainDownA = Color.DarkBlue;
-          mySettings.Colors.MainDownB = Color.Blue;
-          mySettings.Colors.MainDownC = Color.Aqua;
-          mySettings.Colors.MainUpA = Color.DarkBlue;
-          mySettings.Colors.MainUpB = Color.Blue;
-          mySettings.Colors.MainUpC = Color.Aqua;
-          mySettings.Colors.MainText = Color.White;
-          mySettings.Colors.MainBackground = Color.Black;
-
-          mySettings.Colors.TrayDownA = Color.DarkBlue;
-          mySettings.Colors.TrayDownB = Color.Blue;
-          mySettings.Colors.TrayDownC = Color.Aqua;
-          mySettings.Colors.TrayUpA = Color.DarkBlue;
-          mySettings.Colors.TrayUpB = Color.Blue;
-          mySettings.Colors.TrayUpC = Color.Aqua;
-
-          mySettings.Colors.HistoryDownA = Color.DarkBlue;
-          mySettings.Colors.HistoryDownB = Color.Blue;
-          mySettings.Colors.HistoryDownC = Color.Aqua;
-          mySettings.Colors.HistoryDownMax = Color.Yellow;
-          mySettings.Colors.HistoryUpA = Color.DarkBlue;
-          mySettings.Colors.HistoryUpB = Color.Blue;
-          mySettings.Colors.HistoryUpC = Color.Aqua;
-          mySettings.Colors.HistoryUpMax = Color.Yellow;
-          mySettings.Colors.HistoryText = Color.Black;
-          mySettings.Colors.HistoryBackground = Color.White;
-          break;
-        default:
-          break;
-
+        modFunctions.MakeNotifier(ref taskNotifier, false);
+        if (taskNotifier != null)
+          taskNotifier.Show("Failed to run Web Browser", modFunctions.ProductName + " could not navigate to \"" + mySettings.NetTestURL + "\"!\n" + ex.Message, 200, 3000, 100);
       }
     }
+
     #endregion
   }
 }

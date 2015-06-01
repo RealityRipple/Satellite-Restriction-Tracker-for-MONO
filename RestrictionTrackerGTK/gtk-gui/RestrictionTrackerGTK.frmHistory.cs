@@ -86,7 +86,7 @@ namespace RestrictionTrackerGTK
 			w2.YOptions = ((global::Gtk.AttachOptions)(0));
 			// Container child pnlAge.Gtk.Table+TableChild
 			this.cmd30Days = new global::Gtk.Button ();
-			this.cmd30Days.TooltipMarkup = "Query the database to get the last 30 days' history.";
+			this.cmd30Days.TooltipMarkup = "Query the database to get the history of the last 30 days.";
 			this.cmd30Days.CanFocus = true;
 			this.cmd30Days.Name = "cmd30Days";
 			this.cmd30Days.UseUnderline = true;
@@ -101,7 +101,7 @@ namespace RestrictionTrackerGTK
 			w3.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAge.Gtk.Table+TableChild
 			this.cmd60Days = new global::Gtk.Button ();
-			this.cmd60Days.TooltipMarkup = "Query the database to get the last 60 days' history.";
+			this.cmd60Days.TooltipMarkup = "Query the database to get the history of the last 60 days.";
 			this.cmd60Days.CanFocus = true;
 			this.cmd60Days.Name = "cmd60Days";
 			this.cmd60Days.UseUnderline = true;
@@ -358,14 +358,6 @@ namespace RestrictionTrackerGTK
 			this.DefaultWidth = 583;
 			this.DefaultHeight = 399;
 			this.Show ();
-			this.cmdToday.Clicked += new global::System.EventHandler (this.cmdToday_Click);
-			this.cmdQuery.Clicked += new global::System.EventHandler (this.cmdQuery_Click);
-			this.cmdAllTime.Clicked += new global::System.EventHandler (this.cmdAllTime_Click);
-			this.cmd60Days.Clicked += new global::System.EventHandler (this.cmd60Days_Click);
-			this.cmd30Days.Clicked += new global::System.EventHandler (this.cmd30Days_Click);
-			this.cmdImport.Clicked += new global::System.EventHandler (this.cmdImport_Click);
-			this.cmdExport.Clicked += new global::System.EventHandler (this.cmdExport_Click);
-			this.cmdClose.Clicked += new global::System.EventHandler (this.cmdClose_Click);
 		}
 	}
 }

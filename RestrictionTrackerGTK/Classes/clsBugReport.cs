@@ -4,50 +4,14 @@ namespace RestrictionTrackerGTK
 {
 	internal class MantisReporter
 	{
-		private static RestrictionLibrary.CookieAwareWebClient httpSend;
-		internal enum Mantis_Category
-		{
-			Select = 0,
-			General = 1,
-			Interface = 3,
-			Setup = 4
-    }
-		private enum Mantis_Reproducibility
-		{
-			Always = 10,
-			Sometimes = 30,
-			Random = 50,
-			Have_Not_Tried = 70,
-			Unable_to_Reproduce = 90,
-			NotApplicable = 100
-    }
-		private enum Mantis_Severity
-		{
-			Feature = 10,
-			Trivial = 20,
-			Text = 30,
-			Tweak = 40,
-			Minor = 50,
-			Major = 60,
-			Crash = 70,
-			Block = 80
-    }
-		private enum Mantis_Priority
-		{
-			None = 10,
-			Low = 20,
-			Normal = 30,
-			High = 40,
-			Urgent = 50,
-			Immediate = 60
-    }
+		private static RestrictionLibrary.WebClientEx httpSend;
 
 		private static string GetToken(int Project_ID)
     {
       System.Collections.Specialized.NameValueCollection pD1 = new System.Collections.Specialized.NameValueCollection();
       pD1.Add("ref", "bug_report_page.php");
       pD1.Add("project_id", Project_ID.ToString().Trim());
-      pD1.Add("make_default", null);
+      pD1.Add("make_default", String.Empty);
       httpSend.Headers.Add(System.Net.HttpRequestHeader.Referer, "http://bugs.realityripple.com/login_select_proj_page.php?bug_report_page.php");
       byte[] bTok = httpSend.UploadValues("http://bugs.realityripple.com/set_project.php", "POST", pD1);
       string sTok = System.Text.Encoding.GetEncoding(28591).GetString(bTok);
@@ -89,7 +53,7 @@ namespace RestrictionTrackerGTK
       {
         pData.Add("view_state", "50");
       }
-      pData.Add("report_stay", string.Empty);
+      pData.Add("report_stay", String.Empty);
       byte[] bRet = null;
       bRet = httpSend.UploadValues("http://bugs.realityripple.com/bug_report.php", "POST", pData);
       string sRet = System.Text.Encoding.GetEncoding(28591).GetString(bRet);
@@ -114,7 +78,7 @@ namespace RestrictionTrackerGTK
         httpSend.Dispose();
         httpSend = null;
       }
-      httpSend = new RestrictionLibrary.CookieAwareWebClient();
+      httpSend = new RestrictionLibrary.WebClientEx();
       string sTok = GetToken(1);
       if (string.IsNullOrEmpty(sTok))
       {
@@ -122,7 +86,16 @@ namespace RestrictionTrackerGTK
         httpSend = null;
         return "No token was supplied by the server.";
       }
-      string sPlat = Environment.OSVersion.Platform.ToString();
+      string sPlat = null;
+      if (CurrentOS.Is64BitProcess)
+        sPlat = "x64";
+      else
+      {
+        if (CurrentOS.Is64bit)
+          sPlat = "x86-64";
+        else
+          sPlat = "x86";
+      }
       string sSum = e.Message;
       if (sSum.Length > 80)
       {
@@ -152,8 +125,8 @@ namespace RestrictionTrackerGTK
         }
       }
       sDesc += "\r\nVersion " + modFunctions.ProductVersion;
-      string sSteps = null;
-      string sInfo = null;
+      string sSteps = String.Empty;
+      string sInfo = String.Empty;
       if (e.InnerException != null)
       {
         sInfo = e.InnerException.Message;
@@ -177,4 +150,3 @@ namespace RestrictionTrackerGTK
     }
 	}
 }
-

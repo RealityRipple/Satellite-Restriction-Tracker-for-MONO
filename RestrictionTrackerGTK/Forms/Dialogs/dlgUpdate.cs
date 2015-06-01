@@ -4,7 +4,7 @@ namespace RestrictionTrackerGTK
 {
   public partial class dlgUpdate : Gtk.Dialog
   {
-    private RestrictionLibrary.CookieAwareWebClient sckVerInfo;
+    private RestrictionLibrary.WebClientEx sckVerInfo;
     private bool Ret;
 
     public dlgUpdate()
@@ -24,7 +24,7 @@ namespace RestrictionTrackerGTK
       this.GdkWindow.SetDecorations(Gdk.WMDecoration.All | Gdk.WMDecoration.Maximize | Gdk.WMDecoration.Minimize | Gdk.WMDecoration.Resizeh | Gdk.WMDecoration.Menu);
       this.GdkWindow.Functions = Gdk.WMFunction.All | Gdk.WMFunction.Maximize | Gdk.WMFunction.Minimize | Gdk.WMFunction.Resize;
       this.WindowStateEvent += HandleWindowStateEvent;
-      sckVerInfo = new RestrictionLibrary.CookieAwareWebClient();
+      sckVerInfo = new RestrictionLibrary.WebClientEx();
       sckVerInfo.DownloadStringCompleted += sckVerInfo_DownloadStringCompleted;
       sckVerInfo.Failure += sckVerInfo_Failure;
       Ret = false;
@@ -147,7 +147,7 @@ namespace RestrictionTrackerGTK
       cmdChanges.GrabFocus();
     }
 
-    private void sckVerInfo_Failure(object o, RestrictionLibrary.CookieAwareWebClient.ErrorEventArgs e)
+    private void sckVerInfo_Failure(object o, RestrictionLibrary.WebClientEx.ErrorEventArgs e)
     {
       txtInfo.Buffer.Text = "Info Request Error\n" + e.Error.Message;
       cmdChanges.Sensitive = true;

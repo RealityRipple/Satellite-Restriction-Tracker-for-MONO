@@ -34,11 +34,10 @@ namespace RestrictionTrackerGTK
     private TrayStyles m_TrayIcon;
     private bool m_AutoHide;
     private string m_ProxySetting;
+    private string m_NetTest;
     private SecurityProtocolType m_Protocol;
     public bool Loaded;
     public AppColors Colors;
-    public enum UpdateTypes{Auto = 1,Ask,None};
-    public enum TrayStyles{Always, Minimized, Never};
     private string ConfigFile
     {
       get
@@ -268,6 +267,10 @@ namespace RestrictionTrackerGTK
                         m_Protocol = SecurityProtocolType.Ssl3;
                       }
                     }
+                    else if (xName.CompareTo("NetTestURL") == 0)
+                    {
+                      m_NetTest = xValue;
+                    }
                   }
                   Loaded = true;
                 }
@@ -306,7 +309,14 @@ namespace RestrictionTrackerGTK
                             {
                               string xName = xSetting.Attributes[0].InnerText;
                               string xValue = xSetting.FirstChild.InnerText;
-                              if (xName.CompareTo("Start") == 0)
+                              if (xName.CompareTo("Line") == 0)
+                              {
+                                if (graphName.CompareTo("History") == 0)
+                                {
+                                  Colors.HistoryDownLine = StrToColor(xValue);
+                                }
+                              }
+                              else if (xName.CompareTo("Start") == 0)
                               {
                                 if (graphName.CompareTo("Main") == 0)
                                 {
@@ -370,7 +380,14 @@ namespace RestrictionTrackerGTK
                             {
                               string xName = xSetting.Attributes[0].InnerText;
                               string xValue = xSetting.FirstChild.InnerText;
-                              if (xName.CompareTo("Start") == 0)
+                              if (xName.CompareTo("Line") == 0)
+                              {
+                                if (graphName.CompareTo("History") == 0)
+                                {
+                                  Colors.HistoryUpLine = StrToColor(xValue);
+                                }
+                              }
+                              else if (xName.CompareTo("Start") == 0)
                               {
                                 if (graphName.CompareTo("Main") == 0)
                                 {
@@ -451,6 +468,32 @@ namespace RestrictionTrackerGTK
                             Colors.HistoryBackground = StrToColor(nodeVal);
                           }
                         }
+                        else if (nodeName.CompareTo("Grid") == 0)
+                        {
+                          //Grid Section
+                          if (m_node.HasChildNodes)
+                          {
+                            foreach (XmlNode xSetting in m_node.ChildNodes)
+                            {
+                              string xName = xSetting.Attributes[0].InnerText;
+                              string xValue = xSetting.FirstChild.InnerText;
+                              if (xName.CompareTo("Light") == 0)
+                              {
+                                if (graphName.CompareTo("History") == 0)
+                                {
+                                  Colors.HistoryLightGrid = StrToColor(xValue);
+                                }
+                              }
+                              else if (xName.CompareTo("Dark") == 0)
+                              {
+                                if (graphName.CompareTo("History") == 0)
+                                {
+                                  Colors.HistoryDarkGrid = StrToColor(xValue);
+                                }
+                              }
+                            }
+                          }
+                        }
                       }
                     }
                   }
@@ -519,6 +562,7 @@ namespace RestrictionTrackerGTK
       m_AutoHide = true;
       m_ProxySetting = "System";
       m_Protocol = SecurityProtocolType.Tls;
+      m_NetTest = null;
       Colors = new AppColors();
       ResetColors();
     }
@@ -564,6 +608,8 @@ namespace RestrictionTrackerGTK
       Colors.HistoryUpMax = Color.Transparent;
       Colors.HistoryText = Color.Transparent;
       Colors.HistoryBackground = Color.Transparent;
+      Colors.HistoryLightGrid = Color.Transparent;
+      Colors.HistoryDarkGrid = Color.Transparent;
     }
 
     public void Save()
@@ -611,176 +657,193 @@ namespace RestrictionTrackerGTK
       string sAutoHide = "True";
       if (!m_AutoHide)
         sAutoHide = "False";
-      string sRet = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + Environment.NewLine +
-        "<configuration>" + Environment.NewLine +
-        "  <userSettings>" + Environment.NewLine +
-        "    <RestrictionTracker.My.MySettings>" + Environment.NewLine +
-        "      <setting name=\"Account\" type=\"" + sAccountType + "\" forceType=\"" + sAccountTypeF + "\">" + Environment.NewLine +
-        "        <value>" + m_Account + "</value>" + Environment.NewLine +
-        "      </setting>" + Environment.NewLine +
-        "      <setting name=\"PassCrypt\">" + Environment.NewLine +
-        "        <value>" + m_PassCrypt + "</value>" + Environment.NewLine +
-        "      </setting>" + Environment.NewLine +
-        "      <setting name=\"StartWait\">" + Environment.NewLine + 
-        "        <value>" + m_StartWait.ToString() + "</value>" + Environment.NewLine +
-        "      </setting>" + Environment.NewLine +
-        "      <setting name=\"Interval\">" + Environment.NewLine + 
-        "        <value>" + m_Interval.ToString() + "</value>" + Environment.NewLine +
-        "      </setting>" + Environment.NewLine +
-        "      <setting name=\"Gr\">" + Environment.NewLine +
-        "        <value>" + m_Gr + "</value>" + Environment.NewLine +
-        "      </setting>" + Environment.NewLine +
-        "      <setting name=\"LastUpdate\">" + Environment.NewLine +
-        "        <value>" + m_LastUpdate.ToBinary() + "</value>" + Environment.NewLine + 
-        "      </setting>" + Environment.NewLine +
-        "      <setting name=\"LastSyncTime\">" + Environment.NewLine +
-        "        <value>" + m_LastSyncTime.ToBinary() + "</value>" + Environment.NewLine + 
-        "      </setting>" + Environment.NewLine +
-        "      <setting name=\"Accuracy\">" + Environment.NewLine +
-        "        <value>" + m_Accuracy.ToString() + "</value>" + Environment.NewLine +
-        "      </setting>" + Environment.NewLine +
-        "      <setting name=\"Ago\">" + Environment.NewLine +
-        "        <value>" + m_Ago.ToString() + "</value>" + Environment.NewLine +
-        "      </setting>" + Environment.NewLine +
-        "      <setting name=\"HistoryDir\">" + Environment.NewLine + 
-        "        <value>" + m_HistoryDir + "</value>" + Environment.NewLine + 
-        "      </setting>" + Environment.NewLine +
-        "      <setting name=\"UpdateBETA\">" + Environment.NewLine + 
-        "        <value>" + sBeta + "</value>" + Environment.NewLine +
-        "      </setting>" + Environment.NewLine +
-        "      <setting name=\"UpdateType\">" + Environment.NewLine +
-        "        <value>" + sUpdateType + "</value>" + Environment.NewLine +
-        "      </setting>" + Environment.NewLine +
-        "      <setting name=\"UpdateTime\">" + Environment.NewLine +
-        "        <value>" + m_UpdateTime.ToString() + "</value>" + Environment.NewLine +
-        "      </setting>" + Environment.NewLine +
-        "      <setting name=\"ScaleScreen\">" + Environment.NewLine +
-        "        <value>" + sScaleScreen + "</value>" + Environment.NewLine + 
-        "      </setting>" + Environment.NewLine +
-        "      <setting name=\"MainSize\">" + Environment.NewLine + 
-        "        <value>" + m_MainSize.Width.ToString() + "," + m_MainSize.Height.ToString() + "</value>" + Environment.NewLine + 
-        "      </setting>" + Environment.NewLine + 
-        "      <setting name=\"RemoteKey\">" + Environment.NewLine +
-        "        <value>" + m_RemoteKey + "</value>" + Environment.NewLine +
-        "      </setting>" + Environment.NewLine + 
-        "      <setting name=\"Timeout\">" + Environment.NewLine +
-        "        <value>" + m_Timeout.ToString() + "</value>" + Environment.NewLine + 
-        "      </setting>" + Environment.NewLine + 
-        "      <setting name=\"Overuse\">" + Environment.NewLine + 
-        "        <value>" + m_Overuse.ToString() + "</value>" + Environment.NewLine + 
-        "      </setting>" + Environment.NewLine + 
-        "      <setting name=\"Overtime\">" + Environment.NewLine + 
-        "        <value>" + m_Overtime.ToString() + "</value>" + Environment.NewLine +
-        "      </setting>" + Environment.NewLine +
-        "      <setting name=\"AlertStyle\">" + Environment.NewLine + 
-        "        <value>" + m_AlertStyle + "</value>" + Environment.NewLine +
-        "      </setting>" + Environment.NewLine +
-        "      <setting name=\"TrayIcon\">" + Environment.NewLine +
-        "        <value>" + sTrayIcon + "</value>" + Environment.NewLine +
-        "      </setting>" + Environment.NewLine +
-        "      <setting name=\"AutoHide\">" + Environment.NewLine +
-        "        <value>" + sAutoHide + "</value>" + Environment.NewLine +
-        "      </setting>" + Environment.NewLine +
-        "      <setting name=\"Proxy\">" + Environment.NewLine + 
-        "        <value>" + m_ProxySetting + "</value>" + Environment.NewLine + 
-        "      </setting>" + Environment.NewLine + 
-        "      <setting name=\"Protocol\">" + Environment.NewLine + 
-        "        <value>" + sProtocol + "</value>" + Environment.NewLine + 
-        "      </setting>" + Environment.NewLine + 
-        "    </RestrictionTracker.My.MySettings>" + Environment.NewLine + 
-        "  </userSettings>" + Environment.NewLine +
-        "  <colorSettings>" + Environment.NewLine +
-        "    <graph name=\"Main\">" + Environment.NewLine + 
-        "      <section name=\"Download\">" + Environment.NewLine +
-        "        <setting name=\"Start\">" + Environment.NewLine +
-        "          <value>" + ColorToStr(Colors.MainDownA) + "</value>" + Environment.NewLine +
-        "        </setting>" + Environment.NewLine +
-        "        <setting name=\"Mid\">" + Environment.NewLine +
-        "          <value>" + ColorToStr(Colors.MainDownB) + "</value>" + Environment.NewLine +
-        "        </setting>" + Environment.NewLine +
-        "        <setting name=\"End\">" + Environment.NewLine +
-        "          <value>" + ColorToStr(Colors.MainDownC) + "</value>" + Environment.NewLine +
-        "        </setting>" + Environment.NewLine +
-        "      </section>" + Environment.NewLine +
-        "      <section name=\"Upload\">" + Environment.NewLine +
-        "        <setting name=\"Start\">" + Environment.NewLine +
-        "          <value>" + ColorToStr(Colors.MainUpA) + "</value>" + Environment.NewLine +
-        "        </setting>" + Environment.NewLine +
-        "        <setting name=\"Mid\">" + Environment.NewLine +
-        "          <value>" + ColorToStr(Colors.MainUpB) + "</value>" + Environment.NewLine +
-        "        </setting>" + Environment.NewLine +
-        "        <setting name=\"End\">" + Environment.NewLine +
-        "          <value>" + ColorToStr(Colors.MainUpC) + "</value>" + Environment.NewLine +
-        "        </setting>" + Environment.NewLine +
-        "      </section>" + Environment.NewLine +
-        "      <setting name=\"Text\">" + Environment.NewLine +
-        "        <value>" + ColorToStr(Colors.MainText) + "</value>" + Environment.NewLine +
-        "      </setting>" + Environment.NewLine + 
-        "      <setting name=\"Background\">" + Environment.NewLine +
-        "        <value>" + ColorToStr(Colors.MainBackground) + "</value>" + Environment.NewLine +
-        "      </setting>" + Environment.NewLine + 
-        "    </graph>" + Environment.NewLine +
-        "    <graph name=\"Tray\">" + Environment.NewLine + 
-        "      <section name=\"Download\">" + Environment.NewLine +
-        "        <setting name=\"Start\">" + Environment.NewLine +
-        "          <value>" + ColorToStr(Colors.TrayDownA) + "</value>" + Environment.NewLine +
-        "        </setting>" + Environment.NewLine +
-        "        <setting name=\"Mid\">" + Environment.NewLine +
-        "          <value>" + ColorToStr(Colors.TrayDownB) + "</value>" + Environment.NewLine +
-        "        </setting>" + Environment.NewLine +
-        "        <setting name=\"End\">" + Environment.NewLine +
-        "          <value>" + ColorToStr(Colors.TrayDownC) + "</value>" + Environment.NewLine +
-        "        </setting>" + Environment.NewLine +
-        "      </section>" + Environment.NewLine +
-        "      <section name=\"Upload\">" + Environment.NewLine +
-        "        <setting name=\"Start\">" + Environment.NewLine +
-        "          <value>" + ColorToStr(Colors.TrayUpA) + "</value>" + Environment.NewLine +
-        "        </setting>" + Environment.NewLine +
-        "        <setting name=\"Mid\">" + Environment.NewLine +
-        "          <value>" + ColorToStr(Colors.TrayUpB) + "</value>" + Environment.NewLine +
-        "        </setting>" + Environment.NewLine +
-        "        <setting name=\"End\">" + Environment.NewLine +
-        "          <value>" + ColorToStr(Colors.TrayUpC) + "</value>" + Environment.NewLine +
-        "        </setting>" + Environment.NewLine +
-        "      </section>" + Environment.NewLine +
-        "    </graph>" + Environment.NewLine +
-        "    <graph name=\"History\">" + Environment.NewLine + 
-        "      <section name=\"Download\">" + Environment.NewLine +
-        "        <setting name=\"Start\">" + Environment.NewLine +
-        "          <value>" + ColorToStr(Colors.HistoryDownA) + "</value>" + Environment.NewLine +
-        "        </setting>" + Environment.NewLine +
-        "        <setting name=\"Mid\">" + Environment.NewLine +
-        "          <value>" + ColorToStr(Colors.HistoryDownB) + "</value>" + Environment.NewLine +
-        "        </setting>" + Environment.NewLine +
-        "        <setting name=\"End\">" + Environment.NewLine +
-        "          <value>" + ColorToStr(Colors.HistoryDownC) + "</value>" + Environment.NewLine +
-        "        </setting>" + Environment.NewLine +
-        "        <setting name=\"Maximum\">" + Environment.NewLine +
-        "          <value>" + ColorToStr(Colors.HistoryDownMax) + "</value>" + Environment.NewLine +
-        "        </setting>" + Environment.NewLine +
-        "      </section>" + Environment.NewLine +
-        "      <section name=\"Upload\">" + Environment.NewLine +
-        "        <setting name=\"Start\">" + Environment.NewLine +
-        "          <value>" + ColorToStr(Colors.HistoryUpA) + "</value>" + Environment.NewLine +
-        "        </setting>" + Environment.NewLine +
-        "        <setting name=\"Mid\">" + Environment.NewLine +
-        "          <value>" + ColorToStr(Colors.HistoryUpB) + "</value>" + Environment.NewLine +
-        "        </setting>" + Environment.NewLine +
-        "        <setting name=\"End\">" + Environment.NewLine +
-        "          <value>" + ColorToStr(Colors.HistoryUpC) + "</value>" + Environment.NewLine +
-        "        </setting>" + Environment.NewLine +
-        "        <setting name=\"Maximum\">" + Environment.NewLine +
-        "          <value>" + ColorToStr(Colors.HistoryUpMax) + "</value>" + Environment.NewLine +
-        "        </setting>" + Environment.NewLine +
-        "      </section>" + Environment.NewLine +
-        "      <setting name=\"Text\">" + Environment.NewLine +
-        "        <value>" + ColorToStr(Colors.HistoryText) + "</value>" + Environment.NewLine +
-        "      </setting>" + Environment.NewLine + 
-        "      <setting name=\"Background\">" + Environment.NewLine +
-        "        <value>" + ColorToStr(Colors.HistoryBackground) + "</value>" + Environment.NewLine +
-        "      </setting>" + Environment.NewLine + 
-        "    </graph>" + Environment.NewLine +
-        "  </colorSettings>" + Environment.NewLine +
+      string sRet = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+        "<configuration>\n" +
+        "  <userSettings>\n" +
+        "    <RestrictionTracker.My.MySettings>\n" +
+        "      <setting name=\"Account\" type=\"" + sAccountType + "\" forceType=\"" + sAccountTypeF + "\">\n" +
+        "        <value>" + m_Account + "</value>\n" +
+        "      </setting>\n" +
+        "      <setting name=\"PassCrypt\">\n" +
+        "        <value>" + m_PassCrypt + "</value>\n" +
+        "      </setting>\n" +
+        "      <setting name=\"StartWait\">\n" + 
+        "        <value>" + m_StartWait.ToString() + "</value>\n" +
+        "      </setting>\n" +
+        "      <setting name=\"Interval\">\n" + 
+        "        <value>" + m_Interval.ToString() + "</value>\n" +
+        "      </setting>\n" +
+        "      <setting name=\"Gr\">\n" +
+        "        <value>" + m_Gr + "</value>\n" +
+        "      </setting>\n" +
+        "      <setting name=\"LastUpdate\">\n" +
+        "        <value>" + m_LastUpdate.ToBinary() + "</value>\n" + 
+        "      </setting>\n" +
+        "      <setting name=\"LastSyncTime\">\n" +
+        "        <value>" + m_LastSyncTime.ToBinary() + "</value>\n" + 
+        "      </setting>\n" +
+        "      <setting name=\"Accuracy\">\n" +
+        "        <value>" + m_Accuracy.ToString() + "</value>\n" +
+        "      </setting>\n" +
+        "      <setting name=\"Ago\">\n" +
+        "        <value>" + m_Ago.ToString() + "</value>\n" +
+        "      </setting>\n" +
+        "      <setting name=\"HistoryDir\">\n" + 
+        "        <value>" + m_HistoryDir + "</value>\n" + 
+        "      </setting>\n" +
+        "      <setting name=\"UpdateBETA\">\n" + 
+        "        <value>" + sBeta + "</value>\n" +
+        "      </setting>\n" +
+        "      <setting name=\"UpdateType\">\n" +
+        "        <value>" + sUpdateType + "</value>\n" +
+        "      </setting>\n" +
+        "      <setting name=\"UpdateTime\">\n" +
+        "        <value>" + m_UpdateTime.ToString() + "</value>\n" +
+        "      </setting>\n" +
+        "      <setting name=\"ScaleScreen\">\n" +
+        "        <value>" + sScaleScreen + "</value>\n" + 
+        "      </setting>\n" +
+        "      <setting name=\"MainSize\">\n" + 
+        "        <value>" + m_MainSize.Width.ToString() + "," + m_MainSize.Height.ToString() + "</value>\n" + 
+        "      </setting>\n" + 
+        "      <setting name=\"RemoteKey\">\n" +
+        "        <value>" + m_RemoteKey + "</value>\n" +
+        "      </setting>\n" + 
+        "      <setting name=\"Timeout\">\n" +
+        "        <value>" + m_Timeout.ToString() + "</value>\n" + 
+        "      </setting>\n" + 
+        "      <setting name=\"Overuse\">\n" + 
+        "        <value>" + m_Overuse.ToString() + "</value>\n" + 
+        "      </setting>\n" + 
+        "      <setting name=\"Overtime\">\n" + 
+        "        <value>" + m_Overtime.ToString() + "</value>\n" +
+        "      </setting>\n" +
+        "      <setting name=\"AlertStyle\">\n" + 
+        "        <value>" + m_AlertStyle + "</value>\n" +
+        "      </setting>\n" +
+        "      <setting name=\"TrayIcon\">\n" +
+        "        <value>" + sTrayIcon + "</value>\n" +
+        "      </setting>\n" +
+        "      <setting name=\"AutoHide\">\n" +
+        "        <value>" + sAutoHide + "</value>\n" +
+        "      </setting>\n" +
+        "      <setting name=\"Proxy\">\n" + 
+        "        <value>" + m_ProxySetting + "</value>\n" + 
+        "      </setting>\n" + 
+        "      <setting name=\"Protocol\">\n" + 
+        "        <value>" + sProtocol + "</value>\n" + 
+        "      </setting>\n" + 
+        "      <setting name=\"NetTestURL\">\n" + 
+        "        <value>" + m_NetTest + "</value>\n" + 
+        "      </setting>\n" + 
+        "    </RestrictionTracker.My.MySettings>\n" + 
+        "  </userSettings>\n" +
+        "  <colorSettings>\n" +
+        "    <graph name=\"Main\">\n" + 
+        "      <section name=\"Download\">\n" +
+        "        <setting name=\"Start\">\n" +
+        "          <value>" + ColorToStr(Colors.MainDownA) + "</value>\n" +
+        "        </setting>\n" +
+        "        <setting name=\"Mid\">\n" +
+        "          <value>" + ColorToStr(Colors.MainDownB) + "</value>\n" +
+        "        </setting>\n" +
+        "        <setting name=\"End\">\n" +
+        "          <value>" + ColorToStr(Colors.MainDownC) + "</value>\n" +
+        "        </setting>\n" +
+        "      </section>\n" +
+        "      <section name=\"Upload\">\n" +
+        "        <setting name=\"Start\">\n" +
+        "          <value>" + ColorToStr(Colors.MainUpA) + "</value>\n" +
+        "        </setting>\n" +
+        "        <setting name=\"Mid\">\n" +
+        "          <value>" + ColorToStr(Colors.MainUpB) + "</value>\n" +
+        "        </setting>\n" +
+        "        <setting name=\"End\">\n" +
+        "          <value>" + ColorToStr(Colors.MainUpC) + "</value>\n" +
+        "        </setting>\n" +
+        "      </section>\n" +
+        "      <setting name=\"Text\">\n" +
+        "        <value>" + ColorToStr(Colors.MainText) + "</value>\n" +
+        "      </setting>\n" + 
+        "      <setting name=\"Background\">\n" +
+        "        <value>" + ColorToStr(Colors.MainBackground) + "</value>\n" +
+        "      </setting>\n" + 
+        "    </graph>\n" +
+        "    <graph name=\"Tray\">\n" + 
+        "      <section name=\"Download\">\n" +
+        "        <setting name=\"Start\">\n" +
+        "          <value>" + ColorToStr(Colors.TrayDownA) + "</value>\n" +
+        "        </setting>\n" +
+        "        <setting name=\"Mid\">\n" +
+        "          <value>" + ColorToStr(Colors.TrayDownB) + "</value>\n" +
+        "        </setting>\n" +
+        "        <setting name=\"End\">\n" +
+        "          <value>" + ColorToStr(Colors.TrayDownC) + "</value>\n" +
+        "        </setting>\n" +
+        "      </section>\n" +
+        "      <section name=\"Upload\">\n" +
+        "        <setting name=\"Start\">\n" +
+        "          <value>" + ColorToStr(Colors.TrayUpA) + "</value>\n" +
+        "        </setting>\n" +
+        "        <setting name=\"Mid\">\n" +
+        "          <value>" + ColorToStr(Colors.TrayUpB) + "</value>\n" +
+        "        </setting>\n" +
+        "        <setting name=\"End\">\n" +
+        "          <value>" + ColorToStr(Colors.TrayUpC) + "</value>\n" +
+        "        </setting>\n" +
+        "      </section>\n" +
+        "    </graph>\n" +
+        "    <graph name=\"History\">\n" + 
+        "      <section name=\"Download\">\n" +
+        "        <setting name=\"Line\">\n" +
+        "          <value>" + ColorToStr(Colors.HistoryDownLine) + "</value>\n" +
+        "        </setting>\n" +
+        "        <setting name=\"Start\">\n" +
+        "          <value>" + ColorToStr(Colors.HistoryDownA) + "</value>\n" +
+        "        </setting>\n" +
+        "        <setting name=\"Mid\">\n" +
+        "          <value>" + ColorToStr(Colors.HistoryDownB) + "</value>\n" +
+        "        </setting>\n" +
+        "        <setting name=\"End\">\n" +
+        "          <value>" + ColorToStr(Colors.HistoryDownC) + "</value>\n" +
+        "        </setting>\n" +
+        "        <setting name=\"Maximum\">\n" +
+        "          <value>" + ColorToStr(Colors.HistoryDownMax) + "</value>\n" +
+        "        </setting>\n" +
+        "      </section>\n" +
+        "      <section name=\"Upload\">\n" +
+        "        <setting name=\"Line\">\n" +
+        "          <value>" + ColorToStr(Colors.HistoryUpLine) + "</value>\n" +
+        "        </setting>\n" +
+        "        <setting name=\"Start\">\n" +
+        "          <value>" + ColorToStr(Colors.HistoryUpA) + "</value>\n" +
+        "        </setting>\n" +
+        "        <setting name=\"Mid\">\n" +
+        "          <value>" + ColorToStr(Colors.HistoryUpB) + "</value>\n" +
+        "        </setting>\n" +
+        "        <setting name=\"End\">\n" +
+        "          <value>" + ColorToStr(Colors.HistoryUpC) + "</value>\n" +
+        "        </setting>\n" +
+        "        <setting name=\"Maximum\">\n" +
+        "          <value>" + ColorToStr(Colors.HistoryUpMax) + "</value>\n" +
+        "        </setting>\n" +
+        "      </section>\n" +
+        "      <setting name=\"Text\">\n" +
+        "        <value>" + ColorToStr(Colors.HistoryText) + "</value>\n" +
+        "      </setting>\n" + 
+        "      <setting name=\"Background\">\n" +
+        "        <value>" + ColorToStr(Colors.HistoryBackground) + "</value>\n" +
+        "      </setting>\n" + 
+        "      <section name=\"Grid\">\n" +
+        "        <setting name=\"Light\">\n" +
+        "          <value>" + ColorToStr(Colors.HistoryLightGrid) + "</value>\n" +
+        "        </setting>\n" +
+        "        <setting name=\"Dark\">\n" +
+        "          <value>" + ColorToStr(Colors.HistoryDarkGrid) + "</value>\n" +
+        "        </setting>\n" +
+        "      </section>\n" +
+        "    </graph>\n" +
+        "  </colorSettings>\n" +
         "</configuration>";
       MakeBackup();
       using (FileStream ioWriter = new FileStream(ConfigFile, FileMode.Create, FileAccess.Write, FileShare.None))
@@ -1377,6 +1440,18 @@ namespace RestrictionTrackerGTK
       }
     }
 
+    public string NetTestURL
+    {
+      get
+      {
+        return m_NetTest;
+      }
+      set
+      {
+        m_NetTest = value;
+      }
+    }
+
     public class AppColors
     {
       private Color c_MainDA;
@@ -1393,16 +1468,20 @@ namespace RestrictionTrackerGTK
       private Color c_TrayUA;
       private Color c_TrayUB;
       private Color c_TrayUC;
+      private Color c_HistoryDL;
       private Color c_HistoryDA;
       private Color c_HistoryDB;
       private Color c_HistoryDC;
       private Color c_HistoryDM;
+      private Color c_HistoryUL;
       private Color c_HistoryUA;
       private Color c_HistoryUB;
       private Color c_HistoryUC;
       private Color c_HistoryUM;
       private Color c_HistoryText;
       private Color c_HistoryBG;
+      private Color c_HistoryGridL;
+      private Color c_HistoryGridD;
 
       public AppColors()
       {
@@ -1576,6 +1655,18 @@ namespace RestrictionTrackerGTK
         }
       }
 
+      public Color HistoryDownLine
+      {
+        get
+        {
+          return c_HistoryDL;
+        }
+        set
+        {
+          c_HistoryDL = value;
+        }
+      }
+
       public Color HistoryDownA
       {
         get
@@ -1621,6 +1712,18 @@ namespace RestrictionTrackerGTK
         set
         {
           c_HistoryDM = value;
+        }
+      }
+
+      public Color HistoryUpLine
+      {
+        get
+        {
+          return c_HistoryUL;
+        }
+        set
+        {
+          c_HistoryUL = value;
         }
       }
 
@@ -1695,9 +1798,31 @@ namespace RestrictionTrackerGTK
           c_HistoryBG = value;
         }
       }
+
+      public Color HistoryLightGrid
+      {
+        get
+        {
+          return c_HistoryGridL;
+        }
+        set
+        {
+          c_HistoryGridL = value;
+        }
+      }
+
+      public Color HistoryDarkGrid
+      {
+        get
+        {
+          return c_HistoryGridD;
+        }
+        set
+        {
+          c_HistoryGridD = value;
+        }
+      }
     }
-
-
   }
 }
 

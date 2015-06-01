@@ -18,12 +18,6 @@ namespace RestrictionTrackerGTK
     }
     public class CheckEventArgs : System.ComponentModel.AsyncCompletedEventArgs
     {
-      public enum ResultType
-      {
-        NoUpdate,
-        NewUpdate,
-        NewBeta
-      }
       public ResultType Result;
       public string Version;
       internal CheckEventArgs(ResultType rtResult, string sVersion, Exception ex, bool bCancelled, object state) : base(ex, bCancelled, state)
@@ -57,13 +51,13 @@ namespace RestrictionTrackerGTK
     public delegate void UpdateProgressChangedEventHandler(object sender,ProgressEventArgs e);
     public event DownloadResultEventHandler DownloadResult;
     public delegate void DownloadResultEventHandler(object sender,DownloadEventArgs e);
-    private RestrictionLibrary.CookieAwareWebClient wsVer;
+    private RestrictionLibrary.WebClientEx wsVer;
     private string DownloadURL;
     private string VerNumber;
     public void CheckVersion()
     {
       AppSettings myS = new AppSettings();
-      wsVer = new RestrictionLibrary.CookieAwareWebClient();
+      wsVer = new RestrictionLibrary.WebClientEx();
       wsVer.DownloadProgressChanged += wsVer_DownloadProgressChanged;
       wsVer.DownloadStringCompleted += wsVer_DownloadStringCompleted;
       wsVer.DownloadFileCompleted += wsVer_DownloadFileCompleted;
@@ -76,11 +70,11 @@ namespace RestrictionTrackerGTK
         CheckingVersion(this, new EventArgs());
       }
     }
-    public static CheckEventArgs.ResultType QuickCheckVersion()
+    public static ResultType QuickCheckVersion()
     {
       string sVerStr = null;
       AppSettings mySettings = new AppSettings();
-      using (RestrictionLibrary.CookieAwareWebClient wsCheck = new RestrictionLibrary.CookieAwareWebClient())
+      using (RestrictionLibrary.WebClientEx wsCheck = new RestrictionLibrary.WebClientEx())
       {
         wsCheck.Proxy = mySettings.Proxy;
         wsCheck.Timeout = mySettings.Timeout;
@@ -91,7 +85,7 @@ namespace RestrictionTrackerGTK
         catch (Exception)
         {
           mySettings = null;
-          return CheckEventArgs.ResultType.NoUpdate;
+          return ResultType.NoUpdate;
         }
       }
       char[] sSplit = { ' ' };
@@ -115,7 +109,7 @@ namespace RestrictionTrackerGTK
         if (modFunctions.CompareVersions(sVU[0]))
         {
           mySettings = null;
-          return CheckEventArgs.ResultType.NewUpdate;
+          return ResultType.NewUpdate;
         }
       }
       else
@@ -127,7 +121,7 @@ namespace RestrictionTrackerGTK
           if (modFunctions.CompareVersions(sVMU[0]))
           {
             mySettings = null;
-            return CheckEventArgs.ResultType.NewUpdate;
+            return ResultType.NewUpdate;
           }
           else if (mySettings.UpdateBETA & !string.IsNullOrEmpty(sVL[1]))
             {
@@ -135,13 +129,13 @@ namespace RestrictionTrackerGTK
               if (modFunctions.CompareVersions(sVBU[0]))
               {
                 mySettings = null;
-                return CheckEventArgs.ResultType.NewBeta;
+                return ResultType.NewBeta;
               }
             }
         }
       }
       mySettings = null;
-      return CheckEventArgs.ResultType.NoUpdate;
+      return ResultType.NoUpdate;
     }
     public void DownloadUpdate(string toLocation)
     {
@@ -175,7 +169,7 @@ namespace RestrictionTrackerGTK
     }
     private void wsVer_DownloadStringCompleted(object sender, System.Net.DownloadStringCompletedEventArgs e)
     {
-      CheckEventArgs.ResultType rRet = CheckEventArgs.ResultType.NoUpdate;
+      ResultType rRet = ResultType.NoUpdate;
       DownloadURL = null;
       VerNumber = null;
       if (e.Error == null)
@@ -203,7 +197,7 @@ namespace RestrictionTrackerGTK
             string[] sVU = sVerStr.Split(verSplit);
             if (modFunctions.CompareVersions(sVU[0]))
             {
-              rRet = CheckEventArgs.ResultType.NewUpdate;
+              rRet = ResultType.NewUpdate;
               DownloadURL = sVU[1];
               VerNumber = sVU[0];
             }
@@ -217,7 +211,7 @@ namespace RestrictionTrackerGTK
               AppSettings mySettings = new AppSettings();
               if (modFunctions.CompareVersions(sVMU[0]))
               {
-                rRet = CheckEventArgs.ResultType.NewUpdate;
+                rRet = ResultType.NewUpdate;
                 DownloadURL = sVMU[1];
                 VerNumber = sVMU[0];
               }
@@ -226,7 +220,7 @@ namespace RestrictionTrackerGTK
                   string[] sVBU = sVL[1].Split(verSplit);
                   if (modFunctions.CompareVersions(sVBU[0]))
                   {
-                    rRet = CheckEventArgs.ResultType.NewBeta;
+                    rRet = ResultType.NewBeta;
                   DownloadURL = sVBU [1];
                     VerNumber = sVBU[0];
                   }
@@ -237,7 +231,7 @@ namespace RestrictionTrackerGTK
             {
               if (CheckResult != null)
               {
-                CheckResult(sender, new CheckEventArgs(CheckEventArgs.ResultType.NoUpdate, VerNumber, new Exception("Version Reading Error", new Exception("Empty Version String")), e.Cancelled, e.UserState));
+                CheckResult(sender, new CheckEventArgs(ResultType.NoUpdate, VerNumber, new Exception("Version Reading Error", new Exception("Empty Version String")), e.Cancelled, e.UserState));
               }
               return;
             }
@@ -247,7 +241,7 @@ namespace RestrictionTrackerGTK
         {
           if (CheckResult != null)
           {
-            CheckResult(sender, new CheckEventArgs(CheckEventArgs.ResultType.NoUpdate, VerNumber, new Exception("Version Parsing Error", ex), e.Cancelled, e.UserState));
+            CheckResult(sender, new CheckEventArgs(ResultType.NoUpdate, VerNumber, new Exception("Version Parsing Error", ex), e.Cancelled, e.UserState));
           }
         }
       }

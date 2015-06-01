@@ -20,6 +20,7 @@ namespace RestrictionTrackerGTK
       Application.Init();
       if (!modFunctions.RunningLock())
         return;
+      GLib.ExceptionManager.UnhandledException += unhandledException;
       if (CurrentOS.IsMac)
       {
         try
@@ -93,6 +94,251 @@ namespace RestrictionTrackerGTK
       }
       fMain.Show();
       Application.Run();
+    }
+
+    static void unhandledException (GLib.UnhandledExceptionArgs args)
+    {
+      Exception ex = (Exception) args.ExceptionObject;
+      if (ex.Message == "Exception has been thrown by the target of an invocation.")
+        ex = ex.InnerException;
+      ResponseType ret = showErrDialog(ex, !args.IsTerminating);
+      if (ret == ResponseType.Ok)
+      {
+        string sRet = MantisReporter.ReportIssue(ex);
+        if (sRet == "OK")
+        {
+          if (modFunctions.ShowMessageBox(null, "Thank you for reporting the error.\nYou can find details on the Bug Report page.\n\nDo you wish to visit the Bug Report?", modFunctions.ProductName + " Error Report Sent!", (DialogFlags)0, MessageType.Question, ButtonsType.YesNo) == ResponseType.Yes)
+            System.Diagnostics.Process.Start("http://bugs.realityripple.com/set_project.php?project_id=2");
+        }
+        else
+        {
+          string sErrRep = "http://bugs.realityripple.com/set_project.php?project_id=2&make_default=no&ref=bug_report_page.php";
+          if (CurrentOS.Is32bit)
+          {
+            sErrRep += "?platform=x86";
+          }
+          else if (CurrentOS.Is64bit)
+          {
+            if (CurrentOS.Is32BitProcess)
+            {
+              sErrRep += "?platform=x86-64";
+            }
+            else if (CurrentOS.Is64BitProcess)
+            {
+              sErrRep += "?platform=x64";
+            }
+            else
+            {
+              sErrRep += "?platform=x86 OS, Unknown Process";
+            }
+          }
+          else
+          {
+            sErrRep += "?platform=Unknown";
+          }
+          sErrRep += "%2526os=" + DoubleEncode(CurrentOS.Name);
+          sErrRep += "%2526os_build=" + DoubleEncode(Environment.OSVersion.VersionString);
+          string sDesc = ex.Message;
+          string sSum = sDesc;
+          if (sSum.Length > 80)
+            sSum = sSum.Substring(0, 77) + "...";
+          sErrRep += "%2526summary=" + DoubleEncode(sSum);
+          if (!String.IsNullOrEmpty(ex.StackTrace))
+          {
+            sDesc += "\n" + ex.StackTrace.Substring(0, ex.StackTrace.IndexOf("\n"));
+          }
+          else
+          {
+            if (!String.IsNullOrEmpty(ex.Source))
+            {
+              sDesc += "\n @ " + ex.Source;
+              if (ex.TargetSite != null)
+                sDesc += "." + ex.TargetSite.Name;
+            }
+            else
+            {
+              if (ex.TargetSite != null)
+                sDesc += "\n @ " + ex.TargetSite.Name;
+            }
+          }
+          sDesc += "\nVersion " + modFunctions.ProductVersion;
+          sErrRep += "%2526description=" + DoubleEncode(sDesc);
+          if (modFunctions.ShowMessageBox(null, sRet + "\n\nWould you like to report the error manually?", modFunctions.ProductName + " Error Report Failed!", (DialogFlags)0, MessageType.Error, ButtonsType.YesNo) == ResponseType.Yes)
+          {
+            System.Diagnostics.Process.Start(sErrRep);
+          }
+        }
+      }
+      else if (ret == ResponseType.Reject)
+      {
+        Application.Quit();
+      }
+    }
+
+    private static string DoubleEncode(string inString)
+    {
+      return modFunctions.PercentEncode(modFunctions.PercentEncode(inString));
+    }
+
+    static void SizeAllocateLabel(object o, SizeAllocatedArgs e)
+    {
+      ((Gtk.Widget) o).SetSizeRequest(e.Allocation.Width, -1);
+    }
+
+    private static Gtk.ResponseType showErrDialog(Exception e, bool canContinue)
+    {
+      Gtk.Table pnlError;
+      Gtk.Image pctError;
+      Gtk.Label lblError;
+      Gtk.ScrolledWindow scrError;
+      Gtk.TextView txtError;
+      Gtk.Button cmdReport;
+      Gtk.Button cmdIgnore;
+      Gtk.Button cmdExit;
+
+      pnlError = new Gtk.Table (2, 2, false);
+      pnlError.Name = "pnlError";
+      pnlError.RowSpacing = 6;
+      pnlError.ColumnSpacing = 6;
+
+      pctError = new Gtk.Image ();
+      pctError.Name = "pctError";
+      pctError.Xpad = 8;
+      pctError.Ypad = 8;
+      if (CurrentOS.IsMac)
+        pctError.Pixbuf = Gdk.Pixbuf.LoadFromResource ("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_error.png");
+      else
+        pctError.Pixbuf = Gdk.Pixbuf.LoadFromResource ("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_error.png");
+      pnlError.Attach(pctError, 0, 1, 0, 1, AttachOptions.Fill, AttachOptions.Fill, 0, 0);
+
+      lblError = new Gtk.Label ();
+      lblError.Name = "lblError";
+      lblError.Xalign = 0F;
+      lblError.Yalign = 0.5F;
+      if (e.TargetSite == null)
+      {
+        lblError.LabelProp = "<span size=\"12000\" weight=\"bold\">" + modFunctions.ProductName + " has Encountered an Error</span>";
+      }
+      else
+      {
+        lblError.LabelProp = "<span size=\"12000\" weight=\"bold\">" + modFunctions.ProductName + " has Encountered an Error in " + e.TargetSite.Name + "</span>";
+      }
+      var signal = GLib.Signal.Lookup(lblError, "size-allocate", typeof(SizeAllocatedArgs));
+      signal.AddDelegate(new EventHandler<SizeAllocatedArgs>(SizeAllocateLabel));
+      lblError.LineWrap = true;
+      lblError.UseMarkup = true;
+      pnlError.Attach(lblError, 1, 2, 0, 1, AttachOptions.Shrink | AttachOptions.Fill | AttachOptions.Expand, AttachOptions.Fill, 0, 0);
+
+      scrError = new Gtk.ScrolledWindow ();
+      scrError.Name = "scrError";
+      scrError.VscrollbarPolicy = PolicyType.Automatic;
+      scrError.HscrollbarPolicy = PolicyType.Never;
+      scrError.ShadowType = ShadowType.In;
+
+      txtError = new Gtk.TextView ();
+      txtError.CanFocus = true;
+      txtError.Name = "txtError";
+      txtError.Editable = false;
+      txtError.AcceptsTab = false;
+      txtError.WrapMode = WrapMode.Word;
+
+      scrError.Add (txtError);
+      pnlError.Attach(scrError, 1, 2, 1, 2, AttachOptions.Shrink | AttachOptions.Fill | AttachOptions.Expand, AttachOptions.Shrink | AttachOptions.Fill | AttachOptions.Expand, 0, 0);
+
+      txtError.Buffer.Text = "Error: " + e.Message;
+      if (!String.IsNullOrEmpty(e.StackTrace))
+      {
+        if (e.StackTrace.Contains("\n"))
+          txtError.Buffer.Text += "\n" + e.StackTrace.Substring(0, e.StackTrace.IndexOf("\n"));
+        else
+          txtError.Buffer.Text += "\n" + e.StackTrace;
+      }
+      else
+      {
+        if (!String.IsNullOrEmpty(e.Source))
+        {
+          txtError.Buffer.Text += "\n @ " + e.Source;
+          if (e.TargetSite != null)
+            txtError.Buffer.Text += "." + e.TargetSite.Name;
+        }
+        else
+        {
+          if (e.TargetSite != null)
+            txtError.Buffer.Text += "\n @ " + e.TargetSite.Name;
+        }
+      }
+
+      cmdReport = new Gtk.Button();
+      cmdReport.CanDefault = true;
+      cmdReport.CanFocus = true;
+      cmdReport.Name = "cmdReport";
+      cmdReport.UseUnderline = false;
+      cmdReport.Label = "Report Error";
+
+      if (canContinue)
+      {
+        cmdIgnore = new Gtk.Button();
+        cmdIgnore.CanDefault = true;
+        cmdIgnore.CanFocus = true;
+        cmdIgnore.Name = "cmdIgnore";
+        cmdIgnore.UseUnderline = false;
+        cmdIgnore.Label = "Ignore and Continue";
+      }
+      else
+      {
+        cmdIgnore = null;
+      }
+
+      cmdExit = new global::Gtk.Button ();
+      cmdExit.CanFocus = true;
+      cmdExit.Name = "cmdExit";
+      cmdExit.UseUnderline = true;
+      cmdExit.Label = global::Mono.Unix.Catalog.GetString ("Exit Application");
+
+
+      Gtk.Dialog dlgErr = new Gtk.Dialog("Error in " + modFunctions.ProductName, null, DialogFlags.Modal | DialogFlags.DestroyWithParent,cmdReport);
+
+      dlgErr.TypeHint = Gdk.WindowTypeHint.Dialog;
+      dlgErr.WindowPosition = WindowPosition.CenterAlways;
+      dlgErr.SkipPagerHint = true;
+      dlgErr.SkipTaskbarHint = true;
+      dlgErr.AllowShrink = true;
+      dlgErr.AllowGrow = true;
+
+      VBox pnlErrorDialog = dlgErr.VBox;
+      pnlErrorDialog.Name = "pnlErrorDialog";
+      pnlErrorDialog.BorderWidth = 2;
+      pnlErrorDialog.Add (pnlError);
+
+      Box.BoxChild pnlError_BC = (Box.BoxChild) pnlErrorDialog[pnlError];
+      pnlError_BC.Position = 0;
+
+      Gtk.HButtonBox dlgErrorAction = dlgErr.ActionArea;
+      dlgErrorAction.Name = "dlgErrorAction";
+      dlgErrorAction.Spacing = 10;
+      dlgErrorAction.BorderWidth = 5;
+      dlgErrorAction.LayoutStyle = ButtonBoxStyle.End;
+
+      dlgErr.AddActionWidget (cmdReport, ResponseType.Ok);
+      if (canContinue)
+        dlgErr.AddActionWidget (cmdIgnore, ResponseType.No);
+      dlgErr.AddActionWidget (cmdExit, ResponseType.Reject);
+
+      dlgErr.ShowAll ();
+      Gdk.Geometry minGeo = new Gdk.Geometry();
+      minGeo.MinWidth = dlgErr.Allocation.Width;
+      minGeo.MinHeight = dlgErr.Allocation.Height;
+      if (minGeo.MinWidth > 1 & minGeo.MinHeight > 1)
+        dlgErr.SetGeometryHints(null, minGeo, Gdk.WindowHints.MinSize);
+
+      Gtk.ResponseType dRet;
+      do {
+        dRet = (Gtk.ResponseType)dlgErr.Run ();
+      } while(dRet == ResponseType.None);
+      dlgErr.Hide ();
+      dlgErr.Destroy ();
+      dlgErr = null;
+      return dRet;
     }
   }
 }

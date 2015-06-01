@@ -327,7 +327,7 @@ namespace RestrictionTrackerGTK
         dlgUpdate fUpdate;
         switch (e.Result)
         {
-          case clsUpdate.CheckEventArgs.ResultType.NewUpdate:
+          case ResultType.NewUpdate:
             SetButtonUpdate("_New Update Available", "Click to begin download.");
             System.Threading.Thread.Sleep(0);
             fUpdate = new dlgUpdate();
@@ -355,7 +355,7 @@ namespace RestrictionTrackerGTK
             fUpdate.Dispose();
             fUpdate = null;
             break;
-          case clsUpdate.CheckEventArgs.ResultType.NewBeta:
+          case ResultType.NewBeta:
           if (mySettings.UpdateBETA)
             {
               SetButtonUpdate("_New BETA Available", "Click to begin download.");
@@ -392,7 +392,7 @@ namespace RestrictionTrackerGTK
               RestartReset();
             }
             break;
-          case clsUpdate.CheckEventArgs.ResultType.NoUpdate:
+          case ResultType.NoUpdate:
             SetUpdateValue("No New Updates", false);
             RestartReset();
             break;

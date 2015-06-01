@@ -54,18 +54,6 @@ namespace RestrictionTrackerGTK
     public event EventHandler TitleClick = null;
     public event EventHandler ContentClick = null;
 #endregion
-#region TaskbarNotifier enums
-    /// <summary>
-    /// List of the different popup animation status
-    /// </summary>
-    public enum TaskbarStates
-    {
-      hidden = 0,
-      appearing = 1,
-      visible = 2,
-      disappearing = 3
-    }
-#endregion
  
 #region TaskbarNotifier Constructor
     /// <summary>
@@ -299,9 +287,6 @@ namespace RestrictionTrackerGTK
 #endregion
  
 #region TaskbarNotifier Public Methods
-    //[DllImport("user32.dll")]
-    //private static extern Boolean ShowWindow(IntPtr hWnd,Int32 nCmdShow);
-
     /// <summary>
     /// Displays the popup for a certain amount of time.
     /// </summary>
@@ -483,6 +468,10 @@ namespace RestrictionTrackerGTK
       }
     }
 
+    /// <summary>
+    /// Hides the popup after fading it out
+    /// </summary>
+    /// <returns>Nothing</returns>
     public void SlowHide()
     {
       if (timer != 0)
@@ -508,7 +497,6 @@ namespace RestrictionTrackerGTK
       transparencyKey = transparencyColor;
       if (BackgroundBitmap == null)
         SetDefaultBitmaps();
-      //Region = BitmapToRegion(BackgroundBitmap, transparencyColor);
       Refresh(true);
     }
  
@@ -526,7 +514,6 @@ namespace RestrictionTrackerGTK
       transparencyKey = transparencyColor;
       if (BackgroundBitmap == null)
         SetDefaultBitmaps();
-      //Region = BitmapToRegion(BackgroundBitmap, transparencyColor);
       Refresh(true);
     }
  
@@ -540,8 +527,6 @@ namespace RestrictionTrackerGTK
     public void SetCloseBitmap(string strFilename, Color transparencyColor, Point position)
     {
       CloseBitmap = modFunctions.MakeTransparent(new Bitmap(strFilename), transparencyColor);
-      //CloseBitmap.MakeTransparent(transparencyColor);
-      //transparencyKey = transparencyColor;
       CloseBitmapSize = new Size(CloseBitmap.Width / 3, CloseBitmap.Height);
       CloseBitmapLocation = position;
       if (CloseBitmap == null || CloseBitmapSize.IsEmpty)
@@ -937,7 +922,14 @@ namespace RestrictionTrackerGTK
           {
             ScreenTransBitmap = modFunctions.GetScreenRect(new Rectangle(this.GdkWindow.FrameExtents.Location.X,this.GdkWindow.FrameExtents.Location.Y, offscreenBitmap.Size.Width,offscreenBitmap.Size.Height));
           }
-          background = modFunctions.ImageToPixbuf(modFunctions.ReplaceColors(offscreenBitmap, transparencyKey, ScreenTransBitmap));
+          if (ScreenTransBitmap == null)
+          {
+            background = modFunctions.ImageToPixbuf(modFunctions.SwapColors(offscreenBitmap, transparencyKey, Color.Black));
+          }
+          else
+          {
+            background = modFunctions.ImageToPixbuf(modFunctions.ReplaceColors(offscreenBitmap, transparencyKey, ScreenTransBitmap));
+          }
         }
         this.WidthRequest = background.Width;
         this.HeightRequest = background.Height;

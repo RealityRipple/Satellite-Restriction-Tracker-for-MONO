@@ -5,10 +5,13 @@ namespace RestrictionTrackerGTK
   public partial class dlgConfig : Gtk.Dialog
   {
     private RestrictionLibrary.remoteRestrictionTracker remoteTest;
-    private RestrictionLibrary.CookieAwareWebClient wsHostList;
+    private RestrictionLibrary.WebClientEx wsHostList;
+    private clsFavicon wsFavicon;
     private bool bSaved, bAccount, bLoaded, bHardChange, bRemoteAcct;
     private AppSettings mySettings;
     private uint pChecker;
+    private uint pIcoWait;
+    private Gdk.Pixbuf icoNetTest;
     private string checkKey;
     private const string LINK_PURCHASE = "<a href=\"http://srt.realityripple.com/c_signup.php\">Purchase a Remote Usage Service Subscription</a>";
     private const string LINK_PURCHASE_TT = "If you do not have a Product Key for the Remote Usage Service, you can purchase one online for as little as $15.00 a year.";
@@ -22,6 +25,7 @@ namespace RestrictionTrackerGTK
       if (CurrentOS.IsMac)
       {
         pctAccountViaSatIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.account_user.png");
+	      ((Gtk.Image) cmdPassDisplay.Image).Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.pass.png");
         pctAccountProviderIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.account_provider.png");
         pctAccountKeyIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.account_key.png");
         pctPrefStartIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.prefs_power.png");
@@ -34,6 +38,7 @@ namespace RestrictionTrackerGTK
         pctNetworkProtocolIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_security.png");
         pctNetworkUpdateIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.net_update.png");
         pctAdvancedDataIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_data.png");
+        pctAdvancedNetTestIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_none.png");
         ((Gtk.Box.BoxChild)this.ActionArea[cmdSave]).Position = 1;
         ((Gtk.Box.BoxChild)this.ActionArea[cmdClose]).Position = 0;
       }
@@ -256,15 +261,36 @@ namespace RestrictionTrackerGTK
       }
       cmbProxyType_Changed(null, null);
       chkNetworkProtocolSSL.Active = (mySettings.Protocol == System.Net.SecurityProtocolType.Ssl3);
+      if (string.IsNullOrEmpty(mySettings.NetTestURL))
+      {
+        optNetTestNone.Active = true;
+      }
+      else
+      {
+        switch (mySettings.NetTestURL)
+        {
+          case "http://testmy.net":
+            optNetTestTestMyNet.Active = true;
+            break;
+          case "http://speedtest.net":
+            optNetTestSpeedTest.Active = true;
+            break;
+          default:
+            optNetTestCustom.Active = true;
+            txtNetTestCustom.Text = mySettings.NetTestURL;
+            wsFavicon = MakeFavicon(txtNetTestCustom.Text);
+            break;
+        }
+      }
       switch (mySettings.UpdateType)
       {
-        case AppSettings.UpdateTypes.Auto:
+        case UpdateTypes.Auto:
           cmbUpdateAutomation.Active = 0;
           break;
-        case AppSettings.UpdateTypes.Ask:
+        case UpdateTypes.Ask:
           cmbUpdateAutomation.Active = 1;
           break;
-        case AppSettings.UpdateTypes.None:
+        case UpdateTypes.None:
           cmbUpdateAutomation.Active = 2;
           break;
       }
@@ -298,30 +324,40 @@ namespace RestrictionTrackerGTK
       if (!hD.EndsWith(System.IO.Path.DirectorySeparatorChar.ToString()))
         hD += System.IO.Path.DirectorySeparatorChar;
       if (string.Compare(hD, modFunctions.AppDataPath, true) == 0)
-        optHistoryLocalConfig.Active = true;
-      else
-        optHistoryCustom.Active = true;
-      txtHistoryDir.SetCurrentFolder(mySettings.HistoryDir);
-
-
-      chkScaleScreen.Active = mySettings.ScaleScreen;
-      switch (mySettings.TrayIconStyle)
       {
-        case AppSettings.TrayStyles.Always:
-          chkTrayIcon.Active = true;
-          chkTrayMin.Active = false;
-          break;
-        case AppSettings.TrayStyles.Minimized:
-          chkTrayIcon.Active = true;
-          chkTrayMin.Active = true;
-          break;
-        case AppSettings.TrayStyles.Never:
-          chkTrayIcon.Active = false;
-          chkTrayMin.Active = false;
-          break;
+        optHistoryLocalConfig.Active = true;
       }
-      chkTrayIcon_Clicked(null, null);
-
+      else
+      {
+        optHistoryCustom.Active = true;
+      }
+      txtHistoryDir.SetCurrentFolder(hD);
+      if (MainClass.fMain.TrayStyle != 0)
+      {
+        chkScaleScreen.Active = mySettings.ScaleScreen;
+        switch (mySettings.TrayIconStyle)
+        {
+          case TrayStyles.Always:
+            chkTrayIcon.Active = true;
+            chkTrayMin.Active = false;
+            break;
+          case TrayStyles.Minimized:
+            chkTrayIcon.Active = true;
+            chkTrayMin.Active = true;
+            break;
+          case TrayStyles.Never:
+            chkTrayIcon.Active = false;
+            chkTrayMin.Active = false;
+            break;
+        }
+        chkTrayIcon_Clicked(null, null);
+      }
+      else
+      {
+        chkTrayIcon.Sensitive = false;
+        chkTrayMin.Sensitive = false;
+        chkTrayIcon.TooltipText += "\n(Requires AppIndicator Library)";
+      }
       chkAutoHide.Active = mySettings.AutoHide;
 
       bSaved = false;
@@ -392,6 +428,11 @@ namespace RestrictionTrackerGTK
       chkOverAlert.Clicked += chkOverAlert_Activated;
       cmdAlertStyle.Clicked += cmdAlertStyle_Click;
       //
+      chkScaleScreen.Clicked += ValuesChanged;
+      chkTrayIcon.Clicked += chkTrayIcon_Clicked;
+      chkTrayMin.Clicked += ValuesChanged;
+      chkAutoHide.Clicked += ValuesChanged;
+      //
       cmdColors.Clicked += cmdColors_Click;
       //
       // Network
@@ -418,14 +459,19 @@ namespace RestrictionTrackerGTK
       txtHistoryDir.CurrentFolderChanged += txtHistoryDir_CurrentFolderChanged;
       cmdHistoryDirOpen.Clicked += cmdHistoryDirOpen_Clicked;
       //
-      chkScaleScreen.Clicked += ValuesChanged;
-      chkTrayIcon.Clicked += chkTrayIcon_Clicked;
-      chkTrayMin.Clicked += ValuesChanged;
-      chkAutoHide.Clicked += ValuesChanged;
-      
+      optNetTestNone.Clicked += optNetTestNone_Clicked;
+      optNetTestTestMyNet.Clicked += optNetTestTestMyNet_Clicked;
+      optNetTestSpeedTest.Clicked += optNetTestSpeedTest_Clicked;
+      optNetTestCustom.Clicked += optNetTestCustom_Clicked;
+
+      txtNetTestCustom.FocusOutEvent += txtNetTestCustom_FocusOut;
+      txtNetTestCustom.Changed += txtNetTestCustom_TextChanged;
+
       cmdSave.Clicked += cmdSave_Click;
       cmdClose.Clicked += cmdClose_Click;
     }
+
+
 
     void HandleWindowStateEvent(object o, Gtk.WindowStateEventArgs args)
     {
@@ -869,6 +915,126 @@ namespace RestrictionTrackerGTK
       }
     }
 
+    protected void optNetTestNone_Clicked(object sender, EventArgs e)
+    {
+      if (optNetTestNone.Active)
+      {
+        if (wsFavicon != null)
+        {
+          wsFavicon.Dispose();
+          wsFavicon = null;
+        }
+        txtNetTestCustom.Text = "";
+        txtNetTestCustom.Sensitive = false;
+        if (CurrentOS.IsMac)
+          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_none.png"));
+        else
+          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_none.png"));
+        cmdSave.Sensitive = SettingsChanged();
+      }
+    }
+
+    protected void optNetTestTestMyNet_Clicked(object sender, EventArgs e)
+    {
+      if (optNetTestTestMyNet.Active)
+      {
+        if (wsFavicon != null)
+        {
+          wsFavicon.Dispose();
+          wsFavicon = null;
+        }
+        txtNetTestCustom.Text = "http://testmy.net";
+        txtNetTestCustom.Sensitive = false;
+        if (CurrentOS.IsMac)
+          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_load.png"));
+        else
+          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_load.png"));
+        wsFavicon = MakeFavicon("http://testmy.net");
+        cmdSave.Sensitive = SettingsChanged();
+      }
+    }
+
+    protected void optNetTestSpeedTest_Clicked(object sender, EventArgs e)
+    {
+      if (optNetTestSpeedTest.Active)
+      {
+        if (wsFavicon != null)
+        {
+          wsFavicon.Dispose();
+          wsFavicon = null;
+        }
+        txtNetTestCustom.Text = "http://speedtest.net";
+        txtNetTestCustom.Sensitive = false;
+        if (CurrentOS.IsMac)
+          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_load.png"));
+        else
+          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_load.png"));
+        wsFavicon = MakeFavicon("http://speedtest.net");
+        cmdSave.Sensitive = SettingsChanged();
+      }
+    }
+
+    protected void optNetTestCustom_Clicked(object sender, EventArgs e)
+    {
+      if (optNetTestCustom.Active)
+      {
+        if (wsFavicon != null)
+        {
+          wsFavicon.Dispose();
+          wsFavicon = null;
+        }
+        txtNetTestCustom.Text = "";
+        txtNetTestCustom.Sensitive = true;
+        if (CurrentOS.IsMac)
+          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_edit.png"));
+        else
+          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_edit.png"));
+        cmdSave.Sensitive = SettingsChanged();
+      }
+    }
+
+    void txtNetTestCustom_FocusOut (object o, Gtk.FocusOutEventArgs args)
+    {
+      if (optNetTestCustom.Active)
+      {
+        if (icoNetTest == null)
+        {
+          if (pIcoWait != 0)
+          {
+            GLib.Source.Remove(pIcoWait);
+            pIcoWait = 0;
+          }
+          if (!String.IsNullOrEmpty(txtNetTestCustom.Text))
+          {
+            if (CurrentOS.IsMac)
+              SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_load.png"));
+            else
+              SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_load.png"));
+            wsFavicon = MakeFavicon(txtNetTestCustom.Text);
+          }
+        }
+      }
+    }
+   
+
+    protected void txtNetTestCustom_TextChanged(object sender, EventArgs e)
+    {
+      if (optNetTestCustom.Active)
+      {
+        if (CurrentOS.IsMac)
+          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_edit.png"));
+        else
+          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_edit.png"));
+        cmdSave.Sensitive = SettingsChanged();
+        if (pIcoWait != 0)
+        {
+          GLib.Source.Remove(pIcoWait);
+          pIcoWait = 0;
+        }
+        pIcoWait = GLib.Timeout.Add(4000, tmrIcoWait_Tick);
+      }
+    }
+
     protected void chkTrayIcon_Clicked(object sender, EventArgs e)
     {
       chkTrayMin.Sensitive = chkTrayIcon.Active;
@@ -973,7 +1139,7 @@ namespace RestrictionTrackerGTK
     #region "Providers"
     private void PopulateHostList()
     {
-      wsHostList = new RestrictionLibrary.CookieAwareWebClient();
+      wsHostList = new RestrictionLibrary.WebClientEx();
       wsHostList.DownloadStringCompleted += wsHostList_DownloadStringCompleted;
       wsHostList.DownloadStringAsync(new Uri("http://wb.realityripple.com/hosts"), "GRAB");
     }
@@ -1055,10 +1221,74 @@ namespace RestrictionTrackerGTK
         wsHostList.Dispose();
         wsHostList = null;
       }
-      wsHostList = new RestrictionLibrary.CookieAwareWebClient();
+      wsHostList = new RestrictionLibrary.WebClientEx();
       wsHostList.DownloadDataAsync(new Uri("http://wb.realityripple.com/hosts/?add=" + Provider), "UPDATE");
     }
     #endregion
+
+    #region "Net Test"
+    protected clsFavicon MakeFavicon(string URL)
+    {
+      wsFavicon = new clsFavicon(URL);
+      wsFavicon.DownloadIconCompleted += wsFavicon_DownloadIconCompleted;
+      return wsFavicon;
+    }
+
+    protected void wsFavicon_DownloadIconCompleted (object sender, clsFavicon.DownloadIconCompletedEventArgs e)
+    {
+      Gtk.Application.Invoke(sender, (EventArgs)e, wsFavicon_DownloadIconCompletedAsync);
+    }
+
+    private void wsFavicon_DownloadIconCompletedAsync(object sender, EventArgs ea)
+    {
+      clsFavicon.DownloadIconCompletedEventArgs e = (clsFavicon.DownloadIconCompletedEventArgs)ea;
+      if (e.Error != null)
+      {
+        if (CurrentOS.IsMac)
+          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_error.png"));
+        else
+          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_error.png"));
+      }
+      else
+      {
+        SetNetTestImage(e.Icon32, e.Icon16);
+      }
+    }
+
+    protected void SetNetTestImage(Gdk.Pixbuf Image)
+    {
+      SetNetTestImage(Image, null);
+    }
+
+    protected void SetNetTestImage(Gdk.Pixbuf Image, Gdk.Pixbuf Icon)
+    {
+      pctAdvancedNetTestIcon.Pixbuf = Image;
+      icoNetTest = Icon;
+    }
+
+    private bool tmrIcoWait_Tick()
+    {
+      if (optNetTestCustom.Active)
+      {
+        if (!string.IsNullOrEmpty(txtNetTestCustom.Text))
+        {
+          if (CurrentOS.IsMac)
+            SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_load.png"));
+          else
+            SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_load.png"));
+          wsFavicon = MakeFavicon(txtNetTestCustom.Text);
+        }
+        else
+        {
+          if (CurrentOS.IsMac)
+            SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_error.png"));
+          else
+            SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_error.png"));
+        }
+      }
+      return false;
+    }
+    #endregion 
     #endregion
 
     #region "Remote Service Results"
@@ -1211,18 +1441,18 @@ namespace RestrictionTrackerGTK
       if (chkTrayIcon.Active)
       {
         if (chkTrayMin.Active)
-          mySettings.TrayIconStyle = AppSettings.TrayStyles.Minimized;
+          mySettings.TrayIconStyle = TrayStyles.Minimized;
         else
-          mySettings.TrayIconStyle = AppSettings.TrayStyles.Always;
+          mySettings.TrayIconStyle = TrayStyles.Always;
       }
       else
-        mySettings.TrayIconStyle = AppSettings.TrayStyles.Never;
+        mySettings.TrayIconStyle = TrayStyles.Never;
       mySettings.AutoHide = chkAutoHide.Active;
       if (String.IsNullOrEmpty(mySettings.HistoryDir))
       {
         mySettings.HistoryDir = modFunctions.MySaveDir(true);
       }
-      if (mySettings.HistoryDir != txtHistoryDir.CurrentFolder)
+      if (!modFunctions.DirectoryEqualityCheck(mySettings.HistoryDir, txtHistoryDir.CurrentFolder))
       {
         bool continueChange = true;
         string[] sOldFiles = Directory.GetFiles(mySettings.HistoryDir);
@@ -1369,13 +1599,13 @@ namespace RestrictionTrackerGTK
       switch (cmbUpdateAutomation.Active)
       {
         case 0:
-          mySettings.UpdateType = AppSettings.UpdateTypes.Auto;
+          mySettings.UpdateType = UpdateTypes.Auto;
           break;
         case 1:
-          mySettings.UpdateType = AppSettings.UpdateTypes.Ask;
+          mySettings.UpdateType = UpdateTypes.Ask;
           break;
         case 2:
-          mySettings.UpdateType = AppSettings.UpdateTypes.None;
+          mySettings.UpdateType = UpdateTypes.None;
           break;
       }
       mySettings.UpdateBETA = chkUpdateBETA.Active;
@@ -1464,6 +1694,43 @@ namespace RestrictionTrackerGTK
       {
         mySettings.Protocol = System.Net.SecurityProtocolType.Tls;
       }
+      string sNetTestIco = System.IO.Path.Combine(modFunctions.AppDataPath, "netTest.png");
+      try
+      {
+        if (System.IO.File.Exists(sNetTestIco))
+          System.IO.File.Delete(sNetTestIco);
+      }
+      catch(Exception) 
+      {
+      }
+      if (icoNetTest != null)
+      {
+        icoNetTest.Save(sNetTestIco, "png");
+      }
+      if (optNetTestTestMyNet.Active)
+      {
+        mySettings.NetTestURL = "http://testmy.net";
+      }
+      else if (optNetTestSpeedTest.Active)
+      {
+        mySettings.NetTestURL = "http://speedtest.net";
+      }
+      else if (optNetTestCustom.Active)
+      {
+        mySettings.NetTestURL = txtNetTestCustom.Text;
+      }
+      else
+      {
+        mySettings.NetTestURL = null; 
+        try
+        {
+          if (System.IO.File.Exists(sNetTestIco))
+            System.IO.File.Delete(sNetTestIco);
+        }
+        catch(Exception)
+        {
+        }
+      }
       mySettings.Save();
       bHardChange = false;
       bSaved = true;
@@ -1531,22 +1798,22 @@ namespace RestrictionTrackerGTK
         return true;
       switch (mySettings.TrayIconStyle)
       {
-        case AppSettings.TrayStyles.Always:
+        case TrayStyles.Always:
           if (!chkTrayIcon.Active || chkTrayMin.Active)
             return true;
           break;
-        case AppSettings.TrayStyles.Minimized:
+        case TrayStyles.Minimized:
           if (!chkTrayIcon.Active || !chkTrayMin.Active)
             return true;
           break;
-        case AppSettings.TrayStyles.Never:
+        case TrayStyles.Never:
           if (chkTrayIcon.Active)
             return true;
           break;
       }
       if (mySettings.AutoHide != chkAutoHide.Active)
         return true;
-      if (string.Compare(mySettings.HistoryDir, txtHistoryDir.CurrentFolder, true) != 0)
+      if (!modFunctions.DirectoryEqualityCheck(mySettings.HistoryDir, txtHistoryDir.CurrentFolder))
         return true;
       if (chkOverAlert.Active ^ (mySettings.Overuse > 0))
         return true;
@@ -1562,15 +1829,15 @@ namespace RestrictionTrackerGTK
       switch (cmbUpdateAutomation.Active)
       {
         case 0:
-          if (mySettings.UpdateType != AppSettings.UpdateTypes.Auto)
+          if (mySettings.UpdateType != UpdateTypes.Auto)
             return true;
           break;
         case 1:
-          if (mySettings.UpdateType != AppSettings.UpdateTypes.Ask)
+          if (mySettings.UpdateType != UpdateTypes.Ask)
             return true;
           break;
         case 2:
-          if (mySettings.UpdateType != AppSettings.UpdateTypes.None)
+          if (mySettings.UpdateType != UpdateTypes.None)
             return true;
           break;
       }
@@ -1662,6 +1929,26 @@ namespace RestrictionTrackerGTK
       {
         return true;
       }
+      if (optNetTestNone.Active)
+      {
+        if (!String.IsNullOrEmpty(mySettings.NetTestURL))
+          return true;
+      }
+      else if (optNetTestTestMyNet.Active)
+      {
+        if (mySettings.NetTestURL != "http://testmy.net")
+          return true;
+      }
+      else if (optNetTestSpeedTest.Active)
+      {
+        if (mySettings.NetTestURL != "http://speedtest.net")
+          return true;
+      }
+      else if (optNetTestCustom.Active)
+      {
+        if (mySettings.NetTestURL != txtNetTestCustom.Text)
+          return true;
+      }
       return false;
     }
 
@@ -1683,4 +1970,3 @@ namespace RestrictionTrackerGTK
    
   }
 }
-

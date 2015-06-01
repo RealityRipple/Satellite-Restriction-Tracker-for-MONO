@@ -181,6 +181,8 @@ namespace RestrictionTrackerGTK
       cmdTrayUpC.ColorSet += cmdColor_SelectedColor;
       cmdTrayUpC.ButtonReleaseEvent += cmdColor_MouseUp;
 
+      cmdHistoryDownLine.ColorSet += cmdColor_SelectedColor;
+      cmdHistoryDownLine.ButtonReleaseEvent += cmdColor_MouseUp;
       cmdHistoryDownA.ColorSet += cmdColor_SelectedColor;
       cmdHistoryDownA.ButtonReleaseEvent += cmdColor_MouseUp;
       cmdHistoryDownB.ColorSet += cmdColor_SelectedColor;
@@ -190,6 +192,8 @@ namespace RestrictionTrackerGTK
       cmdHistoryDownC.ButtonReleaseEvent += cmdColor_MouseUp;
       cmdHistoryDownMax.ColorSet += cmdColor_SelectedColor;
       cmdHistoryDownMax.ButtonReleaseEvent += cmdColor_MouseUp;
+      cmdHistoryUpLine.ColorSet += cmdColor_SelectedColor;
+      cmdHistoryUpLine.ButtonReleaseEvent += cmdColor_MouseUp;
       cmdHistoryUpA.ColorSet += cmdColor_SelectedColor;
       cmdHistoryUpA.ButtonReleaseEvent += cmdColor_MouseUp;
       cmdHistoryUpB.ColorSet += cmdColor_SelectedColor;
@@ -203,6 +207,11 @@ namespace RestrictionTrackerGTK
       cmdHistoryText.ButtonReleaseEvent += cmdColor_MouseUp;
       cmdHistoryBG.ColorSet += cmdColor_SelectedColor;
       cmdHistoryBG.ButtonReleaseEvent += cmdColor_MouseUp;
+      cmdHistoryLightGrid.ColorSet += cmdColor_SelectedColor;
+      cmdHistoryLightGrid.ButtonReleaseEvent += cmdColor_MouseUp;
+      cmdHistoryDarkGrid.ColorSet += cmdColor_SelectedColor;
+      cmdHistoryDarkGrid.ButtonReleaseEvent += cmdColor_MouseUp;
+
 
       if (mySettings.Colors.MainDownA == Color.Transparent)
       {
@@ -226,16 +235,20 @@ namespace RestrictionTrackerGTK
         SetElColor(ref cmdTrayUpB, mySettings.Colors.TrayUpB);
         SetElColor(ref cmdTrayUpC, mySettings.Colors.TrayUpC);
 
+        SetElColor(ref cmdHistoryDownLine, mySettings.Colors.HistoryDownLine);
         SetElColor(ref cmdHistoryDownA, mySettings.Colors.HistoryDownA);
         SetElColor(ref cmdHistoryDownB, mySettings.Colors.HistoryDownB);
         SetElColor(ref cmdHistoryDownC, mySettings.Colors.HistoryDownC);
         SetElColor(ref cmdHistoryDownMax, mySettings.Colors.HistoryDownMax);
+        SetElColor(ref cmdHistoryUpLine, mySettings.Colors.HistoryUpLine);
         SetElColor(ref cmdHistoryUpA, mySettings.Colors.HistoryUpA);
         SetElColor(ref cmdHistoryUpB, mySettings.Colors.HistoryUpB);
         SetElColor(ref cmdHistoryUpC, mySettings.Colors.HistoryUpC);
         SetElColor(ref cmdHistoryUpMax, mySettings.Colors.HistoryUpMax);
         SetElColor(ref cmdHistoryText, mySettings.Colors.HistoryText);
         SetElColor(ref cmdHistoryBG, mySettings.Colors.HistoryBackground);
+        SetElColor(ref cmdHistoryLightGrid, mySettings.Colors.HistoryLightGrid);
+        SetElColor(ref cmdHistoryDarkGrid, mySettings.Colors.HistoryDarkGrid);
       }
       RedrawImages();
       cmdSave.Sensitive = SettingsChanged();
@@ -291,6 +304,9 @@ namespace RestrictionTrackerGTK
 
     private void RedrawImages()
     {
+      if (pctMain.Allocation.Width == 1 & pctMain.Allocation.Height == 1 &
+        pctHistory.Allocation.Width == 1 & pctHistory.Allocation.Height == 1)
+        return;
       Color mda = modFunctions.GdkColorToDrawingColor(cmdMainDownA.Color);
       Color mdb = modFunctions.GdkColorToDrawingColor(cmdMainDownB.Color);
       if (!chkMainDownB.Active)
@@ -327,7 +343,7 @@ namespace RestrictionTrackerGTK
       }
       Color tuc = modFunctions.GdkColorToDrawingColor(cmdTrayUpC.Color);
 
-     
+      Color hdl = modFunctions.GdkColorToDrawingColor(cmdHistoryDownLine.Color);
       Color hda = modFunctions.GdkColorToDrawingColor(cmdHistoryDownA.Color);
       Color hdb = modFunctions.GdkColorToDrawingColor(cmdHistoryDownB.Color);
       if (!chkHistoryDownB.Active)
@@ -337,6 +353,7 @@ namespace RestrictionTrackerGTK
       Color hdc = modFunctions.GdkColorToDrawingColor(cmdHistoryDownC.Color);
       Color hdm = modFunctions.GdkColorToDrawingColor(cmdHistoryDownMax.Color);
 
+      Color hul = modFunctions.GdkColorToDrawingColor(cmdHistoryUpLine.Color);
       Color hua = modFunctions.GdkColorToDrawingColor(cmdHistoryUpA.Color);
       Color hub = modFunctions.GdkColorToDrawingColor(cmdHistoryUpB.Color);
       if (!chkHistoryUpB.Active)
@@ -348,6 +365,9 @@ namespace RestrictionTrackerGTK
 
       Color ht = modFunctions.GdkColorToDrawingColor(cmdHistoryText.Color);
       Color hbg = modFunctions.GdkColorToDrawingColor(cmdHistoryBG.Color);
+
+      Color hgl = modFunctions.GdkColorToDrawingColor(cmdHistoryLightGrid.Color);
+      Color hgd = modFunctions.GdkColorToDrawingColor(cmdHistoryDarkGrid.Color);
 
       int iWidth = pctMain.Allocation.Size.Width ; 
       int iHeight = pctMain.Allocation.Size.Height;
@@ -454,8 +474,8 @@ namespace RestrictionTrackerGTK
       Rectangle FakeHRect = new Rectangle(0, 0, 500, 200);
       if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY)
       {
-        Image FakeD = modFunctions.DrawLineGraph(FakeData.ToArray(), true, FakeHRect.Size, hda, hdb, hdc, ht, hbg, hdm);
-        Image FakeU = modFunctions.DrawLineGraph(FakeData.ToArray(), false, FakeHRect.Size, hua, hub, huc, ht, hbg, hum);
+        Image FakeD = modFunctions.DrawLineGraph(FakeData.ToArray(), true, FakeHRect.Size, hdl, hda, hdb, hdc, ht, hbg, hdm, hgl, hgd);
+        Image FakeU = modFunctions.DrawLineGraph(FakeData.ToArray(), false, FakeHRect.Size, hul, hua, hub, huc, ht, hbg, hum, hgl, hgd);
         Bitmap fakeI = new Bitmap(pctHistory.Allocation.Width, pctHistory.Allocation.Height);
         g = Graphics.FromImage(fakeI);
         
@@ -472,26 +492,31 @@ namespace RestrictionTrackerGTK
       }
       else if (DisplayAs == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE)
       {
-        Image FakeR = modFunctions.DrawRGraph(FakeData.ToArray(), FakeHRect.Size, hda, hdb, hdc, ht, hbg, hdm);
-        Bitmap fakeI = new Bitmap(pctHistory.Allocation.Width, pctHistory.Allocation.Height);
+        Image FakeR = modFunctions.DrawRGraph(FakeData.ToArray(), FakeHRect.Size, hdl, hda, hdb, hdc, ht, hbg, hdm, hgl, hgd);
+
+        Rectangle dRect;
+        if (iWidth/ FakeR.Width > iHeight / FakeR.Height)
+          dRect = new Rectangle((iWidth - (int) (iHeight * (FakeR.Width / (double) FakeR.Height))) / 2, 0, (int)(iHeight * (FakeR.Width / (double) FakeR.Height)), iHeight);
+        else
+          dRect = new Rectangle(0, (iHeight - (int) (iWidth * (FakeR.Height / (double) FakeR.Width))) / 2, iWidth, (int) (iWidth * (FakeR.Height / (double) FakeR.Width)));
+
+        Bitmap fakeI = new Bitmap(dRect.Width,dRect.Height);
         g = Graphics.FromImage(fakeI);
 
         g.Clear(Color.Black);
         g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
         g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
         g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-        Rectangle dRect;
-        if (iHeight == 75)
-          dRect = new Rectangle(0, iHalfH / 2, iWidth, iHalfH);
-        else
-          dRect = new Rectangle(0, 0, iWidth + 4, iHeight);
-        g.DrawImage(FakeR, dRect, FakeHRect, GraphicsUnit.Pixel);
+
+
+
+        g.DrawImage(FakeR, new Rectangle(0, 0, dRect.Width, dRect.Height), FakeHRect, GraphicsUnit.Pixel);
         pctHistory.Pixbuf = modFunctions.ImageToPixbuf(fakeI);
       }
       else if (DisplayAs == localRestrictionTracker.SatHostTypes.DishNet_EXEDE)
       {
-        Image FakeD = modFunctions.DrawLineGraph(FakeData.ToArray(), true, FakeHRect.Size, hda, hdb, hdc, ht, hbg, hdm);
-        Image FakeU = modFunctions.DrawLineGraph(FakeData.ToArray(), false, FakeHRect.Size, hua, hub, huc, ht, hbg, hum);
+        Image FakeD = modFunctions.DrawLineGraph(FakeData.ToArray(), true, FakeHRect.Size, hdl, hda, hdb, hdc, ht, hbg, hdm, hgl, hgd);
+        Image FakeU = modFunctions.DrawLineGraph(FakeData.ToArray(), false, FakeHRect.Size, hul, hua, hub, huc, ht, hbg, hum, hgl, hgd);
         Bitmap fakeI = new Bitmap(pctHistory.Allocation.Width, pctHistory.Allocation.Height);
         g = Graphics.FromImage(fakeI);
 
@@ -556,6 +581,7 @@ namespace RestrictionTrackerGTK
         mySettings.Colors.TrayUpB = Color.Transparent;
       }
       mySettings.Colors.TrayUpC = modFunctions.GdkColorToDrawingColor(cmdTrayUpC.Color);
+      mySettings.Colors.HistoryDownLine = modFunctions.GdkColorToDrawingColor(cmdHistoryDownLine.Color);
       mySettings.Colors.HistoryDownA = modFunctions.GdkColorToDrawingColor(cmdHistoryDownA.Color);
       if (chkHistoryDownB.Active)
       {
@@ -567,6 +593,7 @@ namespace RestrictionTrackerGTK
       }
       mySettings.Colors.HistoryDownC = modFunctions.GdkColorToDrawingColor(cmdHistoryDownC.Color);
       mySettings.Colors.HistoryDownMax = modFunctions.GdkColorToDrawingColor(cmdHistoryDownMax.Color);
+      mySettings.Colors.HistoryUpLine = modFunctions.GdkColorToDrawingColor(cmdHistoryUpLine.Color);
       mySettings.Colors.HistoryUpA = modFunctions.GdkColorToDrawingColor(cmdHistoryUpA.Color);
       if (chkHistoryUpB.Active)
       {
@@ -580,6 +607,8 @@ namespace RestrictionTrackerGTK
       mySettings.Colors.HistoryUpMax = modFunctions.GdkColorToDrawingColor(cmdHistoryUpMax.Color);
       mySettings.Colors.HistoryText = modFunctions.GdkColorToDrawingColor(cmdHistoryText.Color);
       mySettings.Colors.HistoryBackground = modFunctions.GdkColorToDrawingColor(cmdHistoryBG.Color);
+      mySettings.Colors.HistoryLightGrid = modFunctions.GdkColorToDrawingColor(cmdHistoryLightGrid.Color);
+      mySettings.Colors.HistoryDarkGrid = modFunctions.GdkColorToDrawingColor(cmdHistoryDarkGrid.Color);
       mySettings.Save();
       cmdSave.Sensitive = false;
       HasSaved = true;
@@ -769,16 +798,20 @@ namespace RestrictionTrackerGTK
       else
       {
         ColorList = new Gtk.ColorButton[] {
+          cmdHistoryDownLine,
           cmdHistoryDownA,
           cmdHistoryDownB,
           cmdHistoryDownC,
           cmdHistoryDownMax,
+          cmdHistoryUpLine,
           cmdHistoryUpA,
           cmdHistoryUpB,
           cmdHistoryUpC,
           cmdHistoryUpMax,
           cmdHistoryText,
-          cmdHistoryBG
+          cmdHistoryBG,
+          cmdHistoryLightGrid,
+          cmdHistoryDarkGrid
         };
       }
       for (int i = 0; i < ColorList.Length; i++)
@@ -809,16 +842,20 @@ namespace RestrictionTrackerGTK
         cmdTrayUpA,
         cmdTrayUpB,
         cmdTrayUpC,
+        cmdHistoryDownLine,
         cmdHistoryDownA,
         cmdHistoryDownB,
         cmdHistoryDownC,
         cmdHistoryDownMax,
+        cmdHistoryUpLine,
         cmdHistoryUpA,
         cmdHistoryUpB,
         cmdHistoryUpC,
         cmdHistoryUpMax,
         cmdHistoryText,
-        cmdHistoryBG
+        cmdHistoryBG,
+        cmdHistoryLightGrid,
+        cmdHistoryDarkGrid
       };
       for (int i = 0; i < ColorList.Length; i++)
       {
@@ -894,6 +931,8 @@ namespace RestrictionTrackerGTK
       }
       if (!modFunctions.CompareColors(mySettings.Colors.TrayUpC,cmdTrayUpC.Color))
         return true;
+      if (!modFunctions.CompareColors(mySettings.Colors.HistoryDownLine,cmdHistoryDownLine.Color))
+        return true;
       if (!modFunctions.CompareColors(mySettings.Colors.HistoryDownA,cmdHistoryDownA.Color))
         return true;
       if (chkHistoryDownB.Active)
@@ -909,6 +948,8 @@ namespace RestrictionTrackerGTK
       if (!modFunctions.CompareColors(mySettings.Colors.HistoryDownC,cmdHistoryDownC.Color))
         return true;
       if (!modFunctions.CompareColors(mySettings.Colors.HistoryDownMax,cmdHistoryDownMax.Color))
+        return true;
+      if (!modFunctions.CompareColors(mySettings.Colors.HistoryUpLine,cmdHistoryUpLine.Color))
         return true;
       if (!modFunctions.CompareColors(mySettings.Colors.HistoryUpA,cmdHistoryUpA.Color))
         return true;
@@ -930,7 +971,12 @@ namespace RestrictionTrackerGTK
         return true;
       if (!modFunctions.CompareColors(mySettings.Colors.HistoryBackground, cmdHistoryBG.Color))
         return true;
+      if (!modFunctions.CompareColors(mySettings.Colors.HistoryLightGrid, cmdHistoryLightGrid.Color))
+        return true;
+      if (!modFunctions.CompareColors(mySettings.Colors.HistoryDarkGrid, cmdHistoryDarkGrid.Color))
+        return true;
       return false;
+
     }
     private Gtk.Widget getControlFromName(ref Gtk.Table wIn, string name)
     {
@@ -1048,6 +1094,8 @@ namespace RestrictionTrackerGTK
             case "cmdTrayUpC":
               return Color.Aqua;
 
+            case "cmdHistoryDownLine":
+              return Color.DarkBlue;
             case "cmdHistoryDownA":
               return Color.DarkBlue;
             case "cmdHistoryDownB":
@@ -1056,6 +1104,8 @@ namespace RestrictionTrackerGTK
               return Color.Aqua;
             case "cmdHistoryDownMax":
               return Color.Yellow;
+            case "cmdHistoryUpLine":
+              return Color.DarkBlue;
             case "cmdHistoryUpA":
               return Color.DarkBlue;
             case "cmdHistoryUpB":
@@ -1068,6 +1118,10 @@ namespace RestrictionTrackerGTK
               return Color.Black;
             case "cmdHistoryBG":
               return Color.White;
+            case "cmdHistoryLightGrid":
+              return Color.LightGray;
+            case "cmdHistoryDarkGrid":
+              return Color.DarkGray;
             default:
               return Color.Transparent;
           }
@@ -1105,6 +1159,8 @@ namespace RestrictionTrackerGTK
             case "cmdTrayUpC":
               return Color.Transparent;
 
+            case "cmdHistoryDownLine":
+              return Color.DarkBlue;
             case "cmdHistoryDownA":
               return Color.DarkBlue;
             case "cmdHistoryDownB":
@@ -1113,6 +1169,8 @@ namespace RestrictionTrackerGTK
               return Color.Aqua;
             case "cmdHistoryDownMax":
               return Color.Yellow;
+            case "cmdHistoryUpLine":
+              return Color.DarkBlue;
             case "cmdHistoryUpA":
               return Color.Transparent;
             case "cmdHistoryUpB":
@@ -1125,6 +1183,10 @@ namespace RestrictionTrackerGTK
               return Color.Black;
             case "cmdHistoryBG":
               return Color.White;
+            case "cmdHistoryLightGrid":
+              return Color.LightGray;
+            case "cmdHistoryDarkGrid":
+              return Color.DarkGray;
             default:
               return Color.Transparent;
           }
@@ -1161,6 +1223,8 @@ namespace RestrictionTrackerGTK
             case "cmdTrayUpC":
               return Color.Aqua;
 
+            case "cmdHistoryDownLine":
+              return Color.DarkBlue;
             case "cmdHistoryDownA":
               return Color.DarkBlue;
             case "cmdHistoryDownB":
@@ -1169,6 +1233,8 @@ namespace RestrictionTrackerGTK
               return Color.Aqua;
             case "cmdHistoryDownMax":
               return Color.Yellow;
+            case "cmdHistoryUpLine":
+              return Color.DarkBlue;
             case "cmdHistoryUpA":
               return Color.DarkBlue;
             case "cmdHistoryUpB":
@@ -1181,6 +1247,10 @@ namespace RestrictionTrackerGTK
               return Color.Black;
             case "cmdHistoryBG":
               return Color.White;
+            case "cmdHistoryLightGrid":
+              return Color.LightGray;
+            case "cmdHistoryDarkGrid":
+              return Color.DarkGray;
             default:
               return Color.Transparent;
           }
@@ -1323,6 +1393,49 @@ namespace RestrictionTrackerGTK
         ((Gtk.Table.TableChild)pnlHistory[grpHistoryDown]).TopAttach = 1;
         ((Gtk.Table.TableChild)pnlHistory[grpHistoryDown]).BottomAttach = 2;
 
+        pnlHistoryDown.NColumns = 7;
+
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownA]).TopAttach = 0;
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownA]).BottomAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownA]).LeftAttach = 4;
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownA]).RightAttach = 5;
+
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownA]).TopAttach = 0;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownA]).BottomAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownA]).LeftAttach = 6;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownA]).RightAttach = 7;
+
+        ((Gtk.Table.TableChild)pnlHistoryDown[chkHistoryDownB]).TopAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistoryDown[chkHistoryDownB]).BottomAttach = 2;
+        ((Gtk.Table.TableChild)pnlHistoryDown[chkHistoryDownB]).LeftAttach = 4;
+        ((Gtk.Table.TableChild)pnlHistoryDown[chkHistoryDownB]).RightAttach = 5;
+
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownB]).TopAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownB]).BottomAttach = 2;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownB]).LeftAttach = 6;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownB]).RightAttach = 7;
+
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownC]).TopAttach = 2;
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownC]).BottomAttach = 3;
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownC]).LeftAttach = 4;
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownC]).RightAttach = 5;
+
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownC]).TopAttach = 2;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownC]).BottomAttach = 3;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownC]).LeftAttach = 6;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownC]).RightAttach = 7;
+
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownMax]).TopAttach = 2;
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownMax]).BottomAttach = 3;
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownMax]).LeftAttach = 0;
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownMax]).RightAttach = 1;
+
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownMax]).TopAttach = 2;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownMax]).BottomAttach = 3;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownMax]).LeftAttach = 2;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownMax]).RightAttach = 3;
+        pnlHistoryDown.NRows = 3;
+
         ((Gtk.Table.TableChild)pnlHistory[evnHistory]).TopAttach = 0;
         ((Gtk.Table.TableChild)pnlHistory[evnHistory]).LeftAttach = 0;
         ((Gtk.Table.TableChild)pnlHistory[evnHistory]).BottomAttach = 1;
@@ -1331,7 +1444,7 @@ namespace RestrictionTrackerGTK
         pctHistory.WidthRequest = preSize.Width;
         pctHistory.HeightRequest = preSize.Height;
 
-        pnlHistoryStyle.NRows = 4;
+        pnlHistoryStyle.NColumns = 5;
         ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryBG]).TopAttach = 1;
         ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryBG]).BottomAttach = 2;
         ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryBG]).LeftAttach = 0;
@@ -1341,7 +1454,17 @@ namespace RestrictionTrackerGTK
         ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryBG]).BottomAttach = 2;
         ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryBG]).LeftAttach = 1;
         ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryBG]).RightAttach = 2;
-        pnlHistoryStyle.NColumns = 2;
+
+        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryGridL]).TopAttach = 0;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryGridL]).BottomAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryGridL]).LeftAttach = 3;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryGridL]).RightAttach = 4;
+
+        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryLightGrid]).TopAttach = 0;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryLightGrid]).BottomAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryLightGrid]).LeftAttach = 4;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryLightGrid]).RightAttach = 5;
+        pnlHistoryStyle.NRows = 2;
 
         pnlCustomColors.NColumns = 3;
         ((Gtk.Table.TableChild)pnlCustomColors[grpHistory]).RightAttach = 3;
@@ -1361,6 +1484,7 @@ namespace RestrictionTrackerGTK
         pnlCustomColors.NRows = 1;
       }
     }
+
 #endregion
   }
 }

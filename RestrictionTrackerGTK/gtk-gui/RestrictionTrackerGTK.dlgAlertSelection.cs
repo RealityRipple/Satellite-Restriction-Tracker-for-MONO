@@ -148,7 +148,7 @@ namespace RestrictionTrackerGTK
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			this.DefaultWidth = 436;
+			this.DefaultWidth = 484;
 			this.DefaultHeight = 91;
 			this.Hide ();
 			this.cmdAdd.Clicked += new global::System.EventHandler (this.cmdAdd_Clicked);

@@ -3,6 +3,7 @@ using Gtk;
 using RestrictionLibrary;
 namespace RestrictionTrackerGTK
 {
+
   public partial class frmHistory : Gtk.Window
   {
     DateTimeWidget dtwFrom;
@@ -19,6 +20,12 @@ namespace RestrictionTrackerGTK
     private localRestrictionTracker.SatHostTypes useStyle = localRestrictionTracker.SatHostTypes.Other;
     private delegate void ParameterizedInvoker(object parameter);
     private delegate void ParameterizedInvoker2(object param1,object param2);
+    private enum BadDataNotes
+    {
+      Null,
+      None,
+      One
+    }
     public frmHistory() : base(Gtk.WindowType.Toplevel)
     {
       Gdk.Geometry geo = new Gdk.Geometry();
@@ -40,10 +47,7 @@ namespace RestrictionTrackerGTK
       mySettings = new AppSettings();
       useStyle = mySettings.AccountType;
 
-      if (mySettings.Colors.HistoryDownA == System.Drawing.Color.Transparent)
-      {
-        SetDefaultColors();
-      }
+      modFunctions.ScreenDefaultColors(ref mySettings.Colors, useStyle);
 
       if (mySettings.Gr == "id")
       {
@@ -82,22 +86,30 @@ namespace RestrictionTrackerGTK
       dtwFrom.Date = dtwFrom.MinDate;
       dtwTo.Date = dtwTo.MaxDate;
 
-      switch (useStyle)
-      {
-        case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
-        case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
-        case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
-          ((Gtk.Label) cmd30Days.Child).LabelProp = "This Period";
-          ((Gtk.Label) cmd60Days.Child).LabelProp = "Last Period";
-          break;
-        default:
-          ((Gtk.Label) cmd30Days.Child).LabelProp = "30 Days";
-          ((Gtk.Label) cmd60Days.Child).LabelProp = "60 Days";
-          break;
-      }
+        switch (useStyle)
+        {
+          case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
+          case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
+          case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
+            ((Gtk.Label)cmd30Days.Child).LabelProp = "This Period";
+            cmd30Days.TooltipMarkup = "Query the database to get the history of this usage period.";
+            ((Gtk.Label)cmd60Days.Child).LabelProp = "Last Period";
+            cmd60Days.TooltipMarkup = "Query the database to get the history of this usage period and the previous usage period.";
+            break;
+          default:
+            ((Gtk.Label)cmd30Days.Child).LabelProp = "30 Days";
+            cmd30Days.TooltipMarkup = "Query the database to get the history of the last 30 days.";
+            ((Gtk.Label)cmd60Days.Child).LabelProp = "60 Days";
+            cmd60Days.TooltipMarkup = "Query the database to get the history of the last 60 days.";
+            break;
+        }
 
       this.SizeAllocated += frmHistory_ResizeBegin;
       this.Hidden += frmHistory_Hidden;
+
+      cmdExport.Clicked += cmdExport_Click;
+      cmdImport.Clicked += cmdImport_Click;
+      cmdClose.Clicked += cmdClose_Click;
 
       switch (mySettings.Ago)
       {
@@ -114,9 +126,9 @@ namespace RestrictionTrackerGTK
           cmdAllTime.Click();
           break;
         default:
-          if (modFunctions.DateAdd(modFunctions.DateInterval.Day, -1 * mySettings.Ago, DateTime.Now) > dtwFrom.MinDate & modFunctions.DateAdd(modFunctions.DateInterval.Day, -1 * mySettings.Ago, DateTime.Now) < dtwFrom.MaxDate)
+          if (modFunctions.DateAdd(DateInterval.Day, -1 * mySettings.Ago, DateTime.Now) > dtwFrom.MinDate & modFunctions.DateAdd(DateInterval.Day, -1 * mySettings.Ago, DateTime.Now) < dtwFrom.MaxDate)
           {
-            dtwFrom.Date = modFunctions.DateAdd(modFunctions.DateInterval.Day, -1 * mySettings.Ago, DateTime.Now);
+            dtwFrom.Date = modFunctions.DateAdd(DateInterval.Day, -1 * mySettings.Ago, DateTime.Now);
           }
           else
           {
@@ -212,8 +224,8 @@ namespace RestrictionTrackerGTK
       {
         case 0:
           System.Drawing.Size upSize = (System.Drawing.Size)state[3];
-          System.Drawing.Image bDown = modFunctions.DrawLineGraph(graphData, true, downSize, mySettings.Colors.HistoryDownA, mySettings.Colors.HistoryDownB, mySettings.Colors.HistoryDownC, mySettings.Colors.HistoryText, mySettings.Colors.HistoryBackground, mySettings.Colors.HistoryDownMax);
-          System.Drawing.Image bUp = modFunctions.DrawLineGraph(extraData, false, upSize, mySettings.Colors.HistoryUpA, mySettings.Colors.HistoryUpB, mySettings.Colors.HistoryUpC, mySettings.Colors.HistoryText, mySettings.Colors.HistoryBackground, mySettings.Colors.HistoryUpMax);
+          System.Drawing.Image bDown = modFunctions.DrawLineGraph(graphData, true, downSize, mySettings.Colors.HistoryDownLine, mySettings.Colors.HistoryDownA, mySettings.Colors.HistoryDownB, mySettings.Colors.HistoryDownC, mySettings.Colors.HistoryText, mySettings.Colors.HistoryBackground, mySettings.Colors.HistoryDownMax, mySettings.Colors.HistoryLightGrid, mySettings.Colors.HistoryDarkGrid);
+          System.Drawing.Image bUp = modFunctions.DrawLineGraph(extraData, false, upSize, mySettings.Colors.HistoryUpLine, mySettings.Colors.HistoryUpA, mySettings.Colors.HistoryUpB, mySettings.Colors.HistoryUpC, mySettings.Colors.HistoryText, mySettings.Colors.HistoryBackground, mySettings.Colors.HistoryUpMax, mySettings.Colors.HistoryLightGrid, mySettings.Colors.HistoryDarkGrid);
           if (!this.Visible)
           {
             return;
@@ -221,7 +233,7 @@ namespace RestrictionTrackerGTK
           Gtk.Application.Invoke(null, new DidResizeEventArgs(bDown, bUp), DidResize);
           break;
         case 1:
-          System.Drawing.Image bRural = modFunctions.DrawRGraph(graphData, downSize, mySettings.Colors.HistoryDownA, mySettings.Colors.HistoryDownB, mySettings.Colors.HistoryDownC, mySettings.Colors.HistoryText, mySettings.Colors.HistoryBackground, mySettings.Colors.HistoryDownMax);
+          System.Drawing.Image bRural = modFunctions.DrawRGraph(graphData, downSize, mySettings.Colors.HistoryDownLine, mySettings.Colors.HistoryDownA, mySettings.Colors.HistoryDownB, mySettings.Colors.HistoryDownC, mySettings.Colors.HistoryText, mySettings.Colors.HistoryBackground, mySettings.Colors.HistoryDownMax, mySettings.Colors.HistoryLightGrid, mySettings.Colors.HistoryDarkGrid);
           if (!this.Visible)
           {
             return;
@@ -240,13 +252,31 @@ namespace RestrictionTrackerGTK
           {
             ShowProgress("Drawing Graph...", "Collecting data, estimating, and resizing...");
             DataBase.DataRow[] lItems = extraData;
-            if ((lItems == null || lItems.Length == 0) | (modDB.usageDB == null || modDB.usageDB.Count == 0))
+            if (modDB.usageDB == null || modDB.usageDB.Count == 0)
             {
               evnUld.Visible = false;
               pnlGraph.Homogeneous = false;
               pnlGraph.CheckResize();
               lastRect = this.Allocation;
-              pctDld.Pixbuf = NoDataNote(pctDld.Allocation.Size);
+              pctDld.Pixbuf = BadDataNote(BadDataNotes.Null, pctDld.Allocation.Size);
+              HideProgress();
+            }
+            else if (lItems == null || lItems.Length == 0)
+            {
+              evnUld.Visible = false;
+              pnlGraph.Homogeneous = false;
+              pnlGraph.CheckResize();
+              lastRect = this.Allocation;
+              pctDld.Pixbuf = BadDataNote(BadDataNotes.None, pctDld.Allocation.Size);
+              HideProgress();
+            }
+            else if (lItems.Length == 1)
+            {
+              evnUld.Visible = false;
+              pnlGraph.Homogeneous = false;
+              pnlGraph.CheckResize();
+              lastRect = this.Allocation;
+              pctDld.Pixbuf = BadDataNote(BadDataNotes.One, pctDld.Allocation.Size);
               HideProgress();
             }
             else
@@ -391,8 +421,8 @@ namespace RestrictionTrackerGTK
     }
     private System.DateTime CalculateNow(System.Drawing.Rectangle GraphSpace, System.DateTime StartX, System.DateTime EndX, double X)
     {
-      long DateSpan = modFunctions.DateDiff(modFunctions.DateInterval.Minute, StartX, EndX);
-      return modFunctions.DateAdd(modFunctions.DateInterval.Minute, ((X - GraphSpace.Left) / GraphSpace.Width) * DateSpan, StartX);
+      long DateSpan = modFunctions.DateDiff(DateInterval.Minute, StartX, EndX);
+      return modFunctions.DateAdd(DateInterval.Minute, ((X - GraphSpace.Left) / GraphSpace.Width) * DateSpan, StartX);
     }
     #endregion
     #region "Buttons"
@@ -597,7 +627,7 @@ namespace RestrictionTrackerGTK
       {
         HideProgress();
       }
-      mySettings.Ago = (uint)Math.Abs(modFunctions.DateDiff(modFunctions.DateInterval.Day, dtwFrom.Date.Date, dtwTo.Date.Date));
+      mySettings.Ago = (uint)Math.Abs(modFunctions.DateDiff(DateInterval.Day, dtwFrom.Date.Date, dtwTo.Date.Date));
       if (mySettings.Ago == 0)
       {
         mySettings.Ago = 1;
@@ -647,17 +677,17 @@ namespace RestrictionTrackerGTK
       System.DateTime From30DaysAgo = default(System.DateTime);
       if (useStyle == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY || useStyle == localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY)
       {
-        if (modFunctions.DateAdd(modFunctions.DateInterval.Day, -30, RightNow) > dtwFrom.MaxDate)
+        if (modFunctions.DateAdd(DateInterval.Day, -30, RightNow) > dtwFrom.MaxDate)
         {
           From30DaysAgo = dtwFrom.MaxDate;
         }
-        else if (modFunctions.DateAdd(modFunctions.DateInterval.Day, -30, RightNow) < dtwFrom.MinDate)
+        else if (modFunctions.DateAdd(DateInterval.Day, -30, RightNow) < dtwFrom.MinDate)
         {
           From30DaysAgo = dtwFrom.MinDate;
         }
         else
         {
-          From30DaysAgo = modFunctions.DateAdd(modFunctions.DateInterval.Day, -30, RightNow);
+          From30DaysAgo = modFunctions.DateAdd(DateInterval.Day, -30, RightNow);
         } 
       }
       else
@@ -667,24 +697,37 @@ namespace RestrictionTrackerGTK
           if (modDB.usageDB.Count > 1)
           {
             ShowProgress("Querying DataBase...", "Scanning for Resets...");
-            for (int i = modDB.usageDB.Count - 1; i > 1; i--)
+            for (int i = modDB.usageDB.Count - 1; i >= 1; i--)
             {
               SetProgress(modDB.usageDB.Count - i, modDB.usageDB.Count, "");
-              if ((modDB.usageDB.ToArray()[i].DOWNLOAD < 500 && modDB.usageDB.ToArray()[i].UPLOAD < 500) && (modDB.usageDB.ToArray()[i - 1].DOWNLOAD > 500 || modDB.usageDB.ToArray()[i - 1].UPLOAD > 500))
+              DataBase.DataRow thisDB = modDB.usageDB.ToArray()[i];
+              DataBase.DataRow lastDB = thisDB;
+              if (i > 0)
+                lastDB = modDB.usageDB.ToArray()[i - 1];
+              DataBase.DataRow nextDB = thisDB;
+              if (i < modDB.usageDB.Count - 1)
+                nextDB = modDB.usageDB.ToArray()[i + 1];
+              if (((thisDB.DOWNLOAD < lastDB.DOWNLOAD) | (thisDB.DOWNLOAD == 0 & lastDB.DOWNLOAD == 0)) &
+                ((thisDB.UPLOAD < lastDB.UPLOAD) | (thisDB.UPLOAD == 0 & lastDB.UPLOAD == 0)) &
+                !(lastDB.DOWNLOAD == 0 & lastDB.UPLOAD == 0) &
+                !(nextDB.DOWNLOAD == lastDB.DOWNLOAD & nextDB.UPLOAD == lastDB.UPLOAD))
               {
-                if (modDB.usageDB.ToArray()[i].DATETIME > dtwFrom.Date)
+                if (DateTime.Today.Subtract(thisDB.DATETIME).TotalDays > 0)
                 {
-                  From30DaysAgo = dtwFrom.MaxDate;
+                  if (thisDB.DATETIME > dtwFrom.MaxDate)
+                  {
+                    From30DaysAgo = dtwFrom.MaxDate;
+                  }
+                  else if (thisDB.DATETIME < dtwFrom.MinDate)
+                  {
+                    From30DaysAgo = dtwFrom.MinDate;
+                  }
+                  else
+                  {
+                    From30DaysAgo = thisDB.DATETIME;
+                  }
+                  break;
                 }
-                else if (modDB.usageDB.ToArray()[i].DATETIME < dtwFrom.MinDate)
-                {
-                  From30DaysAgo = dtwFrom.MinDate;
-                }
-                else
-                {
-                  From30DaysAgo = modDB.usageDB.ToArray()[i].DATETIME;
-                }
-                break;
               }
             }
           }
@@ -742,17 +785,17 @@ namespace RestrictionTrackerGTK
       System.DateTime From60DaysAgo = default(System.DateTime);
       if (useStyle == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY || useStyle == localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY)
       {
-        if (modFunctions.DateAdd(modFunctions.DateInterval.Day, -60, RightNow) > dtwFrom.MaxDate)
+        if (modFunctions.DateAdd(DateInterval.Day, -60, RightNow) > dtwFrom.MaxDate)
         {
           From60DaysAgo = dtwFrom.MaxDate;
         }
-        else if (modFunctions.DateAdd(modFunctions.DateInterval.Day, -60, RightNow) < dtwFrom.MinDate)
+        else if (modFunctions.DateAdd(DateInterval.Day, -60, RightNow) < dtwFrom.MinDate)
         {
           From60DaysAgo = dtwFrom.MinDate;
         }
         else
         {
-          From60DaysAgo = modFunctions.DateAdd(modFunctions.DateInterval.Day, -60, RightNow);
+          From60DaysAgo = modFunctions.DateAdd(DateInterval.Day, -60, RightNow);
         }
       }
       else
@@ -766,24 +809,34 @@ namespace RestrictionTrackerGTK
             for (int i = modDB.usageDB.Count - 1; i > 1; i--)
             {
               SetProgress(modDB.usageDB.Count - i, modDB.usageDB.Count, "");
-              if ((modDB.usageDB.ToArray()[i].DOWNLOAD < 500 && modDB.usageDB.ToArray()[i].UPLOAD < 500) && (modDB.usageDB.ToArray()[i - 1].DOWNLOAD > 500 || modDB.usageDB.ToArray()[i - 1].UPLOAD > 500))
+              DataBase.DataRow thisDB = modDB.usageDB.ToArray()[i];
+              DataBase.DataRow lastDB = thisDB;
+              if (i > 0)
+                lastDB = modDB.usageDB.ToArray()[i - 1];
+              DataBase.DataRow nextDB = thisDB;
+              if (i < modDB.usageDB.Count - 1)
+                nextDB = modDB.usageDB.ToArray()[i + 1];
+              if (((thisDB.DOWNLOAD < lastDB.DOWNLOAD) | (thisDB.DOWNLOAD == 0 & lastDB.DOWNLOAD == 0)) &
+                ((thisDB.UPLOAD < lastDB.UPLOAD) | (thisDB.UPLOAD == 0 & lastDB.UPLOAD == 0)) &
+                !(lastDB.DOWNLOAD == 0 & lastDB.UPLOAD == 0) &
+                !(nextDB.DOWNLOAD == lastDB.DOWNLOAD & nextDB.UPLOAD == lastDB.UPLOAD))
               {
-                if (DateTime.Today.Subtract(modDB.usageDB.ToArray()[i].DATETIME).TotalDays > 6)
+                if (DateTime.Today.Subtract(thisDB.DATETIME).TotalDays > 6)
                 {
                   Finds ++;
                   if (Finds == 2)
                   {
-                    if (modDB.usageDB.ToArray()[i].DATETIME > dtwFrom.Date)
+                    if (thisDB.DATETIME > dtwFrom.MaxDate)
                     {
                       From60DaysAgo = dtwFrom.MaxDate;
                     }
-                    else if (modDB.usageDB.ToArray()[i].DATETIME < dtwFrom.MinDate)
+                    else if (thisDB.DATETIME < dtwFrom.MinDate)
                     {
                       From60DaysAgo = dtwFrom.MinDate;
                     }
                     else
                     {
-                      From60DaysAgo = modDB.usageDB.ToArray()[i].DATETIME;
+                      From60DaysAgo = thisDB.DATETIME;
                     }
                     break;
                   }
@@ -850,7 +903,7 @@ namespace RestrictionTrackerGTK
     }
     private void cmdImport_Click(System.Object sender, System.EventArgs e)
     {
-      if ((modDB.usageDB == null || modDB.usageDB.Count == 0))
+      if (((modDB.usageDB == null) || (modDB.usageDB.Count == 0)) & modDB.LOG_State != 1)
       {
         modFunctions.ShowMessageBox(this, "The Database has not been loaded yet, please wait.", "", DialogFlags.Modal, MessageType.Warning, ButtonsType.Ok);
         return;
@@ -1036,11 +1089,11 @@ namespace RestrictionTrackerGTK
       long nul;
       modDB.LOG_Get(0, out dMin, out nul, out nul, out nul, out nul);
       System.DateTime fDate = new DateTime(2000, 1, 1);
-      if (modFunctions.DateDiff(modFunctions.DateInterval.Year, fDate, dMin) < 0)
+      if (modFunctions.DateDiff(DateInterval.Year, fDate, dMin) < 0)
       {
         dMin = fDate;
       }
-      if (modFunctions.DateDiff(modFunctions.DateInterval.Second, dMin, DateTime.Now) < 0)
+      if (modFunctions.DateDiff(DateInterval.Second, dMin, DateTime.Now) < 0)
       {
         pctErr.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.error.png");
         pctErr.TooltipText = "The Log history is more recent than your system clock.\nPlease update your computer's time.";
@@ -1050,7 +1103,7 @@ namespace RestrictionTrackerGTK
         dMax = DateTime.Now;
         pctErr.Pixbuf = null;
         pctErr.TooltipText = "";
-        if (modFunctions.DateDiff(modFunctions.DateInterval.Second, dMin, dMax) > 0)
+        if (modFunctions.DateDiff(DateInterval.Second, dMin, dMax) > 0)
         {
           dtwFrom.MaxDate = dMax;
           dtwTo.MaxDate = dMax;
@@ -1064,13 +1117,47 @@ namespace RestrictionTrackerGTK
         }
       }
       if (dtwFrom.MinDate.Year < 2000)
-        dtwFrom.MinDate = new DateTime(2000, 1, 1);
+        dtwFrom.MinDate = fDate;
       if (dtwTo.MinDate.Year < 2000)
-        dtwTo.MinDate = new DateTime(2000, 1, 1);
+        dtwTo.MinDate = fDate;
+      if ((dtwFrom.MinDate == fDate) & (dtwTo.MinDate == fDate))
+      {
+        lblFrom.Sensitive = false;
+        dtwFrom.Sensitive = false;
+        lblTo.Sensitive = false;
+        dtwTo.Sensitive = false;
+        optGraph.Sensitive = false;
+        optGrid.Sensitive = false;
+        cmdQuery.Sensitive = false;
+        cmdToday.Sensitive = false;
+        cmd30Days.Sensitive = false;
+        cmd60Days.Sensitive = false;
+        cmdAllTime.Sensitive = false;
+        grpAge.Sensitive = false;
+        cmdExport.Sensitive = false;
+        chkExportRange.Sensitive = false;
+      }
+      else
+      {
+        lblFrom.Sensitive = true;
+        dtwFrom.Sensitive = true;
+        lblTo.Sensitive = true;
+        dtwTo.Sensitive = true;
+        optGraph.Sensitive = true;
+        optGrid.Sensitive = true;
+        cmdQuery.Sensitive = true;
+        cmdToday.Sensitive = true;
+        cmd30Days.Sensitive = true;
+        cmd60Days.Sensitive = true;
+        cmdAllTime.Sensitive = true;
+        grpAge.Sensitive = true;
+        cmdExport.Sensitive = true;
+        chkExportRange.Sensitive = true;
+      }
     }
     #endregion
     #region "Notices"
-    private Gdk.Pixbuf NoDataNote(Gdk.Size ImgSize)
+    private Gdk.Pixbuf BadDataNote(BadDataNotes Note, Gdk.Size ImgSize)
     {
       if (ImgSize.Width == 0 | ImgSize.Height == 0)
       {
@@ -1079,7 +1166,19 @@ namespace RestrictionTrackerGTK
       System.Drawing.Image iPic = new System.Drawing.Bitmap(ImgSize.Width, ImgSize.Height);
       using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(iPic))
       {
-        const string sNote = "No data has yet been accumulated.";
+        string sNote = null;
+        switch (Note)
+        {
+          case BadDataNotes.Null:
+            sNote = "No data has been accumulated yet.\nPlease wait until you have a little more data accumulated.";
+            break;
+          case BadDataNotes.None:
+            sNote = "No data was found for the specified range.\nPlease try a different range.";
+            break;
+          case BadDataNotes.One:
+            sNote = "Not enough data has been accumulated yet.\nPlease try a different range.";
+            break;
+        }
         g.Clear(System.Drawing.SystemColors.ButtonFace);
         g.DrawString(sNote, System.Drawing.SystemFonts.DefaultFont, System.Drawing.SystemBrushes.ControlText, (ImgSize.Width / 2) - (g.MeasureString(sNote, System.Drawing.SystemFonts.DefaultFont).Width / 2), (ImgSize.Height / 2) - (g.MeasureString(sNote, System.Drawing.SystemFonts.DefaultFont).Height / 2));
       }
@@ -1100,106 +1199,6 @@ namespace RestrictionTrackerGTK
       return modFunctions.ImageToPixbuf(iPic);
     }
     #endregion
-    private void SetDefaultColors()
-    {
-      Gtk.Application.Invoke(Main_SetDefaultColors);
-    }
-    private void Main_SetDefaultColors(object o, EventArgs e)
-    {
-      switch (useStyle)
-      {
-        case localRestrictionTracker.SatHostTypes.WildBlue_LEGACY:
-        case localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
-          mySettings.Colors.MainDownA = System.Drawing.Color.DarkBlue;
-          mySettings.Colors.MainDownB = System.Drawing.Color.Blue;
-          mySettings.Colors.MainDownC = System.Drawing.Color.Aqua;
-          mySettings.Colors.MainUpA = System.Drawing.Color.DarkBlue;
-          mySettings.Colors.MainUpB = System.Drawing.Color.Blue;
-          mySettings.Colors.MainUpC = System.Drawing.Color.Aqua;
-          mySettings.Colors.MainText = System.Drawing.Color.White;
-          mySettings.Colors.MainBackground = System.Drawing.Color.Black;
-
-          mySettings.Colors.TrayDownA = System.Drawing.Color.DarkBlue;
-          mySettings.Colors.TrayDownB = System.Drawing.Color.Blue;
-          mySettings.Colors.TrayDownC = System.Drawing.Color.Aqua;
-          mySettings.Colors.TrayUpA = System.Drawing.Color.DarkBlue;
-          mySettings.Colors.TrayUpB = System.Drawing.Color.Blue;
-          mySettings.Colors.TrayUpC = System.Drawing.Color.Aqua;
-
-          mySettings.Colors.HistoryDownA = System.Drawing.Color.DarkBlue;
-          mySettings.Colors.HistoryDownB = System.Drawing.Color.Blue;
-          mySettings.Colors.HistoryDownC = System.Drawing.Color.Aqua;
-          mySettings.Colors.HistoryDownMax = System.Drawing.Color.Yellow;
-          mySettings.Colors.HistoryUpA = System.Drawing.Color.DarkBlue;
-          mySettings.Colors.HistoryUpB = System.Drawing.Color.Blue;
-          mySettings.Colors.HistoryUpC = System.Drawing.Color.Aqua;
-          mySettings.Colors.HistoryUpMax = System.Drawing.Color.Yellow;
-          mySettings.Colors.HistoryText = System.Drawing.Color.Black;
-          mySettings.Colors.HistoryBackground = System.Drawing.Color.White;
-
-          break;
-        case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
-        case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
-          mySettings.Colors.MainDownA = System.Drawing.Color.DarkBlue;
-          mySettings.Colors.MainDownB = System.Drawing.Color.Blue;
-          mySettings.Colors.MainDownC = System.Drawing.Color.Aqua;
-          mySettings.Colors.MainUpA = System.Drawing.Color.Transparent;
-          mySettings.Colors.MainUpB = System.Drawing.Color.Transparent;
-          mySettings.Colors.MainUpC = System.Drawing.Color.Transparent;
-          mySettings.Colors.MainText = System.Drawing.Color.White;
-          mySettings.Colors.MainBackground = System.Drawing.Color.Black;
-
-          mySettings.Colors.TrayDownA = System.Drawing.Color.DarkBlue;
-          mySettings.Colors.TrayDownB = System.Drawing.Color.Blue;
-          mySettings.Colors.TrayDownC = System.Drawing.Color.Aqua;
-          mySettings.Colors.TrayUpA = System.Drawing.Color.Transparent;
-          mySettings.Colors.TrayUpB = System.Drawing.Color.Transparent;
-          mySettings.Colors.TrayUpC = System.Drawing.Color.Transparent;
-
-          mySettings.Colors.HistoryDownA = System.Drawing.Color.DarkBlue;
-          mySettings.Colors.HistoryDownB = System.Drawing.Color.Blue;
-          mySettings.Colors.HistoryDownC = System.Drawing.Color.Aqua;
-          mySettings.Colors.HistoryDownMax = System.Drawing.Color.Yellow;
-          mySettings.Colors.HistoryUpA = System.Drawing.Color.Transparent;
-          mySettings.Colors.HistoryUpB = System.Drawing.Color.Transparent;
-          mySettings.Colors.HistoryUpC = System.Drawing.Color.Transparent;
-          mySettings.Colors.HistoryUpMax = System.Drawing.Color.Transparent;
-          mySettings.Colors.HistoryText = System.Drawing.Color.Black;
-          mySettings.Colors.HistoryBackground = System.Drawing.Color.White;
-
-          break;
-        case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
-          mySettings.Colors.MainDownA = System.Drawing.Color.DarkBlue;
-          mySettings.Colors.MainDownB = System.Drawing.Color.Blue;
-          mySettings.Colors.MainDownC = System.Drawing.Color.Aqua;
-          mySettings.Colors.MainUpA = System.Drawing.Color.DarkBlue;
-          mySettings.Colors.MainUpB = System.Drawing.Color.Blue;
-          mySettings.Colors.MainUpC = System.Drawing.Color.Aqua;
-          mySettings.Colors.MainText = System.Drawing.Color.White;
-          mySettings.Colors.MainBackground = System.Drawing.Color.Black;
-
-          mySettings.Colors.TrayDownA = System.Drawing.Color.DarkBlue;
-          mySettings.Colors.TrayDownB = System.Drawing.Color.Blue;
-          mySettings.Colors.TrayDownC = System.Drawing.Color.Aqua;
-          mySettings.Colors.TrayUpA = System.Drawing.Color.DarkBlue;
-          mySettings.Colors.TrayUpB = System.Drawing.Color.Blue;
-          mySettings.Colors.TrayUpC = System.Drawing.Color.Aqua;
-
-          mySettings.Colors.HistoryDownA = System.Drawing.Color.DarkBlue;
-          mySettings.Colors.HistoryDownB = System.Drawing.Color.Blue;
-          mySettings.Colors.HistoryDownC = System.Drawing.Color.Aqua;
-          mySettings.Colors.HistoryDownMax = System.Drawing.Color.Yellow;
-          mySettings.Colors.HistoryUpA = System.Drawing.Color.DarkBlue;
-          mySettings.Colors.HistoryUpB = System.Drawing.Color.Blue;
-          mySettings.Colors.HistoryUpC = System.Drawing.Color.Aqua;
-          mySettings.Colors.HistoryUpMax = System.Drawing.Color.Yellow;
-          mySettings.Colors.HistoryText = System.Drawing.Color.Black;
-          mySettings.Colors.HistoryBackground = System.Drawing.Color.White;
-          break;
-        default:
-          break;
-      }
-    }
     #region "StatusBar"
     private uint tmrPulse;
     public void ShowProgress(string Title, string Subtitle)
@@ -1603,4 +1602,3 @@ namespace RestrictionTrackerGTK
     #endregion
   }
 }
-

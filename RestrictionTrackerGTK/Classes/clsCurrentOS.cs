@@ -1,8 +1,8 @@
 using System;
-
 namespace RestrictionTrackerGTK
 {
-	public static class CurrentOS {
+  public static class CurrentOS
+  {
     public static bool IsWindows { get; private set; }
     public static bool IsUnix { get; private set; }
     public static bool IsMac { get; private set; }
@@ -13,11 +13,9 @@ namespace RestrictionTrackerGTK
     public static bool Is64BitProcess { get { return (IntPtr.Size == 8); } }
     public static bool Is32BitProcess { get { return (IntPtr.Size == 4); } }
     public static string Name { get; private set; }
- 
     [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true, CallingConvention = System.Runtime.InteropServices.CallingConvention.Winapi)]
     [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
     private static extern bool IsWow64Process([System.Runtime.InteropServices.In] IntPtr hProcess, [System.Runtime.InteropServices.Out] out bool wow64Process);
-
     private static bool Is64bitWindows
     {
       get
@@ -40,7 +38,6 @@ namespace RestrictionTrackerGTK
         }
       }
     }
- 
     static CurrentOS()
     {
       IsWindows = System.IO.Path.DirectorySeparatorChar == '\\';
@@ -122,12 +119,10 @@ namespace RestrictionTrackerGTK
         }
       }
     }
- 
     private static string ReadProcessOutput(string name)
     {
       return ReadProcessOutput(name, null);
     }
- 
     private static string ReadProcessOutput(string name, string args)
     {
       try

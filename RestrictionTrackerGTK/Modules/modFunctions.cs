@@ -11,20 +11,6 @@ namespace RestrictionTrackerGTK
 {
   static class modFunctions
   {
-    public enum DateInterval
-    {
-      Day,
-      DayOfYear,
-      Hour,
-      Minute,
-      Month,
-      Quarter,
-      Second,
-      Weekday,
-      WeekOfYear,
-      Year
-    }
-
     #region "Alert Notifier"
     public static NotifierStyle NOTIFIER_STYLE = null;
     public static NotifierStyle LoadAlertStyle(string Path)
@@ -665,7 +651,7 @@ namespace RestrictionTrackerGTK
     {
       try
       {
-        string sFailFile = "WB-ReadFail-" + DateTime.Now.ToString("G") + "-v" + ProductVersion + ".txt";
+        string sFailFile = "SRT-MONO-ReadFail-" + DateTime.Now.ToString("G") + "-v" + ProductVersion + ".txt";
         sFailFile = sFailFile.Replace("/", "-");
         sFailFile = sFailFile.Replace(":", "-");
         System.Net.WebRequest ftpSave = System.Net.FtpWebRequest.Create("ftp://realityripple.com/" + sFailFile);
@@ -926,43 +912,70 @@ namespace RestrictionTrackerGTK
       }
     }
 
-    public static Image DrawLineGraph(DataBase.DataRow[] Data, bool Down, Size ImgSize, Color ColorA, Color ColorB, Color ColorC, Color ColorText, Color ColorBG, Color ColorMax)
+    public static Image DrawRGraph(DataBase.DataRow[] Data, Size ImgSize, Color ColorLine, Color ColorA, Color ColorB, Color ColorC, Color ColorText, Color ColorBG, Color ColorMax, Color ColorGridLight, Color ColorGridDark)
+    {
+      return DrawGraph(Data, 0, ImgSize, ColorLine, ColorA, ColorB, ColorC, ColorText, ColorBG, ColorMax, ColorGridLight, ColorGridDark);
+    }
+
+    public static Image DrawLineGraph(DataBase.DataRow[] Data, bool Down, Size ImgSize, Color ColorLine, Color ColorA, Color ColorB, Color ColorC, Color ColorText, Color ColorBG, Color ColorMax, Color ColorGridLight, Color ColorGridDark)
+    {
+      if (Down)
+        return DrawGraph(Data, 1, ImgSize, ColorLine, ColorA, ColorB, ColorC, ColorText, ColorBG, ColorMax, ColorGridLight, ColorGridDark);
+      else
+        return DrawGraph(Data, 255, ImgSize, ColorLine, ColorA, ColorB, ColorC, ColorText, ColorBG, ColorMax, ColorGridLight, ColorGridDark);
+    }
+
+    private static Image DrawGraph(DataBase.DataRow[] Data, byte Down, Size ImgSize,Color ColorLine, Color ColorA, Color ColorB, Color ColorC, Color ColorText, Color ColorBG, Color ColorMax, Color ColorGridLight, Color ColorGridDark)
     {
       if (Data == null || Data.Length == 0)
       {
         return new Bitmap(1, 1);
       }
-      long yDMax = 0;
-      long yUMax = 0;
-      for (long I = 0; I <= Data.Length - 1; I++)
+      long yMax = 0;
+      long lMax = 0;
+      if (Down == 0)
       {
-        if (yDMax < Data [I].DOWNLOAD)
+        long yVMax = 0;
+        for (int i = 0; i < Data.Length; i++)
         {
-          yDMax = Data [I].DOWNLOAD;
+          if (yVMax < Data[i].DOWNLOAD)
+            yVMax = Data[i].DOWNLOAD;
+          if (yVMax < Data[i].DOWNLIM)
+            yVMax = Data[i].DOWNLIM;
         }
-        if (yUMax < Data [I].UPLOAD)
-        {
-          yUMax = Data [I].UPLOAD;
-        }
-        if (yDMax < Data [I].DOWNLIM)
-        {
-          yDMax = Data [I].DOWNLIM;
-        }
-        if (yUMax < Data [I].UPLIM)
-        {
-          yUMax = Data [I].UPLIM;
-        }
+        yMax = yVMax;
+        if (yMax % 1000 != 0)
+          yMax = (int)(((double)yMax / 1000) * 1000);
+        lMax = yVMax;
       }
-      long yMax = (yDMax > yUMax ? yDMax : yUMax);
-      if (!(yMax % 1000 == 0))
+      else
       {
-        yMax = (int)(((double)yMax / 1000) * 1000);
+        long yDMax = 0;
+        long yUMax = 0;
+        for (int i = 0; i < Data.Length; i++)
+        {
+          if (yDMax < Data[i].DOWNLOAD)
+            yDMax = Data[i].DOWNLOAD;
+          if (yUMax < Data[i].UPLOAD)
+            yUMax = Data[i].UPLOAD;
+          if (yDMax < Data[i].DOWNLIM)
+            yDMax = Data[i].DOWNLIM;
+          if (yUMax < Data[i].UPLIM)
+            yUMax = Data[i].UPLIM;
+        }
+        if (yDMax > yUMax)
+          yMax = yDMax;
+        else
+          yMax = yUMax;
+        if (yMax % 1000 != 0)
+          yMax = (int)(((double)yMax / 1000) * 1000);
+        if (Down == 1)
+          lMax = yDMax;
+        else
+          lMax = yUMax;
       }
-      long lMax = (Down ? yDMax : yUMax);
-      if (!(lMax % 1000 == 0))
-      {
-        lMax = (int)(((double)lMax / 1000) * 1000 + 1000);
-      }
+      if (lMax % 1000 != 0)
+        lMax = (int)(((double)lMax / 1000) * 1000) + 1000;
       Image iPic = new Bitmap(ImgSize.Width, ImgSize.Height);
       Graphics g = Graphics.FromImage(iPic);
       Font tFont = new Font(FontFamily.GenericSansSerif, 7);
@@ -972,77 +985,140 @@ namespace RestrictionTrackerGTK
       g.Clear(ColorBG);
       int yTop = lXHeight / 2;
       int yHeight = (int)(ImgSize.Height - (lXHeight * 1.5));
-      if (Down)
-      {
-        dGraph = new Rectangle(lYWidth, yTop, (ImgSize.Width - 4) - lYWidth, yHeight);
-        dData = Data;
-      }
-      else
+      if (Down == 255)
       {
         uGraph = new Rectangle(lYWidth, yTop, (ImgSize.Width - 4) - lYWidth, yHeight);
         uData = Data;
       }
+      else
+      {
+        dGraph = new Rectangle(lYWidth, yTop, (ImgSize.Width - 4) - lYWidth, yHeight);
+        dData = Data;
+      }
       g.DrawLine(new Pen(ColorText), lYWidth, yTop, lYWidth, yTop + yHeight);
       g.DrawLine(new Pen(ColorText), lYWidth, yTop + yHeight, ImgSize.Width, yTop + yHeight);
-      oldDate = Data [0].DATETIME;
-      newDate = Data [Data.Length - 1].DATETIME;
-      for (int I = 0; I <= (int) lMax; I += (int) ((((lMax / ((double) yHeight / (tFont.Size + 12)))) / 100) * 100))
+      oldDate = Data[0].DATETIME;
+      newDate = Data[Data.Length - 1].DATETIME;
+      for (int i = 0; i <= (int) lMax; i += (int) ((((lMax / ((double) yHeight / (tFont.Size + 12)))) / 100) * 100))
       {
-        int iY = (int)(yTop + yHeight - (I / (double)lMax * yHeight));
-        g.DrawString(I.ToString().Trim() + " MB", tFont, new SolidBrush(ColorText), lYWidth - g.MeasureString(I.ToString().Trim() + " MB", tFont).Width - 5, iY - (g.MeasureString(I.ToString().Trim() + " MB", tFont).Height / 2));
+        int iY = (int)(yTop + yHeight - (i / (double)lMax * yHeight));
+        g.DrawString(i.ToString().Trim() + " MB", tFont, new SolidBrush(ColorText), lYWidth - g.MeasureString(i.ToString().Trim() + " MB", tFont).Width - 5, iY - (g.MeasureString(i.ToString().Trim() + " MB", tFont).Height / 2));
         g.DrawLine(new Pen(ColorText), lYWidth - 3, iY, lYWidth, iY);
       }
-      System.DateTime lStart = Data [0].DATETIME;
-      System.DateTime lEnd = Data [Data.Length - 1].DATETIME;
+      for (long i = 0; i <= lMax; i+= (lMax / 10))
+      {
+        int iY = (int)(yTop + yHeight - (i / (double)lMax * yHeight));
+        if (i > 0)
+          g.DrawLine(new Pen(ColorGridLight), lYWidth + 1, iY, ImgSize.Width - 4, iY);
+      }
+      for (long i = 0; i <= lMax; i+= (lMax/5))
+      {
+        int iY = (int)(yTop + yHeight - (i / (double)lMax * yHeight));
+        if (i > 0)
+          g.DrawLine(new Pen(ColorGridDark), lYWidth + 1, iY, ImgSize.Width - 4, iY);
+      }
+      System.DateTime lStart = Data[0].DATETIME;
+      System.DateTime lEnd = Data[Data.Length - 1].DATETIME;
       DateInterval dInterval = DateInterval.Minute;
       uint lInterval = 1;
+      double lBitInterval = 1.0;
       uint lLabelInterval = 5;
-      if (Math.Abs(DateDiff(DateInterval.Minute, lStart, lEnd)) <= 61)
+      long lDiff = Math.Abs(DateDiff(DateInterval.Minute, lStart, lEnd));
+      if (lDiff <= 61)
       {
-        //Under an Hour
-        lInterval = 1;
-        lLabelInterval = 5;
+        lInterval = 5;
+        lBitInterval = 1;
+        lLabelInterval = 10;
         dInterval = DateInterval.Minute;
       }
-      else if (Math.Abs(DateDiff(DateInterval.Minute, lStart, lEnd)) < 60 * 13)
+      else if (lDiff < 60 * 13)
       {
-        //Under 12 hours
-        lInterval = 15;
-        lLabelInterval = 60;
-        dInterval = DateInterval.Minute;
-      }
-      else if (Math.Abs(DateDiff(DateInterval.Minute, lStart, lEnd)) <= 60 * 25)
-      {
-        //Under a Day
         lInterval = 60;
-        lLabelInterval = 60 * 6;
+        lBitInterval = 30;
+        lLabelInterval = 60 * 2;
         dInterval = DateInterval.Minute;
       }
-      else if (Math.Abs(DateDiff(DateInterval.Minute, lStart, lEnd)) <= 60 * 24 * 8)
+      else if (lDiff <= 60 * 24)
       {
-        //Under a Week
+        lInterval = 6;
+        lBitInterval = 1;
+        lLabelInterval = 6;
+        dInterval = DateInterval.Hour;
+      }
+      else if (lDiff <= 60 * 24 * 2)
+      {
         lInterval = 12;
+        lBitInterval = 6;
         lLabelInterval = 24;
         dInterval = DateInterval.Hour;
       }
-      else if (Math.Abs(DateDiff(DateInterval.Minute, lStart, lEnd)) <= 60 * 24 * 31)
+      else if (lDiff <= 60 * 24 * 6)
       {
-        //Under 30 Days
         lInterval = 24;
-        lLabelInterval = 24 * 7;
+        lBitInterval = 12;
+        lLabelInterval = 24;
         dInterval = DateInterval.Hour;
       }
-      else if (Math.Abs(DateDiff(DateInterval.Minute, lStart, lEnd)) <= 60 * 24 * 366)
+      else if (lDiff <= 60 * 24 * 12)
       {
-        //Under a Year
-        lInterval = 7;
+        lInterval = 2;
+        lBitInterval = 1;
+        lLabelInterval = 2;
+        dInterval = DateInterval.Day;
+      }
+      else if (lDiff <= 60 * 24 * 20)
+      {
+        lInterval = 2;
+        lBitInterval = 1;
+        lLabelInterval = 4;
+        dInterval = DateInterval.Day;
+      }
+      else if (lDiff <= 60 * 24 * 27)
+      {
+        lInterval = 2;
+        lBitInterval = 1;
+        lLabelInterval = 7;
+        dInterval = DateInterval.Day;
+      }
+      else if (lDiff <= 60 * 24 * 40)
+      {
+        lInterval = 4;
+        lBitInterval = 2;
+        lLabelInterval = 7;
+        dInterval = DateInterval.Day;
+      }
+      else if (lDiff <= 60 * 24 * 90)
+      {
+        lInterval = 14;
+        lBitInterval = 7;
+        lLabelInterval = 14;
+        dInterval = DateInterval.Day;
+      }
+      else if (lDiff <= 60 * 24 * 240)
+      {
+        lInterval = 30;
+        lBitInterval = 15;
         lLabelInterval = 30;
+        dInterval = DateInterval.Day;
+      }
+      else if (lDiff <= 60 * 24 * 365)
+      {
+        lInterval = 60;
+        lBitInterval = 30;
+        lLabelInterval = 90;
+        dInterval = DateInterval.Day;
+      }
+      else if (lDiff <= 60 * 24 * 365 * 2)
+      {
+        lInterval = 90;
+        lBitInterval = 60;
+        lLabelInterval = 180;
         dInterval = DateInterval.Day;
       }
       else
       {
-        //Over a year
-        lInterval = 30;
+        lInterval = 365;
+        lBitInterval = 180;
         lLabelInterval = 365;
         dInterval = DateInterval.Day;
       }
@@ -1053,297 +1129,18 @@ namespace RestrictionTrackerGTK
       }
       long lLineWidth = (ImgSize.Width - 4) - lYWidth - 1;
       double dCompInter = lLineWidth / (double)lMaxTime;
-
-      for (long I = 0; I <= lMaxTime; I += lInterval)
+      for (double i = 0; i <= lMaxTime; i+= lBitInterval)
       {
-        int lX = (int)(lYWidth + (I * dCompInter) + 1);
-        g.DrawLine(SystemPens.GrayText, lX, ImgSize.Height - (lXHeight - 3), lX, ImgSize.Height - lXHeight);
+        int lX = (int)(lYWidth + (i * dCompInter)) + 1;
+        if (i > 0)
+          g.DrawLine(new Pen(ColorGridLight), lX, yTop, lX, ImgSize.Height - (lXHeight + 5));
       }
-      long lastI = (long)(lYWidth + (lMaxTime * dCompInter));
-      if (lastI >= (ImgSize.Width - 4))
+      for (long i = 0; i <= lMaxTime; i += lInterval)
       {
-        lastI = (ImgSize.Width - 4);
-      }
-      string sDispV = "g";
-      if (DateDiff(DateInterval.Day, lStart, lEnd) > 1)
-      {
-        sDispV = "d";
-      }
-      else if (DateDiff(DateInterval.Day, lStart, lEnd) == 1)
-      {
-        sDispV = "g";
-      }
-      else if (DateDiff(DateInterval.Day, lStart, lEnd) < 1)
-      {
-        sDispV = "t";
-      }
-      string sLastDisp = lEnd.ToString(sDispV);
-      float iLastDispWidth = g.MeasureString(sLastDisp, tFont).Width;
-      for (long I = 0; I <= lMaxTime; I += lLabelInterval)
-      {
-        int lX = (int)(lYWidth + (I * dCompInter) + 1);
-        if (lX >= (ImgSize.Width - 4))
-        {
-          lX = (ImgSize.Width - 4);
-          g.DrawLine(new Pen(ColorText), lX, ImgSize.Height - (lXHeight - 5), lX, ImgSize.Height - lXHeight);
-          string sDisp = DateAdd(dInterval, I, lStart).ToString(sDispV);
-          g.DrawString(sDisp, tFont, new SolidBrush(ColorText), lX - g.MeasureString(sDisp, tFont).Width, ImgSize.Height - lXHeight + 5);
-          if (lX >= lastI - (iLastDispWidth * 1.6))
-          {
-            lastI = -1;
-          }
-        }
-        else
-        {
-          g.DrawLine(new Pen(ColorText), lX, ImgSize.Height - (lXHeight - 5), lX, ImgSize.Height - lXHeight);
-          string sDisp = DateAdd(dInterval, I, lStart).ToString(sDispV);
-          g.DrawString(sDisp, tFont, new SolidBrush(ColorText), lX - (g.MeasureString(sDisp, tFont).Width / 2), ImgSize.Height - lXHeight + 5);
-          if (lX >= lastI - (iLastDispWidth * 1.6))
-          {
-            lastI = -1;
-          }
-        }
-      }
-      if (lastI > -1)
-      {
-        g.DrawLine(new Pen(ColorText), lastI, ImgSize.Height - (lXHeight - 5), lastI, ImgSize.Height - lXHeight);
-        g.DrawString(sLastDisp, tFont, new SolidBrush(ColorText), lastI - iLastDispWidth + 3, ImgSize.Height - lXHeight + 5);
-      }
-
-      int MaxY = (int)(yTop + yHeight - ((Down ? Data [Data.Length - 1].DOWNLIM : Data [Data.Length - 1].UPLIM) / (double)lMax * yHeight));
-      Point[] lMaxPoints = new Point[lMaxTime + 1];
-      Point[] lPoints = new Point[lMaxTime + 4];
-      byte[] lTypes = new byte[lMaxTime + 4];
-      long lastLVal = 0;
-
-      for (long I = 0; I <= lMaxTime; I++)
-      {
-        long lVal = -1;
-        long lLow = long.MaxValue;
-        long lHigh = 0;
-        for (int J = 0; J <= Data.Length - 1; J++)
-        {
-          if (Math.Abs(DateDiff(dInterval, Data [J].DATETIME, DateAdd(dInterval, I, lStart))) == 0)
-          {
-            long jLim = (Down ? Data [J].DOWNLIM : Data [J].UPLIM);
-            if (lHigh < jLim)
-            {
-              lHigh = jLim;
-            }
-            if (lLow > jLim)
-            {
-              lLow = jLim;
-            }
-          }
-        }
-        if (lHigh > 0 & lLow < long.MaxValue)
-        {
-          lVal = (lHigh + lLow) / 2;
-        }
-        if (lVal == -1 & lastLVal > 0)
-        {
-          lVal = lastLVal;
-        }
-        lMaxPoints [I].X = (int)(lYWidth + (I * dCompInter) + 1);
-        lMaxPoints [I].Y = (int)(yTop + yHeight - (lVal / (double)lMax * yHeight));
-        if (I > 0 && (lMaxPoints [I - 1].X == 0 & lMaxPoints [I - 1].Y == 0))
-        {
-          long J = 1;
-          while (lMaxPoints[I - J].Y == 0)
-          {
-            J += 1;
-          }
-          for (long K = 1; K <= J - 1; K++)
-          {
-            lMaxPoints [I - K].X = (int)(lYWidth + ((I - K) * dCompInter) + 1);
-            lMaxPoints [I - K].Y = (lMaxPoints [I - J].Y + lMaxPoints [I].Y) / 2;
-          }
-        }
-        lastLVal = lVal;
-      }
-
-      lastLVal = 0;
-      for (long I = 0; I <= lMaxTime; I++)
-      {
-        long lVal = -1;
-        long lLow = long.MaxValue;
-        long lHigh = 0;
-        for (int J = 0; J <= Data.Length - 1; J++)
-        {
-          if (Math.Abs(DateDiff(dInterval, Data [J].DATETIME, DateAdd(dInterval, I, lStart))) == 0)
-          {
-            long jVal = (Down ? Data [J].DOWNLOAD : Data [J].UPLOAD);
-            if (lHigh < jVal)
-            {
-              lHigh = jVal;
-            }
-            if (lLow > jVal)
-            {
-              lLow = jVal;
-            }
-          }
-        }
-        if (lHigh > 0 & lLow < long.MaxValue)
-        {
-          lVal = (lHigh + lLow) / 2;
-        }
-        if (lVal == -1 & lastLVal > 0)
-        {
-          lVal = lastLVal;
-        }
-        lPoints [I].X = (int)(lYWidth + (I * dCompInter) + 1);
-        lPoints [I].Y = (int)(yTop + yHeight - ((double)lVal / lMax * yHeight));
-        if (I > 0 && (lPoints [I - 1].X == 0 & lPoints [I - 1].Y == 0))
-        {
-          long J = 1;
-          while (lPoints[I - J].Y == 0)
-          {
-            J += 1;
-          }
-          for (long K = 1; K <= J - 1; K++)
-          {
-            lPoints [I - K].X = (int)(lYWidth + ((I - K) * dCompInter) + 1);
-            lPoints [I - K].Y = (lPoints [I - J].Y + lPoints [I].Y) / 2;
-          }
-        }
-        lastLVal = lVal;
-      }
-      if (lPoints [lMaxTime].IsEmpty)
-      {
-        lPoints [lMaxTime] = new Point(ImgSize.Width - 1, yTop + yHeight - 1);
-      }
-      lPoints [lMaxTime + 1] = new Point(ImgSize.Width - 1, yTop + yHeight - 1);
-      lPoints [lMaxTime + 2] = new Point(lYWidth + 1, yTop + yHeight - 1);
-      lPoints [lMaxTime + 3] = lPoints [0];
-      lTypes [0] = (byte)PathPointType.Start;
-      for (long I = 1; I <= lMaxTime + 2; I++)
-      {
-        lTypes [I] = (byte)PathPointType.Line;
-      }
-      lTypes [lMaxTime + 3] = (byte)(PathPointType.Line | PathPointType.CloseSubpath);
-      LinearGradientBrush fBrush = TriGradientBrush(new Point(lYWidth, MaxY), new Point(lYWidth, yTop + yHeight), ColorA, ColorB, ColorC);
-      fBrush.WrapMode = WrapMode.TileFlipX;
-      g.DrawLines(new Pen(new SolidBrush(ColorMax), 5), lMaxPoints);
-      g.FillPath(fBrush, new GraphicsPath(lPoints, lTypes));
-      g.DrawLines(new Pen(new SolidBrush(Color.FromArgb(96, ColorMax)), 5), lMaxPoints);
-      g.Dispose();
-      return iPic;
-    }
-
-    public static Image DrawRGraph(DataBase.DataRow[] Data, Size ImgSize, Color ColorA, Color ColorB, Color ColorC, Color ColorText, Color ColorBG, Color ColorMax)
-    {
-      if (Data == null || Data.Length == 0)
-      {
-        return new Bitmap(1, 1);
-      }
-      long yVMax = 0;
-      for (long I = 0; I <= Data.Length - 1; I++)
-      {
-        if (yVMax < Data [I].DOWNLOAD)
-        {
-          yVMax = Data [I].DOWNLOAD;
-        }
-        if (yVMax < Data [I].DOWNLIM)
-        {
-          yVMax = Data [I].DOWNLIM;
-        }
-      }
-      long yMax = yVMax;
-      if (!(yMax % 1000 == 0))
-      {
-        yMax = (int)(((double)yMax / 1000) * 1000);
-      }
-      long lMax = yVMax;
-      if (!(lMax % 1000 == 0))
-      {
-        lMax = (int)(((double)lMax / 1000) * 1000 + 1000);
-      }
-      Image iPic = new Bitmap(ImgSize.Width, ImgSize.Height);
-      Graphics g = Graphics.FromImage(iPic);
-      Font tFont = new Font(FontFamily.GenericSansSerif, 7);
-      g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-      int lYWidth = (int)g.MeasureString(yMax.ToString().Trim() + " MB", tFont).Width + 10;
-      int lXHeight = (int)g.MeasureString(DateTime.Now.ToString("g"), tFont).Height + 10;
-      g.Clear(ColorBG);
-      int yTop = lXHeight / 2;
-      int yHeight = (int)(ImgSize.Height - (lXHeight * 1.5));
-      dGraph = new Rectangle(lYWidth, yTop, (ImgSize.Width - 4)- lYWidth, yHeight);
-      dData = Data;
-      g.DrawLine(new Pen(ColorText), lYWidth, yTop, lYWidth, yTop + yHeight);
-      g.DrawLine(new Pen(ColorText), lYWidth, yTop + yHeight, ImgSize.Width, yTop + yHeight);
-      oldDate = Data [0].DATETIME;
-      newDate = Data [Data.Length - 1].DATETIME;
-      for (int I = 0; I <= (int) lMax; I += (int) ((((lMax / ((double) yHeight / (tFont.Size + 12)))) / 100) * 100))
-      {
-        int iY = (int)(yTop + yHeight - (I / (double)lMax * yHeight));
-        g.DrawString(I.ToString().Trim() + " MB", tFont, new SolidBrush(ColorText), lYWidth - g.MeasureString(I.ToString().Trim() + " MB", tFont).Width - 5, iY - (g.MeasureString(I.ToString().Trim() + " MB", tFont).Height / 2));
-        g.DrawLine(new Pen(ColorText), lYWidth - 3, iY, lYWidth, iY);
-      }
-      System.DateTime lStart = Data [0].DATETIME;
-      System.DateTime lEnd = Data [Data.Length - 1].DATETIME;
-      DateInterval dInterval = DateInterval.Minute;
-      uint lInterval = 1;
-      uint lLabelInterval = 5;
-      if (Math.Abs(DateDiff(DateInterval.Minute, lStart, lEnd)) <= 61)
-      {
-        //Under an Hour
-        lInterval = 1;
-        lLabelInterval = 5;
-        dInterval = DateInterval.Minute;
-      }
-      else if (Math.Abs(DateDiff(DateInterval.Minute, lStart, lEnd)) < 60 * 13)
-      {
-        //Under 12 hours
-        lInterval = 15;
-        lLabelInterval = 60;
-        dInterval = DateInterval.Minute;
-      }
-      else if (Math.Abs(DateDiff(DateInterval.Minute, lStart, lEnd)) <= 60 * 25)
-      {
-        //Under a Day
-        lInterval = 60;
-        lLabelInterval = 60 * 6;
-        dInterval = DateInterval.Minute;
-      }
-      else if (Math.Abs(DateDiff(DateInterval.Minute, lStart, lEnd)) <= 60 * 24 * 8)
-      {
-        //Under a Week
-        lInterval = 12;
-        lLabelInterval = 24;
-        dInterval = DateInterval.Hour;
-      }
-      else if (Math.Abs(DateDiff(DateInterval.Minute, lStart, lEnd)) <= 60 * 24 * 31)
-      {
-        //Under 30 Days
-        lInterval = 24;
-        lLabelInterval = 24 * 7;
-        dInterval = DateInterval.Hour;
-      }
-      else if (Math.Abs(DateDiff(DateInterval.Minute, lStart, lEnd)) <= 60 * 24 * 366)
-      {
-        //Under a Year
-        lInterval = 7;
-        lLabelInterval = 30;
-        dInterval = DateInterval.Day;
-      }
-      else
-      {
-        //Over a year
-        lInterval = 30;
-        lLabelInterval = 365;
-        dInterval = DateInterval.Day;
-      }
-      long lMaxTime = Math.Abs(DateDiff(dInterval, lStart, lEnd));
-      if (lMaxTime == 0)
-      {
-        return new Bitmap(1, 1);
-      }
-      long lLineWidth = (ImgSize.Width - 4) - lYWidth - 1;
-      double dCompInter = lLineWidth / (double)lMaxTime;
-      for (long I = 0; I <= lMaxTime; I += lInterval)
-      {
-        int lX = (int)(lYWidth + (I * dCompInter)) + 1;
+        int lX = (int)(lYWidth + (i * dCompInter)) + 1;
         g.DrawLine(new Pen(ColorText), lX, ImgSize.Height - (lXHeight - 3), lX, ImgSize.Height - lXHeight);
+        if (i > 0)
+          g.DrawLine(new Pen(ColorGridDark), lX, yTop, lX, ImgSize.Height - (lXHeight + 5));
       }
       long lastI = (long)(lYWidth + (lMaxTime * dCompInter));
       if (lastI >= (ImgSize.Width - 4))
@@ -1358,20 +1155,21 @@ namespace RestrictionTrackerGTK
         sDispV = "g";
       string sLastDisp = lEnd.ToString(sDispV);
       float iLastDispWidth = g.MeasureString(sLastDisp, tFont).Width;
-      for (long I = 0; I <= lMaxTime; I += lLabelInterval)
+      for (long i = 0; i <= lMaxTime; i += lLabelInterval)
       {
-        int lX = (int)(lYWidth + (I * dCompInter)) + 1;
-        if (lX >= (ImgSize.Width - 4))
+        int lX = (int)(lYWidth + (i * dCompInter)) + 1;
+        string sDisp = DateAdd(dInterval, i, lStart).ToString(sDispV);
+        g.DrawLine(new Pen(ColorText), lX, ImgSize.Height - (lXHeight - 5), lX, ImgSize.Height - lXHeight);
+        if (lX >= (ImgSize.Width - (g.MeasureString(sDisp, tFont).Width / 2)))
         {
-          lX = (ImgSize.Width - 4);
-          g.DrawLine(new Pen(ColorText), lX, ImgSize.Height - (lXHeight - 5), lX, ImgSize.Height - lXHeight);
-          string sDisp = DateAdd(dInterval, I, lStart).ToString(sDispV);
-          g.DrawString(sDisp, tFont, new SolidBrush(ColorText), lX - g.MeasureString(sDisp, tFont).Width, ImgSize.Height - lXHeight + 5);
+          g.DrawString(sDisp, tFont, new SolidBrush(ColorText), (ImgSize.Width - g.MeasureString(sDisp, tFont).Width), ImgSize.Height - lXHeight + 5);
+        }
+        else if (lX - (g.MeasureString(sDisp, tFont).Width / 2) < lYWidth)
+        {
+          g.DrawString(sDisp, tFont, new SolidBrush(ColorText), lX - (g.MeasureString(sDisp, tFont).Width / sDisp.Length), ImgSize.Height - lXHeight + 5);
         }
         else
         {
-          g.DrawLine(new Pen(ColorText), lX, ImgSize.Height - (lXHeight - 5), lX, ImgSize.Height - lXHeight);
-          string sDisp = DateAdd(dInterval, I, lStart).ToString(sDispV);
           g.DrawString(sDisp, tFont, new SolidBrush(ColorText), lX - (g.MeasureString(sDisp, tFont).Width / 2), ImgSize.Height - lXHeight + 5);
         }
         if (lX >= lastI - (iLastDispWidth * 1.6))
@@ -1382,7 +1180,11 @@ namespace RestrictionTrackerGTK
         g.DrawLine(new Pen(ColorText), lastI, ImgSize.Height - (lXHeight - 5), lastI, ImgSize.Height - lXHeight);
         g.DrawString(sLastDisp, tFont, new SolidBrush(ColorText), lastI - iLastDispWidth + 3, ImgSize.Height - lXHeight + 5);
       }
-      int MaxY = (int)(yTop + yHeight - (Data [Data.Length - 1].DOWNLIM / (double)lMax * yHeight));
+      int MaxY = 0;
+      if (Down == 255)
+        MaxY = (int)(yTop + yHeight - (Data[Data.Length - 1].UPLIM / (double)lMax * yHeight));
+      else
+        MaxY = (int)(yTop + yHeight - (Data[Data.Length - 1].DOWNLIM / (double)lMax * yHeight));
       Point[] lMaxPoints = new Point[lMaxTime + 1];
       Point[] lPoints = new Point[lMaxTime + 4];
       byte[] lTypes = new byte[lMaxTime + 4];
@@ -1394,9 +1196,13 @@ namespace RestrictionTrackerGTK
         long lHigh = 0;
         for (int J = 0; J <= Data.Length - 1; J++)
         {
-          if (Math.Abs(DateDiff(dInterval, Data [J].DATETIME, DateAdd(dInterval, I, lStart))) == 0)
+          if (Math.Abs(DateDiff(dInterval, Data[J].DATETIME, DateAdd(dInterval, I, lStart))) == 0)
           {
-            long jLim = Data[J].DOWNLIM;
+            long jLim = 0;
+            if (Down == 255)
+              jLim = Data[J].UPLIM;
+            else
+              jLim = Data[J].DOWNLIM;
             if (lHigh < jLim)
               lHigh = jLim;
             if (lLow > jLim)
@@ -1411,8 +1217,8 @@ namespace RestrictionTrackerGTK
         {
           lVal = lastLVal;
         }
-        lMaxPoints [I].X = (int)(lYWidth + (I * dCompInter) + 1);
-        lMaxPoints [I].Y = (int)(yTop + yHeight - (lVal / (double)lMax * yHeight));
+        lMaxPoints[I].X = (int)(lYWidth + (I * dCompInter) + 1);
+        lMaxPoints[I].Y = (int)(yTop + yHeight - (lVal / (double)lMax * yHeight));
         if (I > 0)
         {
           if (lMaxPoints[I - 1].X == 0 & lMaxPoints[I - 1].Y == 0)
@@ -1437,9 +1243,13 @@ namespace RestrictionTrackerGTK
         long lHigh = 0;
         for (int J = 0; J <= Data.Length - 1; J++)
         {
-          if (Math.Abs(DateDiff(dInterval, Data [J].DATETIME, DateAdd(dInterval, I, lStart))) == 0)
+          if (Math.Abs(DateDiff(dInterval, Data[J].DATETIME, DateAdd(dInterval, I, lStart))) == 0)
           {
-            long jVal = Data[J].DOWNLOAD;
+            long jVal = 0;
+            if (Down == 255)
+              jVal = Data[J].UPLOAD;
+            else
+              jVal = Data[J].DOWNLOAD;
             if (lHigh < jVal)
               lHigh = jVal;
             if (lLow > jVal)
@@ -1454,8 +1264,8 @@ namespace RestrictionTrackerGTK
         {
           lVal = lastLVal;
         }
-        lPoints [I].X = (int)(lYWidth + (I * dCompInter) + 1);
-        lPoints [I].Y = (int)(yTop + yHeight - (lVal / (double)lMax * yHeight));
+        lPoints[I].X = (int)(lYWidth + (I * dCompInter) + 1);
+        lPoints[I].Y = (int)(yTop + yHeight - (lVal / (double)lMax * yHeight));
         if (I > 0)
         {
           if (lPoints[I - 1].X == 0 & lPoints[I - 1].Y == 0)
@@ -1472,29 +1282,34 @@ namespace RestrictionTrackerGTK
         }
         lastLVal = lVal;
       }
-      if (lPoints [lMaxTime].IsEmpty)
+      if (lPoints[lMaxTime].IsEmpty)
       {
-        lPoints [lMaxTime] = new Point(ImgSize.Width, yTop + yHeight);
+        lPoints[lMaxTime] = new Point(ImgSize.Width, yTop + yHeight);
       }
-      lPoints [lMaxTime + 1] = new Point(ImgSize.Width, yTop + yHeight);
-      lPoints [lMaxTime + 2] = new Point(lYWidth, yTop + yHeight);
-      lPoints [lMaxTime + 3] = lPoints [0];
-      lTypes [0] = (byte)PathPointType.Start;
+      lPoints[lMaxTime + 1] = new Point(ImgSize.Width, yTop + yHeight);
+      lPoints[lMaxTime + 2] = new Point(lYWidth, yTop + yHeight);
+      lPoints[lMaxTime + 3] = lPoints[0];
+      lTypes[0] = (byte)PathPointType.Start;
       for (long I = 1; I <= lMaxTime + 2; I++)
       {
-        lTypes [I] = (byte)PathPointType.Line;
+        lTypes[I] = (byte)PathPointType.Line;
       }
-      lTypes [lMaxTime + 3] = (byte)(PathPointType.Line | PathPointType.CloseSubpath);
-
-      LinearGradientBrush fBrush = TriGradientBrush(new Point(lYWidth, MaxY), new Point(lYWidth, yTop + yHeight), ColorA, ColorB, ColorC);
-      fBrush.WrapMode = WrapMode.TileFlipX;
+      lTypes[lMaxTime + 3] = (byte)(PathPointType.Line | PathPointType.CloseSubpath);
       g.DrawLines(new Pen(new SolidBrush(ColorMax), 5), lMaxPoints);
-      g.FillPath(fBrush, new GraphicsPath(lPoints, lTypes));
-      g.DrawLines(new Pen(new SolidBrush(Color.FromArgb(96,ColorMax)), 5), lMaxPoints);
+      GraphicsPath gPath = new GraphicsPath(lPoints, lTypes);
+      LinearGradientBrush fBrush = TriGradientBrush(new Point(lYWidth, MaxY), new Point(lYWidth, yTop + yHeight), Color.FromArgb(192, ColorA), Color.FromArgb(192, ColorB), Color.FromArgb(192, ColorC));
+      fBrush.WrapMode = WrapMode.TileFlipX;
+      g.FillPath(fBrush, gPath);
+      g.SetClip(gPath);
+      g.FillRectangle(new HatchBrush(HatchStyle.LightUpwardDiagonal, Color.FromArgb(192, ColorMax), Color.FromArgb(192,ColorC)), lYWidth + 1, yTop - 1, ImgSize.Width, MaxY - yTop + 1);
+      g.ResetClip();
+      g.DrawPath(new Pen(ColorLine, 1.5f), gPath);
+      g.DrawLines(new Pen(new SolidBrush(Color.FromArgb(96, ColorMax)), 5), lMaxPoints);
+      g.DrawLine(new Pen(ColorText), lYWidth, yTop, lYWidth, yTop + yHeight);
+      g.DrawLine(new Pen(ColorText), lYWidth, yTop + yHeight, ImgSize.Width, yTop + yHeight);
       g.Dispose();
       return iPic;
     }
-
     #endregion
 
     #region "Progress"
@@ -1957,7 +1772,208 @@ namespace RestrictionTrackerGTK
       g.FillRectangle(fillBrush, (float) Math.Floor(iSize / 2d), yUsed, (float) Math.Ceiling(iSize / 2d), iSize - yUsed);
     }
     #endregion
-    #endregion
+
+    public static void ScreenDefaultColors(ref AppSettings.AppColors Colors, localRestrictionTracker.SatHostTypes useStyle)
+    {
+      AppSettings.AppColors defaultColors = GetDefaultColors(useStyle);
+      if (Colors.MainDownA == Color.Transparent | Colors.MainDownA.A < 255)
+        Colors.MainDownA = defaultColors.MainDownA;
+      if (Colors.MainDownB == Color.Transparent | Colors.MainDownB.A < 255)
+        Colors.MainDownB = defaultColors.MainDownB;
+      if (Colors.MainDownC == Color.Transparent | Colors.MainDownC.A < 255)
+        Colors.MainDownC = defaultColors.MainDownC;
+      if (Colors.MainUpA == Color.Transparent | Colors.MainUpA.A < 255)
+        Colors.MainUpA = defaultColors.MainUpA;
+      if (Colors.MainUpB == Color.Transparent | Colors.MainUpB.A < 255)
+        Colors.MainUpB = defaultColors.MainUpB;
+      if (Colors.MainUpC == Color.Transparent | Colors.MainUpC.A < 255)
+        Colors.MainUpC = defaultColors.MainUpC;
+      if (Colors.MainText == Color.Transparent | Colors.MainText.A < 255)
+        Colors.MainText = defaultColors.MainText;
+      if (Colors.MainBackground == Color.Transparent | Colors.MainBackground.A < 255)
+        Colors.MainBackground = defaultColors.MainBackground;
+
+      if (Colors.TrayDownA == Color.Transparent | Colors.TrayDownA.A < 255)
+        Colors.TrayDownA = defaultColors.TrayDownA;
+      if (Colors.TrayDownB == Color.Transparent | Colors.TrayDownB.A < 255)
+        Colors.TrayDownB = defaultColors.TrayDownB;
+      if (Colors.TrayDownC == Color.Transparent | Colors.TrayDownC.A < 255)
+        Colors.TrayDownC = defaultColors.TrayDownC;
+      if (Colors.TrayUpA == Color.Transparent | Colors.TrayUpA.A < 255)
+        Colors.TrayUpA = defaultColors.TrayUpA;
+      if (Colors.TrayUpB == Color.Transparent | Colors.TrayUpB.A < 255)
+        Colors.TrayUpB = defaultColors.TrayUpB;
+      if (Colors.TrayUpC == Color.Transparent | Colors.TrayUpC.A < 255)
+        Colors.TrayUpC = defaultColors.TrayUpC;
+
+      if (Colors.HistoryDownLine == Color.Transparent | Colors.HistoryDownLine.A < 255)
+        Colors.HistoryDownLine = defaultColors.HistoryDownLine;
+      if (Colors.HistoryDownA == Color.Transparent | Colors.HistoryDownA.A < 255)
+        Colors.HistoryDownA = defaultColors.HistoryDownA;
+      if (Colors.HistoryDownB == Color.Transparent | Colors.HistoryDownB.A < 255)
+        Colors.HistoryDownB = defaultColors.HistoryDownB;
+      if (Colors.HistoryDownC == Color.Transparent | Colors.HistoryDownC.A < 255)
+        Colors.HistoryDownC = defaultColors.HistoryDownC;
+      if (Colors.HistoryUpLine == Color.Transparent | Colors.HistoryUpLine.A < 255)
+        Colors.HistoryUpLine = defaultColors.HistoryUpLine;
+      if (Colors.HistoryUpA == Color.Transparent | Colors.HistoryUpA.A < 255)
+        Colors.HistoryUpA = defaultColors.HistoryUpA;
+      if (Colors.HistoryUpB == Color.Transparent | Colors.HistoryUpB.A < 255)
+        Colors.HistoryUpB = defaultColors.HistoryUpB;
+      if (Colors.HistoryUpC == Color.Transparent | Colors.HistoryUpC.A < 255)
+        Colors.HistoryUpC = defaultColors.HistoryUpC;
+      if (Colors.HistoryText == Color.Transparent | Colors.HistoryText.A < 255)
+        Colors.HistoryText = defaultColors.HistoryText;
+      if (Colors.HistoryBackground == Color.Transparent | Colors.HistoryBackground.A < 255)
+        Colors.HistoryBackground = defaultColors.HistoryBackground;
+      if (Colors.HistoryLightGrid == Color.Transparent | Colors.HistoryLightGrid.A < 255)
+        Colors.HistoryLightGrid = defaultColors.HistoryLightGrid;
+      if (Colors.HistoryDarkGrid == Color.Transparent | Colors.HistoryDarkGrid.A < 255)
+        Colors.HistoryDarkGrid = defaultColors.HistoryDarkGrid;
+    }
+
+    public static AppSettings.AppColors GetDefaultColors(localRestrictionTracker.SatHostTypes useStyle)
+    {
+      AppSettings.AppColors outColors = new AppSettings.AppColors();
+      switch (useStyle)
+      {
+        case localRestrictionTracker.SatHostTypes.WildBlue_LEGACY:
+        case localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
+          outColors.MainDownA = Color.DarkBlue;
+          outColors.MainDownB = Color.Blue;
+          outColors.MainDownC = Color.Aqua;
+          outColors.MainUpA = Color.DarkBlue;
+          outColors.MainUpB = Color.Blue;
+          outColors.MainUpC = Color.Aqua;
+          outColors.MainText = Color.White;
+          outColors.MainBackground = Color.Black;
+
+          outColors.TrayDownA = Color.DarkBlue;
+          outColors.TrayDownB = Color.Blue;
+          outColors.TrayDownC = Color.Aqua;
+          outColors.TrayUpA = Color.DarkBlue;
+          outColors.TrayUpB = Color.Blue;
+          outColors.TrayUpC = Color.Aqua;
+
+          outColors.HistoryDownLine = Color.DarkBlue;
+          outColors.HistoryDownA = Color.DarkBlue;
+          outColors.HistoryDownB = Color.Blue;
+          outColors.HistoryDownC = Color.Aqua;
+          outColors.HistoryDownMax = Color.Yellow;
+          outColors.HistoryUpLine = Color.DarkBlue;
+          outColors.HistoryUpA = Color.DarkBlue;
+          outColors.HistoryUpB = Color.Blue;
+          outColors.HistoryUpC = Color.Aqua;
+          outColors.HistoryUpMax = Color.Yellow;
+          outColors.HistoryText = Color.Black;
+          outColors.HistoryBackground = Color.White;
+          outColors.HistoryLightGrid = Color.LightGray;
+          outColors.HistoryDarkGrid = Color.DarkGray;
+          break;
+        case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
+        case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
+          outColors.MainDownA = Color.DarkBlue;
+          outColors.MainDownB = Color.Blue;
+          outColors.MainDownC = Color.Aqua;
+          outColors.MainUpA = Color.Transparent;
+          outColors.MainUpB = Color.Transparent;
+          outColors.MainUpC = Color.Transparent;
+          outColors.MainText = Color.White;
+          outColors.MainBackground = Color.Black;
+
+          outColors.TrayDownA = Color.DarkBlue;
+          outColors.TrayDownB = Color.Blue;
+          outColors.TrayDownC = Color.Aqua;
+          outColors.TrayUpA = Color.Transparent;
+          outColors.TrayUpB = Color.Transparent;
+          outColors.TrayUpC = Color.Transparent;
+
+          outColors.HistoryDownLine = Color.DarkBlue;
+          outColors.HistoryDownA = Color.DarkBlue;
+          outColors.HistoryDownB = Color.Blue;
+          outColors.HistoryDownC = Color.Aqua;
+          outColors.HistoryDownMax = Color.Yellow;
+          outColors.HistoryUpLine = Color.DarkBlue;
+          outColors.HistoryUpA = Color.Transparent;
+          outColors.HistoryUpB = Color.Transparent;
+          outColors.HistoryUpC = Color.Transparent;
+          outColors.HistoryUpMax = Color.Transparent;
+          outColors.HistoryText = Color.Black;
+          outColors.HistoryBackground = Color.White;
+          outColors.HistoryLightGrid = Color.LightGray;
+          outColors.HistoryDarkGrid = Color.DarkGray;
+          break;
+
+        case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
+          outColors.MainDownA = Color.DarkBlue;
+          outColors.MainDownB = Color.Blue;
+          outColors.MainDownC = Color.Aqua;
+          outColors.MainUpA = Color.DarkBlue;
+          outColors.MainUpB = Color.Blue;
+          outColors.MainUpC = Color.Aqua;
+          outColors.MainText = Color.White;
+          outColors.MainBackground = Color.Black;
+
+          outColors.TrayDownA = Color.DarkBlue;
+          outColors.TrayDownB = Color.Blue;
+          outColors.TrayDownC = Color.Aqua;
+          outColors.TrayUpA = Color.DarkBlue;
+          outColors.TrayUpB = Color.Blue;
+          outColors.TrayUpC = Color.Aqua;
+
+          outColors.HistoryDownLine = Color.DarkBlue;
+          outColors.HistoryDownA = Color.DarkBlue;
+          outColors.HistoryDownB = Color.Blue;
+          outColors.HistoryDownC = Color.Aqua;
+          outColors.HistoryDownMax = Color.Yellow;
+          outColors.HistoryUpLine = Color.DarkBlue;
+          outColors.HistoryUpA = Color.DarkBlue;
+          outColors.HistoryUpB = Color.Blue;
+          outColors.HistoryUpC = Color.Aqua;
+          outColors.HistoryUpMax = Color.Yellow;
+          outColors.HistoryText = Color.Black;
+          outColors.HistoryBackground = Color.White;
+          outColors.HistoryLightGrid = Color.LightGray;
+          outColors.HistoryDarkGrid = Color.DarkGray;
+          break;
+
+        default:
+          outColors.MainDownA = Color.DarkBlue;
+          outColors.MainDownB = Color.Blue;
+          outColors.MainDownC = Color.Aqua;
+          outColors.MainUpA = Color.DarkBlue;
+          outColors.MainUpB = Color.Blue;
+          outColors.MainUpC = Color.Aqua;
+          outColors.MainText = Color.White;
+          outColors.MainBackground = Color.Black;
+
+          outColors.TrayDownA = Color.DarkBlue;
+          outColors.TrayDownB = Color.Blue;
+          outColors.TrayDownC = Color.Aqua;
+          outColors.TrayUpA = Color.DarkBlue;
+          outColors.TrayUpB = Color.Blue;
+          outColors.TrayUpC = Color.Aqua;
+
+          outColors.HistoryDownLine = Color.DarkBlue;
+          outColors.HistoryDownA = Color.DarkBlue;
+          outColors.HistoryDownB = Color.Blue;
+          outColors.HistoryDownC = Color.Aqua;
+          outColors.HistoryDownMax = Color.Yellow;
+          outColors.HistoryUpLine = Color.DarkBlue;
+          outColors.HistoryUpA = Color.DarkBlue;
+          outColors.HistoryUpB = Color.Blue;
+          outColors.HistoryUpC = Color.Aqua;
+          outColors.HistoryUpMax = Color.Yellow;
+          outColors.HistoryText = Color.Black;
+          outColors.HistoryBackground = Color.White;
+          outColors.HistoryLightGrid = Color.LightGray;
+          outColors.HistoryDarkGrid = Color.DarkGray;
+          break;
+      }
+      return(outColors);
+    }
+
+#endregion
 
     /// <summary>
     /// Attempts to see if a file is in use, waiting up to five seconds for it to be freed.
@@ -2171,14 +2187,21 @@ namespace RestrictionTrackerGTK
     #region "Image Stuff"
     public static Bitmap GetScreenRect(Rectangle rectIn)
     {
-      Gdk.Window window = Gdk.Global.DefaultRootWindow;
-      if (window != null)
-      {           
-        Gdk.Pixbuf scrnBuf = new Gdk.Pixbuf(Gdk.Colorspace.Rgb, false, 8, rectIn.Width, rectIn.Height);          
-        scrnBuf.GetFromDrawable(window, Gdk.Colormap.System, rectIn.X, rectIn.Y, 0, 0, rectIn.Width, rectIn.Height);  
-        return (Bitmap) PixbufToImage(scrnBuf);
+      try
+      {
+        Gdk.Window window = Gdk.Global.DefaultRootWindow;
+        if (window != null)
+        {           
+          Gdk.Pixbuf scrnBuf = new Gdk.Pixbuf(Gdk.Colorspace.Rgb, false, 8, rectIn.Width, rectIn.Height);          
+          scrnBuf.GetFromDrawable(window, Gdk.Colormap.System, rectIn.X, rectIn.Y, 0, 0, rectIn.Width, rectIn.Height);  
+          return (Bitmap) PixbufToImage(scrnBuf);
+        }
+        return null;
       }
-      return null;
+      catch(Exception)
+      {
+        return null;
+      }
     }
 
     public static Bitmap ReplaceColors(Bitmap bitIn, Color TransparencyKey, Bitmap bitBG)
@@ -2311,22 +2334,36 @@ namespace RestrictionTrackerGTK
 
     public static Gdk.Pixbuf ImageToPixbuf(Image img)
     {
-      using (MemoryStream ms = new MemoryStream())
+      try
       {
-        img.Save(ms, ImageFormat.Bmp);
-        ms.Position = 0;
-        Gdk.Pixbuf ret = new Gdk.Pixbuf(ms);
-        return ret;
+        using (MemoryStream ms = new MemoryStream())
+        {
+          img.Save(ms, ImageFormat.Png);
+          ms.Position = 0;
+          Gdk.Pixbuf ret = new Gdk.Pixbuf(ms);
+          return ret;
+        }
+      }
+      catch (Exception)
+      {
+        return Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.error.png");
       }
     }
 
     public static Image PixbufToImage(Gdk.Pixbuf pbf)
     {
-      byte[] img = pbf.SaveToBuffer("bmp");
-      using (MemoryStream ms = new MemoryStream(img))
+      try
       {
-        Image ret = Image.FromStream(ms);
-        return ret;
+        byte[] img = pbf.SaveToBuffer("png");
+        using (MemoryStream ms = new MemoryStream(img))
+        {
+          Image ret = Image.FromStream(ms);
+          return ret;
+        }
+      }
+      catch (Exception)
+      {
+        return ((Image) new System.Drawing.Bitmap(MainClass.fMain.GetType(), "Resources.error.png"));
       }
     }
     #endregion 
@@ -2528,6 +2565,41 @@ namespace RestrictionTrackerGTK
             return false;
           }
         }
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+
+    public static bool DirectoryEqualityCheck(string dirA, string dirB)
+    {
+      if (string.IsNullOrEmpty(dirA))
+      {
+        if (string.IsNullOrEmpty(dirB))
+        {
+          return true; 
+        }
+        else
+        {
+          return false;
+        }
+      }
+      else if (string.IsNullOrEmpty(dirB))
+      {
+        return false;
+      }
+      if (!dirA.EndsWith(Path.DirectorySeparatorChar.ToString()))
+      {
+        dirA += Path.DirectorySeparatorChar;
+      }
+      if (!dirB.EndsWith(Path.DirectorySeparatorChar.ToString()))
+      {
+        dirB += Path.DirectorySeparatorChar;
+      }
+      if (dirA == dirB)
+      {
         return true;
       }
       else

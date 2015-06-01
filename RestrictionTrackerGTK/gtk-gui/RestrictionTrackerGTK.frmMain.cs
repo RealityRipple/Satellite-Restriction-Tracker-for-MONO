@@ -84,6 +84,7 @@ namespace RestrictionTrackerGTK
 		private global::Gtk.Label lblStatus;
 		private global::Gtk.Statusbar sbMainStatus;
 		private global::Gtk.ProgressBar pbMainStatus;
+		private global::Gtk.Button cmdNetTest;
 		private global::Gtk.Label lblMainStatus;
 
 		protected virtual void Build ()
@@ -767,26 +768,51 @@ namespace RestrictionTrackerGTK
 			global::Gtk.Box.BoxChild w75 = ((global::Gtk.Box.BoxChild)(this.sbMainStatus [this.pbMainStatus]));
 			w75.Position = 1;
 			// Container child sbMainStatus.Gtk.Box+BoxChild
+			this.cmdNetTest = new global::Gtk.Button ();
+			this.cmdNetTest.CanFocus = true;
+			this.cmdNetTest.Name = "cmdNetTest";
+			this.cmdNetTest.UseUnderline = true;
+			this.cmdNetTest.Relief = ((global::Gtk.ReliefStyle)(2));
+			// Container child cmdNetTest.Gtk.Container+ContainerChild
+			global::Gtk.Alignment w76 = new global::Gtk.Alignment (0.5F, 0.5F, 0F, 0F);
+			// Container child GtkAlignment.Gtk.Container+ContainerChild
+			global::Gtk.HBox w77 = new global::Gtk.HBox ();
+			w77.Spacing = 2;
+			// Container child GtkHBox.Gtk.Container+ContainerChild
+			global::Gtk.Image w78 = new global::Gtk.Image ();
+			w77.Add (w78);
+			// Container child GtkHBox.Gtk.Container+ContainerChild
+			global::Gtk.Label w80 = new global::Gtk.Label ();
+			w77.Add (w80);
+			w76.Add (w77);
+			this.cmdNetTest.Add (w76);
+			this.sbMainStatus.Add (this.cmdNetTest);
+			global::Gtk.Box.BoxChild w84 = ((global::Gtk.Box.BoxChild)(this.sbMainStatus [this.cmdNetTest]));
+			w84.Position = 2;
+			w84.Expand = false;
+			w84.Fill = false;
+			// Container child sbMainStatus.Gtk.Box+BoxChild
 			this.lblMainStatus = new global::Gtk.Label ();
 			this.lblMainStatus.Name = "lblMainStatus";
 			this.lblMainStatus.SingleLineMode = true;
 			this.sbMainStatus.Add (this.lblMainStatus);
-			global::Gtk.Box.BoxChild w76 = ((global::Gtk.Box.BoxChild)(this.sbMainStatus [this.lblMainStatus]));
-			w76.Position = 2;
-			w76.Expand = false;
-			w76.Fill = false;
+			global::Gtk.Box.BoxChild w85 = ((global::Gtk.Box.BoxChild)(this.sbMainStatus [this.lblMainStatus]));
+			w85.Position = 3;
+			w85.Expand = false;
+			w85.Fill = false;
 			this.pnlDetails.Add (this.sbMainStatus);
-			global::Gtk.Box.BoxChild w77 = ((global::Gtk.Box.BoxChild)(this.pnlDetails [this.sbMainStatus]));
-			w77.Position = 2;
-			w77.Expand = false;
-			w77.Fill = false;
+			global::Gtk.Box.BoxChild w86 = ((global::Gtk.Box.BoxChild)(this.pnlDetails [this.sbMainStatus]));
+			w86.Position = 2;
+			w86.Expand = false;
+			w86.Fill = false;
 			this.Add (this.pnlDetails);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			this.DefaultWidth = 463;
-			this.DefaultHeight = 385;
+			this.DefaultWidth = 455;
+			this.DefaultHeight = 454;
 			this.Show ();
+			this.cmdNetTest.Clicked += new global::System.EventHandler (this.cmdNetTest_Clicked);
 		}
 	}
 }

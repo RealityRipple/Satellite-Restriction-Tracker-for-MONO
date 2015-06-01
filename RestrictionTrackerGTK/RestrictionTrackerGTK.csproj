@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{338E8717-AF65-4C97-908E-27E1CB16C652}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -11,7 +11,7 @@
     <AssemblyName>RestrictionTracker</AssemblyName>
     <StartupObject>RestrictionTrackerGTK.MainClass</StartupObject>
     <ApplicationIcon>Resources\sat.ico</ApplicationIcon>
-    <ReleaseVersion>1.3.2</ReleaseVersion>
+    <ReleaseVersion>1.3.3</ReleaseVersion>
     <Description>Satellite Restriction Tracker</Description>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>trackergtk.snk</AssemblyOriginatorKeyFile>
@@ -40,33 +40,27 @@
     <Reference Include="System" />
     <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <Package>gtk-sharp-2.0</Package>
-      <Private>False</Private>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="RestrictionTrackerLib">
       <HintPath>..\RestrictionTrackerLib.dll</HintPath>
     </Reference>
     <Reference Include="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <Private>False</Private>
       <Package>glade-sharp-2.0</Package>
     </Reference>
     <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <Private>False</Private>
       <Package>gtk-sharp-2.0</Package>
     </Reference>
     <Reference Include="Mono.Posix" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <Private>False</Private>
       <Package>gtk-sharp-2.0</Package>
     </Reference>
     <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <Private>False</Private>
       <Package>glib-sharp-2.0</Package>
     </Reference>
     <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <Private>False</Private>
       <Package>gtk-sharp-2.0</Package>
     </Reference>
     <Reference Include="appindicator-sharp">
@@ -141,6 +135,14 @@
     <EmbeddedResource Include="Resources\config\os x\prefs_power.png" />
     <EmbeddedResource Include="Resources\config\linux\prefs_interface.png" />
     <EmbeddedResource Include="Resources\config\os x\prefs_interface.png" />
+    <EmbeddedResource Include="Resources\config\linux\advanced_nettest_edit.png" />
+    <EmbeddedResource Include="Resources\config\linux\advanced_nettest_error.png" />
+    <EmbeddedResource Include="Resources\config\linux\advanced_nettest_load.png" />
+    <EmbeddedResource Include="Resources\config\linux\advanced_nettest_none.png" />
+    <EmbeddedResource Include="Resources\config\os x\advanced_nettest_edit.png" />
+    <EmbeddedResource Include="Resources\config\os x\advanced_nettest_error.png" />
+    <EmbeddedResource Include="Resources\config\os x\advanced_nettest_load.png" />
+    <EmbeddedResource Include="Resources\config\os x\advanced_nettest_none.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gtk-gui\generated.cs" />
@@ -156,11 +158,8 @@
     <Compile Include="gtk-gui\RestrictionTrackerGTK.frmAbout.cs" />
     <Compile Include="gtk-gui\RestrictionTrackerGTK.frmHistory.cs" />
     <Compile Include="gtk-gui\RestrictionTrackerGTK.frmMain.cs" />
-    <Compile Include="gtk-gui\RestrictionTrackerGTK.dlgUpdate.cs" />
-    <Compile Include="gtk-gui\RestrictionTrackerGTK.dlgCustomColors.cs" />
     <Compile Include="Forms\frmAbout.cs" />
     <Compile Include="Classes\clsNotifierStyle.cs" />
-    <Compile Include="gtk-gui\RestrictionTrackerGTK.dlgAlertSelection.cs" />
     <Compile Include="Classes\MacInterop\clsCarbon.cs" />
     <Compile Include="Classes\MacInterop\clsApplicationEvents.cs" />
     <Compile Include="AssemblyInfo.cs" />
@@ -173,6 +172,25 @@
     <Compile Include="Forms\Dialogs\dlgUpdate.cs" />
     <Compile Include="Forms\Dialogs\dlgConfig.cs" />
     <Compile Include="gtk-gui\RestrictionTrackerGTK.dlgConfig.cs" />
+    <Compile Include="Classes\clsFavicon.cs" />
+    <Compile Include="gtk-gui\RestrictionTrackerGTK.dlgAlertSelection.cs" />
+    <Compile Include="gtk-gui\RestrictionTrackerGTK.dlgCustomColors.cs" />
+    <Compile Include="gtk-gui\RestrictionTrackerGTK.dlgUpdate.cs" />
+    <Compile Include="Enums\LoadStates.cs" />
+    <Compile Include="Enums\UpdateTypes.cs" />
+    <Compile Include="Enums\TrayStyles.cs" />
+    <Compile Include="Enums\DateInterval.cs" />
+    <Compile Include="Enums\ResultType.cs" />
+    <Compile Include="Enums\BugReport\Mantis_Category.cs" />
+    <Compile Include="Enums\BugReport\Mantis_Priority.cs" />
+    <Compile Include="Enums\BugReport\Mantis_Severity.cs" />
+    <Compile Include="Enums\TaskbarStates.cs" />
+    <Compile Include="Classes\MacInterop\Enums\EventStatus.cs" />
+    <Compile Include="Classes\MacInterop\Enums\CarbonEventApple.cs" />
+    <Compile Include="Classes\MacInterop\Enums\CarbonEventClass.cs" />
+    <Compile Include="Classes\MacInterop\Enums\CarbonEventHandlerStatus.cs" />
+    <Compile Include="Enums\BugReport\Mantis_Reproducibility.cs" />
+    <Compile Include="Classes\MacInterop\CarbonEventTypeSpec.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -183,5 +201,8 @@
     <Folder Include="Classes\Visual Elements\" />
     <Folder Include="Forms\Dialogs\" />
     <Folder Include="Resources\config\" />
+    <Folder Include="Enums\" />
+    <Folder Include="Enums\BugReport\" />
+    <Folder Include="Classes\MacInterop\Enums\" />
   </ItemGroup>
 </Project>
