@@ -1218,6 +1218,8 @@ namespace RestrictionTrackerGTK
       else
       {
         cmdNetTest.Visible = true;
+        cmdNetTest.WidthRequest = 20;
+        cmdNetTest.HeightRequest = 20;
         string sNetTestIco = System.IO.Path.Combine(modFunctions.AppDataPath, "netTest.png");
         if (File.Exists(sNetTestIco))
         {
@@ -1251,6 +1253,8 @@ namespace RestrictionTrackerGTK
       try
       {
         cmdNetTest.Visible = true;
+        cmdNetTest.WidthRequest = 20;
+        cmdNetTest.HeightRequest = 20;
         if (e.Error != null)
         {
           ((Gtk.Image)((Gtk.HBox)((Gtk.Alignment) cmdNetTest.Child).Child).Children[0]).Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.error.png");
