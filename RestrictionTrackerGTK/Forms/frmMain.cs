@@ -1245,8 +1245,19 @@ namespace RestrictionTrackerGTK
     }
     bool ComparePixbufs(Gdk.Pixbuf Image1, Gdk.Pixbuf Image2)
     {
-      if (Image1.Width != Image2.Width | Image1.Height != Image2.Height)
+      if (Image1 == null)
         return false;
+      if (Image2 == null)
+        return false;
+      try
+      {
+        if (Image1.Width != Image2.Width | Image1.Height != Image2.Height)
+          return false;
+      }
+      catch (Exception)
+      {
+        return false;
+      }
       for (int y = 0; y < Image1.Height; y++)
       {
         for (int x = 0; x < Image1.Width; x++)
