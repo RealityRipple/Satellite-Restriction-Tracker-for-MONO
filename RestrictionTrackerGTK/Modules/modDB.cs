@@ -1,15 +1,14 @@
 using System;
 using System.IO;
 using RestrictionLibrary;
-
 namespace RestrictionTrackerGTK
 {
-	static class modDB
-	{
-		private const long HistoryAge = 1;
-		private static string sFile;
+  static class modDB
+  {
+    private const long HistoryAge = 1;
+    private static string sFile;
     private static DataBase withEventsField_usageDB;
-		static internal DataBase usageDB
+    static internal DataBase usageDB
     {
       get
       {
@@ -28,10 +27,9 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-
-		private static bool isLoaded;
-		private static bool isSaving;
-		public static byte LOG_State
+    private static bool isLoaded;
+    private static bool isSaving;
+    public static byte LOG_State
     {
       get
       {
@@ -46,16 +44,14 @@ namespace RestrictionTrackerGTK
         return 1;
       }
     }
-
-		public static string HistoryPath
+    public static string HistoryPath
     {
       get
       {
         return sFile;
       }
     }
-
-		public static void LOG_Add(System.DateTime dTime, long lDown, long lDownLim, long lUp, long lUpLim, bool Save = true)
+    public static void LOG_Add(System.DateTime dTime, long lDown, long lDownLim, long lUp, long lUpLim, bool Save = true)
     {
       if (!isLoaded)
       {
@@ -79,8 +75,7 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-
-		public static void LOG_Get(long lngIndex, out System.DateTime dtDate, out long lngDown, out long lngDownLim, out long lngUp, out long lngUpLim)
+    public static void LOG_Get(long lngIndex, out System.DateTime dtDate, out long lngDown, out long lngDownLim, out long lngUp, out long lngUpLim)
     {
       if (isLoaded)
       {
@@ -101,8 +96,7 @@ namespace RestrictionTrackerGTK
       lngUp = 0;
       lngUpLim = 0;
     }
-
-		public static int LOG_GetCount()
+    public static int LOG_GetCount()
     {
       if (!isLoaded)
       {
@@ -114,8 +108,7 @@ namespace RestrictionTrackerGTK
       }
       return usageDB.Count;
     }
-
-		public static System.DateTime LOG_GetLast()
+    public static System.DateTime LOG_GetLast()
     {
       if (!isLoaded)
       {
@@ -130,8 +123,7 @@ namespace RestrictionTrackerGTK
         return new System.DateTime(1970, 1, 1);
       }
     }
-
-		public static void LOG_Initialize(string sAccount, bool withDisplay)
+    public static void LOG_Initialize(string sAccount, bool withDisplay)
     {
       isLoaded = false;
       sFile = Path.Combine(modFunctions.MySaveDir(true), "History-" + sAccount + ".wb");
@@ -162,8 +154,7 @@ namespace RestrictionTrackerGTK
       }
       isLoaded = true;
     }
-
-		public static void LOG_Terminate(bool withSave)
+    public static void LOG_Terminate(bool withSave)
     {
       if (!isLoaded)
       {
@@ -187,8 +178,7 @@ namespace RestrictionTrackerGTK
         usageDB = null;
       }
     }
-
-		public static void LOG_Sort()
+    public static void LOG_Sort()
     {
       if (!isLoaded)
       {
@@ -204,29 +194,31 @@ namespace RestrictionTrackerGTK
         usageDB.Sort();
       }
     }
-
-		static internal void LOG_Save()
+    static internal void LOG_Save()
     {
       LOG_Save(false);
     }
-		static internal void LOG_Save(bool withDisplay)
-		{
-			if (!isLoaded)
-				return;
-			if (!string.IsNullOrEmpty(sFile)) {
-				isSaving = true;
-				if (!Directory.Exists(Path.GetDirectoryName(sFile)))
-					Directory.CreateDirectory(Path.GetDirectoryName(sFile));
-				if (modFunctions.InUseChecker(sFile, FileAccess.Write)) {
-					usageDB.Save(sFile, withDisplay);
-				} else {
-          modFunctions.ShowMessageBox(null, "Your history file could not be saved because another program is using it!", "History Log in Use", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok );
-				}
-				isSaving = false;
-			}
-		}
-
-		private static long FileLen(string Path)
+    static internal void LOG_Save(bool withDisplay)
+    {
+      if (!isLoaded)
+        return;
+      if (!string.IsNullOrEmpty(sFile))
+      {
+        isSaving = true;
+        if (!Directory.Exists(Path.GetDirectoryName(sFile)))
+          Directory.CreateDirectory(Path.GetDirectoryName(sFile));
+        if (modFunctions.InUseChecker(sFile, FileAccess.Write))
+        {
+          usageDB.Save(sFile, withDisplay);
+        }
+        else
+        {
+          modFunctions.ShowMessageBox(null, "Your history file could not be saved because another program is using it!", "History Log in Use", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+        }
+        isSaving = false;
+      }
+    }
+    private static long FileLen(string Path)
     {
       if (File.Exists(Path))
       {
@@ -234,7 +226,6 @@ namespace RestrictionTrackerGTK
       }
       return -1;
     }
-
     private static void usageDB_ProgressState(object o, DataBase.ProgressStateEventArgs e)
     {
       if (MainClass.fHistory != null)
@@ -246,6 +237,5 @@ namespace RestrictionTrackerGTK
         MainClass.fMain.SetProgress(e.Value, e.Total, "");
       }
     }
-	}
+  }
 }
-

@@ -2,7 +2,6 @@ using System;
 using System.Drawing;
 using System.IO;
 using Gtk;
-
 namespace RestrictionTrackerGTK
 {
   public partial class dlgAlertSelection : Gtk.Dialog
@@ -11,22 +10,21 @@ namespace RestrictionTrackerGTK
     private ListBox lstStyles;
     public string AlertStyle;
     private bool Changed;
-
     public dlgAlertSelection(string style)
     {
       AlertStyle = style;
       this.Build();
-      ((Gtk.Box.BoxChild)this.ActionArea[lblMore]).Position = 0;
-      ((Gtk.Box.BoxChild)this.ActionArea[vsButtons]).Position = 1;
+      ((Gtk.Box.BoxChild) this.ActionArea[lblMore]).Position = 0;
+      ((Gtk.Box.BoxChild) this.ActionArea[vsButtons]).Position = 1;
       if (CurrentOS.IsMac)
       {
-        ((Gtk.Box.BoxChild)this.ActionArea[cmdClose]).Position = 2;
-        ((Gtk.Box.BoxChild)this.ActionArea[cmdSave]).Position = 3;
+        ((Gtk.Box.BoxChild) this.ActionArea[cmdClose]).Position = 2;
+        ((Gtk.Box.BoxChild) this.ActionArea[cmdSave]).Position = 3;
       }
       else
       {
-        ((Gtk.Box.BoxChild)this.ActionArea[cmdSave]).Position = 2;
-        ((Gtk.Box.BoxChild)this.ActionArea[cmdClose]).Position = 3;
+        ((Gtk.Box.BoxChild) this.ActionArea[cmdSave]).Position = 2;
+        ((Gtk.Box.BoxChild) this.ActionArea[cmdClose]).Position = 3;
       }
       this.WindowStateEvent += HandleWindowStateEvent;
       cmdSave.Clicked += cmdSave_Click;
@@ -36,10 +34,10 @@ namespace RestrictionTrackerGTK
       sclStyles.Add(lstStyles);
       pnlListBox.Add(sclStyles);
       lstStyles.SetSizeRequest(150, 0);
-      ((Gtk.Box.BoxChild)pnlListBox[sclStyles]).Position = 1;
-      ((Gtk.Box.BoxChild)pnlListBox[sclStyles]).Expand = true;
-      ((Gtk.Box.BoxChild)pnlListBox[sclStyles]).Fill = true;
-      ((Gtk.Box.BoxChild)pnlListBox[pnlListButtons]).Position = 2;
+      ((Gtk.Box.BoxChild) pnlListBox[sclStyles]).Position = 1;
+      ((Gtk.Box.BoxChild) pnlListBox[sclStyles]).Expand = true;
+      ((Gtk.Box.BoxChild) pnlListBox[sclStyles]).Fill = true;
+      ((Gtk.Box.BoxChild) pnlListBox[pnlListButtons]).Position = 2;
       sclStyles.Visible = true;
       lstStyles.Visible = true;
       lstStyles.Columns[0].Resizable = false;
@@ -52,7 +50,7 @@ namespace RestrictionTrackerGTK
       lstStyles.DragDrop += lstStyles_DragDrop;
 
       lstStyles.KeyReleaseEvent += lstStyles_KeyReleased;
-      evntPreview.AddEvents((int)Gdk.EventMask.ButtonReleaseMask);
+      evntPreview.AddEvents((int) Gdk.EventMask.ButtonReleaseMask);
       evntPreview.ButtonReleaseEvent += evntPreview_ButtonRelease;
 
 
@@ -96,7 +94,6 @@ namespace RestrictionTrackerGTK
       this.GdkWindow.Functions = Gdk.WMFunction.All | Gdk.WMFunction.Maximize | Gdk.WMFunction.Minimize | Gdk.WMFunction.Resize;
       lstStyles_ItemSelected(lstStyles.SelectedItems);
     }
-
     void HandleWindowStateEvent(object o, WindowStateEventArgs args)
     {
       if (args.Event.ChangedMask == Gdk.WindowState.Iconified)
@@ -107,7 +104,6 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-
     void lstStyles_KeyReleased(object o, KeyReleaseEventArgs args)
     {
       if (args.Event.Key == Gdk.Key.Delete)
@@ -121,7 +117,7 @@ namespace RestrictionTrackerGTK
           {
             GLib.Value val = new GLib.Value();
             lstStyles.Model.GetValue(iter, 0, ref val);
-            if ((string)val.Val == sTitle)
+            if ((string) val.Val == sTitle)
             {
               break;
             }
@@ -163,14 +159,12 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-
     private void cmdSave_Click(object sender, EventArgs e)
     {
       AlertStyle = lstStyles.SelectedItems[0];
       Changed = true;
       cmdSave.Sensitive = false;
     }
-
     private void cmdClose_Click(object sender, EventArgs e)
     {
       if (Changed)
@@ -182,7 +176,6 @@ namespace RestrictionTrackerGTK
         this.Respond(Gtk.ResponseType.No);
       }
     }
-
     private void lstStyles_ItemSelected(string[] selected)
     {
       NotifierStyle notifyTest = modFunctions.LoadAlertStyle(selected[0]);
@@ -223,7 +216,6 @@ namespace RestrictionTrackerGTK
       cmdSave.Sensitive = ! (selected[0].ToLower() == AlertStyle.ToLower());
       cmdRemove.Sensitive = !(selected[0].ToLower() == "default");
     }
-
     private void lstStyles_DragMotion(object sender, DragMotionArgs e)
     {
       bool ok = false;
@@ -234,12 +226,11 @@ namespace RestrictionTrackerGTK
           ok = true;
           Gdk.Atom targ = t;
           lstStyles.DragDataReceived += lstStyles_DragDataReceived_Motion;
-          Gtk.Drag.GetData((Gtk.Widget)sender, e.Context, targ, e.Time);
+          Gtk.Drag.GetData((Gtk.Widget) sender, e.Context, targ, e.Time);
         }
       }
       e.RetVal = ok;
     }
-
     private void lstStyles_DragDrop(object sender, DragDropArgs e)
     {
       if (e.Context.Targets.Length != 0)
@@ -252,7 +243,7 @@ namespace RestrictionTrackerGTK
             targ = t;
             lstStyles.DragDataReceived -= lstStyles_DragDataReceived_Motion;
             lstStyles.DragDataReceived += lstStyles_DragDataReceived_Drop;
-            Gtk.Drag.GetData((Gtk.Widget)sender, e.Context, targ, e.Time);
+            Gtk.Drag.GetData((Gtk.Widget) sender, e.Context, targ, e.Time);
             e.RetVal = true;
             break;
           }
@@ -267,7 +258,6 @@ namespace RestrictionTrackerGTK
         e.RetVal = false;
       }
     }
-
     private void lstStyles_DragDataReceived_Motion(object sender, DragDataReceivedArgs e)
     {
       if (e.SelectionData.Length > 0 && e.SelectionData.Format == 8)
@@ -306,7 +296,6 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-
     private void lstStyles_DragDataReceived_Drop(object sender, DragDataReceivedArgs e)
     {
       if (e.SelectionData.Length > 0 && e.SelectionData.Format == 8)
@@ -337,7 +326,7 @@ namespace RestrictionTrackerGTK
               {
                 GLib.Value val = new GLib.Value();
                 lstStyles.Model.GetValue(iter, 0, ref val);
-                if ((string)val.Val == sTitle)
+                if ((string) val.Val == sTitle)
                 {
                   Add = false;
                   break;
@@ -355,7 +344,7 @@ namespace RestrictionTrackerGTK
                 {
                   GLib.Value val = new GLib.Value();
                   lstStyles.Model.GetValue(iterSel, 0, ref val);
-                  if ((string)val.Val == sTitle)
+                  if ((string) val.Val == sTitle)
                   {
                     lstStyles.Selection.SelectIter(iterSel);
                     break;
@@ -369,7 +358,6 @@ namespace RestrictionTrackerGTK
       }
       lstStyles.DragDataReceived -= lstStyles_DragDataReceived_Drop;
     }
-
     private void evntPreview_ButtonRelease(object sender, ButtonReleaseEventArgs e)
     {
       if (e.Event.Button == 3)
@@ -389,7 +377,6 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-
     protected void cmdAdd_Clicked(object sender, EventArgs e)
     {
       FileChooserDialog cdlOpen = new FileChooserDialog("Add Alert Window Styles", this, FileChooserAction.Open, Gtk.Stock.Cancel, Gtk.ResponseType.Cancel, Gtk.Stock.Open, Gtk.ResponseType.Ok);
@@ -401,7 +388,7 @@ namespace RestrictionTrackerGTK
       cdlOpen.AddFilter(fTGZ);
       cdlOpen.SelectMultiple = true;
       cdlOpen.SetCurrentFolder(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
-      ResponseType ret = (ResponseType)cdlOpen.Run();
+      ResponseType ret = (ResponseType) cdlOpen.Run();
       string[] sRet = cdlOpen.Filenames;
       FileFilter fRet = cdlOpen.Filter;
       cdlOpen.Destroy();
@@ -428,7 +415,7 @@ namespace RestrictionTrackerGTK
               {
                 GLib.Value val = new GLib.Value();
                 lstStyles.Model.GetValue(iter, 0, ref val);
-                if ((string)val.Val == sTitle)
+                if ((string) val.Val == sTitle)
                 {
                   Add = false;
                   break;
@@ -446,7 +433,7 @@ namespace RestrictionTrackerGTK
                 {
                   GLib.Value val = new GLib.Value();
                   lstStyles.Model.GetValue(iterSel, 0, ref val);
-                  if ((string)val.Val == sTitle)
+                  if ((string) val.Val == sTitle)
                   {
                     lstStyles.Selection.SelectIter(iterSel);
                     break;
@@ -458,7 +445,6 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-
     protected void cmdRemove_Clicked(object sender, EventArgs e)
     {
       if (lstStyles.SelectedItems.Length > 0)
@@ -470,7 +456,7 @@ namespace RestrictionTrackerGTK
         {
           GLib.Value val = new GLib.Value();
           lstStyles.Model.GetValue(iter, 0, ref val);
-          if ((string)val.Val == sTitle)
+          if ((string) val.Val == sTitle)
           {
             break;
           }
@@ -512,14 +498,12 @@ namespace RestrictionTrackerGTK
       }
     }
   }
-
   class ListBox : ListView<string>
   {
     public ListBox(params string[] columnNames) : base(columnNames)
     {
 
     }
-
     protected override void RenderCell(CellRendererText render, int index, string item)
     {
       render.Text = item;

@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Drawing;
-
 namespace RestrictionTrackerGTK
 {
   public class clsFavicon : IDisposable
@@ -26,17 +25,96 @@ namespace RestrictionTrackerGTK
       }
     }
     public event DownloadIconCompletedEventHandler DownloadIconCompleted;
-    public delegate void DownloadIconCompletedEventHandler(object sender, DownloadIconCompletedEventArgs e);
+    public delegate void DownloadIconCompletedEventHandler(object sender,DownloadIconCompletedEventArgs e);
     public clsFavicon(string URL)
     {
       if (string.IsNullOrEmpty(URL))
         return;
+      System.Threading.Thread connectThread = new System.Threading.Thread(new System.Threading.ParameterizedThreadStart(BeginConnect));
+      connectThread.Start((object) URL);
+    }
+    private void BeginConnect(object o)
+    {
+      string URL = (string) o;
       if (!URL.Contains("://"))
         URL = "http://" + URL;
-      ConnectToURL(new Uri(URL), URL);
+      Uri URI;
+      try
+      {
+        URI = new Uri(URL);
+      }
+      catch (Exception)
+      {
+        return;
+      }
+      ConnectToURL(URI, URL);
     }
     private void ConnectToURL(Uri URL, object token)
     {
+      if (URL.Host == "192.168.100.1")
+      {
+        if (DownloadIconCompleted != null)
+        {
+          DownloadIconCompleted(this, new DownloadIconCompletedEventArgs(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.modem16.png"), Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.modem32.png")));
+        }
+        else
+        {
+          Console.WriteLine("Not yet created... Trying again for the next second... >.> ");
+          long GiveUp = modFunctions.TickCount() + 1000;
+          do
+          {
+            System.Threading.Thread.Sleep(0);
+            Gtk.Application.RunIteration();
+          } while (DownloadIconCompleted == null & modFunctions.TickCount() < GiveUp);
+          if (DownloadIconCompleted != null)
+          {
+            Console.WriteLine("It was created in time... this time. :( ");
+            DownloadIconCompleted(this, new DownloadIconCompletedEventArgs(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.modem16.png"), Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.modem32.png")));
+          }
+          else
+          {
+            Console.WriteLine("Not created! The event did not get triggered at all. >:[ ");
+          }
+        }
+        return;
+      }
+      try
+      {
+        System.Net.IPAddress[] urlRes = System.Net.Dns.GetHostAddresses(URL.Host);
+        foreach (System.Net.IPAddress addr in urlRes)
+        {
+          if (addr.ToString() == "192.168.100.1")
+          {
+            if (DownloadIconCompleted != null)
+            {
+              DownloadIconCompleted(this, new DownloadIconCompletedEventArgs(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.modem16.png"), Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.modem32.png")));
+            }
+            else
+            {
+              Console.WriteLine("Not yet created... Trying again for the next second... >.> ");
+              long GiveUp = modFunctions.TickCount() + 1000;
+              do
+              {
+                System.Threading.Thread.Sleep(0);
+                Gtk.Application.RunIteration();
+              } while (DownloadIconCompleted == null & modFunctions.TickCount() < GiveUp);
+              if (DownloadIconCompleted != null)
+              {
+                Console.WriteLine("It was created in time... this time. :( ");
+                DownloadIconCompleted(this, new DownloadIconCompletedEventArgs(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.modem16.png"), Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.modem32.png")));
+              }
+              else
+              {
+                Console.WriteLine("Not created! The event did not get triggered at all. >:[ ");
+              }
+            }
+            return;
+          }
+        }
+      }
+      catch (Exception)
+      {
+      }
       try
       {
         wsNetTest = new RestrictionLibrary.WebClientEx();
@@ -44,30 +122,47 @@ namespace RestrictionTrackerGTK
         wsNetTest.ErrorBypass = true;
         wsNetTest.DownloadStringAsync(URL, token);
       }
-      catch(Exception)
+      catch (Exception)
       {
         if (DownloadIconCompleted != null)
         {
           DownloadIconCompleted(this, new DownloadIconCompletedEventArgs(new Exception("Failed to initialize connection to \"" + URL.OriginalString + "\"!")));
         }
+        else
+        {
+          Console.WriteLine("Not yet created... Trying again for the next second... >.> ");
+          long GiveUp = modFunctions.TickCount() + 1000;
+          do
+          {
+            System.Threading.Thread.Sleep(0);
+            Gtk.Application.RunIteration();
+          } while (DownloadIconCompleted == null & modFunctions.TickCount() < GiveUp);
+          if (DownloadIconCompleted != null)
+          {
+            Console.WriteLine("It was created in time... this time. :( ");
+            DownloadIconCompleted(this, new DownloadIconCompletedEventArgs(new Exception("Failed to initialize connection to \"" + URL.OriginalString + "\"!")));
+          }
+          else
+          {
+            Console.WriteLine("Not created! The event did not get triggered at all. >:[ ");
+          }
+        }
       }
     }
-
     private void ConnectToFile(Uri URL, string Filename)
     {
       ConnectToFile(URL, Filename, null);
     }
-    
     private void ConnectToFile(Uri URL, string Filename, object token)
     {
       try
       {
         wsNetTest = new RestrictionLibrary.WebClientEx();
-        wsNetTest.DownloadFileCompleted+= wsNetTest_DownloadFileCompleted;
+        wsNetTest.DownloadFileCompleted += wsNetTest_DownloadFileCompleted;
         wsNetTest.ErrorBypass = true;
         wsNetTest.DownloadFileAsync(URL, Filename, token);
       }
-      catch(Exception)
+      catch (Exception)
       {
         if (DownloadIconCompleted != null)
         {
@@ -75,8 +170,7 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-
-    private Bitmap GenerateCloneImage(Image fromImage,int width,int height)
+    private Bitmap GenerateCloneImage(Image fromImage, int width, int height)
     {
       using (Bitmap newImage = new Bitmap(width, height))
       {
@@ -87,7 +181,6 @@ namespace RestrictionTrackerGTK
         return (Bitmap) newImage.Clone();
       }
     }
-
     private Bitmap GenerateCloneImage(Icon fromIcon)
     {
       using (Bitmap newImage = new Bitmap(fromIcon.Width, fromIcon.Height))
@@ -99,8 +192,7 @@ namespace RestrictionTrackerGTK
         return (Bitmap) newImage.Clone();
       }
     }
-    
-    void wsNetTest_DownloadFileCompleted (object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+    void wsNetTest_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
     {
       if (e.Error != null)
       {
@@ -113,8 +205,8 @@ namespace RestrictionTrackerGTK
         }
         else
         {
-          Uri pathURL = new Uri((string)e.UserState);
-          ConnectToFile(new Uri(pathURL.Scheme + "://" + pathURL.Host + "/favicon.ico"), Path.Combine(Path.GetTempPath(), "srt_nettest_favicon.ico"), null);
+          Uri pathURL = new Uri((string) e.UserState);
+          ConnectToFile(new Uri(pathURL.Scheme + "://" + pathURL.Host + "/favicon.ico"), Path.Combine(modFunctions.AppData, "srt_nettest_favicon.ico"), null);
         }
         return;
       }
@@ -122,7 +214,7 @@ namespace RestrictionTrackerGTK
       {
         return;
       }
-      string imgFile = Path.Combine(Path.GetTempPath(), "srt_nettest_favicon.ico");
+      string imgFile = Path.Combine(modFunctions.AppData, "srt_nettest_favicon.ico");
       Bitmap pctPNG16, pctPNG32;
       bool didOK = true;
       pctPNG16 = new Bitmap(16, 16);
@@ -136,7 +228,7 @@ namespace RestrictionTrackerGTK
         }
         try
         {
-          switch (BitConverter.ToUInt32(imgHeader,0))
+          switch (BitConverter.ToUInt32(imgHeader, 0))
           {
             case 0x00010000:
               using (Icon ico = new Icon(imgFile, 16, 16))
@@ -165,7 +257,7 @@ namespace RestrictionTrackerGTK
               break;
           }
         }
-        catch(Exception)
+        catch (Exception)
         {
           didOK = false;
         }
@@ -201,13 +293,12 @@ namespace RestrictionTrackerGTK
         pctPNG32 = null;
       }
     }
-
-    void wsNetTest_DownloadStringCompleted (object sender, System.Net.DownloadStringCompletedEventArgs e)
+    void wsNetTest_DownloadStringCompleted(object sender, System.Net.DownloadStringCompletedEventArgs e)
     {
       if (e.Error != null)
       {
         Uri pathURL = new Uri((string) e.UserState);
-        ConnectToFile(new Uri(pathURL.Scheme + "://" + pathURL.Host + "/favicon.ico"), Path.Combine(Path.GetTempPath(), "srt_nettest_favicon.ico"), null);
+        ConnectToFile(new Uri(pathURL.Scheme + "://" + pathURL.Host + "/favicon.ico"), Path.Combine(modFunctions.AppData, "srt_nettest_favicon.ico"), null);
       }
       else if (e.Cancelled)
       {
@@ -222,7 +313,7 @@ namespace RestrictionTrackerGTK
           {
             int startsAt = sHTML.ToLower().IndexOf("shortcut icon");
             int endsAt = startsAt + 13;
-            sHTML = sHTML.Substring(0,startsAt) + "icon" + sHTML.Substring(endsAt);
+            sHTML = sHTML.Substring(0, startsAt) + "icon" + sHTML.Substring(endsAt);
           }
           if (sHTML.ToLower().Contains("rel=\"icon\""))
           {
@@ -267,7 +358,7 @@ namespace RestrictionTrackerGTK
                         else
                           URL = oldURL + "/" + URL;
                       }
-                      ConnectToFile(new Uri(URL), Path.Combine(Path.GetTempPath(), "srt_nettest_favicon.ico"), URL);
+                      ConnectToFile(new Uri(URL), Path.Combine(modFunctions.AppData, "srt_nettest_favicon.ico"), URL);
                       return;
                     }
                   }
@@ -280,10 +371,9 @@ namespace RestrictionTrackerGTK
         {
         }
         Uri pathURL = new Uri((string) e.UserState);
-        ConnectToFile(new Uri(pathURL.Scheme + "://" + pathURL.Host + "/favicon.ico"), Path.Combine(Path.GetTempPath(), "srt_nettest_favicon.ico"), null);
+        ConnectToFile(new Uri(pathURL.Scheme + "://" + pathURL.Host + "/favicon.ico"), Path.Combine(modFunctions.AppData, "srt_nettest_favicon.ico"), null);
       }
     }
-
     #region "IDisposable Support"
     private bool disposedValue;
     protected virtual void Dispose(bool disposing)
@@ -302,7 +392,6 @@ namespace RestrictionTrackerGTK
             wsNetTest = null;
           }
         }
-
       }
       this.disposedValue = true;
     }
@@ -314,4 +403,3 @@ namespace RestrictionTrackerGTK
     #endregion
   }
 }
-

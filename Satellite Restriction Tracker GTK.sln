@@ -35,9 +35,13 @@ Global
 		$3.PropertyBraceStyle = NextLine
 		$3.PropertyGetBraceStyle = NextLine
 		$3.PropertySetBraceStyle = NextLine
+		$3.AllowPropertyGetBlockInline = False
+		$3.AllowPropertySetBlockInline = False
 		$3.EventBraceStyle = NextLine
 		$3.EventAddBraceStyle = NextLine
 		$3.EventRemoveBraceStyle = NextLine
+		$3.AllowEventAddBlockInline = False
+		$3.AllowEventRemoveBlockInline = False
 		$3.StatementBraceStyle = NextLine
 		$3.ElseNewLinePlacement = NewLine
 		$3.ElseIfNewLinePlacement = SameLine
@@ -48,12 +52,26 @@ Global
 		$3.BeforeMethodDeclarationParentheses = False
 		$3.BeforeMethodCallParentheses = False
 		$3.BeforeConstructorDeclarationParentheses = False
+		$3.BeforeIndexerDeclarationBracket = False
 		$3.BeforeDelegateDeclarationParentheses = False
 		$3.NewParentheses = False
 		$3.SpacesBeforeBrackets = False
+		$3.SpacesAfterTypecast = True
 		$3.BlankLinesAfterUsings = 0
 		$3.BlankLinesBetweenTypes = 0
 		$3.BlankLinesBetweenMembers = 0
+		$3.MethodCallArgumentWrapping = DoNotWrap
+		$3.NewLineAferMethodCallOpenParentheses = SameLine
+		$3.MethodCallClosingParenthesesOnNewLine = SameLine
+		$3.MethodDeclarationParameterWrapping = DoNotWrap
+		$3.NewLineAferMethodDeclarationOpenParentheses = SameLine
+		$3.MethodDeclarationClosingParenthesesOnNewLine = SameLine
+		$3.IndexerDeclarationParameterWrapping = DoNotWrap
+		$3.NewLineAferIndexerDeclarationOpenBracket = SameLine
+		$3.IndexerDeclarationClosingBracketOnNewLine = SameLine
+		$3.IndexerArgumentWrapping = DoNotWrap
+		$3.NewLineAferIndexerOpenBracket = SameLine
+		$3.IndexerClosingBracketOnNewLine = SameLine
 		$3.inheritsSet = Mono
 		$3.inheritsScope = text/x-csharp
 		$3.scope = text/x-csharp
@@ -211,6 +229,6 @@ Global
 		$32.inheritsScope = text/plain
 		$32.scope = text/plain
 		description = Satellite Restriction Tracker
-		version = 1.3.22.2
+		version = 1.3.22.3
 	EndGlobalSection
 EndGlobal

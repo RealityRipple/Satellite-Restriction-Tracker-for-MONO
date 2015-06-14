@@ -1,24 +1,22 @@
 using System;
-
 namespace RestrictionTrackerGTK
 {
   public partial class dlgUpdate : Gtk.Dialog
   {
     private RestrictionLibrary.WebClientEx sckVerInfo;
     private bool Ret;
-
     public dlgUpdate()
     {
       this.Build();
       if (CurrentOS.IsMac)
       {
-        ((Gtk.Box.BoxChild)this.ActionArea[cmdDownload]).Position = 1;
-        ((Gtk.Box.BoxChild)this.ActionArea[cmdCancel]).Position = 0;
+        ((Gtk.Box.BoxChild) this.ActionArea[cmdDownload]).Position = 1;
+        ((Gtk.Box.BoxChild) this.ActionArea[cmdCancel]).Position = 0;
       }
       else
       {
-        ((Gtk.Box.BoxChild)this.ActionArea[cmdDownload]).Position = 0;
-        ((Gtk.Box.BoxChild)this.ActionArea[cmdCancel]).Position = 1;
+        ((Gtk.Box.BoxChild) this.ActionArea[cmdDownload]).Position = 0;
+        ((Gtk.Box.BoxChild) this.ActionArea[cmdCancel]).Position = 1;
       }
       this.Show();
       this.GdkWindow.SetDecorations(Gdk.WMDecoration.All | Gdk.WMDecoration.Maximize | Gdk.WMDecoration.Minimize | Gdk.WMDecoration.Resizeh | Gdk.WMDecoration.Menu);
@@ -28,11 +26,8 @@ namespace RestrictionTrackerGTK
       sckVerInfo.DownloadStringCompleted += sckVerInfo_DownloadStringCompleted;
       sckVerInfo.Failure += sckVerInfo_Failure;
       Ret = false;
-
-
       this.Close += frmUpdate_FormClosing;
     }
-
     void HandleWindowStateEvent(object o, Gtk.WindowStateEventArgs args)
     {
       if (args.Event.ChangedMask == Gdk.WindowState.Iconified)
@@ -43,7 +38,6 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-
     public void NewUpdate(string Version, bool BETA)
     {
       Ret = false;
@@ -67,7 +61,6 @@ namespace RestrictionTrackerGTK
       lblBETA.Visible = BETA;
       chkStopBETA.Visible = BETA;
     }
-
     protected void cmdDownload_Click(object o, EventArgs e)
     {
       Ret = true;
@@ -80,7 +73,6 @@ namespace RestrictionTrackerGTK
         this.Respond(Gtk.ResponseType.Yes);
       }
     }
-
     protected void cmdCancel_Click(object o, EventArgs e)
     {
       Ret = true;
@@ -93,8 +85,7 @@ namespace RestrictionTrackerGTK
         this.Respond(Gtk.ResponseType.No);
       }
     }
-
-    protected void cmdChanges_Click (object sender, EventArgs e)
+    protected void cmdChanges_Click(object sender, EventArgs e)
     {
       if (scrInfo.Visible)
       {
@@ -120,7 +111,6 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-
     protected void frmUpdate_FormClosing(object o, EventArgs e)
     {
       if (!Ret)
@@ -128,7 +118,6 @@ namespace RestrictionTrackerGTK
         this.Respond(Gtk.ResponseType.No);
       }
     }
-
     private void sckVerInfo_DownloadStringCompleted(object o, System.Net.DownloadStringCompletedEventArgs e)
     {
       if (e.Cancelled)
@@ -146,14 +135,11 @@ namespace RestrictionTrackerGTK
       cmdChanges.Sensitive = true;
       cmdChanges.GrabFocus();
     }
-
     private void sckVerInfo_Failure(object o, RestrictionLibrary.WebClientEx.ErrorEventArgs e)
     {
       txtInfo.Buffer.Text = "Info Request Error\n" + e.Error.Message;
       cmdChanges.Sensitive = true;
       cmdChanges.GrabFocus();
     }
-
-
   }
 }

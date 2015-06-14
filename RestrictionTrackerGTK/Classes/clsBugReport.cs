@@ -1,12 +1,11 @@
 using System;
-
-namespace RestrictionTrackerGTK
+using RestrictionTrackerGTK;
+namespace MantisBugTracker
 {
-	internal class MantisReporter
-	{
-		private static RestrictionLibrary.WebClientEx httpSend;
-
-		private static string GetToken(int Project_ID)
+  internal class MantisReporter
+  {
+    private static RestrictionLibrary.WebClientEx httpSend;
+    private static string GetToken(int Project_ID)
     {
       System.Collections.Specialized.NameValueCollection pD1 = new System.Collections.Specialized.NameValueCollection();
       pD1.Add("ref", "bug_report_page.php");
@@ -26,9 +25,7 @@ namespace RestrictionTrackerGTK
         return null;
       }
     }
-
-		private static string ReportBug(string Token, int Project_ID, Mantis_Category Category, Mantis_Reproducibility Reproducable, Mantis_Severity Severity, Mantis_Priority Priority, string Platform, string OS, string OS_Build, string Summary,
-		string Description, string Steps, string Info, bool Public)
+    private static string ReportBug(string Token, int Project_ID, Mantis_Category Category, Mantis_Reproducibility Reproducable, Mantis_Severity Severity, Mantis_Priority Priority, string Platform, string OS, string OS_Build, string Summary, string Description, string Steps, string Info, bool Public)
     {
       System.Collections.Specialized.NameValueCollection pData = new System.Collections.Specialized.NameValueCollection();
       pData.Add("bug_report_token", Token);
@@ -70,8 +67,7 @@ namespace RestrictionTrackerGTK
         return sRet;
       }
     }
-
-		static internal string ReportIssue(Exception e)
+    static internal string ReportIssue(Exception e)
     {
       if (httpSend != null)
       {
@@ -145,8 +141,7 @@ namespace RestrictionTrackerGTK
       }
       string MyOS = CurrentOS.Name;
       string MyOSVer = Environment.OSVersion.VersionString;
-      return ReportBug(sTok, 2, Mantis_Category.General, Mantis_Reproducibility.Have_Not_Tried, Mantis_Severity.Minor, Mantis_Priority.Normal, sPlat, MyOS, MyOSVer, sSum,
-			sDesc, sSteps, sInfo, true);
+      return ReportBug(sTok, 2, Mantis_Category.General, Mantis_Reproducibility.Have_Not_Tried, Mantis_Severity.Minor, Mantis_Priority.Normal, sPlat, MyOS, MyOSVer, sSum, sDesc, sSteps, sInfo, true);
     }
-	}
+  }
 }

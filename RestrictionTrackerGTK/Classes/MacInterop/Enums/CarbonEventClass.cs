@@ -6,4 +6,3 @@ namespace MacInterop
     AppleEvent = 1634039412
   }
 }
-

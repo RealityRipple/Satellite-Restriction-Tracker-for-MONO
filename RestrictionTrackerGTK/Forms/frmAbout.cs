@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-
 namespace RestrictionTrackerGTK
 {
   public partial class frmAbout : Gtk.Window
@@ -40,13 +39,13 @@ namespace RestrictionTrackerGTK
       cuLabel.UseUnderline = true;
       cmdUpdate.Add(cuLabel);
       pnlUpdate.Add(cmdUpdate);
-      ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).Position = 2;
+      ((Gtk.Box.BoxChild) pnlUpdate[cmdUpdate]).Position = 2;
       cmdUpdate.ShowAll();
       cmdUpdate.Visible = true;
       cmdUpdate.TooltipText = "Check for a new version of " + modFunctions.ProductName + ".";
-      ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).PackType = Gtk.PackType.Start;
-      ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).Fill = false;
-      ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).Expand = false;
+      ((Gtk.Box.BoxChild) pnlUpdate[cmdUpdate]).PackType = Gtk.PackType.Start;
+      ((Gtk.Box.BoxChild) pnlUpdate[cmdUpdate]).Fill = false;
+      ((Gtk.Box.BoxChild) pnlUpdate[cmdUpdate]).Expand = false;
       cmdUpdate.Clicked += cmdUpdate_Click;
       int upHeight = 24;
       lblProduct.HeightRequest = upHeight;
@@ -198,12 +197,11 @@ namespace RestrictionTrackerGTK
       updateChecker.CheckingVersion += updateChecker_CheckingVersion;
       updateChecker.CheckProgressChanged += updateChecker_CheckProgressChanged;
       updateChecker.CheckResult += updateChecker_CheckResult;
-      updateChecker.DownloadingUpdate+= updateChecker_DownloadingUpdate;
+      updateChecker.DownloadingUpdate += updateChecker_DownloadingUpdate;
       updateChecker.UpdateProgressChanged += updateChecker_UpdateProgressChanged;
       updateChecker.DownloadResult += updateChecker_DownloadResult;
       updateChecker.CheckVersion();
     }
-
     private class UpdateValueEventArgs : EventArgs
     {
       public string Message;
@@ -227,21 +225,21 @@ namespace RestrictionTrackerGTK
     }
     private string GetUpdateValue()
     {
-      return ((Gtk.Label)cmdUpdate.Child).Text;
+      return ((Gtk.Label) cmdUpdate.Child).Text;
     }
     private void SetUpdateValue(string Message, bool Throbber)
     {
       UpdateValueEventArgs e = new UpdateValueEventArgs(Message, Throbber);
-      Gtk.Application.Invoke(null, (EventArgs)e, Main_SetUpdateValue);
+      Gtk.Application.Invoke(null, (EventArgs) e, Main_SetUpdateValue);
     }
     private void SetUpdateValue(string Message, bool Throbber, string ToolTip)
     {
       UpdateValueEventArgs e = new UpdateValueEventArgs(Message, Throbber, ToolTip);
-      Gtk.Application.Invoke(null, (EventArgs)e, Main_SetUpdateValue);
+      Gtk.Application.Invoke(null, (EventArgs) e, Main_SetUpdateValue);
     }
     private void Main_SetUpdateValue(object o, EventArgs ea)
     {
-      UpdateValueEventArgs e = (UpdateValueEventArgs)ea;
+      UpdateValueEventArgs e = (UpdateValueEventArgs) ea;
       if (cmdUpdate.Visible)
       {
         int upHeight = cmdUpdate.Allocation.Height;
@@ -262,24 +260,24 @@ namespace RestrictionTrackerGTK
     private void SetButtonUpdate(string Message, string ToolTip)
     {
       UpdateValueEventArgs e = new UpdateValueEventArgs(Message, false, ToolTip);
-      Gtk.Application.Invoke(null, (EventArgs)e, Main_SetButtonUpdate);
+      Gtk.Application.Invoke(null, (EventArgs) e, Main_SetButtonUpdate);
     }
     private void Main_SetButtonUpdate(object o, EventArgs ea)
     {
-      UpdateValueEventArgs e = (UpdateValueEventArgs)ea;
+      UpdateValueEventArgs e = (UpdateValueEventArgs) ea;
       if (lblUpdate.Visible)
       {
         pctUpdate.Visible = false;
         lblUpdate.Visible = false;
         pnlUpdate.Remove(lblUpdate);
         pnlUpdate.Add(cmdUpdate);
-        ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).Position = 2;
-        ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).PackType = Gtk.PackType.Start;
-        ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).Fill = false;
-        ((Gtk.Box.BoxChild)pnlUpdate[cmdUpdate]).Expand = false;
+        ((Gtk.Box.BoxChild) pnlUpdate[cmdUpdate]).Position = 2;
+        ((Gtk.Box.BoxChild) pnlUpdate[cmdUpdate]).PackType = Gtk.PackType.Start;
+        ((Gtk.Box.BoxChild) pnlUpdate[cmdUpdate]).Fill = false;
+        ((Gtk.Box.BoxChild) pnlUpdate[cmdUpdate]).Expand = false;
         cmdUpdate.Visible = true;
       }
-      ((Gtk.Label)cmdUpdate.Child).LabelProp = e.Message;
+      ((Gtk.Label) cmdUpdate.Child).LabelProp = e.Message;
       cmdUpdate.TooltipText = e.ToolTip;
     }
     protected void updateChecker_CheckingVersion(object sender, EventArgs e)
@@ -293,11 +291,11 @@ namespace RestrictionTrackerGTK
     }
     protected void updateChecker_CheckResult(object sender, clsUpdate.CheckEventArgs e)
     {
-      Gtk.Application.Invoke(sender, (EventArgs)e, Main_UpdateCheckerCheckResult);
+      Gtk.Application.Invoke(sender, (EventArgs) e, Main_UpdateCheckerCheckResult);
     }
     private void Main_UpdateCheckerCheckResult(object sender, EventArgs ea)
     {
-      clsUpdate.CheckEventArgs e = (clsUpdate.CheckEventArgs)ea;
+      clsUpdate.CheckEventArgs e = (clsUpdate.CheckEventArgs) ea;
       if (e.Error != null)
       {
         if (e.Error.Message.Contains("The remote name could not be resolved"))
@@ -345,7 +343,7 @@ namespace RestrictionTrackerGTK
                 mySettings.Save();
                 break;
               case Gtk.ResponseType.Cancel:
-              mySettings.UpdateBETA = false;
+                mySettings.UpdateBETA = false;
                 mySettings.Save();
                 break;
               default:
@@ -356,13 +354,13 @@ namespace RestrictionTrackerGTK
             fUpdate = null;
             break;
           case ResultType.NewBeta:
-          if (mySettings.UpdateBETA)
+            if (mySettings.UpdateBETA)
             {
               SetButtonUpdate("_New BETA Available", "Click to begin download.");
               System.Threading.Thread.Sleep(0);
               fUpdate = new dlgUpdate();
               fUpdate.NewUpdate(e.Version, true);
-              switch ((Gtk.ResponseType)fUpdate.Run())
+              switch ((Gtk.ResponseType) fUpdate.Run())
               {
                 case Gtk.ResponseType.Yes:
                   updateChecker.DownloadUpdate(sUpdatePath);
@@ -400,7 +398,7 @@ namespace RestrictionTrackerGTK
         mySettings = null;
       }
     }
-    void updateChecker_DownloadingUpdate (object sender, EventArgs e)
+    void updateChecker_DownloadingUpdate(object sender, EventArgs e)
     {
       Gtk.Application.Invoke(sender, e, Main_UpdateCheckerDownloadingUpdate);
     }
@@ -409,45 +407,45 @@ namespace RestrictionTrackerGTK
       StartSpeed();
       SetUpdateValue("Downloading Update", true);
     }
-    void updateChecker_DownloadResult (object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+    void updateChecker_DownloadResult(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
     {
-      Gtk.Application.Invoke(sender, (EventArgs)e, Main_UpdateCheckerDownloadResult);
+      Gtk.Application.Invoke(sender, (EventArgs) e, Main_UpdateCheckerDownloadResult);
     }
     void Main_UpdateCheckerDownloadResult(object sender, EventArgs ea)
     {
-      System.ComponentModel.AsyncCompletedEventArgs e = (System.ComponentModel.AsyncCompletedEventArgs)ea;
+      System.ComponentModel.AsyncCompletedEventArgs e = (System.ComponentModel.AsyncCompletedEventArgs) ea;
       StopSpeed();
       if (e.Error != null)
-        SetUpdateValue(e.Error.Message,false);
+        SetUpdateValue(e.Error.Message, false);
       else if (e.Cancelled)
       {
         if (updateChecker != null)
           updateChecker.Dispose();
-        SetUpdateValue("Download Cancelled",false);
+        SetUpdateValue("Download Cancelled", false);
       }
       else
       {
         if (updateChecker != null)
           updateChecker.Dispose();
-        SetUpdateValue("Download Complete",false);
+        SetUpdateValue("Download Complete", false);
         System.Threading.Thread.Sleep(0);
         if (File.Exists(sUpdatePath))
           UpdateReset();
         else
-          SetUpdateValue("Update Failure",false);
+          SetUpdateValue("Update Failure", false);
       }
     }
     private long CurSize;
     private long TotalSize;
     private ulong DownSpeed;
     private int CurPercent;
-    void updateChecker_UpdateProgressChanged (object sender, clsUpdate.ProgressEventArgs e)
+    void updateChecker_UpdateProgressChanged(object sender, clsUpdate.ProgressEventArgs e)
     {
-      Gtk.Application.Invoke(sender, (EventArgs)e, Main_UpdateCheckerUpdateProgressChanged);
+      Gtk.Application.Invoke(sender, (EventArgs) e, Main_UpdateCheckerUpdateProgressChanged);
     }
     void Main_UpdateCheckerUpdateProgressChanged(object sender, EventArgs ea)
     {
-      clsUpdate.ProgressEventArgs e = (clsUpdate.ProgressEventArgs)ea;
+      clsUpdate.ProgressEventArgs e = (clsUpdate.ProgressEventArgs) ea;
       CurSize = e.BytesReceived;
       TotalSize = e.TotalBytesToReceive;
       CurPercent = e.ProgressPercentage;

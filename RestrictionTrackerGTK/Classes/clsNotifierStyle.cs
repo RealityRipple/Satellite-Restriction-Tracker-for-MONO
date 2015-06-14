@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Text;
-
 public class NotifierStyle
 {
   public Image Background;
@@ -27,7 +26,6 @@ public class NotifierStyle
     ContentColor = Color.Black;
     ContentHoverColor = Color.Blue;
   }
-
   public NotifierStyle(string BGPath, string ClosePath, string LocPath)
   {
     using (Image iBG = Image.FromFile (BGPath))
@@ -38,7 +36,7 @@ public class NotifierStyle
         {
           g.DrawImage(iBG, 0, 0);
         }
-        Background = (Image)bg.Clone();
+        Background = (Image) bg.Clone();
       }
     }
 
@@ -50,7 +48,7 @@ public class NotifierStyle
         {
           g.DrawImage(iClose, 0, 0);
         }
-        CloseButton = (Image)close.Clone();
+        CloseButton = (Image) close.Clone();
       }
     }
 
@@ -58,7 +56,7 @@ public class NotifierStyle
     using (FileStream fs = new FileStream(LocPath, FileMode.Open,FileAccess.Read,FileShare.Read))
     {
       byte[] inData = new byte[fs.Length];
-      fs.Read(inData, 0, (int)fs.Length);
+      fs.Read(inData, 0, (int) fs.Length);
       locData = System.Text.Encoding.GetEncoding("latin1").GetString(inData);
     }
     locData = locData.Replace("\n\r", "\n").Replace("\r", "\n");
@@ -66,7 +64,7 @@ public class NotifierStyle
     {
       locData = locData.Replace("\n\n", "\n");
     }
-    string[] locLines = locData.Split(new string[] {"\n"}, StringSplitOptions.RemoveEmptyEntries);
+    string[] locLines = locData.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
     TransparencyKey = ColorIDToColor(locLines[0]);
     TitleLocation = RectIDToRect(locLines[1]);
     TitleColor = ColorIDToColor(locLines[2]);
@@ -75,7 +73,6 @@ public class NotifierStyle
     ContentHoverColor = ColorIDToColor(locLines[5]);
     CloseLocation = PointIDToPoint(locLines[6]);
   }
-
   private Color ColorIDToColor(string ID)
   {
     try
@@ -94,7 +91,6 @@ public class NotifierStyle
       return Color.Transparent;
     }
   }
-
   private Rectangle RectIDToRect(string ID)
   {
     try
@@ -112,7 +108,6 @@ public class NotifierStyle
       return Rectangle.Empty;
     }
   }
-
   private Point PointIDToPoint(string ID)
   {
     try
@@ -129,7 +124,6 @@ public class NotifierStyle
     }
   }
 }
-  
 public class TarFileData
 {
   public string FileName;
@@ -158,16 +152,15 @@ public class TarFileData
     bIn.BaseStream.Seek(512, SeekOrigin.Current);
     if (FileSize > 0)
     {
-      FileData = bIn.ReadBytes((int)FileSize);
+      FileData = bIn.ReadBytes((int) FileSize);
       int Leftovers = 0;
-      Math.DivRem((int)FileSize, 512, out Leftovers);
+      Math.DivRem((int) FileSize, 512, out Leftovers);
       if (Leftovers > 0)
       {
         bIn.BaseStream.Seek(512 - Leftovers, SeekOrigin.Current);
       }
     }
   }
-
   private string ReadBString(byte[] inBytes)
   {
     string sRet = Encoding.ASCII.GetString(inBytes);
@@ -178,7 +171,6 @@ public class TarFileData
     sRet = sRet.Trim();
     return sRet;
   }
-
   private byte ReadBByte(byte[] inBytes)
   {
     string sRet = ReadBString(inBytes);
@@ -191,7 +183,6 @@ public class TarFileData
       return 0;
     }
   }
-
   private uint ReadBInt(byte[] inBytes)
   {
     string sRet = ReadBString(inBytes);
@@ -204,7 +195,6 @@ public class TarFileData
       return 0u;
     }
   }
-
   private ulong ReadBOct(byte[] inBytes)
   {
     string sRet = ReadBString(inBytes);

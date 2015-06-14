@@ -37,7 +37,6 @@ namespace RestrictionTrackerGTK
       {
         Version = sVersion;
       }
-
     }
     public event CheckingVersionEventHandler CheckingVersion;
     public delegate void CheckingVersionEventHandler(object sender,EventArgs e);
@@ -95,13 +94,13 @@ namespace RestrictionTrackerGTK
         sSplit[0] = '\n';
       }
       else if (sVerStr.Contains("\n"))
-        {
-          sSplit[0] = '\n';
-        }
-        else if (sVerStr.Contains("\r"))
-          {
-            sSplit[0] = '\r';
-          }
+      {
+        sSplit[0] = '\n';
+      }
+      else if (sVerStr.Contains("\r"))
+      {
+        sSplit[0] = '\r';
+      }
       char[] verSplit = { '|' };
       if (sSplit[0] == ' ')
       {
@@ -124,14 +123,14 @@ namespace RestrictionTrackerGTK
             return ResultType.NewUpdate;
           }
           else if (mySettings.UpdateBETA & !string.IsNullOrEmpty(sVL[1]))
+          {
+            string[] sVBU = sVL[1].Split(verSplit);
+            if (modFunctions.CompareVersions(sVBU[0]))
             {
-              string[] sVBU = sVL[1].Split(verSplit);
-              if (modFunctions.CompareVersions(sVBU[0]))
-              {
-                mySettings = null;
-                return ResultType.NewBeta;
-              }
+              mySettings = null;
+              return ResultType.NewBeta;
             }
+          }
         }
       }
       mySettings = null;
@@ -162,10 +161,10 @@ namespace RestrictionTrackerGTK
         }
       }
       else if (e.UserState.ToString().CompareTo("FILE") == 0)
-        {
-          if (UpdateProgressChanged != null)
-            UpdateProgressChanged(sender, new ProgressEventArgs(e.BytesReceived, e.TotalBytesToReceive, e.ProgressPercentage));
-        }
+      {
+        if (UpdateProgressChanged != null)
+          UpdateProgressChanged(sender, new ProgressEventArgs(e.BytesReceived, e.TotalBytesToReceive, e.ProgressPercentage));
+      }
     }
     private void wsVer_DownloadStringCompleted(object sender, System.Net.DownloadStringCompletedEventArgs e)
     {
@@ -184,13 +183,13 @@ namespace RestrictionTrackerGTK
             sVerStr = sVerStr.Replace("\r\n", "\n");
           }
           else if (sVerStr.Contains("\n"))
-            {
-              sSplit[0] = '\n';
-            }
-            else if (sVerStr.Contains("\r"))
-              {
-                sSplit[0] = '\r';
-              }
+          {
+            sSplit[0] = '\n';
+          }
+          else if (sVerStr.Contains("\r"))
+          {
+            sSplit[0] = '\r';
+          }
           char verSplit = '|';
           if (sSplit[0] == ' ')
           {
@@ -216,15 +215,15 @@ namespace RestrictionTrackerGTK
                 VerNumber = sVMU[0];
               }
               else if (mySettings.UpdateBETA & !string.IsNullOrEmpty(sVL[1]))
+              {
+                string[] sVBU = sVL[1].Split(verSplit);
+                if (modFunctions.CompareVersions(sVBU[0]))
                 {
-                  string[] sVBU = sVL[1].Split(verSplit);
-                  if (modFunctions.CompareVersions(sVBU[0]))
-                  {
-                    rRet = ResultType.NewBeta;
-                  DownloadURL = sVBU [1];
-                    VerNumber = sVBU[0];
-                  }
+                  rRet = ResultType.NewBeta;
+                  DownloadURL = sVBU[1];
+                  VerNumber = sVBU[0];
                 }
+              }
               mySettings = null;
             }
             else
@@ -285,4 +284,3 @@ namespace RestrictionTrackerGTK
     #endregion
   }
 }
-

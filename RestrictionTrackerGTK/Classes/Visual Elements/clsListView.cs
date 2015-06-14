@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Gtk;
-
 namespace RestrictionTrackerGTK
 {
   /// <summary>
@@ -13,13 +12,11 @@ namespace RestrictionTrackerGTK
     public ListView(string columnTitle) : base(columnTitle)
     {
     }
-
     protected override void RenderCell(CellRendererText render, int index, object item)
     {
       render.Text = item.ToString();
     }
   }
-
   /// <summary>
   /// The list only contains one type of object.
   /// To get multiple columns, pass that number of parameters to the constructor
@@ -33,13 +30,10 @@ namespace RestrictionTrackerGTK
     public T[] SelectedItems { get; private set; }
     public event Action<T[]> ItemSelected;
     public event Action<T> ItemActivated;
-
-    protected abstract void RenderCell (CellRendererText render, int index, T item);
-
-    ListStore store = new ListStore (typeof(T));
-    Dictionary<T, TreeIter> storeList = new Dictionary<T, TreeIter> ();
-    List<TreeViewColumn> columns = new List<TreeViewColumn> ();
-
+    protected abstract void RenderCell(CellRendererText render, int index, T item);
+    ListStore store = new ListStore(typeof(T));
+    Dictionary<T, TreeIter> storeList = new Dictionary<T, TreeIter>();
+    List<TreeViewColumn> columns = new List<TreeViewColumn>();
     /// <summary>
     /// Pass one string parameter for every column
     /// </summary>
@@ -58,28 +52,24 @@ namespace RestrictionTrackerGTK
       this.SelectedItems = new T[0];
       this.Selection.Changed += HandleSelectionChanged;
     }
-
     private void ColumnCellData(TreeViewColumn column, CellRenderer renderer, TreeModel model, TreeIter iter)
     {
-      T item = (T)model.GetValue(iter, 0);
-      CellRendererText textRender = (CellRendererText)renderer;
+      T item = (T) model.GetValue(iter, 0);
+      CellRendererText textRender = (CellRendererText) renderer;
       int index = columns.IndexOf(column);
       RenderCell(textRender, index, item);
     }
-
-#region Add, Remove and Clear Items
+    #region Add, Remove and Clear Items
     public void AddItem(T item)
     {
       var iter = store.AppendValues(item);
       storeList.Add(item, iter);
     }
-
     public void ClearItems()
     {
       store.Clear();
       storeList.Clear();
     }
-
     public void RemoveItem(T item)
     {
       if (! storeList.ContainsKey(item))
@@ -90,19 +80,18 @@ namespace RestrictionTrackerGTK
       store.Remove(ref iter);
       storeList.Remove(item);
     }
-#endregion
-
-#region Selection and Aktivation triggers
+    #endregion
+    #region Selection and Aktivation triggers
     void HandleSelectionChanged(object sender, EventArgs e)
     {
-      TreeSelection selection = (TreeSelection)sender;
+      TreeSelection selection = (TreeSelection) sender;
       TreePath[] paths = selection.GetSelectedRows();
       T[] items = new T[paths.Length];
       for (int n = 0; n < paths.Length; n++)
       {
         TreeIter iter;
         Model.GetIter(out iter, paths[n]);
-        items[n] = (T)Model.GetValue(iter, 0);
+        items[n] = (T) Model.GetValue(iter, 0);
       }
       
       SelectedItems = items;
@@ -113,12 +102,11 @@ namespace RestrictionTrackerGTK
         itemEvent(items);
       }
     }
-
     protected override void OnRowActivated(TreePath path, TreeViewColumn column)
     {
       TreeIter iter;
       Model.GetIter(out iter, path);
-      T item = (T)Model.GetValue(iter, 0);
+      T item = (T) Model.GetValue(iter, 0);
       
       var e = ItemActivated;
       if (e != null)
@@ -128,6 +116,6 @@ namespace RestrictionTrackerGTK
       
       base.OnRowActivated(path, column);
     }
-#endregion
+    #endregion
   }
 }

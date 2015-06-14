@@ -9,7 +9,7 @@ namespace RestrictionTrackerGTK
   /// </summary>
   public class TaskbarNotifier : Gtk.Window
   {
-#region TaskbarNotifier Protected Members
+    #region TaskbarNotifier Protected Members
     protected Bitmap BackgroundBitmap = null;
     protected Bitmap ScreenTransBitmap = null;
     protected Bitmap CloseBitmap = null;
@@ -22,15 +22,15 @@ namespace RestrictionTrackerGTK
     protected TaskbarStates taskbarState = TaskbarStates.hidden;
     protected string titleText;
     protected string contentText;
-    protected Color normalTitleColor = Color.FromArgb(0,0,0);
-    protected Color hoverTitleColor = Color.FromArgb(0,0,0xFF);
-    protected Color normalContentColor = Color.FromArgb(0,0,0);
-    protected Color hoverContentColor = Color.FromArgb(0,0,0xFF);
-    protected Color transparencyKey = Color.FromArgb(0xFF,0,0xFF);
-    protected Font normalTitleFont = new Font("Arial",12,FontStyle.Bold,GraphicsUnit.Pixel);
-    protected Font hoverTitleFont = new Font("Arial",12,FontStyle.Bold,GraphicsUnit.Pixel);
-    protected Font normalContentFont = new Font("Arial",11,FontStyle.Regular,GraphicsUnit.Pixel);
-    protected Font hoverContentFont = new Font("Arial",11,FontStyle.Regular,GraphicsUnit.Pixel);
+    protected Color normalTitleColor = Color.FromArgb(0, 0, 0);
+    protected Color hoverTitleColor = Color.FromArgb(0, 0, 0xFF);
+    protected Color normalContentColor = Color.FromArgb(0, 0, 0);
+    protected Color hoverContentColor = Color.FromArgb(0, 0, 0xFF);
+    protected Color transparencyKey = Color.FromArgb(0xFF, 0, 0xFF);
+    protected Font normalTitleFont = new Font("Arial", 12, FontStyle.Bold, GraphicsUnit.Pixel);
+    protected Font hoverTitleFont = new Font("Arial", 12, FontStyle.Bold, GraphicsUnit.Pixel);
+    protected Font normalContentFont = new Font("Arial", 11, FontStyle.Regular, GraphicsUnit.Pixel);
+    protected Font hoverContentFont = new Font("Arial", 11, FontStyle.Regular, GraphicsUnit.Pixel);
     protected uint nShowEvents;
     protected uint nHideEvents;
     protected uint nVisibleEvents;
@@ -41,10 +41,10 @@ namespace RestrictionTrackerGTK
     protected bool bIsMouseOverContent = false;
     protected bool bIsMouseOverTitle = false;
     protected bool bIsMouseDown = false;
-    protected bool bKeepVisibleOnMouseOver = true;    
-    protected bool bReShowOnMouseOver = true;        
-#endregion            
-#region TaskbarNotifier Public Members
+    protected bool bKeepVisibleOnMouseOver = true;
+    protected bool bReShowOnMouseOver = true;
+    #endregion
+    #region TaskbarNotifier Public Members
     public Rectangle TitleRectangle;
     public Rectangle ContentRectangle;
     public bool TitleClickable = false;
@@ -53,9 +53,8 @@ namespace RestrictionTrackerGTK
     public event EventHandler CloseClick = null;
     public event EventHandler TitleClick = null;
     public event EventHandler ContentClick = null;
-#endregion
- 
-#region TaskbarNotifier Constructor
+    #endregion
+    #region TaskbarNotifier Constructor
     /// <summary>
     /// The Constructor for TaskbarNotifier
     /// </summary>
@@ -69,19 +68,18 @@ namespace RestrictionTrackerGTK
       FocusOnMap = false;
       TypeHint = Gdk.WindowTypeHint.Desktop;
 
-      this.AddEvents((int)Gdk.EventMask.ButtonPressMask);
-      this.AddEvents((int)Gdk.EventMask.ButtonReleaseMask);
-      this.AddEvents((int)Gdk.EventType.ButtonPress);
-      this.AddEvents((int)Gdk.EventType.ButtonRelease);
+      this.AddEvents((int) Gdk.EventMask.ButtonPressMask);
+      this.AddEvents((int) Gdk.EventMask.ButtonReleaseMask);
+      this.AddEvents((int) Gdk.EventType.ButtonPress);
+      this.AddEvents((int) Gdk.EventType.ButtonRelease);
 
-      this.AddEvents((int)Gdk.EventType.MotionNotify);
+      this.AddEvents((int) Gdk.EventType.MotionNotify);
 
       KeepAbove = true;
       timer = GLib.Timeout.Add(100, OnTimer);
     }
-#endregion
- 
-#region TaskbarNotifier Properties
+    #endregion
+    #region TaskbarNotifier Properties
     /// <summary>
     /// Get the current TaskbarState (hidden, showing, visible, hiding)
     /// </summary>
@@ -92,7 +90,6 @@ namespace RestrictionTrackerGTK
         return taskbarState;
       }
     }
- 
     /// <summary>
     /// Get/Set the popup Title Text
     /// </summary>
@@ -104,11 +101,10 @@ namespace RestrictionTrackerGTK
       }
       set
       {
-        titleText=value;
+        titleText = value;
         Refresh(true);
       }
     }
- 
     /// <summary>
     /// Get/Set the popup Content Text
     /// </summary>
@@ -120,11 +116,10 @@ namespace RestrictionTrackerGTK
       }
       set
       {
-        contentText=value;
+        contentText = value;
         Refresh(true);
       }
     }
- 
     /// <summary>
     /// Get/Set the Normal Title Color
     /// </summary>
@@ -140,7 +135,6 @@ namespace RestrictionTrackerGTK
         Refresh(true);
       }
     }
- 
     /// <summary>
     /// Get/Set the Hover Title Color
     /// </summary>
@@ -156,7 +150,6 @@ namespace RestrictionTrackerGTK
         Refresh(true);
       }
     }
- 
     /// <summary>
     /// Get/Set the Normal Content Color
     /// </summary>
@@ -172,7 +165,6 @@ namespace RestrictionTrackerGTK
         Refresh(true);
       }
     }
- 
     /// <summary>
     /// Get/Set the Hover Content Color
     /// </summary>
@@ -188,7 +180,6 @@ namespace RestrictionTrackerGTK
         Refresh(true);
       }
     }
- 
     /// <summary>
     /// Get/Set the Normal Title Font
     /// </summary>
@@ -204,7 +195,6 @@ namespace RestrictionTrackerGTK
         Refresh(true);
       }
     }
- 
     /// <summary>
     /// Get/Set the Hover Title Font
     /// </summary>
@@ -220,7 +210,6 @@ namespace RestrictionTrackerGTK
         Refresh(true);
       }
     }
- 
     /// <summary>
     /// Get/Set the Normal Content Font
     /// </summary>
@@ -236,7 +225,6 @@ namespace RestrictionTrackerGTK
         Refresh(true);
       }
     }
- 
     /// <summary>
     /// Get/Set the Hover Content Font
     /// </summary>
@@ -252,7 +240,6 @@ namespace RestrictionTrackerGTK
         Refresh(true);
       }
     }
- 
     /// <summary>
     /// Indicates if the popup should remain visible when the mouse pointer is over it.
     /// Added Rev 002
@@ -265,10 +252,9 @@ namespace RestrictionTrackerGTK
       }
       set
       {
-        bKeepVisibleOnMouseOver=value;
+        bKeepVisibleOnMouseOver = value;
       }
     }
- 
     /// <summary>
     /// Indicates if the popup should appear again when mouse moves over it while it's disappearing.
     /// Added Rev 002
@@ -281,12 +267,11 @@ namespace RestrictionTrackerGTK
       }
       set
       {
-        bReShowOnMouseOver=value;
+        bReShowOnMouseOver = value;
       }
     }
-#endregion
- 
-#region TaskbarNotifier Public Methods
+    #endregion
+    #region TaskbarNotifier Public Methods
     /// <summary>
     /// Displays the popup for a certain amount of time.
     /// </summary>
@@ -303,8 +288,8 @@ namespace RestrictionTrackerGTK
       wndMax.SizeAllocated += HandleSizeAllocated;
       wndMax.WindowStateEvent += HandleWindowStateEvent;
       wndMax.Opacity = 0;
-      wndMax.SkipPagerHint=true;
-      wndMax.SkipTaskbarHint=true;
+      wndMax.SkipPagerHint = true;
+      wndMax.SkipTaskbarHint = true;
       wndMax.FocusOnMap = false;
       wndMax.Decorated = CurrentOS.IsMac;
       wndMax.Show();
@@ -328,7 +313,7 @@ namespace RestrictionTrackerGTK
         nIncrementShow = 100;
       }
  
-      if( nTimeToHide > 10)
+      if (nTimeToHide > 10)
       {
         nEvents = Math.Min((nTimeToHide / 10), 100);
         nHideEvents = nTimeToHide / nEvents;
@@ -340,12 +325,11 @@ namespace RestrictionTrackerGTK
         nIncrementHide = 100;
       }
     }
-
     void HandleWindowStateEvent(object o, Gtk.WindowStateEventArgs args)
     {
       if (args.Event.ChangedMask == Gdk.WindowState.Maximized)
       {
-        Gtk.Window wndMax = (Gtk.Window)o;
+        Gtk.Window wndMax = (Gtk.Window) o;
 
         Gdk.Rectangle displayRect = wndMax.GdkWindow.FrameExtents;
         wndMax.Hide();
@@ -439,17 +423,15 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-
     void HandleSizeAllocated(object o, Gtk.SizeAllocatedArgs args)
     {
-      Gtk.Window wndMax = (Gtk.Window)o;
+      Gtk.Window wndMax = (Gtk.Window) o;
       if (args.Allocation.Width == 200)
       {
         if (CurrentOS.IsMac)
           wndMax.Maximize();
       }
     }
-
     /// <summary>
     /// Hides the popup
     /// </summary>
@@ -467,7 +449,6 @@ namespace RestrictionTrackerGTK
         base.Hide();
       }
     }
-
     /// <summary>
     /// Hides the popup after fading it out
     /// </summary>
@@ -482,7 +463,6 @@ namespace RestrictionTrackerGTK
       taskbarState = TaskbarStates.disappearing;
       timer = GLib.Timeout.Add(nHideEvents, OnTimer);
     }
- 
     /// <summary>
     /// Sets the background bitmap and its transparency color
     /// </summary>
@@ -499,7 +479,6 @@ namespace RestrictionTrackerGTK
         SetDefaultBitmaps();
       Refresh(true);
     }
- 
     /// <summary>
     /// Sets the background bitmap and its transparency color
     /// </summary>
@@ -516,7 +495,6 @@ namespace RestrictionTrackerGTK
         SetDefaultBitmaps();
       Refresh(true);
     }
- 
     /// <summary>
     /// Sets the 3-State Close Button bitmap, its transparency color and its coordinates
     /// </summary>
@@ -533,7 +511,6 @@ namespace RestrictionTrackerGTK
         SetDefaultBitmaps();
       Refresh(true);
     }
- 
     /// <summary>
     /// Sets the 3-State Close Button bitmap, its transparency color and its coordinates
     /// </summary>
@@ -550,13 +527,11 @@ namespace RestrictionTrackerGTK
         SetDefaultBitmaps();
       Refresh(true);
     }
-
     private void SetDefaultBitmaps()
     {
       SetDefaultBackgroundBitmap();
       SetDefaultCloseBitmap();
     }
-
     private void SetDefaultBackgroundBitmap()
     {
       BackgroundBitmap = new Bitmap(GetType(), "Resources.default_alert.png");
@@ -566,7 +541,6 @@ namespace RestrictionTrackerGTK
       TitleRectangle = new Rectangle(7, 3, 188, 24);
       ContentRectangle = new Rectangle(9, 31, 227, 66);
     }
-
     private void SetDefaultCloseBitmap()
     {
       Bitmap srcBitmap = new Bitmap(GetType(), "Resources.default_close.png");
@@ -574,11 +548,8 @@ namespace RestrictionTrackerGTK
       CloseBitmapSize = new Size(srcBitmap.Width / 3, srcBitmap.Height);
       CloseBitmapLocation = new Point(190, 0);
     }
-
-
-#endregion
- 
-#region TaskbarNotifier Protected Methods
+    #endregion
+    #region TaskbarNotifier Protected Methods
     protected void DrawCloseButton(ref Graphics grfx)
     {
       if (CloseBitmap == null || CloseBitmapSize.IsEmpty)
@@ -606,7 +577,6 @@ namespace RestrictionTrackerGTK
         grfx.DrawImage(CloseBitmap, rectDest, rectSrc, GraphicsUnit.Pixel);
       }
     }
- 
     protected void DrawText(ref Graphics grfx)
     {
       if (titleText != null && titleText.Length != 0)
@@ -643,10 +613,10 @@ namespace RestrictionTrackerGTK
         }
       }
     }
- 
     protected void CalculateMouseRectangles()
     {
-      Graphics grfx = Graphics.FromImage (new Bitmap(1,1));;
+      Graphics grfx = Graphics.FromImage(new Bitmap(1, 1));
+      ;
       StringFormat sf = new StringFormat();
       sf.Alignment = StringAlignment.Center;
       sf.LineAlignment = StringAlignment.Center;
@@ -657,27 +627,26 @@ namespace RestrictionTrackerGTK
 
       if (sizefTitle.Height > TitleRectangle.Height)
       {
-        RealTitleRectangle = new Rectangle(TitleRectangle.Left, TitleRectangle.Top, TitleRectangle.Width , TitleRectangle.Height );
-      } 
+        RealTitleRectangle = new Rectangle(TitleRectangle.Left, TitleRectangle.Top, TitleRectangle.Width, TitleRectangle.Height);
+      }
       else
       {
-        RealTitleRectangle = new Rectangle(TitleRectangle.Left, TitleRectangle.Top, (int)sizefTitle.Width, (int)sizefTitle.Height);
+        RealTitleRectangle = new Rectangle(TitleRectangle.Left, TitleRectangle.Top, (int) sizefTitle.Width, (int) sizefTitle.Height);
       }
-      RealTitleRectangle.Inflate(0,2);
+      RealTitleRectangle.Inflate(0, 2);
  
       if (sizefContent.Height > ContentRectangle.Height)
       {
-        RealContentRectangle = new Rectangle((ContentRectangle.Width-(int)sizefContent.Width)/2+ContentRectangle.Left, ContentRectangle.Top, (int)sizefContent.Width, ContentRectangle.Height );
+        RealContentRectangle = new Rectangle((ContentRectangle.Width - (int) sizefContent.Width) / 2 + ContentRectangle.Left, ContentRectangle.Top, (int) sizefContent.Width, ContentRectangle.Height);
       }
       else
       {
-        RealContentRectangle = new Rectangle((ContentRectangle.Width-(int)sizefContent.Width)/2+ContentRectangle.Left, (ContentRectangle.Height-(int)sizefContent.Height)/2+ContentRectangle.Top, (int)sizefContent.Width, (int)sizefContent.Height);
+        RealContentRectangle = new Rectangle((ContentRectangle.Width - (int) sizefContent.Width) / 2 + ContentRectangle.Left, (ContentRectangle.Height - (int) sizefContent.Height) / 2 + ContentRectangle.Top, (int) sizefContent.Width, (int) sizefContent.Height);
       }
-      RealContentRectangle.Inflate(0,2);
+      RealContentRectangle.Inflate(0, 2);
     }
-#endregion
- 
-#region TaskbarNotifier Events Overrides
+    #endregion
+    #region TaskbarNotifier Events Overrides
     protected bool OnTimer()
     {
       switch (taskbarState)
@@ -685,7 +654,7 @@ namespace RestrictionTrackerGTK
         case TaskbarStates.appearing:
           if (Opacity < 1)
           {
-            Opacity += (double)nIncrementShow / 100;
+            Opacity += (double) nIncrementShow / 100;
           }
           else
           {
@@ -724,7 +693,7 @@ namespace RestrictionTrackerGTK
           {
             if (Opacity > 0)
             {
-              Opacity -= (double)nIncrementHide / 100;
+              Opacity -= (double) nIncrementHide / 100;
             }
             else
             {
@@ -735,7 +704,6 @@ namespace RestrictionTrackerGTK
       }
       return true; 
     }
-
     [GLib.ConnectBefore]
     protected override bool OnEnterNotifyEvent(Gdk.EventCrossing evnt)
     {
@@ -744,7 +712,6 @@ namespace RestrictionTrackerGTK
       Refresh(true);
       return ret;
     }
-
     [GLib.ConnectBefore]
     protected override bool OnLeaveNotifyEvent(Gdk.EventCrossing evnt)
     {
@@ -756,7 +723,6 @@ namespace RestrictionTrackerGTK
       Refresh(true);
       return ret;
     }
-
     [GLib.ConnectBefore]
     protected override bool OnMotionNotifyEvent(Gdk.EventMotion mea)
     {
@@ -774,7 +740,7 @@ namespace RestrictionTrackerGTK
           bContentModified = true;
         }
       }
-      else if (RealContentRectangle.Contains(new Point((int)mea.X, (int)mea.Y)) && ContentClickable)
+      else if (RealContentRectangle.Contains(new Point((int) mea.X, (int) mea.Y)) && ContentClickable)
       {
         if (!bIsMouseOverContent)
         {
@@ -785,7 +751,7 @@ namespace RestrictionTrackerGTK
           bContentModified = true;
         }
       }
-      else if (RealTitleRectangle.Contains(new Point((int)mea.X, (int)mea.Y)) && TitleClickable)
+      else if (RealTitleRectangle.Contains(new Point((int) mea.X, (int) mea.Y)) && TitleClickable)
       {
         if (!bIsMouseOverTitle)
         {
@@ -815,7 +781,6 @@ namespace RestrictionTrackerGTK
       }
       return ret;
     }
-
     [GLib.ConnectBefore]
     protected override bool OnButtonPressEvent(Gdk.EventButton evnt)
     {
@@ -831,7 +796,6 @@ namespace RestrictionTrackerGTK
       }
       return ret;
     }
-
     [GLib.ConnectBefore]
     protected override bool OnButtonReleaseEvent(Gdk.EventButton evnt)
     {
@@ -867,7 +831,6 @@ namespace RestrictionTrackerGTK
       }
       return ret;
     }
-
     Gdk.Pixbuf background = null;
     [GLib.ConnectBefore]
     protected override bool OnExposeEvent(Gdk.EventExpose args)
@@ -878,7 +841,6 @@ namespace RestrictionTrackerGTK
       }
       return base.OnExposeEvent(args);
     }
-
     private void Refresh(bool Draw)
     {
       Graphics offScreenGraphics;
@@ -920,7 +882,7 @@ namespace RestrictionTrackerGTK
         {
           if (ScreenTransBitmap == null)
           {
-            ScreenTransBitmap = modFunctions.GetScreenRect(new Rectangle(this.GdkWindow.FrameExtents.Location.X,this.GdkWindow.FrameExtents.Location.Y, offscreenBitmap.Size.Width,offscreenBitmap.Size.Height));
+            ScreenTransBitmap = modFunctions.GetScreenRect(new Rectangle(this.GdkWindow.FrameExtents.Location.X, this.GdkWindow.FrameExtents.Location.Y, offscreenBitmap.Size.Width, offscreenBitmap.Size.Height));
           }
           if (ScreenTransBitmap == null)
           {
@@ -939,7 +901,6 @@ namespace RestrictionTrackerGTK
         GdkWindow.DrawPixbuf(Style.BackgroundGC(State), background, 0, 0, 0, 0, background.Width, background.Height, Gdk.RgbDither.None, 0, 0);
       }
     }
-
     [GLib.ConnectBefore]
     protected override void OnSizeAllocated(Gdk.Rectangle sized)
     {
@@ -949,6 +910,6 @@ namespace RestrictionTrackerGTK
         Refresh(false);
       }
     }
-#endregion
+    #endregion
   }
 }

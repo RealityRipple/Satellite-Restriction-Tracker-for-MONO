@@ -2,20 +2,18 @@ using System;
 using System.IO;
 using Gtk;
 using MacInterop;
-
+using MantisBugTracker;
 namespace RestrictionTrackerGTK
 {
-
-	class MainClass
-	{
-
-		public static frmAbout fAbout;
+  class MainClass
+  {
+    public static frmAbout fAbout;
     public static dlgAlertSelection fAlertSelection;
-		public static dlgConfig fConfig;
-		public static dlgCustomColors fCustomColors;
-		public static frmHistory fHistory;
-		public static frmMain fMain;
-		public static void Main(string[] args)
+    public static dlgConfig fConfig;
+    public static dlgCustomColors fCustomColors;
+    public static frmHistory fHistory;
+    public static frmMain fMain;
+    public static void Main(string[] args)
     {
       Application.Init();
       if (!modFunctions.RunningLock())
@@ -49,7 +47,7 @@ namespace RestrictionTrackerGTK
         if (File.Exists(sUpdatePath))
           File.Delete(sUpdatePath);
       }
-      catch(Exception)
+      catch (Exception)
       {
       }
       fMain = new frmMain();
@@ -65,10 +63,10 @@ namespace RestrictionTrackerGTK
           fMain.ShowFromTray();
           e.Handled = true;
         };
-        ApplicationEvents.Prefs += delegate(object sender, ApplicationEventArgs e) 
+        ApplicationEvents.Prefs += delegate(object sender, ApplicationEventArgs e)
         {
           fMain.cmdConfig_Click(new object(), new EventArgs());
-          e.Handled=true;
+          e.Handled = true;
         };
         IgeMacMenuGroup appGroup = IgeMacMenu.AddAppMenuGroup();
         MenuItem mnuAbout = new MenuItem();
@@ -84,7 +82,6 @@ namespace RestrictionTrackerGTK
           fMain.cmdHistory_Click(new object(), new EventArgs());
         };
         appGroup.AddMenuItem(mnuHistory, "Usage History");
-
         MenuItem mnuConfig = new MenuItem();
         mnuConfig.Activated += delegate(object sender, EventArgs e)
         {
@@ -95,8 +92,7 @@ namespace RestrictionTrackerGTK
       fMain.Show();
       Application.Run();
     }
-
-    static void unhandledException (GLib.UnhandledExceptionArgs args)
+    static void unhandledException(GLib.UnhandledExceptionArgs args)
     {
       Exception ex = (Exception) args.ExceptionObject;
       if (ex.Message == "Exception has been thrown by the target of an invocation.")
@@ -107,7 +103,7 @@ namespace RestrictionTrackerGTK
         string sRet = MantisReporter.ReportIssue(ex);
         if (sRet == "OK")
         {
-          if (modFunctions.ShowMessageBox(null, "Thank you for reporting the error.\nYou can find details on the Bug Report page.\n\nDo you wish to visit the Bug Report?", modFunctions.ProductName + " Error Report Sent!", (DialogFlags)0, MessageType.Question, ButtonsType.YesNo) == ResponseType.Yes)
+          if (modFunctions.ShowMessageBox(null, "Thank you for reporting the error.\nYou can find details on the Bug Report page.\n\nDo you wish to visit the Bug Report?", modFunctions.ProductName + " Error Report Sent!", (DialogFlags) 0, MessageType.Question, ButtonsType.YesNo) == ResponseType.Yes)
             System.Diagnostics.Process.Start("http://bugs.realityripple.com/set_project.php?project_id=2");
         }
         else
@@ -163,7 +159,7 @@ namespace RestrictionTrackerGTK
           }
           sDesc += "\nVersion " + modFunctions.ProductVersion;
           sErrRep += "%2526description=" + DoubleEncode(sDesc);
-          if (modFunctions.ShowMessageBox(null, sRet + "\n\nWould you like to report the error manually?", modFunctions.ProductName + " Error Report Failed!", (DialogFlags)0, MessageType.Error, ButtonsType.YesNo) == ResponseType.Yes)
+          if (modFunctions.ShowMessageBox(null, sRet + "\n\nWould you like to report the error manually?", modFunctions.ProductName + " Error Report Failed!", (DialogFlags) 0, MessageType.Error, ButtonsType.YesNo) == ResponseType.Yes)
           {
             System.Diagnostics.Process.Start(sErrRep);
           }
@@ -174,17 +170,14 @@ namespace RestrictionTrackerGTK
         Application.Quit();
       }
     }
-
     private static string DoubleEncode(string inString)
     {
       return modFunctions.PercentEncode(modFunctions.PercentEncode(inString));
     }
-
     static void SizeAllocateLabel(object o, SizeAllocatedArgs e)
     {
       ((Gtk.Widget) o).SetSizeRequest(e.Allocation.Width, -1);
     }
-
     private static Gtk.ResponseType showErrDialog(Exception e, bool canContinue)
     {
       Gtk.Table pnlError;
@@ -196,22 +189,22 @@ namespace RestrictionTrackerGTK
       Gtk.Button cmdIgnore;
       Gtk.Button cmdExit;
 
-      pnlError = new Gtk.Table (2, 2, false);
+      pnlError = new Gtk.Table(2, 2, false);
       pnlError.Name = "pnlError";
       pnlError.RowSpacing = 6;
       pnlError.ColumnSpacing = 6;
 
-      pctError = new Gtk.Image ();
+      pctError = new Gtk.Image();
       pctError.Name = "pctError";
       pctError.Xpad = 8;
       pctError.Ypad = 8;
       if (CurrentOS.IsMac)
-        pctError.Pixbuf = Gdk.Pixbuf.LoadFromResource ("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_error.png");
+        pctError.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_error.png");
       else
-        pctError.Pixbuf = Gdk.Pixbuf.LoadFromResource ("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_error.png");
+        pctError.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_error.png");
       pnlError.Attach(pctError, 0, 1, 0, 1, AttachOptions.Fill, AttachOptions.Fill, 0, 0);
 
-      lblError = new Gtk.Label ();
+      lblError = new Gtk.Label();
       lblError.Name = "lblError";
       lblError.Xalign = 0F;
       lblError.Yalign = 0.5F;
@@ -229,20 +222,20 @@ namespace RestrictionTrackerGTK
       lblError.UseMarkup = true;
       pnlError.Attach(lblError, 1, 2, 0, 1, AttachOptions.Shrink | AttachOptions.Fill | AttachOptions.Expand, AttachOptions.Fill, 0, 0);
 
-      scrError = new Gtk.ScrolledWindow ();
+      scrError = new Gtk.ScrolledWindow();
       scrError.Name = "scrError";
       scrError.VscrollbarPolicy = PolicyType.Automatic;
       scrError.HscrollbarPolicy = PolicyType.Never;
       scrError.ShadowType = ShadowType.In;
 
-      txtError = new Gtk.TextView ();
+      txtError = new Gtk.TextView();
       txtError.CanFocus = true;
       txtError.Name = "txtError";
       txtError.Editable = false;
       txtError.AcceptsTab = false;
       txtError.WrapMode = WrapMode.Word;
 
-      scrError.Add (txtError);
+      scrError.Add(txtError);
       pnlError.Attach(scrError, 1, 2, 1, 2, AttachOptions.Shrink | AttachOptions.Fill | AttachOptions.Expand, AttachOptions.Shrink | AttachOptions.Fill | AttachOptions.Expand, 0, 0);
 
       txtError.Buffer.Text = "Error: " + e.Message;
@@ -289,14 +282,13 @@ namespace RestrictionTrackerGTK
         cmdIgnore = null;
       }
 
-      cmdExit = new global::Gtk.Button ();
+      cmdExit = new global::Gtk.Button();
       cmdExit.CanFocus = true;
       cmdExit.Name = "cmdExit";
       cmdExit.UseUnderline = true;
-      cmdExit.Label = global::Mono.Unix.Catalog.GetString ("Exit Application");
+      cmdExit.Label = global::Mono.Unix.Catalog.GetString("Exit Application");
 
-
-      Gtk.Dialog dlgErr = new Gtk.Dialog("Error in " + modFunctions.ProductName, null, DialogFlags.Modal | DialogFlags.DestroyWithParent,cmdReport);
+      Gtk.Dialog dlgErr = new Gtk.Dialog("Error in " + modFunctions.ProductName, null, DialogFlags.Modal | DialogFlags.DestroyWithParent, cmdReport);
 
       dlgErr.TypeHint = Gdk.WindowTypeHint.Dialog;
       dlgErr.WindowPosition = WindowPosition.CenterAlways;
@@ -308,7 +300,7 @@ namespace RestrictionTrackerGTK
       VBox pnlErrorDialog = dlgErr.VBox;
       pnlErrorDialog.Name = "pnlErrorDialog";
       pnlErrorDialog.BorderWidth = 2;
-      pnlErrorDialog.Add (pnlError);
+      pnlErrorDialog.Add(pnlError);
 
       Box.BoxChild pnlError_BC = (Box.BoxChild) pnlErrorDialog[pnlError];
       pnlError_BC.Position = 0;
@@ -319,12 +311,12 @@ namespace RestrictionTrackerGTK
       dlgErrorAction.BorderWidth = 5;
       dlgErrorAction.LayoutStyle = ButtonBoxStyle.End;
 
-      dlgErr.AddActionWidget (cmdReport, ResponseType.Ok);
+      dlgErr.AddActionWidget(cmdReport, ResponseType.Ok);
       if (canContinue)
-        dlgErr.AddActionWidget (cmdIgnore, ResponseType.No);
-      dlgErr.AddActionWidget (cmdExit, ResponseType.Reject);
+        dlgErr.AddActionWidget(cmdIgnore, ResponseType.No);
+      dlgErr.AddActionWidget(cmdExit, ResponseType.Reject);
 
-      dlgErr.ShowAll ();
+      dlgErr.ShowAll();
       Gdk.Geometry minGeo = new Gdk.Geometry();
       minGeo.MinWidth = dlgErr.Allocation.Width;
       minGeo.MinHeight = dlgErr.Allocation.Height;
@@ -332,11 +324,12 @@ namespace RestrictionTrackerGTK
         dlgErr.SetGeometryHints(null, minGeo, Gdk.WindowHints.MinSize);
 
       Gtk.ResponseType dRet;
-      do {
-        dRet = (Gtk.ResponseType)dlgErr.Run ();
+      do
+      {
+        dRet = (Gtk.ResponseType) dlgErr.Run();
       } while(dRet == ResponseType.None);
-      dlgErr.Hide ();
-      dlgErr.Destroy ();
+      dlgErr.Hide();
+      dlgErr.Destroy();
       dlgErr = null;
       return dRet;
     }

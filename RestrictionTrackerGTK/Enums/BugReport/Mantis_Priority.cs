@@ -1,5 +1,5 @@
 ﻿using System;
-namespace RestrictionTrackerGTK
+namespace MantisBugTracker
 {
   public enum Mantis_Priority
   {

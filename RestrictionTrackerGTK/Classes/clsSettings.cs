@@ -45,7 +45,6 @@ namespace RestrictionTrackerGTK
         return modFunctions.AppData + "user.config";
       }
     }
-
     private string ConfigFileBackup
     {
       get
@@ -53,7 +52,6 @@ namespace RestrictionTrackerGTK
         return modFunctions.AppData + "backup.config";
       }
     }
-
     public AppSettings()
     {
       Loaded = false;
@@ -533,7 +531,6 @@ namespace RestrictionTrackerGTK
         Reset();
       }
     }
-
     private void Reset()
     {
       m_Account = null;
@@ -566,14 +563,12 @@ namespace RestrictionTrackerGTK
       Colors = new AppColors();
       ResetColors();
     }
-
     private void ResetColors()
     {
       ResetMain();
       ResetTray();
       ResetHistory();
     }
-
     private void ResetMain()
     {
       Colors.MainDownA = Color.Transparent;
@@ -585,7 +580,6 @@ namespace RestrictionTrackerGTK
       Colors.MainText = Color.Transparent;
       Colors.MainBackground = Color.Transparent;
     }
-
     private void ResetTray()
     {
       Colors.TrayDownA = Color.Transparent;
@@ -595,7 +589,6 @@ namespace RestrictionTrackerGTK
       Colors.TrayUpB = Color.Transparent;
       Colors.TrayUpC = Color.Transparent;
     }
-
     private void ResetHistory()
     {
       Colors.HistoryDownA = Color.Transparent;
@@ -611,7 +604,6 @@ namespace RestrictionTrackerGTK
       Colors.HistoryLightGrid = Color.Transparent;
       Colors.HistoryDarkGrid = Color.Transparent;
     }
-
     public void Save()
     {
       string sBeta = "False";
@@ -854,7 +846,6 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-
     private string ColorToStr(Color c)
     {
       string sA = null;
@@ -942,7 +933,6 @@ namespace RestrictionTrackerGTK
       }
       return sA + sR + sG + sB;
     }
-
     private Color StrToColor(string s)
     {
       int iColor = 0;
@@ -957,7 +947,6 @@ namespace RestrictionTrackerGTK
         return Color.Transparent;
       }
     }
-
     public void MakeBackup()
     {
       if (File.Exists(ConfigFile))
@@ -965,7 +954,6 @@ namespace RestrictionTrackerGTK
         File.Copy(ConfigFile, ConfigFileBackup, true);
       }
     }
-
     public void BackupCheckup()
     {
       if (File.Exists(ConfigFile))
@@ -996,7 +984,6 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-
     public string Account
     {
       get
@@ -1008,7 +995,6 @@ namespace RestrictionTrackerGTK
         m_Account = value;
       }
     }
-
     public localRestrictionTracker.SatHostTypes AccountType
     {
       get
@@ -1020,7 +1006,6 @@ namespace RestrictionTrackerGTK
         m_AccountType = value;
       }
     }
-
     public bool AccountTypeForced
     {
       get
@@ -1032,7 +1017,6 @@ namespace RestrictionTrackerGTK
         m_AccountTypeF = value;
       }
     }
-
     public string PassCrypt
     {
       get
@@ -1044,7 +1028,6 @@ namespace RestrictionTrackerGTK
         m_PassCrypt = value;
       }
     }
-
     public int StartWait
     {
       get
@@ -1056,7 +1039,6 @@ namespace RestrictionTrackerGTK
         m_StartWait = value;
       }
     }
-
     public int Interval
     {
       get
@@ -1068,7 +1050,6 @@ namespace RestrictionTrackerGTK
         m_Interval = value;
       }
     }
-
     public string Gr
     {
       get
@@ -1080,7 +1061,6 @@ namespace RestrictionTrackerGTK
         m_Gr = value;
       }
     }
-
     public DateTime LastUpdate
     {
       get
@@ -1092,7 +1072,6 @@ namespace RestrictionTrackerGTK
         m_LastUpdate = value;
       }
     }
-
     public DateTime LastSyncTime
     {
       get
@@ -1104,7 +1083,6 @@ namespace RestrictionTrackerGTK
         m_LastSyncTime = value;
       }
     }
-
     public int Accuracy
     {
       get
@@ -1116,7 +1094,6 @@ namespace RestrictionTrackerGTK
         m_Accuracy = value;
       }
     }
-
     public uint Ago
     {
       get
@@ -1128,7 +1105,6 @@ namespace RestrictionTrackerGTK
         m_Ago = value;
       }
     }
-
     public string HistoryDir
     {
       get
@@ -1140,7 +1116,6 @@ namespace RestrictionTrackerGTK
         m_HistoryDir = value;
       }
     }
-
     public bool UpdateBETA
     {
       get
@@ -1152,7 +1127,6 @@ namespace RestrictionTrackerGTK
         m_UpdateBETA = value;
       }
     }
-
     public UpdateTypes UpdateType
     {
       get
@@ -1164,7 +1138,6 @@ namespace RestrictionTrackerGTK
         m_UpdateType = value;
       }
     }
-
     public byte UpdateTime
     {
       get
@@ -1176,7 +1149,6 @@ namespace RestrictionTrackerGTK
         m_UpdateTime = value;
       }
     }
-
     public bool ScaleScreen
     {
       get
@@ -1188,7 +1160,6 @@ namespace RestrictionTrackerGTK
         m_ScaleScreen = value;
       }
     }
-
     public Gdk.Size MainSize
     {
       get
@@ -1200,7 +1171,6 @@ namespace RestrictionTrackerGTK
         m_MainSize = value;
       }
     }
-
     public string RemoteKey
     {
       get
@@ -1212,7 +1182,6 @@ namespace RestrictionTrackerGTK
         m_RemoteKey = value;
       }
     }
-
     public int Timeout
     {
       get
@@ -1224,7 +1193,6 @@ namespace RestrictionTrackerGTK
         m_Timeout = value;
       }
     }
-
     public int Overuse
     {
       get
@@ -1236,7 +1204,6 @@ namespace RestrictionTrackerGTK
         m_Overuse = value;
       }
     }
-
     public int Overtime
     {
       get
@@ -1248,7 +1215,6 @@ namespace RestrictionTrackerGTK
         m_Overtime = value;
       }
     }
-
     public string AlertStyle
     {
       get
@@ -1260,7 +1226,6 @@ namespace RestrictionTrackerGTK
         m_AlertStyle = value;
       }
     }
-
     public TrayStyles TrayIconStyle
     {
       get
@@ -1272,7 +1237,6 @@ namespace RestrictionTrackerGTK
         m_TrayIcon = value;
       }
     }
-
     public bool AutoHide
     {
       get
@@ -1284,7 +1248,6 @@ namespace RestrictionTrackerGTK
         m_AutoHide = value;
       }
     }
-
     public IWebProxy Proxy
     {
       get
@@ -1385,7 +1348,7 @@ namespace RestrictionTrackerGTK
         }
         else
         {
-          WebProxy wValue = (WebProxy)value;
+          WebProxy wValue = (WebProxy) value;
           if (modFunctions.IsNumeric(wValue.Address.Host.Replace(".", string.Empty)))
           {
             if (value.Credentials != null)
@@ -1427,7 +1390,6 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-
     public SecurityProtocolType Protocol
     {
       get
@@ -1439,7 +1401,6 @@ namespace RestrictionTrackerGTK
         m_Protocol = value;
       }
     }
-
     public string NetTestURL
     {
       get
@@ -1451,7 +1412,6 @@ namespace RestrictionTrackerGTK
         m_NetTest = value;
       }
     }
-
     public class AppColors
     {
       private Color c_MainDA;
@@ -1482,11 +1442,9 @@ namespace RestrictionTrackerGTK
       private Color c_HistoryBG;
       private Color c_HistoryGridL;
       private Color c_HistoryGridD;
-
       public AppColors()
       {
       }
-
       public Color MainDownA
       {
         get
@@ -1498,7 +1456,6 @@ namespace RestrictionTrackerGTK
           c_MainDA = value;
         }
       }
-
       public Color MainDownB
       {
         get
@@ -1510,7 +1467,6 @@ namespace RestrictionTrackerGTK
           c_MainDB = value;
         }
       }
-
       public Color MainDownC
       {
         get
@@ -1522,7 +1478,6 @@ namespace RestrictionTrackerGTK
           c_MainDC = value;
         }
       }
-
       public Color MainUpA
       {
         get
@@ -1534,7 +1489,6 @@ namespace RestrictionTrackerGTK
           c_MainUA = value;
         }
       }
-
       public Color MainUpB
       {
         get
@@ -1546,7 +1500,6 @@ namespace RestrictionTrackerGTK
           c_MainUB = value;
         }
       }
-
       public Color MainUpC
       {
         get
@@ -1558,7 +1511,6 @@ namespace RestrictionTrackerGTK
           c_MainUC = value;
         }
       }
-
       public Color MainText
       {
         get
@@ -1570,7 +1522,6 @@ namespace RestrictionTrackerGTK
           c_MainText = value;
         }
       }
-
       public Color MainBackground
       {
         get
@@ -1582,7 +1533,6 @@ namespace RestrictionTrackerGTK
           c_MainBG = value;
         }
       }
-
       public Color TrayDownA
       {
         get
@@ -1594,7 +1544,6 @@ namespace RestrictionTrackerGTK
           c_TrayDA = value;
         }
       }
-
       public Color TrayDownB
       {
         get
@@ -1606,7 +1555,6 @@ namespace RestrictionTrackerGTK
           c_TrayDB = value;
         }
       }
-
       public Color TrayDownC
       {
         get
@@ -1618,7 +1566,6 @@ namespace RestrictionTrackerGTK
           c_TrayDC = value;
         }
       }
-
       public Color TrayUpA
       {
         get
@@ -1630,7 +1577,6 @@ namespace RestrictionTrackerGTK
           c_TrayUA = value;
         }
       }
-
       public Color TrayUpB
       {
         get
@@ -1642,7 +1588,6 @@ namespace RestrictionTrackerGTK
           c_TrayUB = value;
         }
       }
-
       public Color TrayUpC
       {
         get
@@ -1654,7 +1599,6 @@ namespace RestrictionTrackerGTK
           c_TrayUC = value;
         }
       }
-
       public Color HistoryDownLine
       {
         get
@@ -1666,7 +1610,6 @@ namespace RestrictionTrackerGTK
           c_HistoryDL = value;
         }
       }
-
       public Color HistoryDownA
       {
         get
@@ -1678,7 +1621,6 @@ namespace RestrictionTrackerGTK
           c_HistoryDA = value;
         }
       }
-
       public Color HistoryDownB
       {
         get
@@ -1690,7 +1632,6 @@ namespace RestrictionTrackerGTK
           c_HistoryDB = value;
         }
       }
-
       public Color HistoryDownC
       {
         get
@@ -1702,7 +1643,6 @@ namespace RestrictionTrackerGTK
           c_HistoryDC = value;
         }
       }
-
       public Color HistoryDownMax
       {
         get
@@ -1714,7 +1654,6 @@ namespace RestrictionTrackerGTK
           c_HistoryDM = value;
         }
       }
-
       public Color HistoryUpLine
       {
         get
@@ -1726,7 +1665,6 @@ namespace RestrictionTrackerGTK
           c_HistoryUL = value;
         }
       }
-
       public Color HistoryUpA
       {
         get
@@ -1738,7 +1676,6 @@ namespace RestrictionTrackerGTK
           c_HistoryUA = value;
         }
       }
-
       public Color HistoryUpB
       {
         get
@@ -1750,7 +1687,6 @@ namespace RestrictionTrackerGTK
           c_HistoryUB = value;
         }
       }
-
       public Color HistoryUpC
       {
         get
@@ -1762,7 +1698,6 @@ namespace RestrictionTrackerGTK
           c_HistoryUC = value;
         }
       }
-
       public Color HistoryUpMax
       {
         get
@@ -1774,7 +1709,6 @@ namespace RestrictionTrackerGTK
           c_HistoryUM = value;
         }
       }
-
       public Color HistoryText
       {
         get
@@ -1786,7 +1720,6 @@ namespace RestrictionTrackerGTK
           c_HistoryText = value;
         }
       }
-
       public Color HistoryBackground
       {
         get
@@ -1798,7 +1731,6 @@ namespace RestrictionTrackerGTK
           c_HistoryBG = value;
         }
       }
-
       public Color HistoryLightGrid
       {
         get
@@ -1810,7 +1742,6 @@ namespace RestrictionTrackerGTK
           c_HistoryGridL = value;
         }
       }
-
       public Color HistoryDarkGrid
       {
         get
@@ -1825,4 +1756,3 @@ namespace RestrictionTrackerGTK
     }
   }
 }
-

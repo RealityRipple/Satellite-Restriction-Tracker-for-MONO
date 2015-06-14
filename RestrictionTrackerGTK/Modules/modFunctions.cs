@@ -6,7 +6,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.IO.Compression;
 using RestrictionLibrary;
-
 namespace RestrictionTrackerGTK
 {
   static class modFunctions
@@ -61,7 +60,6 @@ namespace RestrictionTrackerGTK
         return new NotifierStyle();
       }
     }
-
     private static void ExtractGZ(string sGZ, string sDestFile)
     {
       using (FileStream sourceTGZ = new FileStream(sGZ, FileMode.Open, FileAccess.Read,FileShare.Read))
@@ -83,7 +81,6 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-
     private static void ExtractTar(string sTAR, string sDestPath)
     {
       if (!Directory.Exists(sDestPath))
@@ -117,7 +114,6 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-
     public static void MakeNotifier(ref TaskbarNotifier taskNotifier, bool ContentClickable)
     {
       if (NOTIFIER_STYLE.Background == null || NOTIFIER_STYLE.CloseButton == null)
@@ -136,7 +132,6 @@ namespace RestrictionTrackerGTK
       taskNotifier.NormalContentColor = NOTIFIER_STYLE.ContentColor;
       taskNotifier.HoverContentColor = NOTIFIER_STYLE.ContentHoverColor;
     }
-
     public static void MakeNotifier(ref TaskbarNotifier taskNotifier, bool ContentClickable, NotifierStyle customStyle)
     {
       if (customStyle.Background == null || customStyle.CloseButton == null)
@@ -155,14 +150,14 @@ namespace RestrictionTrackerGTK
       taskNotifier.NormalContentColor = customStyle.ContentColor;
       taskNotifier.HoverContentColor = customStyle.ContentHoverColor;
     }
-    #endregion 
+    #endregion
     public static string LocalAppData
     {
       get
       {
         if (CurrentOS.IsMac)
         {
-          return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal) , "Library" , "Application Support") + Path.DirectorySeparatorChar.ToString();
+          return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Library", "Application Support") + Path.DirectorySeparatorChar.ToString();
         }
         else
         {
@@ -197,7 +192,6 @@ namespace RestrictionTrackerGTK
         return static_AppData_sTmp;
       }
     }
-
     public static string MySaveDir(bool Create = false)
     {
       AppSettings mySettings = new AppSettings();
@@ -217,7 +211,6 @@ namespace RestrictionTrackerGTK
       }
       return mySettings.HistoryDir;
     }
-
     public static string ByteSize(UInt64 InBytes)
     {
       if (InBytes >= 1000)
@@ -250,7 +243,6 @@ namespace RestrictionTrackerGTK
         return InBytes.ToString() + " B";
       }
     }
-
     public static localRestrictionTracker.SatHostTypes StringToHostType(string st)
     {
       switch (st.ToUpper())
@@ -271,10 +263,9 @@ namespace RestrictionTrackerGTK
         case "DISHNET":
           return localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
         default:
-          return localRestrictionTracker.SatHostTypes.Other ;
+          return localRestrictionTracker.SatHostTypes.Other;
       }
     }
-
     public static string HostTypeToString(localRestrictionTracker.SatHostTypes ht)
     {
       switch (ht)
@@ -293,7 +284,6 @@ namespace RestrictionTrackerGTK
           return "O";
       }
     }
-
     public static string ConvertTime(UInt64 lngMS, bool Abbreviated = false, bool Trimmed = true)
     {
       UInt64 lngSeconds = lngMS / 1000;
@@ -495,20 +485,18 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-
     public static string DisplayVersion(string sVersion)
     {
       string ApplicationVersion = sVersion;
       while (!String.IsNullOrEmpty(ApplicationVersion) && ApplicationVersion.Length > 3 && ApplicationVersion.EndsWith(".0"))
       {
-        ApplicationVersion = ApplicationVersion.Substring(0, ApplicationVersion.Length-2);
+        ApplicationVersion = ApplicationVersion.Substring(0, ApplicationVersion.Length - 2);
       }
       if (string.IsNullOrEmpty(ApplicationVersion))
         return sVersion;
       else
         return ApplicationVersion;
     }
-
     public static bool CompareVersions(string sRemote)
     {
       string sLocal = ProductVersion;
@@ -519,17 +507,17 @@ namespace RestrictionTrackerGTK
         {
           if (sLocal.Split('.').Length > I)
           {
-            string sTmp = sLocal.Split('.') [I].Trim();
+            string sTmp = sLocal.Split('.')[I].Trim();
             int iV;
             if (int.TryParse(sTmp, out iV) & sTmp.Length < 4)
             {
               sTmp += new string('0', 4 - sTmp.Length);
             }
-            LocalVer [I] = sTmp;
+            LocalVer[I] = sTmp;
           }
           else
           {
-            LocalVer [I] = "0000";
+            LocalVer[I] = "0000";
           }
         }
       }
@@ -539,17 +527,17 @@ namespace RestrictionTrackerGTK
         {
           if (sLocal.Split(',').Length > I)
           {
-            string sTmp = sLocal.Split(',') [I].Trim();
+            string sTmp = sLocal.Split(',')[I].Trim();
             int iV;
             if (int.TryParse(sTmp, out iV) & sTmp.Length < 4)
             {
               sTmp += new string('0', 4 - sTmp.Length);
             }
-            LocalVer [I] = sTmp;
+            LocalVer[I] = sTmp;
           }
           else
           {
-            LocalVer [I] = "0000";
+            LocalVer[I] = "0000";
           }
         }
       }
@@ -560,17 +548,17 @@ namespace RestrictionTrackerGTK
         {
           if (sRemote.Split('.').Length > I)
           {
-            string sTmp = sRemote.Split('.') [I].Trim();
+            string sTmp = sRemote.Split('.')[I].Trim();
             int iV;
             if (int.TryParse(sTmp, out iV) & sTmp.Length < 4)
             {
               sTmp += new string('0', 4 - sTmp.Length);
             }
-            RemoteVer [I] = sTmp;
+            RemoteVer[I] = sTmp;
           }
           else
           {
-            RemoteVer [I] = "0000";
+            RemoteVer[I] = "0000";
           }
         }
       }
@@ -580,17 +568,17 @@ namespace RestrictionTrackerGTK
         {
           if (sRemote.Split(',').Length > I)
           {
-            string sTmp = sRemote.Split(',') [I].Trim();
+            string sTmp = sRemote.Split(',')[I].Trim();
             int iV;
             if (int.TryParse(sTmp, out iV) & sTmp.Length < 4)
             {
               sTmp += new string('0', 4 - sTmp.Length);
             }
-            RemoteVer [I] = sTmp;
+            RemoteVer[I] = sTmp;
           }
           else
           {
-            RemoteVer [I] = "0000";
+            RemoteVer[I] = "0000";
           }
         }
       }
@@ -599,29 +587,29 @@ namespace RestrictionTrackerGTK
       int[] RemoteVal = new int[4];
       for (int I = 0; I <= 3; I++)
       {
-        LocalVal [I] = int.Parse(LocalVer [I]);
-        RemoteVal [I] = int.Parse(RemoteVer [I]);
+        LocalVal[I] = int.Parse(LocalVer[I]);
+        RemoteVal[I] = int.Parse(RemoteVer[I]);
       }
 
-      if (LocalVal [0] > RemoteVal [0])
+      if (LocalVal[0] > RemoteVal[0])
       {
         //Local's OK
       }
-      else if (LocalVal [0] == RemoteVal [0])
+      else if (LocalVal[0] == RemoteVal[0])
       {
-        if (LocalVal [1] > RemoteVal [1])
+        if (LocalVal[1] > RemoteVal[1])
         {
           //Local's OK
         }
-        else if (LocalVal [1] == RemoteVal [1])
+        else if (LocalVal[1] == RemoteVal[1])
         {
-          if (LocalVal [2] > RemoteVal [2])
+          if (LocalVal[2] > RemoteVal[2])
           {
             //Local's OK
           }
-          else if (LocalVal [2] == RemoteVal [2])
+          else if (LocalVal[2] == RemoteVal[2])
           {
-            if (LocalVal [3] >= RemoteVal [3])
+            if (LocalVal[3] >= RemoteVal[3])
             {
               //Local's OK
             }
@@ -646,7 +634,6 @@ namespace RestrictionTrackerGTK
       }
       return bUpdate;
     }
-
     public static void SaveToFTP(object sData)
     {
       try
@@ -671,7 +658,6 @@ namespace RestrictionTrackerGTK
         MainClass.fMain.FailResponse(false);
       }
     }
-
     public static string PercentEncode(string inString)
     {
       string sRet = string.Empty;
@@ -681,7 +667,7 @@ namespace RestrictionTrackerGTK
       {
         int iChar = Convert.ToInt32(inString[I]);
         if ((iChar >= 48 && iChar <= 57) || (iChar <= 65 && iChar >= 90) || (iChar <= 97 && iChar >= 122))
-          sRet = inString [I].ToString() + sRet;
+          sRet = inString[I].ToString() + sRet;
         else if (iChar == 32)
           sRet = "+" + sRet;
         else
@@ -689,7 +675,6 @@ namespace RestrictionTrackerGTK
       }
       return sRet;
     }
-
     private static string PadHex(Int32 Value, UInt16 Length)
     {
       string sVal = Convert.ToString(Value, 16);
@@ -699,7 +684,6 @@ namespace RestrictionTrackerGTK
       }
       return sVal;
     }
-
     public static byte CopyDirectory(string FromDir, string ToDir)
     {
       if (Directory.Exists(FromDir))
@@ -720,7 +704,7 @@ namespace RestrictionTrackerGTK
                 bool isUnique = true;
                 for (int J = 0; J <= srtFiles.Length - 1; J++)
                 {
-                  if (Path.GetFileName(srtFiles [J]).CompareTo(Path.GetFileName(wbFiles [I])) == 0)
+                  if (Path.GetFileName(srtFiles[J]).CompareTo(Path.GetFileName(wbFiles[I])) == 0)
                   {
                     isUnique = false;
                     break;
@@ -728,7 +712,7 @@ namespace RestrictionTrackerGTK
                 }
                 if (isUnique)
                 {
-                  spareFiles.Add(wbFiles [I]);
+                  spareFiles.Add(wbFiles[I]);
                 }
               }
             }
@@ -741,7 +725,7 @@ namespace RestrictionTrackerGTK
               Directory.CreateDirectory(ToDir);
               for (int I = 0; I <= spareFiles.Count - 1; I++)
               {
-                string file = spareFiles [I];
+                string file = spareFiles[I];
                 string sFName = Path.GetFileName(file);
                 File.Copy(file, Path.Combine(ToDir, sFName), true);
                 bDidSomething = true;
@@ -761,7 +745,7 @@ namespace RestrictionTrackerGTK
             Directory.CreateDirectory(ToDir);
             for (int I = 0; I <= wbFiles.Length - 1; I++)
             {
-              string file = wbFiles [I];
+              string file = wbFiles[I];
               string sFName = Path.GetFileName(file);
               File.Copy(file, Path.Combine(ToDir, sFName), true);
               bDidSomething = true;
@@ -779,7 +763,7 @@ namespace RestrictionTrackerGTK
         {
           for (int I = 0; I <= wFileTmp.Length - 1; I++)
           {
-            if ((Path.GetFileName(wFileTmp [I]).CompareTo(Path.GetFileName(sFileTmp [I])) == 0) & (new FileInfo(wFileTmp [I]).Length == new FileInfo(sFileTmp [I]).Length))
+            if ((Path.GetFileName(wFileTmp[I]).CompareTo(Path.GetFileName(sFileTmp[I])) == 0) & (new FileInfo(wFileTmp[I]).Length == new FileInfo(sFileTmp[I]).Length))
             {
               continue;
             }
@@ -808,7 +792,6 @@ namespace RestrictionTrackerGTK
         return 2;
       }
     }
-
     public static void MoveDirectory(string FromDir, string ToDir)
     {
       if (Directory.Exists(FromDir))
@@ -825,7 +808,6 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-
     public static string NetError(string Message)
     {
       if (Message.StartsWith("Error: ConnectFailure (") & Message.EndsWith(")"))
@@ -837,26 +819,21 @@ namespace RestrictionTrackerGTK
         return Message;
       }
     }
-
-
     class ActivateLinkEventArgs : GLib.SignalArgs
     {
-      public string Url { get { return (string) base.Args[0]; }}
+      public string Url { get { return (string)base.Args[0]; } }
     }
-
     [GLib.ConnectBefore]
     static void HandleActivateLink(object o, ActivateLinkEventArgs e)
     {
       System.Diagnostics.Process.Start(e.Url);
       e.RetVal = true;
     }
-
     public static void PrepareLink(Gtk.Label label)
     {
       var signal = GLib.Signal.Lookup(label, "activate-link", typeof(ActivateLinkEventArgs));
       signal.AddDelegate(new EventHandler<ActivateLinkEventArgs>(HandleActivateLink));
     }
-
     #region "Graphs"
     #region "History"
     private static Rectangle dGraph;
@@ -865,7 +842,6 @@ namespace RestrictionTrackerGTK
     private static System.DateTime newDate;
     private static DataBase.DataRow[] dData;
     private static DataBase.DataRow[] uData;
-
     public static Rectangle GetGraphRect(bool DownGraph, out System.DateTime firstX, out System.DateTime lastX)
     {
       firstX = oldDate;
@@ -879,7 +855,6 @@ namespace RestrictionTrackerGTK
         return uGraph;
       }
     }
-
     static internal DataBase.DataRow GetGraphData(System.DateTime fromDate, bool DownGraph)
     {
       if (DownGraph)
@@ -911,12 +886,10 @@ namespace RestrictionTrackerGTK
         return closestRow;
       }
     }
-
     public static Image DrawRGraph(DataBase.DataRow[] Data, Size ImgSize, Color ColorLine, Color ColorA, Color ColorB, Color ColorC, Color ColorText, Color ColorBG, Color ColorMax, Color ColorGridLight, Color ColorGridDark)
     {
       return DrawGraph(Data, 0, ImgSize, ColorLine, ColorA, ColorB, ColorC, ColorText, ColorBG, ColorMax, ColorGridLight, ColorGridDark);
     }
-
     public static Image DrawLineGraph(DataBase.DataRow[] Data, bool Down, Size ImgSize, Color ColorLine, Color ColorA, Color ColorB, Color ColorC, Color ColorText, Color ColorBG, Color ColorMax, Color ColorGridLight, Color ColorGridDark)
     {
       if (Down)
@@ -924,8 +897,7 @@ namespace RestrictionTrackerGTK
       else
         return DrawGraph(Data, 255, ImgSize, ColorLine, ColorA, ColorB, ColorC, ColorText, ColorBG, ColorMax, ColorGridLight, ColorGridDark);
     }
-
-    private static Image DrawGraph(DataBase.DataRow[] Data, byte Down, Size ImgSize,Color ColorLine, Color ColorA, Color ColorB, Color ColorC, Color ColorText, Color ColorBG, Color ColorMax, Color ColorGridLight, Color ColorGridDark)
+    private static Image DrawGraph(DataBase.DataRow[] Data, byte Down, Size ImgSize, Color ColorLine, Color ColorA, Color ColorB, Color ColorC, Color ColorText, Color ColorBG, Color ColorMax, Color ColorGridLight, Color ColorGridDark)
     {
       if (Data == null || Data.Length == 0)
       {
@@ -1301,7 +1273,7 @@ namespace RestrictionTrackerGTK
       fBrush.WrapMode = WrapMode.TileFlipX;
       g.FillPath(fBrush, gPath);
       g.SetClip(gPath);
-      g.FillRectangle(new HatchBrush(HatchStyle.LightUpwardDiagonal, Color.FromArgb(192, ColorMax), Color.FromArgb(192,ColorC)), lYWidth + 1, yTop - 1, ImgSize.Width, MaxY - yTop + 1);
+      g.FillRectangle(new HatchBrush(HatchStyle.LightUpwardDiagonal, Color.FromArgb(192, ColorMax), Color.FromArgb(192, ColorC)), lYWidth + 1, yTop - 1, ImgSize.Width, MaxY - yTop + 1);
       g.ResetClip();
       g.DrawPath(new Pen(ColorLine, 1.5f), gPath);
       g.DrawLines(new Pen(new SolidBrush(Color.FromArgb(96, ColorMax)), 5), lMaxPoints);
@@ -1311,7 +1283,6 @@ namespace RestrictionTrackerGTK
       return iPic;
     }
     #endregion
-
     #region "Progress"
     public static Font MonospaceFont(float Size)
     {
@@ -1332,9 +1303,9 @@ namespace RestrictionTrackerGTK
           else if (fontList.Contains("Consolas"))
             return new Font("Consolas", Size);
           else if (fontList.Contains("Lucida Console"))
-            return new Font("Lucida Console",Size);
+            return new Font("Lucida Console", Size);
           else
-            return new Font(SystemFonts.DefaultFont.Name,Size);
+            return new Font(SystemFonts.DefaultFont.Name, Size);
         }
       }
       catch
@@ -1342,7 +1313,6 @@ namespace RestrictionTrackerGTK
         return (new Font(SystemFonts.DefaultFont.Name, Size));
       }
     }
-
     public static Image DisplayProgress(Gdk.Size ImgSize, long Current, long Total, int Accuracy, Color ColorA, Color ColorB, Color ColorC, Color ColorText, Color ColorBG)
     {
       if (ImgSize.IsEmpty)
@@ -1476,7 +1446,6 @@ namespace RestrictionTrackerGTK
         return bmpTmp;
       }
     }
-
     public static Image DisplayEProgress(Gdk.Size ImgSize, long Down, long Up, long Over, long Total, int Accuracy, Color ColorDA, Color ColorDB, Color ColorDC, Color ColorUA, Color ColorUB, Color ColorUC, Color ColorText, Color ColorBG)
     {
       if (ImgSize.IsEmpty)
@@ -1585,7 +1554,6 @@ namespace RestrictionTrackerGTK
       }
       return bmpTmp;
     }
-
     public static Image DisplayRProgress(Gdk.Size ImgSize, long Down, long Total, int Accuracy, Color ColorA, Color ColorB, Color ColorC, Color ColorText, Color ColorBG)
     {
       if (ImgSize.IsEmpty)
@@ -1672,7 +1640,6 @@ namespace RestrictionTrackerGTK
       }
       return bmpTmp;
     }
-
     private static LinearGradientBrush TriGradientBrush(Point point1, Point point2, Color ColorA, Color ColorB, Color ColorC)
     {
       if (point1.Equals(point2))
@@ -1688,26 +1655,23 @@ namespace RestrictionTrackerGTK
       {
         tBrush = new LinearGradientBrush(point1, point2, Color.Black, Color.Black);
         ColorBlend cb = new ColorBlend();
-        cb.Positions = new float[] {0f, 0.5f, 1f};
-        cb.Colors = new Color[] {ColorC, ColorB, ColorA};
+        cb.Positions = new float[] { 0f, 0.5f, 1f };
+        cb.Colors = new Color[] { ColorC, ColorB, ColorA };
         tBrush.InterpolationColors = cb;
       }
       return tBrush;
     }
-
     public static string FormatPercent(double val, int Accuracy)
     {
       System.Globalization.NumberFormatInfo nfi = new System.Globalization.CultureInfo("en-us").NumberFormat;
       nfi.PercentDecimalDigits = Accuracy;
-      int[] groupSize = {0};
+      int[] groupSize = { 0 };
       nfi.PercentGroupSizes = groupSize;
       return (val.ToString("P", nfi));
     }
     #endregion
-
     #region "Tray"
     private const int Alpha = 192;
-
     public static void CreateTrayIcon_Left(ref Graphics g, long lUsed, long lLim, Color cA, Color cB, Color cC, int iSize)
     {
       LinearGradientBrush fillBrush = default(LinearGradientBrush);
@@ -1719,16 +1683,11 @@ namespace RestrictionTrackerGTK
       {
         fillBrush = new LinearGradientBrush(new Point(0, 0), new Point(0, iSize), Color.Black, Color.Black);
         ColorBlend cBlend = new ColorBlend();
-        cBlend.Positions = new float[] {0f, 0.5f, 1f};
-        cBlend.Colors = new Color[]
-        {
-          Color.FromArgb(Alpha, cC),
-          Color.FromArgb(Alpha, cB),
-          Color.FromArgb(Alpha, cA)
-        };
+        cBlend.Positions = new float[] { 0f, 0.5f, 1f };
+        cBlend.Colors = new Color[] { Color.FromArgb(Alpha, cC), Color.FromArgb(Alpha, cB), Color.FromArgb(Alpha, cA) };
         fillBrush.InterpolationColors = cBlend;
       }
-      long yUsed = (long) Math.Round(iSize - ((double) lUsed / lLim * iSize));
+      long yUsed = (long)Math.Round(iSize - ((double)lUsed / lLim * iSize));
       if (yUsed < 0)
       {
         yUsed = 0;
@@ -1737,9 +1696,8 @@ namespace RestrictionTrackerGTK
       {
         yUsed = iSize;
       }
-      g.FillRectangle(fillBrush, 0, yUsed, (float) Math.Floor(iSize / 2d), iSize - yUsed);
+      g.FillRectangle(fillBrush, 0, yUsed, (float)Math.Floor(iSize / 2d), iSize - yUsed);
     }
-
     public static void CreateTrayIcon_Right(ref Graphics g, long lUsed, long lLim, Color cA, Color cB, Color cC, int iSize)
     {
       LinearGradientBrush fillBrush = default(LinearGradientBrush);
@@ -1751,16 +1709,11 @@ namespace RestrictionTrackerGTK
       {
         fillBrush = new LinearGradientBrush(new Point(0, 0), new Point(0, iSize), Color.Black, Color.Black);
         ColorBlend cBlend = new ColorBlend();
-        cBlend.Positions = new float[] {0f, 0.5f, 1f};
-        cBlend.Colors = new Color[]
-        {
-          Color.FromArgb(Alpha, cC),
-          Color.FromArgb(Alpha, cB),
-          Color.FromArgb(Alpha, cA)
-        };
+        cBlend.Positions = new float[] { 0f, 0.5f, 1f };
+        cBlend.Colors = new Color[] { Color.FromArgb(Alpha, cC), Color.FromArgb(Alpha, cB), Color.FromArgb(Alpha, cA) };
         fillBrush.InterpolationColors = cBlend;
       }
-      long yUsed = (long) Math.Round(iSize - ((double) lUsed / lLim * iSize));
+      long yUsed = (long)Math.Round(iSize - ((double)lUsed / lLim * iSize));
       if (yUsed < 0)
       {
         yUsed = 0;
@@ -1769,10 +1722,9 @@ namespace RestrictionTrackerGTK
       {
         yUsed = iSize;
       }
-      g.FillRectangle(fillBrush, (float) Math.Floor(iSize / 2d), yUsed, (float) Math.Ceiling(iSize / 2d), iSize - yUsed);
+      g.FillRectangle(fillBrush, (float)Math.Floor(iSize / 2d), yUsed, (float)Math.Ceiling(iSize / 2d), iSize - yUsed);
     }
     #endregion
-
     public static void ScreenDefaultColors(ref AppSettings.AppColors Colors, localRestrictionTracker.SatHostTypes useStyle)
     {
       AppSettings.AppColors defaultColors = GetDefaultColors(useStyle);
@@ -1831,7 +1783,6 @@ namespace RestrictionTrackerGTK
       if (Colors.HistoryDarkGrid == Color.Transparent | Colors.HistoryDarkGrid.A < 255)
         Colors.HistoryDarkGrid = defaultColors.HistoryDarkGrid;
     }
-
     public static AppSettings.AppColors GetDefaultColors(localRestrictionTracker.SatHostTypes useStyle)
     {
       AppSettings.AppColors outColors = new AppSettings.AppColors();
@@ -1972,9 +1923,7 @@ namespace RestrictionTrackerGTK
       }
       return(outColors);
     }
-
-#endregion
-
+    #endregion
     /// <summary>
     /// Attempts to see if a file is in use, waiting up to five seconds for it to be freed.
     /// </summary>
@@ -2006,8 +1955,8 @@ namespace RestrictionTrackerGTK
               }
 
               break;
-              case FileAccess.Write:
-              case FileAccess.ReadWrite:
+            case FileAccess.Write:
+            case FileAccess.ReadWrite:
               //check for ability to write
               using (FileStream fs = File.Open(Filename, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite | FileShare.Delete))
               {
@@ -2027,61 +1976,59 @@ namespace RestrictionTrackerGTK
       } while (TickCount() - iStart < 5000);
       return false;
     }
-
     public static DateTime DateAdd(DateInterval interval, double number, DateTime dateValue)
     {
       switch (interval)
       {
         case DateInterval.Day:
           return dateValue.AddDays(number);
-          case DateInterval.DayOfYear:
+        case DateInterval.DayOfYear:
           return dateValue.AddDays(number);
-          case DateInterval.Hour:
+        case DateInterval.Hour:
           return dateValue.AddHours(number);
-          case DateInterval.Minute:
+        case DateInterval.Minute:
           return dateValue.AddMinutes(number);
-          case DateInterval.Month:
+        case DateInterval.Month:
           return dateValue.AddMonths((int)number);
-          case DateInterval.Quarter:
+        case DateInterval.Quarter:
           return dateValue.AddMonths((int)number * 3);
-          case DateInterval.Second:
+        case DateInterval.Second:
           return dateValue.AddSeconds(number);
-          case DateInterval.Weekday:
+        case DateInterval.Weekday:
           return dateValue;
-          case DateInterval.WeekOfYear:
+        case DateInterval.WeekOfYear:
           return dateValue;
-          default:
+        default:
           return dateValue;
       }
     }
-
     public static long DateDiff(DateInterval interval, DateTime date1, DateTime date2)
     {
       switch (interval)
       { 
         case DateInterval.Day:
-          case DateInterval.DayOfYear:
+        case DateInterval.DayOfYear:
           System.TimeSpan spanForDays = date2 - date1;
           return (long)spanForDays.TotalDays;
-          case DateInterval.Hour:
+        case DateInterval.Hour:
           System.TimeSpan spanForHours = date2 - date1;
           return (long)spanForHours.TotalHours;
-          case DateInterval.Minute:
+        case DateInterval.Minute:
           System.TimeSpan spanForMinutes = date2 - date1;
           return (long)spanForMinutes.TotalMinutes;
-          case DateInterval.Month:
+        case DateInterval.Month:
           return ((date2.Year - date1.Year) * 12) + (date2.Month - date1.Month);
-          case DateInterval.Quarter:
+        case DateInterval.Quarter:
           long dateOneQuarter = (long)System.Math.Ceiling(date1.Month / 3.0);
           long dateTwoQuarter = (long)System.Math.Ceiling(date2.Month / 3.0);
           return (4 * (date2.Year - date1.Year)) + dateTwoQuarter - dateOneQuarter;
-          case DateInterval.Second:
+        case DateInterval.Second:
           System.TimeSpan spanForSeconds = date2 - date1;
           return (long)spanForSeconds.TotalSeconds;
-          case DateInterval.Weekday:
+        case DateInterval.Weekday:
           System.TimeSpan spanForWeekdays = date2 - date1;
           return (long)(spanForWeekdays.TotalDays / 7.0);
-          case DateInterval.WeekOfYear:
+        case DateInterval.WeekOfYear:
           System.DateTime dateOneModified = date1;
           System.DateTime dateTwoModified = date2;
           while (dateTwoModified.DayOfWeek != System.Globalization.DateTimeFormatInfo.CurrentInfo.FirstDayOfWeek)
@@ -2094,13 +2041,12 @@ namespace RestrictionTrackerGTK
           }
           System.TimeSpan spanForWeekOfYear = dateTwoModified - dateOneModified;
           return (long)(spanForWeekOfYear.TotalDays / 7.0);
-          case DateInterval.Year:
+        case DateInterval.Year:
           return date2.Year - date1.Year;
-          default:
+        default:
           return 0;
       }
     }
-
     public static bool IsNumeric(string value)
     {
       string ret = value;
@@ -2111,12 +2057,10 @@ namespace RestrictionTrackerGTK
       ret = ret.Replace("-", "");
       return ret.Length == 0;
     }
-
     public static long TickCount()
     {
-      return (System.Diagnostics.Stopwatch.GetTimestamp() / System.Diagnostics.Stopwatch.Frequency) * 1000;
+      return (long)((System.Diagnostics.Stopwatch.GetTimestamp() / (double)System.Diagnostics.Stopwatch.Frequency) * 1000);
     }
-
     public static string ProductVersion
     {
       get
@@ -2126,7 +2070,6 @@ namespace RestrictionTrackerGTK
         return fInfo.FileVersion;
       }
     }
-
     public static string CompanyName
     {
       get
@@ -2136,7 +2079,6 @@ namespace RestrictionTrackerGTK
         return fInfo.CompanyName;
       }
     }
-
     public static string ProductName
     {
       get
@@ -2146,7 +2088,6 @@ namespace RestrictionTrackerGTK
         return fInfo.ProductName;
       }
     }
-
     #region "MsgBox"
     public static Gtk.ResponseType ShowMessageBox(Gtk.Window parent, string text, string title, Gtk.DialogFlags flags, Gtk.MessageType icon, Gtk.ButtonsType buttons)
     {
@@ -2163,7 +2104,6 @@ namespace RestrictionTrackerGTK
       dlg.Destroy();
       return ret;
     }
-
     public static Gtk.ResponseType ShowMessageBoxYNC(Gtk.Window parent, string text, string title, Gtk.DialogFlags flags)
     {
       Gtk.MessageDialog dlg = new Gtk.MessageDialog(parent, flags, Gtk.MessageType.Question, Gtk.ButtonsType.None, text);
@@ -2183,10 +2123,39 @@ namespace RestrictionTrackerGTK
       return ret;
     }
     #endregion
-
     #region "Image Stuff"
     public static Bitmap GetScreenRect(Rectangle rectIn)
     {
+      if (CurrentOS.IsMac)
+      {
+        if (File.Exists("/usr/sbin/screencapture"))
+        {
+          string screenPath = Path.Combine(AppData, "srt_alert_clip.png");
+          if (File.Exists(screenPath))
+            File.Delete(screenPath);
+          System.Diagnostics.ProcessStartInfo cap = new System.Diagnostics.ProcessStartInfo("/usr/sbin/screencapture", String.Format("-R{0},{1},{2},{3} \"{4}\"", rectIn.X, rectIn.Y, rectIn.Width, rectIn.Height, screenPath));
+          cap.UseShellExecute = true;
+          System.Diagnostics.Process.Start(cap);
+          if (!File.Exists(screenPath))
+          {
+            long lStart = TickCount();
+            do
+            {
+              System.Threading.Thread.Sleep(1);
+            } while ((!File.Exists(screenPath)) & (TickCount() - lStart < 7000));
+          }
+          if (File.Exists(screenPath))
+          {
+            Gdk.Pixbuf pbImage = new Gdk.Pixbuf(screenPath);
+            Bitmap bImg = (Bitmap)PixbufToImage(pbImage);
+            pbImage.Dispose();
+            pbImage = null;
+            if (File.Exists(screenPath))
+              File.Delete(screenPath);
+            return bImg;
+          }
+        }
+      }
       try
       {
         Gdk.Window window = Gdk.Global.DefaultRootWindow;
@@ -2194,16 +2163,15 @@ namespace RestrictionTrackerGTK
         {           
           Gdk.Pixbuf scrnBuf = new Gdk.Pixbuf(Gdk.Colorspace.Rgb, false, 8, rectIn.Width, rectIn.Height);          
           scrnBuf.GetFromDrawable(window, Gdk.Colormap.System, rectIn.X, rectIn.Y, 0, 0, rectIn.Width, rectIn.Height);  
-          return (Bitmap) PixbufToImage(scrnBuf);
+          return (Bitmap)PixbufToImage(scrnBuf);
         }
         return null;
       }
-      catch(Exception)
+      catch (Exception)
       {
         return null;
       }
     }
-
     public static Bitmap ReplaceColors(Bitmap bitIn, Color TransparencyKey, Bitmap bitBG)
     {
       Bitmap bitOut = new Bitmap(bitIn.Width, bitIn.Height, PixelFormat.Format32bppArgb);
@@ -2230,12 +2198,10 @@ namespace RestrictionTrackerGTK
       }
       return bitOut; 
     }
-
     public static Bitmap MakeTransparent(Bitmap bitIn, Color TransparencyKey)
     {
       return SwapColors(bitIn, TransparencyKey, Color.FromArgb(0, 0, 0, 0));
     }
-
     public static Bitmap SwapColors(Bitmap bitIn, Color InColor, Color OutColor)
     {
       Bitmap bitOut = new Bitmap(bitIn.Width, bitIn.Height, PixelFormat.Format32bppPArgb);
@@ -2255,30 +2221,24 @@ namespace RestrictionTrackerGTK
       }
       return bitOut;
     }
-
     public static Color GdkColorToDrawingColor(Gdk.Color c)
     {
       return Color.FromArgb(255, (int)Math.Floor(c.Red / 256d), (int)Math.Floor(c.Green / 256d), (int)Math.Floor(c.Blue / 256d));
     }
-
     public static Gdk.Color DrawingColorToGdkColor(Color c)
     {
       Gdk.Color ret = new Gdk.Color((byte)c.R, (byte)c.G, (byte)c.B);
       ret.Pixel = (uint)c.A;
       return ret;
     }
-
     public static Size GdkSizeToDrawingSize(Gdk.Size s)
     {
       return new Size(s.Width, s.Height);
     }
-
     public static Gdk.Size DrawingSizeToGdkSize(Size s)
     {
       return new Gdk.Size(s.Width, s.Height);
     }
-
-
     #region "Colors Conversions"
     public static bool CompareColors(Color a, Color b, bool IgnoreAlpha)
     {
@@ -2305,7 +2265,6 @@ namespace RestrictionTrackerGTK
       }
       return(ret);
     }
-
     public static bool CompareColors(Color a, Gdk.Color b)
     {
       bool ret = true;
@@ -2318,7 +2277,6 @@ namespace RestrictionTrackerGTK
         ret = false;
       return(ret);
     }
-
     public static bool CompareColors(Gdk.Color a, Gdk.Color b)
     {
       bool ret = true;
@@ -2331,7 +2289,6 @@ namespace RestrictionTrackerGTK
       return(ret);
     }
     #endregion
-
     public static Gdk.Pixbuf ImageToPixbuf(Image img)
     {
       try
@@ -2349,7 +2306,6 @@ namespace RestrictionTrackerGTK
         return Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.error.png");
       }
     }
-
     public static Image PixbufToImage(Gdk.Pixbuf pbf)
     {
       try
@@ -2363,11 +2319,10 @@ namespace RestrictionTrackerGTK
       }
       catch (Exception)
       {
-        return ((Image) new System.Drawing.Bitmap(MainClass.fMain.GetType(), "Resources.error.png"));
+        return ((Image)new System.Drawing.Bitmap(MainClass.fMain.GetType(), "Resources.error.png"));
       }
     }
-    #endregion 
-
+    #endregion
     #region "Startup"
     private static string LinStartup = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".config", "autostart");
     private static string OSXStartup = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Library", "LaunchAgents");
@@ -2400,8 +2355,8 @@ namespace RestrictionTrackerGTK
           else
           {
             if (Directory.Exists(OSXStartup))
-              if (File.Exists(Path.Combine(OSXStartup, OSXShortcut)))
-                File.Delete(Path.Combine(OSXStartup, OSXShortcut));
+            if (File.Exists(Path.Combine(OSXStartup, OSXShortcut)))
+              File.Delete(Path.Combine(OSXStartup, OSXShortcut));
           }
         }
         else
@@ -2415,8 +2370,8 @@ namespace RestrictionTrackerGTK
             try
             {
               if (Directory.Exists(LinStartup))
-                if (File.Exists(Path.Combine(LinStartup, LinShortcut)))
-                  File.Delete(Path.Combine(LinStartup, LinShortcut));
+              if (File.Exists(Path.Combine(LinStartup, LinShortcut)))
+                File.Delete(Path.Combine(LinStartup, LinShortcut));
             }
             catch (Exception)
             {
@@ -2504,7 +2459,6 @@ namespace RestrictionTrackerGTK
       }
     }
     #endregion
-
     public static bool RunTerminal(string command)
     {
       try
@@ -2533,12 +2487,11 @@ namespace RestrictionTrackerGTK
           System.Diagnostics.Process.Start(command);
         return true;
       }
-      catch(Exception)
+      catch (Exception)
       {
         return false;
       }
     }
-
     private static System.Net.Sockets.TcpListener sckOpen;
     public static bool RunningLock()
     {
@@ -2548,19 +2501,18 @@ namespace RestrictionTrackerGTK
         sckOpen.Start();
         return true;
       }
-      catch(Exception)
+      catch (Exception)
       {
         return false;
       }
     }
-
     public static bool IterativeEqualityCheck(byte[] inArray1, byte[] inArray2)
     {
       if (inArray1.Length == inArray2.Length)
       {
         for (int I = 0; I <= inArray1.Length - 1; I++)
         {
-          if (!(inArray1 [I] == inArray2 [I]))
+          if (!(inArray1[I] == inArray2[I]))
           {
             return false;
           }
@@ -2572,7 +2524,6 @@ namespace RestrictionTrackerGTK
         return false;
       }
     }
-
     public static bool DirectoryEqualityCheck(string dirA, string dirB)
     {
       if (string.IsNullOrEmpty(dirA))

@@ -8,4 +8,3 @@ namespace MacInterop
     UserCancelled = -128
   }
 }
-

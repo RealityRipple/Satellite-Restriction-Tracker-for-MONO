@@ -25,7 +25,7 @@ namespace RestrictionTrackerGTK
       if (CurrentOS.IsMac)
       {
         pctAccountViaSatIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.account_user.png");
-        ((Gtk.Image)((Gtk.HBox)((Gtk.Alignment)cmdPassDisplay.Child).Child).Children[0]).Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.pass.png");
+        ((Gtk.Image) ((Gtk.HBox) ((Gtk.Alignment) cmdPassDisplay.Child).Child).Children[0]).Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.pass.png");
         pctAccountProviderIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.account_provider.png");
         pctAccountKeyIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.account_key.png");
         pctPrefStartIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.prefs_power.png");
@@ -39,13 +39,13 @@ namespace RestrictionTrackerGTK
         pctNetworkUpdateIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.net_update.png");
         pctAdvancedDataIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_data.png");
         pctAdvancedNetTestIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_none.png");
-        ((Gtk.Box.BoxChild)this.ActionArea[cmdSave]).Position = 1;
-        ((Gtk.Box.BoxChild)this.ActionArea[cmdClose]).Position = 0;
+        ((Gtk.Box.BoxChild) this.ActionArea[cmdSave]).Position = 1;
+        ((Gtk.Box.BoxChild) this.ActionArea[cmdClose]).Position = 0;
       }
       else
       {
-        ((Gtk.Box.BoxChild)this.ActionArea[cmdSave]).Position = 0;
-        ((Gtk.Box.BoxChild)this.ActionArea[cmdClose]).Position = 1;
+        ((Gtk.Box.BoxChild) this.ActionArea[cmdSave]).Position = 0;
+        ((Gtk.Box.BoxChild) this.ActionArea[cmdClose]).Position = 1;
       }
       txtStartWait.Alignment = 1;
       txtInterval.Alignment = 1;
@@ -152,36 +152,36 @@ namespace RestrictionTrackerGTK
         lblPurchaseKey.Markup = "<a href=\"http://wb.realityripple.com?wbEMail=" + mySettings.Account + "&amp;wbKey=" + mySettings.RemoteKey + "&amp;wbSubmit=\">" + LINK_PANEL + "</a>";
         lblPurchaseKey.TooltipText = LINK_PANEL_TT;
       }
-      if (mySettings.StartWait > (int)txtStartWait.Adjustment.Upper)
+      if (mySettings.StartWait > (int) txtStartWait.Adjustment.Upper)
       {
-        mySettings.StartWait = (int)txtStartWait.Adjustment.Upper;
+        mySettings.StartWait = (int) txtStartWait.Adjustment.Upper;
       }
-      if (mySettings.StartWait < (int)txtStartWait.Adjustment.Lower)
+      if (mySettings.StartWait < (int) txtStartWait.Adjustment.Lower)
       {
-        mySettings.StartWait = (int)txtStartWait.Adjustment.Lower;
+        mySettings.StartWait = (int) txtStartWait.Adjustment.Lower;
       }
-      txtStartWait.Value = (int)mySettings.StartWait;
+      txtStartWait.Value = (int) mySettings.StartWait;
       txtStartWait.Adjustment.PageIncrement = 1;
       chkStartup.Active = modFunctions.RunOnStartup;
-      if (mySettings.Interval > (int)txtInterval.Adjustment.Upper)
+      if (mySettings.Interval > (int) txtInterval.Adjustment.Upper)
       {
-        mySettings.Interval = (int)txtInterval.Adjustment.Upper;
+        mySettings.Interval = (int) txtInterval.Adjustment.Upper;
       }
-      if (mySettings.Interval < (int)txtInterval.Adjustment.Lower)
+      if (mySettings.Interval < (int) txtInterval.Adjustment.Lower)
       {
-        mySettings.Interval = (int)txtInterval.Adjustment.Lower;
+        mySettings.Interval = (int) txtInterval.Adjustment.Lower;
       }
-      txtInterval.Value = (int)mySettings.Interval;
+      txtInterval.Value = (int) mySettings.Interval;
       txtInterval.Adjustment.PageIncrement = 5;
-      if (mySettings.Accuracy > (int)txtAccuracy.Adjustment.Upper)
+      if (mySettings.Accuracy > (int) txtAccuracy.Adjustment.Upper)
       {
-        mySettings.Accuracy = (int)txtAccuracy.Adjustment.Upper;
+        mySettings.Accuracy = (int) txtAccuracy.Adjustment.Upper;
       }
-      if (mySettings.Accuracy < (int)txtAccuracy.Adjustment.Lower)
+      if (mySettings.Accuracy < (int) txtAccuracy.Adjustment.Lower)
       {
-        mySettings.Accuracy = (int)txtAccuracy.Adjustment.Lower;
+        mySettings.Accuracy = (int) txtAccuracy.Adjustment.Lower;
       }
-      txtAccuracy.Value = (int)mySettings.Accuracy;
+      txtAccuracy.Value = (int) mySettings.Accuracy;
       txtAccuracy.Adjustment.PageIncrement = 1;
       if (mySettings.Overuse == 0)
       {
@@ -195,15 +195,15 @@ namespace RestrictionTrackerGTK
       }
       chkOverAlert_Activated(null, null);
       txtOverTime.Value = mySettings.Overtime;
-      if (mySettings.Timeout > (int)txtTimeout.Adjustment.Upper)
+      if (mySettings.Timeout > (int) txtTimeout.Adjustment.Upper)
       {
-        mySettings.Timeout = (int)txtTimeout.Adjustment.Upper;
+        mySettings.Timeout = (int) txtTimeout.Adjustment.Upper;
       }
-      if (mySettings.Timeout < (int)txtTimeout.Adjustment.Lower)
+      if (mySettings.Timeout < (int) txtTimeout.Adjustment.Lower)
       {
-        mySettings.Timeout = (int)txtTimeout.Adjustment.Lower;
+        mySettings.Timeout = (int) txtTimeout.Adjustment.Lower;
       }
-      txtTimeout.Value = (int)mySettings.Timeout;
+      txtTimeout.Value = (int) mySettings.Timeout;
       txtTimeout.Adjustment.PageIncrement = 15;
       if (mySettings.Proxy == null)
       {
@@ -225,12 +225,12 @@ namespace RestrictionTrackerGTK
       }
       else
       {
-        System.Net.WebProxy wProxy = (System.Net.WebProxy)mySettings.Proxy;
+        System.Net.WebProxy wProxy = (System.Net.WebProxy) mySettings.Proxy;
         if (modFunctions.IsNumeric(wProxy.Address.Host.Replace(".", "")))
         {
           cmbProxyType.Active = 2;
           txtProxyAddress.Text = wProxy.Address.Host;
-          txtProxyPort.Value = (double)wProxy.Address.Port;
+          txtProxyPort.Value = (double) wProxy.Address.Port;
         }
         else
         {
@@ -373,7 +373,6 @@ namespace RestrictionTrackerGTK
       this.Response += dlgConfig_Response;
       PopulateHostList();
     }
-
     private void AddEventHandlers()
     {
       this.WindowStateEvent += HandleWindowStateEvent;
@@ -393,23 +392,23 @@ namespace RestrictionTrackerGTK
       optAccountTypeRPL.Clicked += ValuesChanged;
       optAccountTypeRPX.Clicked += ValuesChanged;
       //
-      txtKey1.AddEvents((int)Gdk.EventType.KeyPress);
+      txtKey1.AddEvents((int) Gdk.EventType.KeyPress);
       txtKey1.Changed += txtProductKey_Changed;
       txtKey1.KeyPressEvent += txtProductKey_KeyPressEvent;
       txtKey1.TextInserted += txtProductKey_InsertText;
-      txtKey2.AddEvents((int)Gdk.EventType.KeyPress);
+      txtKey2.AddEvents((int) Gdk.EventType.KeyPress);
       txtKey2.Changed += txtProductKey_Changed;
       txtKey2.KeyPressEvent += txtProductKey_KeyPressEvent;
       txtKey2.TextInserted += txtProductKey_InsertText;
-      txtKey3.AddEvents((int)Gdk.EventType.KeyPress);
+      txtKey3.AddEvents((int) Gdk.EventType.KeyPress);
       txtKey3.Changed += txtProductKey_Changed;
       txtKey3.KeyPressEvent += txtProductKey_KeyPressEvent;
       txtKey3.TextInserted += txtProductKey_InsertText;
-      txtKey4.AddEvents((int)Gdk.EventType.KeyPress);
+      txtKey4.AddEvents((int) Gdk.EventType.KeyPress);
       txtKey4.Changed += txtProductKey_Changed;
       txtKey4.KeyPressEvent += txtProductKey_KeyPressEvent;
       txtKey4.TextInserted += txtProductKey_InsertText;
-      txtKey5.AddEvents((int)Gdk.EventType.KeyPress);
+      txtKey5.AddEvents((int) Gdk.EventType.KeyPress);
       txtKey5.Changed += txtProductKey_Changed;
       txtKey5.KeyPressEvent += txtProductKey_KeyPressEvent;
       txtKey5.TextInserted += txtProductKey_InsertText;
@@ -470,9 +469,6 @@ namespace RestrictionTrackerGTK
       cmdSave.Clicked += cmdSave_Click;
       cmdClose.Clicked += cmdClose_Click;
     }
-
-
-
     void HandleWindowStateEvent(object o, Gtk.WindowStateEventArgs args)
     {
       if (args.Event.ChangedMask == Gdk.WindowState.Iconified)
@@ -483,7 +479,6 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-
     private bool RunAccountTest()
     {
       if (pChecker != 0)
@@ -501,7 +496,6 @@ namespace RestrictionTrackerGTK
 
       return false;
     }
-
     protected void dlgConfig_Response(object o, Gtk.ResponseArgs args)
     {
       this.Response -= dlgConfig_Response;
@@ -543,13 +537,11 @@ namespace RestrictionTrackerGTK
       }
     }
     #endregion
-
     #region "Inputs"
     protected void txtPassword_ClipboardPasted(object sender, EventArgs e)
     {
       txtPassword.Text = txtPassword.Text.Trim();
     }
-
     protected void txtHistoryDir_CurrentFolderChanged(object sender, EventArgs e)
     {
       if (bLoaded)
@@ -561,21 +553,18 @@ namespace RestrictionTrackerGTK
         bLoaded = true;
       }
     }
-
     protected void cmdHistoryDirOpen_Clicked(object sender, EventArgs e)
     {
       if (optHistoryLocalConfig.Active)
-        if (Directory.Exists(modFunctions.AppDataPath))
-          System.Diagnostics.Process.Start(modFunctions.AppDataPath);
-        else
-          modFunctions.ShowMessageBox(this, "The directory \"" + modFunctions.AppDataPath + "\" does not exist.\nPlease save the configuration first.", "Missing Directory", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+      if (Directory.Exists(modFunctions.AppDataPath))
+        System.Diagnostics.Process.Start(modFunctions.AppDataPath);
       else
-        if (Directory.Exists(txtHistoryDir.CurrentFolder))
-          System.Diagnostics.Process.Start(txtHistoryDir.CurrentFolder);
-        else
-          modFunctions.ShowMessageBox(this, "The directory \"" + txtHistoryDir.CurrentFolder + "\" does not exist.\nPlease save the configuration first.", "Missing Directory", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+        modFunctions.ShowMessageBox(this, "The directory \"" + modFunctions.AppDataPath + "\" does not exist.\nPlease save the configuration first.", "Missing Directory", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+      else if (Directory.Exists(txtHistoryDir.CurrentFolder))
+        System.Diagnostics.Process.Start(txtHistoryDir.CurrentFolder);
+      else
+        modFunctions.ShowMessageBox(this, "The directory \"" + txtHistoryDir.CurrentFolder + "\" does not exist.\nPlease save the configuration first.", "Missing Directory", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
     }
-
     protected void ValuesChanged(object sender, EventArgs e)
     {
       if (bLoaded)
@@ -583,7 +572,6 @@ namespace RestrictionTrackerGTK
         cmdSave.Sensitive = SettingsChanged();
       }
     }
-
     protected void txtAccount_Changed(object sender, EventArgs e)
     {
       if (!bLoaded)
@@ -613,20 +601,18 @@ namespace RestrictionTrackerGTK
         KeyCheck();
       }
     }
-
     protected void txtProductKey_InsertText(object o, Gtk.TextInsertedArgs e)
     {
       e.RetVal = true;
-      Gtk.Entry txtSender = (Gtk.Entry)o;
+      Gtk.Entry txtSender = (Gtk.Entry) o;
       txtSender.TextInserted -= txtProductKey_InsertText;
       txtSender.Text = txtSender.Text.ToUpper();
       txtSender.TextInserted += txtProductKey_InsertText; 
     }
-
     [GLib.ConnectBefore]
     protected void txtProductKey_KeyPressEvent(object o, Gtk.KeyPressEventArgs e)
     {
-      Gtk.Entry txtSender = (Gtk.Entry)o;
+      Gtk.Entry txtSender = (Gtk.Entry) o;
       if ((e.Event.Key == Gdk.Key.v) && ((e.Event.State & Gdk.ModifierType.ControlMask) == Gdk.ModifierType.ControlMask))
       {
         Gtk.Clipboard cb = Gtk.Clipboard.Get(Gdk.Selection.Clipboard);
@@ -736,7 +722,6 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-
     protected void txtProductKey_Changed(object o, EventArgs e)
     {
       if (!bLoaded)
@@ -771,12 +756,10 @@ namespace RestrictionTrackerGTK
         KeyCheck();
       }
     }
-
     protected void cmdPassDisplay_Toggled(object sender, EventArgs e)
     {
       txtPassword.Visibility = !(txtPassword.Visibility);
     }
-
     protected void chkAccountTypeAuto_Clicked(object sender, EventArgs e)
     {
       optAccountTypeWBL.Sensitive = !chkAccountTypeAuto.Active;
@@ -789,7 +772,6 @@ namespace RestrictionTrackerGTK
         cmdSave.Sensitive = SettingsChanged();
       }
     }
-
     protected void chkOverAlert_Activated(object sender, EventArgs e)
     {
       txtOverSize.Sensitive = chkOverAlert.Active;
@@ -804,7 +786,6 @@ namespace RestrictionTrackerGTK
         cmdSave.Sensitive = SettingsChanged();
       }
     }
-
     protected void cmbProxyType_Changed(object sender, EventArgs e)
     {
       if (cmbProxyType.Active == 2)
@@ -812,7 +793,7 @@ namespace RestrictionTrackerGTK
         lblProxyAddr.Sensitive = true;
         lblProxyAddr.Text = "IP Address:";
         txtProxyAddress.Sensitive = true;
-        ((Gtk.Table.TableChild)pnlProxy[txtProxyAddress]).RightAttach = 1;
+        ((Gtk.Table.TableChild) pnlProxy[txtProxyAddress]).RightAttach = 1;
         lblProxyPort.Visible = true;
         txtProxyPort.Visible = true;
         lblProxyPort.Sensitive = true;
@@ -833,7 +814,7 @@ namespace RestrictionTrackerGTK
         txtProxyPort.Visible = false;
         lblProxyPort.Sensitive = false;
         txtProxyPort.Sensitive = false;
-        ((Gtk.Table.TableChild)pnlProxy[txtProxyAddress]).RightAttach = 3;
+        ((Gtk.Table.TableChild) pnlProxy[txtProxyAddress]).RightAttach = 3;
         lblProxyUser.Sensitive = true;
         txtProxyUser.Sensitive = true;
         lblProxyPassword.Sensitive = true;
@@ -846,7 +827,7 @@ namespace RestrictionTrackerGTK
         lblProxyAddr.Sensitive = false;
         lblProxyAddr.Text = "IP Address:";
         txtProxyAddress.Sensitive = false;
-        ((Gtk.Table.TableChild)pnlProxy[txtProxyAddress]).RightAttach = 1;
+        ((Gtk.Table.TableChild) pnlProxy[txtProxyAddress]).RightAttach = 1;
         lblProxyPort.Visible = true;
         txtProxyPort.Visible = true;
         lblProxyPort.Sensitive = false;
@@ -863,7 +844,6 @@ namespace RestrictionTrackerGTK
         cmdSave.Sensitive = SettingsChanged();
       }
     }
-
     protected void cmbUpdateAutomation_Changed(object sender, EventArgs e)
     {
       switch (cmbUpdateAutomation.Active)
@@ -894,7 +874,6 @@ namespace RestrictionTrackerGTK
         cmdSave.Sensitive = SettingsChanged();
       }
     }
-
     protected void optHistoryLocalConfig_Clicked(object sender, EventArgs e)
     {
       if (optHistoryLocalConfig.Active)
@@ -904,7 +883,6 @@ namespace RestrictionTrackerGTK
         cmdSave.Sensitive = SettingsChanged();
       }
     }
-
     protected void optHistoryCustom_Clicked(object sender, EventArgs e)
     {
       if (optHistoryCustom.Active)
@@ -914,7 +892,6 @@ namespace RestrictionTrackerGTK
         cmdSave.Sensitive = SettingsChanged();
       }
     }
-
     protected void optNetTestNone_Clicked(object sender, EventArgs e)
     {
       if (optNetTestNone.Active)
@@ -933,7 +910,6 @@ namespace RestrictionTrackerGTK
         cmdSave.Sensitive = SettingsChanged();
       }
     }
-
     protected void optNetTestTestMyNet_Clicked(object sender, EventArgs e)
     {
       if (optNetTestTestMyNet.Active)
@@ -953,7 +929,6 @@ namespace RestrictionTrackerGTK
         cmdSave.Sensitive = SettingsChanged();
       }
     }
-
     protected void optNetTestSpeedTest_Clicked(object sender, EventArgs e)
     {
       if (optNetTestSpeedTest.Active)
@@ -973,7 +948,6 @@ namespace RestrictionTrackerGTK
         cmdSave.Sensitive = SettingsChanged();
       }
     }
-
     protected void optNetTestCustom_Clicked(object sender, EventArgs e)
     {
       if (optNetTestCustom.Active)
@@ -992,8 +966,7 @@ namespace RestrictionTrackerGTK
         cmdSave.Sensitive = SettingsChanged();
       }
     }
-
-    void txtNetTestCustom_FocusOut (object o, Gtk.FocusOutEventArgs args)
+    void txtNetTestCustom_FocusOut(object o, Gtk.FocusOutEventArgs args)
     {
       if (optNetTestCustom.Active)
       {
@@ -1015,8 +988,6 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-   
-
     protected void txtNetTestCustom_TextChanged(object sender, EventArgs e)
     {
       if (optNetTestCustom.Active)
@@ -1034,7 +1005,6 @@ namespace RestrictionTrackerGTK
         pIcoWait = GLib.Timeout.Add(4000, tmrIcoWait_Tick);
       }
     }
-
     protected void chkTrayIcon_Clicked(object sender, EventArgs e)
     {
       chkTrayMin.Sensitive = chkTrayIcon.Active;
@@ -1045,16 +1015,14 @@ namespace RestrictionTrackerGTK
         cmdSave.Sensitive = SettingsChanged();
       }
     }
-
     #region "Remote Service"
     protected void remoteTest_Failure(object sender, RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs e)
     {
-      Gtk.Application.Invoke(sender, (EventArgs)e, Main_RemoteTestFailure);
+      Gtk.Application.Invoke(sender, (EventArgs) e, Main_RemoteTestFailure);
     }
-
     private void Main_RemoteTestFailure(object sender, EventArgs ea)
     {
-      RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs e = (RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs)ea;
+      RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs e = (RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs) ea;
       bool bToSave = true;
       if (!CheckState)
         bToSave = false;
@@ -1102,12 +1070,10 @@ namespace RestrictionTrackerGTK
       DoCheck();
       cmdSave.Sensitive = bToSave;
     }
-
     protected void remoteTest_OKKey(object sender, EventArgs e)
     {
       Gtk.Application.Invoke(sender, e, Main_RemoteTestOKKey);
     }
-
     private void Main_RemoteTestOKKey(object sender, EventArgs e)
     {
       bool bToSave = true;
@@ -1135,7 +1101,6 @@ namespace RestrictionTrackerGTK
       cmdSave.Sensitive = bToSave;
     }
     #endregion
-
     #region "Providers"
     private void PopulateHostList()
     {
@@ -1143,23 +1108,22 @@ namespace RestrictionTrackerGTK
       wsHostList.DownloadStringCompleted += wsHostList_DownloadStringCompleted;
       wsHostList.DownloadStringAsync(new Uri("http://wb.realityripple.com/hosts"), "GRAB");
     }
-
-    void wsHostList_DownloadStringCompleted (object sender, System.Net.DownloadStringCompletedEventArgs e)
+    void wsHostList_DownloadStringCompleted(object sender, System.Net.DownloadStringCompletedEventArgs e)
     {
       try
       {
         if ((string) e.UserState == "GRAB")
         {
-          Gtk.Application.Invoke(sender, (EventArgs)e, Main_HostListDownloadStringCompleted);
+          Gtk.Application.Invoke(sender, (EventArgs) e, Main_HostListDownloadStringCompleted);
         }
       }
-      catch(Exception)
-      {}
+      catch (Exception)
+      {
+      }
     }
-
     private void Main_HostListDownloadStringCompleted(object sender, EventArgs ea)
     {
-      System.Net.DownloadStringCompletedEventArgs e = (System.Net.DownloadStringCompletedEventArgs)ea;
+      System.Net.DownloadStringCompletedEventArgs e = (System.Net.DownloadStringCompletedEventArgs) ea;
       if (e.Error == null && !e.Cancelled && !String.IsNullOrEmpty(e.Result))
       {
         try
@@ -1182,13 +1146,13 @@ namespace RestrictionTrackerGTK
           }
         }
         catch
-        {}
+        {
+        }
       }
     }
-
     private void ClearHostList()
     {
-      Gtk.TreeIter ti= new Gtk.TreeIter();
+      Gtk.TreeIter ti = new Gtk.TreeIter();
       bool iter = cmbProvider.Model.GetIterFirst(out ti);
       while (iter)
       {
@@ -1196,7 +1160,6 @@ namespace RestrictionTrackerGTK
         iter = cmbProvider.Model.GetIterFirst(out ti);
       }
     }
-
     private void UseDefaultHostList()
     {
       ClearHostList();
@@ -1205,16 +1168,14 @@ namespace RestrictionTrackerGTK
       cmbProvider.AppendText("dishmail.net");
       cmbProvider.AppendText("dish.net");
     }
-
     private void SaveToHostList(string Provider)
     {
       ResolveEventArgs er = new ResolveEventArgs(Provider);
       Gtk.Application.Invoke(null, (EventArgs) er, Main_SaveToHostList);
     }
-
     private void Main_SaveToHostList(object sender, EventArgs ea)
     {
-      ResolveEventArgs e = (ResolveEventArgs)ea;
+      ResolveEventArgs e = (ResolveEventArgs) ea;
       string Provider = e.Name;
       if (wsHostList != null)
       {
@@ -1225,7 +1186,6 @@ namespace RestrictionTrackerGTK
       wsHostList.DownloadDataAsync(new Uri("http://wb.realityripple.com/hosts/?add=" + Provider), "UPDATE");
     }
     #endregion
-
     #region "Net Test"
     protected clsFavicon MakeFavicon(string URL)
     {
@@ -1233,15 +1193,13 @@ namespace RestrictionTrackerGTK
       wsFavicon.DownloadIconCompleted += wsFavicon_DownloadIconCompleted;
       return wsFavicon;
     }
-
-    protected void wsFavicon_DownloadIconCompleted (object sender, clsFavicon.DownloadIconCompletedEventArgs e)
+    protected void wsFavicon_DownloadIconCompleted(object sender, clsFavicon.DownloadIconCompletedEventArgs e)
     {
-      Gtk.Application.Invoke(sender, (EventArgs)e, wsFavicon_DownloadIconCompletedAsync);
+      Gtk.Application.Invoke(sender, (EventArgs) e, wsFavicon_DownloadIconCompletedAsync);
     }
-
     private void wsFavicon_DownloadIconCompletedAsync(object sender, EventArgs ea)
     {
-      clsFavicon.DownloadIconCompletedEventArgs e = (clsFavicon.DownloadIconCompletedEventArgs)ea;
+      clsFavicon.DownloadIconCompletedEventArgs e = (clsFavicon.DownloadIconCompletedEventArgs) ea;
       if (e.Error != null)
       {
         if (CurrentOS.IsMac)
@@ -1254,18 +1212,15 @@ namespace RestrictionTrackerGTK
         SetNetTestImage(e.Icon32, e.Icon16);
       }
     }
-
     protected void SetNetTestImage(Gdk.Pixbuf Image)
     {
       SetNetTestImage(Image, null);
     }
-
     protected void SetNetTestImage(Gdk.Pixbuf Image, Gdk.Pixbuf Icon)
     {
       pctAdvancedNetTestIcon.Pixbuf = Image;
       icoNetTest = Icon;
     }
-
     private bool tmrIcoWait_Tick()
     {
       if (optNetTestCustom.Active)
@@ -1288,13 +1243,12 @@ namespace RestrictionTrackerGTK
       }
       return false;
     }
-    #endregion 
     #endregion
-
+    #endregion
     #region "Remote Service Results"
     protected void evnKeyState_ButtonPressEvent(object sender, Gtk.ButtonPressEventArgs e)
     {
-      if(txtKey1.Text.Length == 6 && txtKey2.Text.Length == 4 && txtKey3.Text.Length == 4 && txtKey4.Text.Length == 4 && txtKey5.Text.Length == 6)
+      if (txtKey1.Text.Length == 6 && txtKey2.Text.Length == 4 && txtKey3.Text.Length == 4 && txtKey4.Text.Length == 4 && txtKey5.Text.Length == 6)
         KeyCheck();
     }
     bool CheckState;
@@ -1315,7 +1269,6 @@ namespace RestrictionTrackerGTK
       pChecker = GLib.Timeout.Add(500, RunAccountTest);
     }
     #endregion
-
     #region "Save/Close Buttons"
     protected void cmdAlertStyle_Click(object sender, EventArgs e)
     {
@@ -1331,7 +1284,7 @@ namespace RestrictionTrackerGTK
       MainClass.fAlertSelection.TransientFor = this;
       MainClass.fAlertSelection.Modal = true;
       MainClass.fAlertSelection.WindowPosition = Gtk.WindowPosition.CenterOnParent;
-      Gtk.ResponseType ret = (Gtk.ResponseType)MainClass.fAlertSelection.Run();
+      Gtk.ResponseType ret = (Gtk.ResponseType) MainClass.fAlertSelection.Run();
 
       if (ret == Gtk.ResponseType.Yes)
       {
@@ -1341,7 +1294,6 @@ namespace RestrictionTrackerGTK
       }
       MainClass.fAlertSelection.Destroy();
     }
-
     protected void cmdColors_Click(object sender, EventArgs e)
     {
       if (MainClass.fCustomColors != null)
@@ -1359,7 +1311,7 @@ namespace RestrictionTrackerGTK
       Gtk.ResponseType dRet;
       do
       {
-        dRet = (Gtk.ResponseType)MainClass.fCustomColors.Run();
+        dRet = (Gtk.ResponseType) MainClass.fCustomColors.Run();
       } while (dRet == Gtk.ResponseType.None);
       if (dRet == Gtk.ResponseType.Yes)
       {
@@ -1369,7 +1321,6 @@ namespace RestrictionTrackerGTK
       }
       MainClass.fCustomColors.Destroy();
     }
-
     protected void cmdSave_Click(object sender, EventArgs e)
     {
       if (String.IsNullOrEmpty(txtAccount.Text))
@@ -1404,12 +1355,12 @@ namespace RestrictionTrackerGTK
         }
       }
       if (cmbProvider.Entry.Text.ToLower().Contains("excede") ||
-          cmbProvider.Entry.Text.ToLower().Contains("force") ||
-          cmbProvider.Entry.Text.ToLower().Contains("mysso") ||
-          cmbProvider.Entry.Text.ToLower().Contains("myexede") ||
-          cmbProvider.Entry.Text.ToLower().Contains("my.exede"))
+        cmbProvider.Entry.Text.ToLower().Contains("force") ||
+        cmbProvider.Entry.Text.ToLower().Contains("mysso") ||
+        cmbProvider.Entry.Text.ToLower().Contains("myexede") ||
+        cmbProvider.Entry.Text.ToLower().Contains("my.exede"))
         cmbProvider.Entry.Text = "exede.net";
-      if (string.Compare(mySettings.Account,txtAccount.Text + "@" + cmbProvider.Entry.Text, true) != 0)
+      if (string.Compare(mySettings.Account, txtAccount.Text + "@" + cmbProvider.Entry.Text, true) != 0)
       {
         mySettings.Account = txtAccount.Text + "@" + cmbProvider.Entry.Text;
         bAccount = true;
@@ -1456,7 +1407,7 @@ namespace RestrictionTrackerGTK
       {
         bool continueChange = true;
         string[] sOldFiles = Directory.GetFiles(mySettings.HistoryDir);
-        string[] sNewFiles = {};
+        string[] sNewFiles = { };
         if (Directory.Exists(txtHistoryDir.CurrentFolder))
         {
           sNewFiles = Directory.GetFiles(txtHistoryDir.CurrentFolder);
@@ -1700,7 +1651,7 @@ namespace RestrictionTrackerGTK
         if (System.IO.File.Exists(sNetTestIco))
           System.IO.File.Delete(sNetTestIco);
       }
-      catch(Exception) 
+      catch (Exception)
       {
       }
       if (icoNetTest != null)
@@ -1727,7 +1678,7 @@ namespace RestrictionTrackerGTK
           if (System.IO.File.Exists(sNetTestIco))
             System.IO.File.Delete(sNetTestIco);
         }
-        catch(Exception)
+        catch (Exception)
         {
         }
       }
@@ -1736,13 +1687,11 @@ namespace RestrictionTrackerGTK
       bSaved = true;
       cmdSave.Sensitive = false;
     }
-
     protected void cmdClose_Click(object sender, EventArgs e)
     {
       this.Respond(Gtk.ResponseType.Close);
     }
-    #endregion 
-
+    #endregion
     private bool SettingsChanged()
     {
       if (mySettings == null)
@@ -1784,7 +1733,7 @@ namespace RestrictionTrackerGTK
       string sKey = txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text;
       if (string.Compare(mySettings.RemoteKey, sKey, true) != 0)
         return true;
-      if ((int)mySettings.StartWait - txtStartWait.Value != 0)
+      if ((int) mySettings.StartWait - txtStartWait.Value != 0)
         return true;
       if ((int) mySettings.Interval - txtInterval.Value != 0)
         return true;
@@ -1819,7 +1768,7 @@ namespace RestrictionTrackerGTK
         return true;
       if (chkOverAlert.Active)
       {
-        if ((int)mySettings.Overuse - txtOverSize.Value != 0)
+        if ((int) mySettings.Overuse - txtOverSize.Value != 0)
           return true;
       }
       if ((int) mySettings.Overtime - txtOverTime.Value != 0)
@@ -1880,7 +1829,7 @@ namespace RestrictionTrackerGTK
           return true;
         if (cmbProxyType.Active == 1)
           return true;
-        Uri addr = ((System.Net.WebProxy)mySettings.Proxy).Address;
+        Uri addr = ((System.Net.WebProxy) mySettings.Proxy).Address;
         if (cmbProxyType.Active == 2)
         {
           if (String.Compare(txtProxyAddress.Text, addr.Host) != 0)
@@ -1951,7 +1900,6 @@ namespace RestrictionTrackerGTK
       }
       return false;
     }
-
     private void DoCheck()
     {
       if (bRemoteAcct)
@@ -1967,6 +1915,5 @@ namespace RestrictionTrackerGTK
         txtInterval.Value = txtInterval.Adjustment.Lower;
       }
     }
-   
   }
 }

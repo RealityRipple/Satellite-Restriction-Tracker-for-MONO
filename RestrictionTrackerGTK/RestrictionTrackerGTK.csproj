@@ -11,7 +11,7 @@
     <AssemblyName>RestrictionTracker</AssemblyName>
     <StartupObject>RestrictionTrackerGTK.MainClass</StartupObject>
     <ApplicationIcon>Resources\sat.ico</ApplicationIcon>
-    <ReleaseVersion>1.3.22.2</ReleaseVersion>
+    <ReleaseVersion>1.3.22.3</ReleaseVersion>
     <Description>Satellite Restriction Tracker</Description>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>trackergtk.snk</AssemblyOriginatorKeyFile>
@@ -143,6 +143,8 @@
     <EmbeddedResource Include="Resources\config\os x\advanced_nettest_error.png" />
     <EmbeddedResource Include="Resources\config\os x\advanced_nettest_load.png" />
     <EmbeddedResource Include="Resources\config\os x\advanced_nettest_none.png" />
+    <EmbeddedResource Include="Resources\modem16.png" />
+    <EmbeddedResource Include="Resources\modem32.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gtk-gui\generated.cs" />

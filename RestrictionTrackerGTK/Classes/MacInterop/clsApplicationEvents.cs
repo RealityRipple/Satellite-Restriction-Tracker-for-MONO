@@ -1,17 +1,13 @@
 using System;
 using System.Collections.Generic;
-
 namespace MacInterop
 {
   public static class ApplicationEvents
   {
     static object lockObj = new object();
-    
     #region Quit
-    
     static EventHandler<ApplicationQuitEventArgs> quit;
     static IntPtr quitHandlerRef = IntPtr.Zero;
-    
     public static event EventHandler<ApplicationQuitEventArgs> Quit
     {
       add
@@ -38,22 +34,16 @@ namespace MacInterop
         }
       }
     }
-    
     static CarbonEventHandlerStatus HandleQuit(IntPtr callRef, IntPtr eventRef, IntPtr user_data)
     {
       var args = new ApplicationQuitEventArgs();
       quit(null, args);
       return args.UserCancelled ? CarbonEventHandlerStatus.UserCancelled : args.HandledStatus;
     }
-    
     #endregion
-
-    
     #region ShowPreferences
-
     static EventHandler<ApplicationEventArgs> prefs;
     static IntPtr prefsHandlerRef = IntPtr.Zero;
-
     public static event EventHandler<ApplicationEventArgs> Prefs
     {
       add
@@ -80,22 +70,16 @@ namespace MacInterop
         }
       }
     }
-
     static CarbonEventHandlerStatus HandlePrefs(IntPtr callRef, IntPtr eventRef, IntPtr user_data)
     {
       var args = new ApplicationEventArgs();
       prefs(null, args);
       return args.HandledStatus;
     }
-
     #endregion
-
-
     #region Reopen
-    
     static EventHandler<ApplicationEventArgs> reopen;
     static IntPtr reopenHandlerRef = IntPtr.Zero;
-    
     public static event EventHandler<ApplicationEventArgs> Reopen
     {
       add
@@ -122,21 +106,17 @@ namespace MacInterop
         }
       }
     }
-    
     static CarbonEventHandlerStatus HandleReopen(IntPtr callRef, IntPtr eventRef, IntPtr user_data)
     {
       var args = new ApplicationEventArgs();
       reopen(null, args);
       return args.HandledStatus;
     }
-    
     #endregion
   }
-  
   public class ApplicationEventArgs : EventArgs
   {
     public bool Handled { get; set; }
-    
     internal CarbonEventHandlerStatus HandledStatus
     {
       get
@@ -145,10 +125,8 @@ namespace MacInterop
       }
     }
   }
-  
   public class ApplicationQuitEventArgs : ApplicationEventArgs
   {
     public bool UserCancelled { get; set; }
   }
 }
-
