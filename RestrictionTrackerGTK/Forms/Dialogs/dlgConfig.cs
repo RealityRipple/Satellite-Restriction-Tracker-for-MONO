@@ -1698,8 +1698,11 @@ namespace RestrictionTrackerGTK
         return false;
       if (bHardChange)
         return true;
-      if (String.Compare(mySettings.Account, txtAccount.Text + "@" + cmbProvider.Entry.Text, true) != 0)
-        return true;
+      if (cmbProvider.Entry != null)
+      {
+        if (String.Compare(mySettings.Account, txtAccount.Text + "@" + cmbProvider.Entry.Text, true) != 0)
+          return true;
+      }
       if (mySettings.PassCrypt != RestrictionLibrary.StoredPassword.EncryptApp(txtPassword.Text))
         return true;
       if (mySettings.AccountTypeForced == chkAccountTypeAuto.Active)
