@@ -3613,6 +3613,8 @@ namespace RestrictionTrackerGTK
         SetStatusText(modDB.LOG_GetLast().ToString("g"), "Software Update Download Complete", false);
         if (File.Exists(sUpdatePath))
         {
+          if (CurrentOS.IsLinux)
+            System.Diagnostics.Process.Start("chmod", "+x \"" + sUpdatePath + "\"");
           if (modFunctions.RunTerminal(sUpdatePath))
           {
             Gtk.Application.Quit();
