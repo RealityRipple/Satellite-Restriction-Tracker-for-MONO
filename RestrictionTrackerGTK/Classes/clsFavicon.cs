@@ -278,8 +278,14 @@ namespace RestrictionTrackerGTK
         }
         else
         {
-          Uri pathURL = new Uri((string) e.UserState);
-          ConnectToFile(new Uri(pathURL.Scheme + "://" + pathURL.Host + "/favicon.ico"), imgFile);
+          try
+          {
+            Uri pathURL = new Uri((string) e.UserState);
+            ConnectToFile(new Uri(pathURL.Scheme + "://" + pathURL.Host + "/favicon.ico"), imgFile);
+          }
+          catch (Exception)
+          {
+          }
         }
       }
       if (pctPNG16 != null)
@@ -297,8 +303,14 @@ namespace RestrictionTrackerGTK
     {
       if (e.Error != null)
       {
-        Uri pathURL = new Uri((string) e.UserState);
-        ConnectToFile(new Uri(pathURL.Scheme + "://" + pathURL.Host + "/favicon.ico"), Path.Combine(modFunctions.AppData, "srt_nettest_favicon.ico"), null);
+        try
+        {
+          Uri pathURL = new Uri((string) e.UserState);
+          ConnectToFile(new Uri(pathURL.Scheme + "://" + pathURL.Host + "/favicon.ico"), Path.Combine(modFunctions.AppData, "srt_nettest_favicon.ico"), null);
+        }
+        catch (Exception)
+        {
+        }
       }
       else if (e.Cancelled)
       {

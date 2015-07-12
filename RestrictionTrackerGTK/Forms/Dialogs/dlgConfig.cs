@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Mono.Unix.Native;
 namespace RestrictionTrackerGTK
 {
   public partial class dlgConfig : Gtk.Dialog
@@ -1430,6 +1431,7 @@ namespace RestrictionTrackerGTK
         if (continueChange)
         {
           modDB.LOG_Terminate(true);
+          string[] sSkipFiles = { "user.config", "restrictiontracker-32.png", "restrictiontracker-256.png", "sat.icns", "restrictiontracker.exe", "restrictiontracker.exe.mdb", "restrictiontrackerlib.dll", "appindicator-sharp.dll", "microsoft.visualbasic.dll", "config" };
           if (sOldFiles.Length > 0)
           {
             if (sNewFiles.Length > 0)
@@ -1441,14 +1443,25 @@ namespace RestrictionTrackerGTK
                 {
                   if (System.IO.Path.GetFileName(sNew) == System.IO.Path.GetFileName(sOld))
                   {
-                    if (System.IO.Path.GetFileName(sNew).ToLower() == "user.config")
+                    bool doSkip = false;
+                    foreach (string sSkip in sSkipFiles)
+                    {
+                      if (System.IO.Path.GetFileName(sNew).ToLower() == sSkip)
+                      {
+                        doSkip = true;
+                        break;
+                      }
+                    }
+                    if (doSkip)
+                      continue;
+                    /* if (System.IO.Path.GetFileName(sNew).ToLower() == "user.config")
                     {
                       continue;
                     }
                     if (System.IO.Path.GetFileName(sNew).ToLower() == "del.bat")
                     {
                       continue;
-                    }
+                    } */
                     sOverWrites.Add(System.IO.Path.GetFileName(sNew));
                   }
                 }
@@ -1459,14 +1472,25 @@ namespace RestrictionTrackerGTK
                 {
                   foreach (string sFile in sOldFiles)
                   {
-                    if (System.IO.Path.GetFileName(sFile).ToLower() == "user.config")
+                    bool doSkip = false;
+                    foreach (string sSkip in sSkipFiles)
+                    {
+                      if (System.IO.Path.GetFileName(sFile).ToLower() == sSkip)
+                      {
+                        doSkip = true;
+                        break;
+                      }
+                    }
+                    if (doSkip)
+                      continue;
+                    /* if (System.IO.Path.GetFileName(sFile).ToLower() == "user.config")
                     {
                       continue;
                     }
                     if (System.IO.Path.GetFileName(sFile).ToLower() == "del.bat")
                     {
                       continue;
-                    }
+                    } */
                     File.Move(sFile, System.IO.Path.Combine(txtHistoryDir.CurrentFolder, System.IO.Path.GetFileName(sFile)));
                   }
                 }
@@ -1474,7 +1498,18 @@ namespace RestrictionTrackerGTK
                 {
                   foreach (string sFile in sOldFiles)
                   {
-                    if (System.IO.Path.GetFileName(sFile).ToLower() == "user.config")
+                    bool doSkip = false;
+                    foreach (string sSkip in sSkipFiles)
+                    {
+                      if (System.IO.Path.GetFileName(sFile).ToLower() == sSkip)
+                      {
+                        doSkip = true;
+                        break;
+                      }
+                    }
+                    if (doSkip)
+                      continue;
+                    /* if (System.IO.Path.GetFileName(sFile).ToLower() == "user.config")
                     {
                       continue;
                     }
@@ -1485,7 +1520,7 @@ namespace RestrictionTrackerGTK
                     if (File.Exists(System.IO.Path.Combine(txtHistoryDir.CurrentFolder, System.IO.Path.GetFileName(sFile))))
                     {
                       continue;
-                    }
+                    } */
                     File.Move(sFile, System.IO.Path.Combine(txtHistoryDir.CurrentFolder, System.IO.Path.GetFileName(sFile)));
                   }
                 }
@@ -1494,14 +1529,25 @@ namespace RestrictionTrackerGTK
               {
                 foreach (string sFile in sOldFiles)
                 {
-                  if (System.IO.Path.GetFileName(sFile).ToLower() == "user.config")
+                  bool doSkip = false;
+                  foreach (string sSkip in sSkipFiles)
+                  {
+                    if (System.IO.Path.GetFileName(sFile).ToLower() == sSkip)
+                    {
+                      doSkip = true;
+                      break;
+                    }
+                  }
+                  if (doSkip)
+                    continue;
+                  /* if (System.IO.Path.GetFileName(sFile).ToLower() == "user.config")
                   {
                     continue;
                   }
                   if (System.IO.Path.GetFileName(sFile).ToLower() == "del.bat")
                   {
                     continue;
-                  }
+                  } */
                   File.Move(sFile, System.IO.Path.Combine(txtHistoryDir.CurrentFolder, System.IO.Path.GetFileName(sFile)));
                 }
               }
@@ -1510,14 +1556,25 @@ namespace RestrictionTrackerGTK
             {
               foreach (string sFile in sOldFiles)
               {
-                if (System.IO.Path.GetFileName(sFile).ToLower() == "user.config")
+                bool doSkip = false;
+                foreach (string sSkip in sSkipFiles)
+                {
+                  if (System.IO.Path.GetFileName(sFile).ToLower() == sSkip)
+                  {
+                    doSkip = true;
+                    break;
+                  }
+                }
+                if (doSkip)
+                  continue;
+                /* if (System.IO.Path.GetFileName(sFile).ToLower() == "user.config")
                 {
                   continue;
                 }
                 if (System.IO.Path.GetFileName(sFile).ToLower() == "del.bat")
                 {
                   continue;
-                }
+                } */
                 File.Move(sFile, System.IO.Path.Combine(txtHistoryDir.CurrentFolder, System.IO.Path.GetFileName(sFile)));
               }
             }
