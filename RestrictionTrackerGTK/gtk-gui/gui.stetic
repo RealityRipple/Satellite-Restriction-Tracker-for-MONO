@@ -1383,7 +1383,6 @@
                         <property name="Tooltip" translatable="yes">Display history in a line graph.</property>
                         <property name="CanFocus">True</property>
                         <property name="Label" translatable="yes">Graph</property>
-                        <property name="Active">True</property>
                         <property name="DrawIndicator">True</property>
                         <property name="HasLabel">True</property>
                         <property name="UseUnderline">True</property>
@@ -4371,7 +4370,7 @@ URL</property>
                         <property name="MemberName" />
                         <property name="Tooltip" translatable="yes">Number of seconds to wait between network communications.</property>
                         <property name="CanFocus">True</property>
-                        <property name="Upper">100</property>
+                        <property name="Upper">600</property>
                         <property name="PageIncrement">15</property>
                         <property name="StepIncrement">1</property>
                         <property name="ClimbRate">1</property>
