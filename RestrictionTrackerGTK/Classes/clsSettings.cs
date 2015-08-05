@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using System.Xml;
 using RestrictionLibrary;
+using Atk;
 namespace RestrictionTrackerGTK
 {
   class AppSettings
@@ -32,6 +33,7 @@ namespace RestrictionTrackerGTK
     private int m_Overtime;
     private string m_AlertStyle;
     private TrayStyles m_TrayIcon;
+    private bool m_TrayClose;
     private bool m_AutoHide;
     private string m_ProxySetting;
     private string m_NetTest;
@@ -245,6 +247,10 @@ namespace RestrictionTrackerGTK
                           m_TrayIcon = TrayStyles.Always;
                           break;
                       }
+                    }
+                    else if (xName.CompareTo("TrayClose") == 0)
+                    {
+                      m_TrayClose = (xValue.CompareTo("True") == 0);
                     }
                     else if (xName.CompareTo("AutoHide") == 0)
                     {
@@ -556,6 +562,7 @@ namespace RestrictionTrackerGTK
       m_Overtime = 60;
       m_AlertStyle = "Default";
       m_TrayIcon = TrayStyles.Always;
+      m_TrayClose = false;
       m_AutoHide = true;
       m_ProxySetting = "System";
       m_Protocol = SecurityProtocolType.Tls;
@@ -649,6 +656,9 @@ namespace RestrictionTrackerGTK
       string sAutoHide = "True";
       if (!m_AutoHide)
         sAutoHide = "False";
+      string sTrayClose = "True";
+      if (!m_TrayClose)
+        sTrayClose = "False";
       string sRet = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
         "<configuration>\n" +
         "  <userSettings>\n" +
@@ -715,6 +725,9 @@ namespace RestrictionTrackerGTK
         "      </setting>\n" +
         "      <setting name=\"TrayIcon\">\n" +
         "        <value>" + sTrayIcon + "</value>\n" +
+        "      </setting>\n" +
+        "      <setting name=\"TrayClose\">\n" +
+        "        <value>" + sTrayClose + "</value>\n" +
         "      </setting>\n" +
         "      <setting name=\"AutoHide\">\n" +
         "        <value>" + sAutoHide + "</value>\n" +
@@ -1235,6 +1248,17 @@ namespace RestrictionTrackerGTK
       set
       {
         m_TrayIcon = value;
+      }
+    }
+    public bool TrayIconOnClose
+    {
+      get
+      {
+        return m_TrayClose;
+      }
+      set
+      {
+        m_TrayClose = value;
       }
     }
     public bool AutoHide

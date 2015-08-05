@@ -1119,7 +1119,7 @@ namespace RestrictionTrackerGTK
 			this.chkTrayClose.TooltipMarkup = "Instead of closing the program, pressing the X button will minimize the program.";
 			this.chkTrayClose.CanFocus = true;
 			this.chkTrayClose.Name = "chkTrayClose";
-			this.chkTrayClose.Label = global::Mono.Unix.Catalog.GetString ("Minimize instead of closing");
+			this.chkTrayClose.Label = global::Mono.Unix.Catalog.GetString ("Minimize instead of closin_g");
 			this.chkTrayClose.DrawIndicator = true;
 			this.chkTrayClose.UseUnderline = true;
 			this.pnlPrefInterface.Add (this.chkTrayClose);
