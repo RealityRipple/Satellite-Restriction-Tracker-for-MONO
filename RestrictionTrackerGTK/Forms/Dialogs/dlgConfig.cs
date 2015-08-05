@@ -333,9 +333,9 @@ namespace RestrictionTrackerGTK
         optHistoryCustom.Active = true;
       }
       txtHistoryDir.SetCurrentFolder(hD);
-      if (MainClass.fMain.TrayStyle != 0)
+      chkScaleScreen.Active = mySettings.ScaleScreen;
+      if (MainClass.fMain.TraySupported)
       {
-        chkScaleScreen.Active = mySettings.ScaleScreen;
         switch (mySettings.TrayIconStyle)
         {
           case TrayStyles.Always:
@@ -359,6 +359,8 @@ namespace RestrictionTrackerGTK
         chkTrayMin.Sensitive = false;
         chkTrayIcon.TooltipText += "\n(Requires AppIndicator Library)";
       }
+      chkTrayClose.Active = mySettings.TrayIconOnClose;
+
       chkAutoHide.Active = mySettings.AutoHide;
 
       bSaved = false;
@@ -431,6 +433,7 @@ namespace RestrictionTrackerGTK
       chkScaleScreen.Clicked += ValuesChanged;
       chkTrayIcon.Clicked += chkTrayIcon_Clicked;
       chkTrayMin.Clicked += ValuesChanged;
+      chkTrayClose.Clicked += ValuesChanged;
       chkAutoHide.Clicked += ValuesChanged;
       //
       cmdColors.Clicked += cmdColors_Click;
@@ -1399,6 +1402,7 @@ namespace RestrictionTrackerGTK
       }
       else
         mySettings.TrayIconStyle = TrayStyles.Never;
+      mySettings.TrayIconOnClose = chkTrayClose.Active;
       mySettings.AutoHide = chkAutoHide.Active;
       if (String.IsNullOrEmpty(mySettings.HistoryDir))
       {
@@ -1820,6 +1824,8 @@ namespace RestrictionTrackerGTK
             return true;
           break;
       }
+      if (mySettings.TrayIconOnClose != chkTrayClose.Active)
+        return true;
       if (mySettings.AutoHide != chkAutoHide.Active)
         return true;
       if (!modFunctions.DirectoryEqualityCheck(mySettings.HistoryDir, txtHistoryDir.CurrentFolder))

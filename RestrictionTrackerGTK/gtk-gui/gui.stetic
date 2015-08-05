@@ -1383,6 +1383,7 @@
                         <property name="Tooltip" translatable="yes">Display history in a line graph.</property>
                         <property name="CanFocus">True</property>
                         <property name="Label" translatable="yes">Graph</property>
+                        <property name="Active">True</property>
                         <property name="DrawIndicator">True</property>
                         <property name="HasLabel">True</property>
                         <property name="UseUnderline">True</property>
@@ -1641,7 +1642,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Dialog" id="RestrictionTrackerGTK.dlgConfig" design-size="439 564">
+  <widget class="Gtk.Dialog" id="RestrictionTrackerGTK.dlgConfig" design-size="441 564">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Satellite Restriction Tracker Configuration</property>
     <property name="Icon">resource:RestrictionTrackerGTK.Resources.norm.ico</property>
@@ -2153,7 +2154,6 @@ You can choose a domain from the dropdown or enter your own to add it to the lis
                             <property name="Tooltip" translatable="yes">Exede package through Dish.</property>
                             <property name="CanFocus">True</property>
                             <property name="Label" translatable="yes">DishNet</property>
-                            <property name="Active">True</property>
                             <property name="DrawIndicator">True</property>
                             <property name="HasLabel">True</property>
                             <property name="UseUnderline">True</property>
@@ -3240,9 +3240,6 @@ and the Tray Icon.</property>
                       <placeholder />
                     </child>
                     <child>
-                      <placeholder />
-                    </child>
-                    <child>
                       <widget class="Gtk.CheckButton" id="chkScaleScreen">
                         <property name="MemberName" />
                         <property name="Tooltip" translatable="yes">Text in the main window of Satellite Restriction Tracker will scale to fit its size.</property>
@@ -3259,6 +3256,29 @@ and the Tray Icon.</property>
                         <property name="XOptions">Fill</property>
                         <property name="YOptions">Fill</property>
                         <property name="XExpand">False</property>
+                        <property name="XFill">True</property>
+                        <property name="XShrink">False</property>
+                        <property name="YExpand">False</property>
+                        <property name="YFill">True</property>
+                        <property name="YShrink">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="Gtk.CheckButton" id="chkTrayClose">
+                        <property name="MemberName" />
+                        <property name="Tooltip" translatable="yes">Instead of closing the program, pressing the X button will minimize the program.</property>
+                        <property name="CanFocus">True</property>
+                        <property name="Label" translatable="yes">Minimize instead of closing</property>
+                        <property name="DrawIndicator">True</property>
+                        <property name="HasLabel">True</property>
+                        <property name="UseUnderline">True</property>
+                      </widget>
+                      <packing>
+                        <property name="LeftAttach">2</property>
+                        <property name="RightAttach">3</property>
+                        <property name="AutoSize">True</property>
+                        <property name="YOptions">Fill</property>
+                        <property name="XExpand">True</property>
                         <property name="XFill">True</property>
                         <property name="XShrink">False</property>
                         <property name="YExpand">False</property>
@@ -4692,7 +4712,6 @@ By default, data is stored in the ~/.config directory.</property>
                         <property name="Tooltip" translatable="yes">Save History Data to a custom directory.</property>
                         <property name="CanFocus">True</property>
                         <property name="Label" translatable="yes">C_ustom:</property>
-                        <property name="Active">True</property>
                         <property name="DrawIndicator">True</property>
                         <property name="HasLabel">True</property>
                         <property name="UseUnderline">True</property>
@@ -4848,7 +4867,6 @@ By default, data is stored in the ~/.config directory.</property>
                         <property name="Tooltip" translatable="yes">Show a link to a custom website on the Main window.</property>
                         <property name="CanFocus">True</property>
                         <property name="Label" translatable="yes">C_ustom:</property>
-                        <property name="Active">True</property>
                         <property name="DrawIndicator">True</property>
                         <property name="HasLabel">True</property>
                         <property name="UseUnderline">True</property>

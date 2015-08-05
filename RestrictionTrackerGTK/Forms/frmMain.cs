@@ -26,6 +26,13 @@ namespace RestrictionTrackerGTK
           ShowTrayIcon();
       }
     }
+    public bool TraySupported
+    {
+      get
+      {
+        return (aTrayStyle > 0);
+      }
+    }
     private byte aTrayStyle = 0;
     //0=off, 1==standard, 2=appind
     private int trayRes = 16;
@@ -1165,6 +1172,15 @@ namespace RestrictionTrackerGTK
     }
     protected void Form_Closed(object sender, DeleteEventArgs a)
     {
+      if (mySettings.TrayIconOnClose)
+      {
+        if ((this.GdkWindow.State & Gdk.WindowState.Iconified) != Gdk.WindowState.Iconified)
+        {
+          this.Iconify();
+          a.RetVal = true;
+          return;
+        }
+      }
       ClosingTime = true;
       if (tmrUpdate != 0)
       {
@@ -1759,7 +1775,7 @@ namespace RestrictionTrackerGTK
           DisplayUsage(false, false);
           break;
         case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.UnknownAccountDetails:
-          if ((this.GdkWindow.State & Gdk.WindowState.Iconified) != 0)
+          if ((this.GdkWindow.State & Gdk.WindowState.Iconified) == Gdk.WindowState.Iconified)
           {
             ShowFromTray();
           }
