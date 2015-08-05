@@ -467,6 +467,7 @@ namespace RestrictionTrackerGTK
     bool speed_tick()
     {
       if (tSpeed == 0)
+        return false;
       if (CurSize > LastSize)
         DownSpeed = (ulong) (CurSize - LastSize);
       else
