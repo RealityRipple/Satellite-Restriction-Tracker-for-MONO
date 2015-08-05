@@ -11,7 +11,7 @@
     <AssemblyName>RestrictionTracker</AssemblyName>
     <StartupObject>RestrictionTrackerGTK.MainClass</StartupObject>
     <ApplicationIcon>Resources\sat.ico</ApplicationIcon>
-    <ReleaseVersion>1.3.3</ReleaseVersion>
+    <ReleaseVersion>1.3.4</ReleaseVersion>
     <Description>Satellite Restriction Tracker</Description>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>trackergtk.snk</AssemblyOriginatorKeyFile>
