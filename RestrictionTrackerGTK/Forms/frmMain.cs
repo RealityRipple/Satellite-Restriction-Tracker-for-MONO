@@ -1451,7 +1451,14 @@ namespace RestrictionTrackerGTK
         if (modFunctions.TickCount() >= NextGrabTick)
         {
           if ((mySettings.UpdateType != UpdateTypes.None) && (Math.Abs(DateTime.Now.Subtract(mySettings.LastUpdate).TotalDays) > mySettings.UpdateTime))
+          {
             CheckForUpdates();
+            NextGrabTick = modFunctions.TickCount() + 10 * 60 * 1000;
+          }
+          else if (tmrSpeed != 0)
+          {
+            NextGrabTick = modFunctions.TickCount() + 10 * 60 * 1000;
+          }
           else
           {
             if (!String.IsNullOrEmpty(sAccount))
@@ -3570,7 +3577,7 @@ namespace RestrictionTrackerGTK
     }
     private void Main_UpdateCheckerDownloadingUpdate(object sender, EventArgs e)
     {
-      tmrSpeed = GLib.Timeout.Add(1000, tmrUpdate_Tick);
+      tmrSpeed = GLib.Timeout.Add(1000, tmrSpeed_Tick);
       SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Software Update...", false);
     }
     private void updateChecker_DownloadResult(object sender, clsUpdate.DownloadEventArgs e)
@@ -3664,6 +3671,8 @@ namespace RestrictionTrackerGTK
         sProgress = "(Waiting for Response)";
       }
       SetStatusText("Downloading Update " + sProgress, sStatus, false);
+      if (upTotalSize == 0)
+        return true;
       return upCurSize < upTotalSize;
     }
     #endregion
