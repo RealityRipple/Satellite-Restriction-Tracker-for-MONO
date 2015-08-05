@@ -1725,7 +1725,7 @@ namespace RestrictionTrackerGTK
 			w126.XOptions = ((global::Gtk.AttachOptions)(4));
 			w126.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlNetworkTimeout.Gtk.Table+TableChild
-			this.txtTimeout = new global::Gtk.SpinButton (0, 100, 1);
+			this.txtTimeout = new global::Gtk.SpinButton (0, 600, 1);
 			this.txtTimeout.TooltipMarkup = "Number of seconds to wait between network communications.";
 			this.txtTimeout.CanFocus = true;
 			this.txtTimeout.Name = "txtTimeout";
