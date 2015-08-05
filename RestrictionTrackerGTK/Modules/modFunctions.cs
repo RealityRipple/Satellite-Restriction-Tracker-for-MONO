@@ -221,21 +221,21 @@ namespace RestrictionTrackerGTK
           {
             if (InBytes / 1024 / 1024 / 1024 >= 1000)
             {
-              return string.Format("{0,0:0.##}", (InBytes) / 1024 / 1024 / 1024 / 1024) + " TB";
+              return string.Format("{0,0:0.##}", (InBytes) / 1024d / 1024d / 1024d / 1024d) + " TB";
             }
             else
             {
-              return string.Format("{0,0:0.##}", (InBytes) / 1024 / 1024 / 1024) + " GB";
+              return string.Format("{0,0:0.##}", (InBytes) / 1024d / 1024d / 1024d) + " GB";
             }
           }
           else
           {
-            return string.Format("{0,0:0.##}", (InBytes) / 1024 / 1024) + " MB";
+            return string.Format("{0,0:0.##}", (InBytes) / 1024d / 1024d) + " MB";
           }
         }
         else
         {
-          return string.Format("{0,0:0.#}", (InBytes) / 1024) + " KB";
+          return string.Format("{0,0:0.#}", (InBytes) / 1024d) + " KB";
         }
       }
       else
