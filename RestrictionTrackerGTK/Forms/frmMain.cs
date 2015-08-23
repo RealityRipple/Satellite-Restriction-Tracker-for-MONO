@@ -4,6 +4,7 @@ using Gtk;
 using RestrictionLibrary;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Security.Policy;
 namespace RestrictionTrackerGTK
 {
   public partial class frmMain: Gtk.Window
@@ -30,10 +31,10 @@ namespace RestrictionTrackerGTK
     {
       get
       {
-        return (aTrayStyle > 0);
+        return (mTraySupport > 0);
       }
     }
-    private byte aTrayStyle = 0;
+    private byte mTraySupport = 0;
     //0=off, 1==standard, 2=appind
     private int trayRes = 16;
     private String _IconFolder = "";
@@ -546,10 +547,10 @@ namespace RestrictionTrackerGTK
       {
         if (e.Size > 7)
         {
-          if (aTrayStyle == 0)
+          if (mTraySupport == 0)
           {
-            aTrayStyle = 1;
-            TrayStyle = aTrayStyle;
+            mTraySupport = 1;
+            TrayStyle = mTraySupport;
             trayRes = e.Size;
             MakeIconListing();
             if (tmrShow != 0)
@@ -579,8 +580,8 @@ namespace RestrictionTrackerGTK
         tmrShow = 0;
         if (((StatusIcon) trayIcon).Embedded)
         {
-          aTrayStyle = 1;
-          TrayStyle = aTrayStyle;
+          mTraySupport = 1;
+          TrayStyle = mTraySupport;
           trayRes = ((StatusIcon) trayIcon).Size;
           if (trayRes < 8)
             trayRes = 8;
@@ -597,8 +598,8 @@ namespace RestrictionTrackerGTK
           try
           {
             trayIcon = new AppIndicator.ApplicationIndicator("restriction-tracker", "norm", AppIndicator.Category.Communications, IconFolder);
-            aTrayStyle = 2;
-            TrayStyle = aTrayStyle;
+            mTraySupport = 2;
+            TrayStyle = mTraySupport;
             ((AppIndicator.ApplicationIndicator) trayIcon).Menu = mnuTray;
             ((AppIndicator.ApplicationIndicator) trayIcon).Status = AppIndicator.Status.Active;
             SetTrayText(modFunctions.ProductName);
@@ -607,7 +608,7 @@ namespace RestrictionTrackerGTK
           catch (Exception)
           {
             Directory.Delete(IconFolder, true);
-            aTrayStyle = 0;
+            mTraySupport = 0;
             firstRestore = true;
           }
         }
@@ -735,7 +736,7 @@ namespace RestrictionTrackerGTK
     private void StartupCleanup()
     {
       if (mySettings.TrayIconStyle == TrayStyles.Always)
-        mTrayStyle = aTrayStyle;
+        mTrayStyle = mTraySupport;
       else
         mTrayStyle = 0;
       this.Opacity = 1;
@@ -1096,13 +1097,13 @@ namespace RestrictionTrackerGTK
       }
       if (e.Event.ChangedMask == Gdk.WindowState.Iconified)
       {
-        if (aTrayStyle > 0 && mySettings.TrayIconStyle != TrayStyles.Never)
+        if (mTraySupport > 0 && mySettings.TrayIconStyle != TrayStyles.Never)
         {
           bool isMinimized = ((e.Event.NewWindowState & Gdk.WindowState.Iconified) == Gdk.WindowState.Iconified);
           if (isMinimized)
           {
             if (mySettings.TrayIconStyle == TrayStyles.Minimized)
-              TrayStyle = aTrayStyle;
+              TrayStyle = mTraySupport;
             ((Gtk.Label) mnuRestore.Child).TextWithMnemonic = "_Restore";
             this.SkipTaskbarHint = true;
           }
@@ -1123,13 +1124,13 @@ namespace RestrictionTrackerGTK
       }
       else if (e.Event.ChangedMask == Gdk.WindowState.Withdrawn)
       {
-        if (aTrayStyle > 0 && mySettings.TrayIconStyle != TrayStyles.Never)
+        if (mTraySupport > 0 && mySettings.TrayIconStyle != TrayStyles.Never)
         {
           bool isWithdrawn = ((e.Event.NewWindowState & Gdk.WindowState.Withdrawn) == Gdk.WindowState.Withdrawn);
           if (isWithdrawn)
           {
             if (mySettings.TrayIconStyle == TrayStyles.Minimized)
-              TrayStyle = aTrayStyle;
+              TrayStyle = mTraySupport;
             ((Gtk.Label) mnuRestore.Child).TextWithMnemonic = "_Restore";
             this.SkipTaskbarHint = true;
           }
@@ -1137,7 +1138,7 @@ namespace RestrictionTrackerGTK
       }
       else if (e.Event.ChangedMask == Gdk.WindowState.Maximized)
       {
-        if (aTrayStyle > 0 && mySettings.TrayIconStyle != TrayStyles.Never)
+        if (mTraySupport > 0 && mySettings.TrayIconStyle != TrayStyles.Never)
         {
           if (mySettings.TrayIconStyle == TrayStyles.Minimized)
             TrayStyle = 0;
@@ -1209,18 +1210,18 @@ namespace RestrictionTrackerGTK
       System.Net.ServicePointManager.SecurityProtocol = mySettings.Protocol;
       modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
       modFunctions.NOTIFIER_STYLE = modFunctions.LoadAlertStyle(mySettings.AlertStyle);
-      if (aTrayStyle > 0)
+      if (mTraySupport > 0)
       {
         if (mySettings.TrayIconStyle == TrayStyles.Always)
         {
-          TrayStyle = aTrayStyle;
+          TrayStyle = mTraySupport;
         }
         else if (mySettings.TrayIconStyle == TrayStyles.Minimized)
         {
           if (this.Visible)
             TrayStyle = 0;
           else
-            TrayStyle = aTrayStyle;
+            TrayStyle = mTraySupport;
         }
         else
         {
@@ -3177,7 +3178,7 @@ namespace RestrictionTrackerGTK
     }
     private void ShowTrayIcon()
     {
-      if (aTrayStyle == 2)
+      if (mTraySupport == 2)
       {
         try
         {
@@ -3185,16 +3186,16 @@ namespace RestrictionTrackerGTK
         }
         catch (Exception)
         {
-          aTrayStyle = 1;
-          TrayStyle = aTrayStyle;
+          mTraySupport = 1;
+          TrayStyle = mTraySupport;
         }
       }
-      if (aTrayStyle == 1)
+      if (mTraySupport == 1)
         ((StatusIcon) trayIcon).Visible = true;
     }
     private void HideTrayIcon()
     {
-      if (aTrayStyle == 2)
+      if (mTraySupport == 2)
       {
         try
         {
@@ -3202,16 +3203,16 @@ namespace RestrictionTrackerGTK
         }
         catch (Exception)
         {
-          aTrayStyle = 1;
-          TrayStyle = aTrayStyle;
+          mTraySupport = 1;
+          TrayStyle = mTraySupport;
         }
       }
-      if (aTrayStyle == 1)
+      if (mTraySupport == 1)
         ((StatusIcon) trayIcon).Visible = false;
     }
     private void SetTrayIcon(string resource)
     {
-      if (TrayStyle == 2)
+      if (mTraySupport == 2)
       {
         try
         {
@@ -3219,16 +3220,16 @@ namespace RestrictionTrackerGTK
         }
         catch (Exception)
         {
-          aTrayStyle = 1;
-          TrayStyle = aTrayStyle;
+          mTraySupport = 1;
+          TrayStyle = mTraySupport;
         }
       }
-      if (TrayStyle == 1)
+      if (mTraySupport == 1)
         ((StatusIcon) trayIcon).File = System.IO.Path.Combine(IconFolder, resource + ".png");
     }
     private void SetTrayText(string tooltip)
     {
-      if (TrayStyle == 2)
+      if (mTraySupport == 2)
       {
         try
         {
@@ -3236,11 +3237,11 @@ namespace RestrictionTrackerGTK
         }
         catch (Exception)
         {
-          aTrayStyle = 1;
-          TrayStyle = aTrayStyle;
+          mTraySupport = 1;
+          TrayStyle = mTraySupport;
         }
       }
-      if (TrayStyle == 1)
+      if (mTraySupport == 1)
       {
         ((StatusIcon) trayIcon).Tooltip = tooltip;
         ((StatusIcon) trayIcon).Blinking = false;
