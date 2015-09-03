@@ -423,9 +423,6 @@ namespace RestrictionTrackerGTK
         }
         localData = new localRestrictionTracker(modFunctions.AppData);
         localDataEvent(true);
-        MethodInvoker connectInvoker = new MethodInvoker(localData.Connect);
-        connectInvoker.BeginInvoke(null, null);
-        
       }
     }
     private class TypeDeterminedEventArgs : EventArgs
@@ -468,8 +465,6 @@ namespace RestrictionTrackerGTK
         }
         localData = new localRestrictionTracker(modFunctions.AppData);
         localDataEvent(true);
-        MethodInvoker connectInvoker = new MethodInvoker(localData.Connect);
-        connectInvoker.BeginInvoke(null, null);
       }
     }
     #endregion
@@ -1559,8 +1554,6 @@ namespace RestrictionTrackerGTK
             }
             localData = new localRestrictionTracker(modFunctions.AppData);
             localDataEvent(true);
-            MethodInvoker localInvoker = localData.Connect;
-            localInvoker.BeginInvoke(null, null);
           }
         }
         else
