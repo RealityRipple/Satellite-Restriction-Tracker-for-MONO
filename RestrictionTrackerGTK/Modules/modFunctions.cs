@@ -243,6 +243,10 @@ namespace RestrictionTrackerGTK
         return InBytes.ToString() + " B";
       }
     }
+    public static string[] HostList()
+    {
+      return new string[] { "exede.net", "wildblue.net", "dish.net", "dishmail.net", "kitcarson.net", "plateauwb.net", "wbaccess.net", "novecnet.com", "northlc.com", "oecblue.net", "seidata.com", "oecblue.com", "hcecwildblue.com", "trueband.net", "trueband.com", "fhrd.net", "scpwildblue.com", "oeccwildblue.com", "bessi.net", "mlecwb.net", "erec.net", "winntelwb.coop", "coopsone.com", "kiamichiwb.org", "kmwb.net", "directv.net" };
+    }
     public static localRestrictionTracker.SatHostTypes StringToHostType(string st)
     {
       switch (st.ToUpper())

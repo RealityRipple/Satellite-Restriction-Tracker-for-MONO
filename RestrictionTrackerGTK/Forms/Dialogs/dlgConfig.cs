@@ -1167,10 +1167,8 @@ namespace RestrictionTrackerGTK
     private void UseDefaultHostList()
     {
       ClearHostList();
-      cmbProvider.AppendText("wildblue.net");
-      cmbProvider.AppendText("exede.net");
-      cmbProvider.AppendText("dishmail.net");
-      cmbProvider.AppendText("dish.net");
+      foreach (string host in modFunctions.HostList())
+        cmbProvider.AppendText(host);
     }
     private void SaveToHostList(string Provider)
     {
