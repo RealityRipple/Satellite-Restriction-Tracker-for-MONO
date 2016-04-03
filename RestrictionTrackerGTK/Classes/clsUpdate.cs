@@ -1,4 +1,5 @@
 using System;
+using RestrictionLibrary;
 namespace RestrictionTrackerGTK
 {
   public class clsUpdate : IDisposable
@@ -50,13 +51,13 @@ namespace RestrictionTrackerGTK
     public delegate void UpdateProgressChangedEventHandler(object sender,ProgressEventArgs e);
     public event DownloadResultEventHandler DownloadResult;
     public delegate void DownloadResultEventHandler(object sender,DownloadEventArgs e);
-    private RestrictionLibrary.WebClientEx wsVer;
+    private RestrictionLibrary.WebClientCore wsVer;
     private string DownloadURL;
     private string VerNumber;
     public void CheckVersion()
     {
       AppSettings myS = new AppSettings();
-      wsVer = new RestrictionLibrary.WebClientEx();
+      wsVer = new RestrictionLibrary.WebClientCore();
       wsVer.DownloadProgressChanged += wsVer_DownloadProgressChanged;
       wsVer.DownloadStringCompleted += wsVer_DownloadStringCompleted;
       wsVer.DownloadFileCompleted += wsVer_DownloadFileCompleted;
@@ -73,19 +74,15 @@ namespace RestrictionTrackerGTK
     {
       string sVerStr = null;
       AppSettings mySettings = new AppSettings();
-      using (RestrictionLibrary.WebClientEx wsCheck = new RestrictionLibrary.WebClientEx())
+      WebClientEx wsCheck = new WebClientEx();
+      ;
+      wsCheck.Proxy = mySettings.Proxy;
+      wsCheck.Timeout = mySettings.Timeout;
+      sVerStr = wsCheck.DownloadString(VersionURL);
+      if (sVerStr.StartsWith("Error: "))
       {
-        wsCheck.Proxy = mySettings.Proxy;
-        wsCheck.Timeout = mySettings.Timeout;
-        try
-        {
-          sVerStr = wsCheck.DownloadString(new Uri(VersionURL));
-        }
-        catch (Exception)
-        {
-          mySettings = null;
-          return ResultType.NoUpdate;
-        }
+        mySettings = null;
+        return ResultType.NoUpdate;
       }
       char[] sSplit = { ' ' };
       if (sVerStr.Contains("\r\n"))

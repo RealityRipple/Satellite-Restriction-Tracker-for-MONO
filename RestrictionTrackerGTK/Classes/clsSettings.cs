@@ -212,7 +212,7 @@ namespace RestrictionTrackerGTK
                     {
                       if (!int.TryParse(xValue, out m_Timeout))
                       {
-                        m_Timeout = 60;
+                        m_Timeout = 120;
                       }
                     }
                     else if (xName.CompareTo("Overuse") == 0)
@@ -557,7 +557,7 @@ namespace RestrictionTrackerGTK
       m_MainSize = new Gdk.Size(450, 200);
       m_RemoteKey = null;
       m_PassCrypt = null;
-      m_Timeout = 60;
+      m_Timeout = 120;
       m_Overuse = 0;
       m_Overtime = 60;
       m_AlertStyle = "Default";

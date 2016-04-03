@@ -1,9 +1,10 @@
 using System;
+using System.Threading;
+using RestrictionLibrary;
 namespace RestrictionTrackerGTK
 {
   public partial class dlgUpdate : Gtk.Dialog
   {
-    private RestrictionLibrary.WebClientEx sckVerInfo;
     private bool Ret;
     public dlgUpdate()
     {
@@ -22,9 +23,6 @@ namespace RestrictionTrackerGTK
       this.GdkWindow.SetDecorations(Gdk.WMDecoration.All | Gdk.WMDecoration.Maximize | Gdk.WMDecoration.Minimize | Gdk.WMDecoration.Resizeh | Gdk.WMDecoration.Menu);
       this.GdkWindow.Functions = Gdk.WMFunction.All | Gdk.WMFunction.Maximize | Gdk.WMFunction.Minimize | Gdk.WMFunction.Resize;
       this.WindowStateEvent += HandleWindowStateEvent;
-      sckVerInfo = new RestrictionLibrary.WebClientEx();
-      sckVerInfo.DownloadStringCompleted += sckVerInfo_DownloadStringCompleted;
-      sckVerInfo.Failure += sckVerInfo_Failure;
       Ret = false;
       this.Close += frmUpdate_FormClosing;
     }
@@ -102,12 +100,8 @@ namespace RestrictionTrackerGTK
           cmdDownload.GrabFocus();
           cmdChanges.Sensitive = false;
           txtInfo.Buffer.Text = "Loading Update Information\n\nPlease Wait...";
-          Uri loadPage = new Uri("http://update.realityripple.com/Satellite_Restriction_Tracker/info");
-          if (lblBETA.Visible)
-          {
-            loadPage = new Uri("http://update.realityripple.com/Satellite_Restriction_Tracker/infob");
-          }
-          sckVerInfo.DownloadStringAsync(loadPage);
+          System.Threading.Thread tInfo = new Thread(GetVerInfo);
+          tInfo.Start();
         }
       }
     }
@@ -118,26 +112,37 @@ namespace RestrictionTrackerGTK
         this.Respond(Gtk.ResponseType.No);
       }
     }
-    private void sckVerInfo_DownloadStringCompleted(object o, System.Net.DownloadStringCompletedEventArgs e)
+    private void GetVerInfo()
     {
-      if (e.Cancelled)
+      string sRet = null;
+      WebClientEx sckVerInfo = new WebClientEx();
+      if (lblBETA.Visible)
       {
-        txtInfo.Buffer.Text = "Info Request Cancelled";
-      }
-      else if (e.Error != null)
-      {
-        txtInfo.Buffer.Text = "Info Request Error\n" + e.Error.Message;
+        sRet = sckVerInfo.DownloadString("http://update.realityripple.com/Satellite_Restriction_Tracker/infob");
       }
       else
       {
-        txtInfo.Buffer.Text = e.Result;
+        sRet = sckVerInfo.DownloadString("http://update.realityripple.com/Satellite_Restriction_Tracker/info");
       }
-      cmdChanges.Sensitive = true;
-      cmdChanges.GrabFocus();
+      SetVerInfo(sRet);
     }
-    private void sckVerInfo_Failure(object o, RestrictionLibrary.WebClientEx.ErrorEventArgs e)
+    private class VerInfoEventArgs
+      :EventArgs
     {
-      txtInfo.Buffer.Text = "Info Request Error\n" + e.Error.Message;
+      public string Message;
+      public VerInfoEventArgs(string sMsg)
+      {
+        Message = sMsg;
+      }
+    }
+    private void SetVerInfo(string Message)
+    {
+      Gtk.Application.Invoke(new object(), new VerInfoEventArgs(Message), Main_SetVerInfo);
+    }
+    private void Main_SetVerInfo(object o, EventArgs ea)
+    {
+      VerInfoEventArgs e = (VerInfoEventArgs) ea;
+      txtInfo.Buffer.Text = e.Message;
       cmdChanges.Sensitive = true;
       cmdChanges.GrabFocus();
     }

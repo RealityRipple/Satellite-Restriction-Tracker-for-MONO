@@ -2154,6 +2154,7 @@ You can choose a domain from the dropdown or enter your own to add it to the lis
                             <property name="Tooltip" translatable="yes">Exede package through Dish.</property>
                             <property name="CanFocus">True</property>
                             <property name="Label" translatable="yes">DishNet</property>
+                            <property name="Active">True</property>
                             <property name="DrawIndicator">True</property>
                             <property name="HasLabel">True</property>
                             <property name="UseUnderline">True</property>
@@ -4712,6 +4713,7 @@ By default, data is stored in the ~/.config directory.</property>
                         <property name="Tooltip" translatable="yes">Save History Data to a custom directory.</property>
                         <property name="CanFocus">True</property>
                         <property name="Label" translatable="yes">C_ustom:</property>
+                        <property name="Active">True</property>
                         <property name="DrawIndicator">True</property>
                         <property name="HasLabel">True</property>
                         <property name="UseUnderline">True</property>
@@ -4867,6 +4869,7 @@ By default, data is stored in the ~/.config directory.</property>
                         <property name="Tooltip" translatable="yes">Show a link to a custom website on the Main window.</property>
                         <property name="CanFocus">True</property>
                         <property name="Label" translatable="yes">C_ustom:</property>
+                        <property name="Active">True</property>
                         <property name="DrawIndicator">True</property>
                         <property name="HasLabel">True</property>
                         <property name="UseUnderline">True</property>

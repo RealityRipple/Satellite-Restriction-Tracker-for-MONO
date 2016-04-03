@@ -1,19 +1,21 @@
 using System;
 using RestrictionTrackerGTK;
+using RestrictionLibrary;
 namespace MantisBugTracker
 {
   internal class MantisReporter
   {
-    private static RestrictionLibrary.WebClientEx httpSend;
     private static string GetToken(int Project_ID)
     {
       System.Collections.Specialized.NameValueCollection pD1 = new System.Collections.Specialized.NameValueCollection();
       pD1.Add("ref", "bug_report_page.php");
       pD1.Add("project_id", Project_ID.ToString().Trim());
       pD1.Add("make_default", String.Empty);
-      httpSend.Headers.Add(System.Net.HttpRequestHeader.Referer, "http://bugs.realityripple.com/login_select_proj_page.php?bug_report_page.php");
-      byte[] bTok = httpSend.UploadValues("http://bugs.realityripple.com/set_project.php", "POST", pD1);
-      string sTok = System.Text.Encoding.GetEncoding(28591).GetString(bTok);
+      WebClientEx httpToken = new WebClientEx();
+      httpToken.SendHeaders.Add(System.Net.HttpRequestHeader.Referer, "http://bugs.realityripple.com/login_select_proj_page.php?bug_report_page.php");
+      string sTok = httpToken.UploadValues("http://bugs.realityripple.com/set_project.php", "POST", pD1);
+      if (sTok.StartsWith("Error: ")) 
+        return null;
       if (sTok.Contains("bug_report_token"))
       {
         sTok = sTok.Substring(sTok.IndexOf("bug_report_token") + 25);
@@ -51,11 +53,11 @@ namespace MantisBugTracker
         pData.Add("view_state", "50");
       }
       pData.Add("report_stay", String.Empty);
-      byte[] bRet = null;
-      bRet = httpSend.UploadValues("http://bugs.realityripple.com/bug_report.php", "POST", pData);
-      string sRet = System.Text.Encoding.GetEncoding(28591).GetString(bRet);
-      httpSend.Dispose();
-      httpSend = null;
+      string sRet;
+      WebClientEx httpReport = new WebClientEx();
+      sRet = httpReport.UploadValues("http://bugs.realityripple.com/bug_report.php", "POST", pData);
+      if (sRet.StartsWith("Error: ")) 
+        return null;
       if (sRet.Contains("Operation successful."))
       {
         return "OK";
@@ -69,17 +71,9 @@ namespace MantisBugTracker
     }
     static internal string ReportIssue(Exception e)
     {
-      if (httpSend != null)
-      {
-        httpSend.Dispose();
-        httpSend = null;
-      }
-      httpSend = new RestrictionLibrary.WebClientEx();
       string sTok = GetToken(1);
       if (string.IsNullOrEmpty(sTok))
       {
-        httpSend.Dispose();
-        httpSend = null;
         return "No token was supplied by the server.";
       }
       string sPlat = null;

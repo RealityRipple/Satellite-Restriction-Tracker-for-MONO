@@ -1,13 +1,16 @@
 using System;
 using System.IO;
 using Mono.Unix.Native;
+using Gdk;
+using RestrictionLibrary;
+using Gtk;
+using System.Drawing;
+using System.Security.Principal;
 namespace RestrictionTrackerGTK
 {
   public partial class dlgConfig : Gtk.Dialog
   {
     private RestrictionLibrary.remoteRestrictionTracker remoteTest;
-    private RestrictionLibrary.WebClientEx wsHostList;
-    private clsFavicon wsFavicon;
     private bool bSaved, bAccount, bLoaded, bHardChange, bRemoteAcct;
     private AppSettings mySettings;
     private uint pChecker;
@@ -18,6 +21,7 @@ namespace RestrictionTrackerGTK
     private const string LINK_PURCHASE_TT = "If you do not have a Product Key for the Remote Usage Service, you can purchase one online for as little as $15.00 a year.";
     private const string LINK_PANEL = "Visit the Remote Usage Service User Panel Page";
     private const string LINK_PANEL_TT = "Manage your Remote Usage Service account online.";
+    private delegate void MethodInvoker();
     #region "Form Events"
     public dlgConfig()
     {
@@ -279,7 +283,6 @@ namespace RestrictionTrackerGTK
           default:
             optNetTestCustom.Active = true;
             txtNetTestCustom.Text = mySettings.NetTestURL;
-            wsFavicon = MakeFavicon(txtNetTestCustom.Text);
             break;
         }
       }
@@ -374,7 +377,8 @@ namespace RestrictionTrackerGTK
         bLoaded = true;
       }
       this.Response += dlgConfig_Response;
-      PopulateHostList();
+      MethodInvoker populateInvoker = PopulateHostList;
+      populateInvoker.BeginInvoke(null, null);
     }
     private void AddEventHandlers()
     {
@@ -900,11 +904,6 @@ namespace RestrictionTrackerGTK
     {
       if (optNetTestNone.Active)
       {
-        if (wsFavicon != null)
-        {
-          wsFavicon.Dispose();
-          wsFavicon = null;
-        }
         txtNetTestCustom.Text = "";
         txtNetTestCustom.Sensitive = false;
         if (CurrentOS.IsMac)
@@ -918,18 +917,14 @@ namespace RestrictionTrackerGTK
     {
       if (optNetTestTestMyNet.Active)
       {
-        if (wsFavicon != null)
-        {
-          wsFavicon.Dispose();
-          wsFavicon = null;
-        }
         txtNetTestCustom.Text = "http://testmy.net";
         txtNetTestCustom.Sensitive = false;
+        int token = MakeAToken(txtNetTestCustom.Text);
         if (CurrentOS.IsMac)
-          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_load.png"));
+          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_load.png"), false, token, null);
         else
-          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_load.png"));
-        wsFavicon = MakeFavicon("http://testmy.net");
+          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_load.png"), false, token, null);
+        clsFavicon wsFavicon = new clsFavicon(txtNetTestCustom.Text, wsFavicon_DownloadIconCompleted, token);
         cmdSave.Sensitive = SettingsChanged();
       }
     }
@@ -937,18 +932,14 @@ namespace RestrictionTrackerGTK
     {
       if (optNetTestSpeedTest.Active)
       {
-        if (wsFavicon != null)
-        {
-          wsFavicon.Dispose();
-          wsFavicon = null;
-        }
         txtNetTestCustom.Text = "http://speedtest.net";
         txtNetTestCustom.Sensitive = false;
+        int token = MakeAToken(txtNetTestCustom.Text);
         if (CurrentOS.IsMac)
-          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_load.png"));
+          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_load.png"), false, token, null);
         else
-          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_load.png"));
-        wsFavicon = MakeFavicon("http://speedtest.net");
+          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_load.png"), false, token, null);
+        clsFavicon wsFavicon = new clsFavicon(txtNetTestCustom.Text, wsFavicon_DownloadIconCompleted, token);
         cmdSave.Sensitive = SettingsChanged();
       }
     }
@@ -956,11 +947,6 @@ namespace RestrictionTrackerGTK
     {
       if (optNetTestCustom.Active)
       {
-        if (wsFavicon != null)
-        {
-          wsFavicon.Dispose();
-          wsFavicon = null;
-        }
         txtNetTestCustom.Text = "";
         txtNetTestCustom.Sensitive = true;
         if (CurrentOS.IsMac)
@@ -983,11 +969,12 @@ namespace RestrictionTrackerGTK
           }
           if (!String.IsNullOrEmpty(txtNetTestCustom.Text))
           {
+            int token = MakeAToken(txtNetTestCustom.Text);
             if (CurrentOS.IsMac)
-              SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_load.png"));
+              SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_load.png"), false, token, null);
             else
-              SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_load.png"));
-            wsFavicon = MakeFavicon(txtNetTestCustom.Text);
+              SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_load.png"), false, token, null);
+            clsFavicon wsFavicon = new clsFavicon(txtNetTestCustom.Text, wsFavicon_DownloadIconCompleted, token);
           }
         }
       }
@@ -1108,50 +1095,35 @@ namespace RestrictionTrackerGTK
     #region "Providers"
     private void PopulateHostList()
     {
-      wsHostList = new RestrictionLibrary.WebClientEx();
-      wsHostList.DownloadStringCompleted += wsHostList_DownloadStringCompleted;
-      wsHostList.DownloadStringAsync(new Uri("http://wb.realityripple.com/hosts"), "GRAB");
+      Gtk.Application.Invoke(this, null, Main_PopulateHostList);
     }
-    void wsHostList_DownloadStringCompleted(object sender, System.Net.DownloadStringCompletedEventArgs e)
+    private void Main_PopulateHostList(object sender, EventArgs e)
     {
+      WebClientEx wsHostList = new WebClientEx();
+      string sHostList = wsHostList.DownloadString("http://wb.realityripple.com/hosts/");
+      if (sHostList.StartsWith("Error: "))
+        return;
       try
       {
-        if ((string) e.UserState == "GRAB")
+        if (sHostList.Contains("\n"))
         {
-          Gtk.Application.Invoke(sender, (EventArgs) e, Main_HostListDownloadStringCompleted);
-        }
-      }
-      catch (Exception)
-      {
-      }
-    }
-    private void Main_HostListDownloadStringCompleted(object sender, EventArgs ea)
-    {
-      System.Net.DownloadStringCompletedEventArgs e = (System.Net.DownloadStringCompletedEventArgs) ea;
-      if (e.Error == null && !e.Cancelled && !String.IsNullOrEmpty(e.Result))
-      {
-        try
-        {
-          if (e.Result.Contains("\n"))
+          String[] HostList = sHostList.Split('\n');
+          bLoaded = false;
+          ClearHostList();
+          for (int i = 0; i < HostList.Length; i++)
           {
-            String[] HostList = e.Result.Split('\n');
-            bLoaded = false;
-            ClearHostList();
-            for (int i = 0; i < HostList.Length; i++)
-            {
-              cmbProvider.AppendText(HostList[i]);
-            }
-            if (mySettings.Account.Contains("@"))
-            {
-              string sProvider = mySettings.Account.Substring(mySettings.Account.LastIndexOf("@") + 1);
-              cmbProvider.Entry.Text = sProvider;
-            }
-            bLoaded = true;
+            cmbProvider.AppendText(HostList[i]);
           }
+          if (mySettings.Account.Contains("@"))
+          {
+            string sProvider = mySettings.Account.Substring(mySettings.Account.LastIndexOf("@") + 1);
+            cmbProvider.Entry.Text = sProvider;
+          }
+          bLoaded = true;
         }
-        catch
-        {
-        }
+      }
+      catch
+      {
       }
     }
     private void ClearHostList()
@@ -1170,58 +1142,59 @@ namespace RestrictionTrackerGTK
       foreach (string host in modFunctions.HostList())
         cmbProvider.AppendText(host);
     }
-    private void SaveToHostList(string Provider)
-    {
-      ResolveEventArgs er = new ResolveEventArgs(Provider);
-      Gtk.Application.Invoke(null, (EventArgs) er, Main_SaveToHostList);
-    }
-    private void Main_SaveToHostList(object sender, EventArgs ea)
-    {
-      ResolveEventArgs e = (ResolveEventArgs) ea;
-      string Provider = e.Name;
-      if (wsHostList != null)
-      {
-        wsHostList.Dispose();
-        wsHostList = null;
-      }
-      wsHostList = new RestrictionLibrary.WebClientEx();
-      wsHostList.DownloadDataAsync(new Uri("http://wb.realityripple.com/hosts/?add=" + Provider), "UPDATE");
-    }
     #endregion
     #region "Net Test"
-    protected clsFavicon MakeFavicon(string URL)
+    private class FaviconDownloadIconCompletedEventArgs:EventArgs
     {
-      wsFavicon = new clsFavicon(URL);
-      wsFavicon.DownloadIconCompleted += wsFavicon_DownloadIconCompleted;
-      return wsFavicon;
+      public Gdk.Pixbuf Icon16;
+      public Gdk.Pixbuf Icon32;
+      public object token;
+      public Exception Error;
+      public FaviconDownloadIconCompletedEventArgs(Gdk.Pixbuf ico16, Gdk.Pixbuf ico32, object objToken, Exception exError)
+      {
+        Icon16 = ico16;
+        Icon32 = ico32;
+        token = objToken;
+        Error = exError;
+      }
     }
-    protected void wsFavicon_DownloadIconCompleted(object sender, clsFavicon.DownloadIconCompletedEventArgs e)
+    protected void wsFavicon_DownloadIconCompleted(Gdk.Pixbuf icon16, Gdk.Pixbuf icon32, object token, Exception error)
     {
-      Gtk.Application.Invoke(sender, (EventArgs) e, wsFavicon_DownloadIconCompletedAsync);
+      FaviconDownloadIconCompletedEventArgs e = new FaviconDownloadIconCompletedEventArgs(icon16, icon32, token, error);
+      Gtk.Application.Invoke(this, (EventArgs) e, wsFavicon_DownloadIconCompletedAsync);
     }
     private void wsFavicon_DownloadIconCompletedAsync(object sender, EventArgs ea)
     {
-      clsFavicon.DownloadIconCompletedEventArgs e = (clsFavicon.DownloadIconCompletedEventArgs) ea;
+      FaviconDownloadIconCompletedEventArgs e = (FaviconDownloadIconCompletedEventArgs) ea;
       if (e.Error != null)
       {
         if (CurrentOS.IsMac)
-          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_error.png"));
+          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_error.png"), true, e.token, null);
         else
-          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_error.png"));
+          SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_error.png"), true, e.token, null);
       }
       else
       {
-        SetNetTestImage(e.Icon32, e.Icon16);
+        SetNetTestImage(e.Icon32, true, e.token, e.Icon16);
       }
     }
     protected void SetNetTestImage(Gdk.Pixbuf Image)
     {
-      SetNetTestImage(Image, null);
-    }
-    protected void SetNetTestImage(Gdk.Pixbuf Image, Gdk.Pixbuf Icon)
-    {
+      waitingForEndOf = 0;
       pctAdvancedNetTestIcon.Pixbuf = Image;
-      icoNetTest = Icon;
+      icoNetTest = null;
+    }
+    object waitingForEndOf;
+    protected void SetNetTestImage(Gdk.Pixbuf Image, bool End, object Token, object tag)
+    {
+      if ((End) & (Token != waitingForEndOf))
+        return;
+      pctAdvancedNetTestIcon.Pixbuf = Image;
+      icoNetTest = (Gdk.Pixbuf) tag;
+      if (End)
+        waitingForEndOf = 0;
+      else
+        waitingForEndOf = Token;
     }
     private bool tmrIcoWait_Tick()
     {
@@ -1229,11 +1202,12 @@ namespace RestrictionTrackerGTK
       {
         if (!string.IsNullOrEmpty(txtNetTestCustom.Text))
         {
+          int token = MakeAToken(txtNetTestCustom.Text);
           if (CurrentOS.IsMac)
-            SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_load.png"));
+            SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_load.png"), false, token, null);
           else
-            SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_load.png"));
-          wsFavicon = MakeFavicon(txtNetTestCustom.Text);
+            SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_load.png"), false, token, null);
+          clsFavicon wsFavicon = new clsFavicon(txtNetTestCustom.Text, wsFavicon_DownloadIconCompleted, token);
         }
         else
         {
@@ -1244,6 +1218,18 @@ namespace RestrictionTrackerGTK
         }
       }
       return false;
+    }
+    private int MakeAToken(string fromString)
+    {
+      Random rand = new Random();
+      uint iToken = (uint) (fromString.Length * rand.Next(0, 31) + rand.Next(0, int.MaxValue - 1));
+      iToken = iToken % int.MaxValue;
+      for (int i = 0; i < fromString.Length; i++)
+      {
+        iToken *= fromString[i];
+        iToken %= int.MaxValue;
+      }
+      return (int) iToken;
     }
     #endregion
     #endregion
