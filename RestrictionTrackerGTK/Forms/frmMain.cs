@@ -1729,7 +1729,10 @@ namespace RestrictionTrackerGTK
               SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Home Page...", false);
               break;
             case localRestrictionTracker.ConnectionSubStates.LoadAJAX:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading AJAX Data (" + e.Stage + " of 8)...", false);
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading AJAX Data (" + e.Stage + " of 4)...", false);
+              break;
+            case localRestrictionTracker.ConnectionSubStates.LoadAJAXRetry:
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Re-Downloading AJAX Data (" + e.Stage + " of 8)...", false);
               break;
             case localRestrictionTracker.ConnectionSubStates.LoadTable:
               SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Usage Table...", false);
