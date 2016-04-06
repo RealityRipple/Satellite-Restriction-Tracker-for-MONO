@@ -6,6 +6,7 @@ using RestrictionLibrary;
 using GLib;
 using System.Threading;
 using Gdk;
+using Gtk;
 namespace RestrictionTrackerGTK
 {
   public class clsFavicon : IDisposable
@@ -19,7 +20,8 @@ namespace RestrictionTrackerGTK
         return;
       c_callback = callback;
       System.Threading.Thread connectThread = new System.Threading.Thread(new System.Threading.ParameterizedThreadStart(BeginConnect));
-      connectThread.Start((object) URL);
+      object[] Params = { URL, token };
+      connectThread.Start(Params);
     }
     private void BeginConnect(object o)
     {
@@ -177,6 +179,7 @@ namespace RestrictionTrackerGTK
       Uri URI = (Uri) ((object[]) state)[0];
       string Filename = (string) ((object[]) state)[1];
       object token = ((object[]) state)[2];
+      wsFile.DownloadFileCompleted += wsFile_DownloadFileCompleted;
       bool trySimpler = (bool) ((object[]) state)[3];
       try
       {
@@ -198,7 +201,7 @@ namespace RestrictionTrackerGTK
         return (Bitmap) newImage.Clone();
       }
     }
-    private Bitmap GenerateCloneImage(Icon fromIcon)
+    private Bitmap GenerateCloneImage(System.Drawing.Icon fromIcon)
     {
       using (Bitmap newImage = new Bitmap(fromIcon.Width, fromIcon.Height))
       {
@@ -251,11 +254,11 @@ namespace RestrictionTrackerGTK
         switch (BitConverter.ToUInt32(imgHeader, 0))
         {
           case 0x00010000:
-            using (Icon ico = new Icon(imgFile, 16, 16))
+            using (System.Drawing.Icon ico = new System.Drawing.Icon(imgFile, 16, 16))
             {
               pctPNG16 = GenerateCloneImage(ico);
             }
-            using (Icon ico = new Icon(imgFile, 32, 32))
+            using (System.Drawing.Icon ico = new System.Drawing.Icon(imgFile, 32, 32))
             {
               pctPNG32 = GenerateCloneImage(ico);
             }

@@ -1175,24 +1175,24 @@ namespace RestrictionTrackerGTK
       }
       else
       {
-        SetNetTestImage(e.Icon32, true, e.token, e.Icon16);
+        SetNetTestImage(e.Icon32, true, e.token, (object) e.Icon16);
       }
     }
     protected void SetNetTestImage(Gdk.Pixbuf Image)
     {
-      waitingForEndOf = 0;
+      waitingForEndOf = (object) 0;
       pctAdvancedNetTestIcon.Pixbuf = Image;
       icoNetTest = null;
     }
     object waitingForEndOf;
     protected void SetNetTestImage(Gdk.Pixbuf Image, bool End, object Token, object tag)
     {
-      if ((End) & (Token != waitingForEndOf))
+      if ((End) && (((int) Token) != ((int) waitingForEndOf)))
         return;
       pctAdvancedNetTestIcon.Pixbuf = Image;
       icoNetTest = (Gdk.Pixbuf) tag;
       if (End)
-        waitingForEndOf = 0;
+        waitingForEndOf = (object) 0;
       else
         waitingForEndOf = Token;
     }
