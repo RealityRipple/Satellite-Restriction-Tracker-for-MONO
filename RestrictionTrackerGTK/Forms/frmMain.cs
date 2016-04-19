@@ -60,6 +60,18 @@ namespace RestrictionTrackerGTK
         return _IconFolder;
       }
     }
+    private string c_PauseActivity;
+    public string PauseActivity
+    {
+      get
+      {
+        return c_PauseActivity;
+      }
+      set
+      {
+        c_PauseActivity = value;
+      }
+    }
     private uint tmrUpdate;
     private uint tmrIcon;
     private uint tmrSpeed;
@@ -1500,6 +1512,7 @@ namespace RestrictionTrackerGTK
                 {
                   updateFull = false;
                   NextGrabTick = long.MaxValue;
+                  PauseActivity = "Preparing Connection";
                   EnableProgressIcon();
                   SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Connection...", false);
                   MethodInvoker UsageInvoker = GetUsage;
@@ -1566,7 +1579,7 @@ namespace RestrictionTrackerGTK
             localData.Dispose();
             localData = null;
           }
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Restarting Connection...", false);
+          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Restarting Connection in 5 seconds...", false);
           DisplayUsage(false, false);
           NextGrabTick = modFunctions.TickCount() + 5000;
         }
@@ -2849,6 +2862,7 @@ namespace RestrictionTrackerGTK
       }
       mySettings.Save();
       NextGrabTick = long.MaxValue;
+      PauseActivity = "Configuration Open";
       Gtk.ResponseType dRet;
       if (MainClass.fConfig != null)
       {
@@ -3833,7 +3847,7 @@ namespace RestrictionTrackerGTK
       long lNow = modFunctions.TickCount();
       if (lNext == long.MaxValue)
       {
-        lblStatus.TooltipText = "Update Temporarily Paused";
+        lblStatus.TooltipText = "Update Temporarily Paused - " + PauseActivity;
         ShowProgress(lblStatus.TooltipText, "", false);
       }
       else if (lNext == long.MinValue)
