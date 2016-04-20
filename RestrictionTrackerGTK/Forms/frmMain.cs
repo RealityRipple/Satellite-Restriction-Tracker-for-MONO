@@ -1700,7 +1700,7 @@ namespace RestrictionTrackerGTK
     private void Main_LocalDataConnectionStatus(object o, EventArgs ea)
     {
       localRestrictionTracker.ConnectionStatusEventArgs e = (localRestrictionTracker.ConnectionStatusEventArgs) ea;
-      NextGrabTick = modFunctions.TickCount() + (mySettings.Timeout * 1000);
+      NextGrabTick = modFunctions.TickCount() + ((mySettings.Timeout + 15) * 1000);
       switch (e.Status)
       {
         case localRestrictionTracker.ConnectionStates.Initialize:
@@ -1774,7 +1774,7 @@ namespace RestrictionTrackerGTK
       {
         case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.LoginIssue:
           SetStatusText(modDB.LOG_GetLast().ToString("g"), e.Message, true);
-          return;
+          break;
         case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.ConnectionTimeout:
           SetStatusText(modDB.LOG_GetLast().ToString("g"), "Connection Timed Out!", true);
           DisplayUsage(false, false);
