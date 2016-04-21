@@ -377,6 +377,7 @@ namespace RestrictionTrackerGTK
           tmrIcon = 0;
         }
         DetermineTypeOffline TypeDeterminationOffline = new DetermineTypeOffline(sProvider, TypeDeterminationOffline_TypeDetermined);
+        TypeDeterminationOffline.GetType();
       }
       else
       {
@@ -1236,6 +1237,7 @@ namespace RestrictionTrackerGTK
         {
           ((Gtk.Image) ((Gtk.HBox) ((Gtk.Alignment) cmdNetTest.Child).Child).Children[0]).PixbufAnimation = new Gdk.PixbufAnimation(null, "RestrictionTrackerGTK.Resources.throbber.gif");
           clsFavicon wsFavicon = new clsFavicon(mySettings.NetTestURL, wsFavicon_DownloadIconCompleted, mySettings.NetTestURL);
+          wsFavicon.GetType();
         }
         string sNetTestTitle = mySettings.NetTestURL;
         if (sNetTestTitle.Contains("://"))
@@ -1417,6 +1419,7 @@ namespace RestrictionTrackerGTK
         {
           SetStatusText("Analyzing Account", "Determining your account type...", false);
           DetermineType TypeDetermination = new DetermineType(sProvider, mySettings.Timeout, mySettings.Proxy, TypeDetermination_TypeDetermined);
+          TypeDetermination.GetType();
         }
       }
       else
@@ -1813,6 +1816,7 @@ namespace RestrictionTrackerGTK
           {
             SetStatusText("Analyzing Account", "Determining your account type...", false);
             DetermineType TypeDetermination = new DetermineType(sProvider, mySettings.Timeout, mySettings.Proxy, TypeDetermination_TypeDetermined);
+            TypeDetermination.GetType();
           }
           break;
       }

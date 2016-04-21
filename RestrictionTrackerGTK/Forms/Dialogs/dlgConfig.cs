@@ -925,6 +925,7 @@ namespace RestrictionTrackerGTK
         else
           SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_load.png"), false, token, null);
         clsFavicon wsFavicon = new clsFavicon(txtNetTestCustom.Text, wsFavicon_DownloadIconCompleted, token);
+        wsFavicon.GetType();
         cmdSave.Sensitive = SettingsChanged();
       }
     }
@@ -940,6 +941,7 @@ namespace RestrictionTrackerGTK
         else
           SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_load.png"), false, token, null);
         clsFavicon wsFavicon = new clsFavicon(txtNetTestCustom.Text, wsFavicon_DownloadIconCompleted, token);
+        wsFavicon.GetType();
         cmdSave.Sensitive = SettingsChanged();
       }
     }
@@ -975,6 +977,7 @@ namespace RestrictionTrackerGTK
             else
               SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_load.png"), false, token, null);
             clsFavicon wsFavicon = new clsFavicon(txtNetTestCustom.Text, wsFavicon_DownloadIconCompleted, token);
+            wsFavicon.GetType();
           }
         }
       }
@@ -1208,6 +1211,7 @@ namespace RestrictionTrackerGTK
           else
             SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_load.png"), false, token, null);
           clsFavicon wsFavicon = new clsFavicon(txtNetTestCustom.Text, wsFavicon_DownloadIconCompleted, token);
+          wsFavicon.GetType();
         }
         else
         {

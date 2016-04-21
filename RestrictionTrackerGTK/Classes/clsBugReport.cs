@@ -5,6 +5,7 @@ namespace MantisBugTracker
 {
   internal class MantisReporter
   {
+    private static System.Net.CookieContainer cJar;
     private static string GetToken(int Project_ID)
     {
       System.Collections.Specialized.NameValueCollection pD1 = new System.Collections.Specialized.NameValueCollection();
@@ -12,6 +13,9 @@ namespace MantisBugTracker
       pD1.Add("project_id", Project_ID.ToString().Trim());
       pD1.Add("make_default", String.Empty);
       WebClientEx httpToken = new WebClientEx();
+      cJar = new System.Net.CookieContainer();
+      httpToken.CookieJar = cJar;
+      httpToken.SendHeaders = new System.Net.WebHeaderCollection();
       httpToken.SendHeaders.Add(System.Net.HttpRequestHeader.Referer, "http://bugs.realityripple.com/login_select_proj_page.php?bug_report_page.php");
       string sTok = httpToken.UploadValues("http://bugs.realityripple.com/set_project.php", "POST", pD1);
       if (sTok.StartsWith("Error: ")) 
@@ -55,6 +59,7 @@ namespace MantisBugTracker
       pData.Add("report_stay", String.Empty);
       string sRet;
       WebClientEx httpReport = new WebClientEx();
+      httpReport.CookieJar = cJar;
       sRet = httpReport.UploadValues("http://bugs.realityripple.com/bug_report.php", "POST", pData);
       if (sRet.StartsWith("Error: ")) 
         return null;
@@ -71,7 +76,7 @@ namespace MantisBugTracker
     }
     static internal string ReportIssue(Exception e)
     {
-      string sTok = GetToken(1);
+      string sTok = GetToken(2);
       if (string.IsNullOrEmpty(sTok))
       {
         return "No token was supplied by the server.";
@@ -86,56 +91,15 @@ namespace MantisBugTracker
         else
           sPlat = "x86";
       }
-      string sSum = e.Message;
+      string sSum = "[v" + modFunctions.ProductVersion + "] " + e.Message;
       if (sSum.Length > 80)
       {
         sSum = sSum.Substring(0, 77) + "...";
       }
-      string sDesc = e.Message;
-      if (!string.IsNullOrEmpty(e.StackTrace))
-      {
-        sDesc += "\r\n" + e.StackTrace;
-      }
-      else
-      {
-        if (!string.IsNullOrEmpty(e.Source))
-        {
-          sDesc += "\r\n @ " + e.Source;
-          if (e.TargetSite != null)
-          {
-            sDesc += "." + e.TargetSite.Name;
-          }
-        }
-        else
-        {
-          if (e.TargetSite != null)
-          {
-            sDesc += "\r\n @ " + e.TargetSite.Name;
-          }
-        }
-      }
-      sDesc += "\r\nVersion " + modFunctions.ProductVersion;
-      string sSteps = String.Empty;
-      string sInfo = String.Empty;
-      if (e.InnerException != null)
-      {
-        sInfo = e.InnerException.Message;
-        if (e.InnerException.TargetSite != null)
-        {
-          sInfo += "\r\nTrace - " + e.InnerException.TargetSite.Name;
-        }
-        if (!string.IsNullOrEmpty(e.InnerException.Source))
-        {
-          sInfo += " > " + e.InnerException.Source;
-        }
-        if (!string.IsNullOrEmpty(e.InnerException.StackTrace))
-        {
-          sInfo += "\r\n" + e.InnerException.StackTrace;
-        }
-      }
+      string sDesc = e.ToString();
       string MyOS = CurrentOS.Name;
       string MyOSVer = Environment.OSVersion.VersionString;
-      return ReportBug(sTok, 2, Mantis_Category.General, Mantis_Reproducibility.Have_Not_Tried, Mantis_Severity.Minor, Mantis_Priority.Normal, sPlat, MyOS, MyOSVer, sSum, sDesc, sSteps, sInfo, true);
+      return ReportBug(sTok, 2, Mantis_Category.General, Mantis_Reproducibility.Have_Not_Tried, Mantis_Severity.Minor, Mantis_Priority.Normal, sPlat, MyOS, MyOSVer, sSum, sDesc, String.Empty, String.Empty, true);
     }
   }
 }

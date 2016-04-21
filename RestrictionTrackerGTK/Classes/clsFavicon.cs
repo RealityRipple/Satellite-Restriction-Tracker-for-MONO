@@ -168,6 +168,7 @@ namespace RestrictionTrackerGTK
         wsFile = new WebClientCore();
         wsFile.ErrorBypass = true;
         System.Threading.Timer tmrSocket = new System.Threading.Timer(new TimerCallback(DownloadFile), new object[] { URL, Filename, token, trySimpler }, 250, System.Threading.Timeout.Infinite);
+        tmrSocket.GetType();
       }
       catch
       {
