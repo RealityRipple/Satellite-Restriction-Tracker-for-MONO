@@ -229,6 +229,6 @@ Global
 		$32.inheritsScope = text/plain
 		$32.scope = text/plain
 		description = Satellite Restriction Tracker
-		version = 1.3.4.71
+		version = 1.3.5
 	EndGlobalSection
 EndGlobal
