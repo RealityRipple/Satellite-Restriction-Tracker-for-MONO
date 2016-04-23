@@ -13,44 +13,64 @@ namespace RestrictionTrackerGTK
     #region "Form Events"
     public frmAbout() : base(Gtk.WindowType.Toplevel)
     {
-      sUpdatePath = System.IO.Path.Combine(modFunctions.AppData, "Setup");
+      sUpdatePath = string.Empty;
       if (CurrentOS.IsMac)
-        sUpdatePath += ".dmg";
+        sUpdatePath = System.IO.Path.Combine(modFunctions.AppData, "Setup.dmg");
       else if (CurrentOS.IsLinux)
-        sUpdatePath += ".bz2.sh";
+        sUpdatePath = System.IO.Path.Combine(modFunctions.AppData, "Setup.bz2.sh");
       this.Build();
       this.WindowStateEvent += HandleWindowStateEvent;
       this.Title = "About " + modFunctions.ProductName;
       modFunctions.PrepareLink(lblProduct);
-      lblProduct.Markup = "<a href=\"http://srt.realityripple.com/For_MONO/\">" + modFunctions.ProductName + "</a>";
+      if (CurrentOS.IsLinux)
+        lblProduct.Markup = "<a href=\"http://srt.realityripple.com/For_MONO/linux.php\">" + modFunctions.ProductName + " for Linux</a>";
+      else if (CurrentOS.IsMac)
+        lblProduct.Markup = "<a href=\"http://srt.realityripple.com/For_MONO/mac.php\">" + modFunctions.ProductName + " for OS X</a>";
+      else if (CurrentOS.IsWindows)
+        lblProduct.Markup = "<a href=\"http://srt.realityripple.com/For_MONO/\">" + modFunctions.ProductName + " for Windows (on MONO)</a>";
+      else
+        lblProduct.Markup = "<a href=\"http://srt.realityripple.com/For_MONO/\">" + modFunctions.ProductName + " for MONO</a>";
       modFunctions.PrepareLink(lblVersion);
       lblVersion.Markup = "<a href=\"http://srt.realityripple.com/changes.php\">Version " + modFunctions.DisplayVersion(modFunctions.ProductVersion) + "</a>";
       modFunctions.PrepareLink(lblCompany);
       lblCompany.Markup = "<a href=\"http://realityripple.com/\">" + modFunctions.CompanyName + "</a>";
       txtDescription.Buffer.Text = "The RestrictionTracker utility monitors and logs ViaSat network usage and limits. It includes graphing software to let you monitor your usage history and predict future usage levels. All application coding by Andrew Sachen. This application is not endorsed by ViaSat, WildBlue, Exede, or any affiliate companies.";
-      pctUpdate.PixbufAnimation = new Gdk.PixbufAnimation(null, "RestrictionTrackerGTK.Resources.throbber.gif");
-      pctUpdate.Visible = false;
-      pnlUpdate.Remove(lblUpdate);
-      cmdUpdate = new Gtk.Button();
-      cmdUpdate.Name = "cmdUpdate";
-      cmdUpdate.UseUnderline = true;
-      Gtk.Label cuLabel = new Gtk.Label();
-      cuLabel.LabelProp = "Check for _Updates";
-      cuLabel.UseUnderline = true;
-      cmdUpdate.Add(cuLabel);
-      pnlUpdate.Add(cmdUpdate);
-      ((Gtk.Box.BoxChild) pnlUpdate[cmdUpdate]).Position = 2;
-      cmdUpdate.ShowAll();
-      cmdUpdate.Visible = true;
-      cmdUpdate.TooltipText = "Check for a new version of " + modFunctions.ProductName + ".";
-      ((Gtk.Box.BoxChild) pnlUpdate[cmdUpdate]).PackType = Gtk.PackType.Start;
-      ((Gtk.Box.BoxChild) pnlUpdate[cmdUpdate]).Fill = false;
-      ((Gtk.Box.BoxChild) pnlUpdate[cmdUpdate]).Expand = false;
-      cmdUpdate.Clicked += cmdUpdate_Click;
-      int upHeight = 24;
-      lblProduct.HeightRequest = upHeight;
-      lblVersion.HeightRequest = upHeight;
-      lblCompany.HeightRequest = upHeight;
+      if (string.IsNullOrEmpty(sUpdatePath))
+      {
+        pctUpdate.PixbufAnimation = new Gdk.PixbufAnimation(null, "RestrictionTrackerGTK.Resources.error.png");
+        pctUpdate.Visible = true;
+        lblUpdate.Visible = true;
+        lblUpdate.HeightRequest = 24;
+        lblUpdate.Markup = "Update Check Disabled";
+        lblUpdate.TooltipText = "Your Operating System is not supported by " + modFunctions.ProductName + " for MONO.\nYou will need to update manually.\n\nIf you believe this to be an error or are interested in adding official support for your Operating System, please contact me.";
+        pctUpdate.TooltipText = lblUpdate.TooltipText;
+      }
+      else
+      {
+        pctUpdate.PixbufAnimation = new Gdk.PixbufAnimation(null, "RestrictionTrackerGTK.Resources.throbber.gif");
+        pctUpdate.Visible = false;
+        pnlUpdate.Remove(lblUpdate);
+        cmdUpdate = new Gtk.Button();
+        cmdUpdate.Name = "cmdUpdate";
+        cmdUpdate.UseUnderline = true;
+        Gtk.Label cuLabel = new Gtk.Label();
+        cuLabel.LabelProp = "Check for _Updates";
+        cuLabel.UseUnderline = true;
+        cmdUpdate.Add(cuLabel);
+        pnlUpdate.Add(cmdUpdate);
+        ((Gtk.Box.BoxChild) pnlUpdate[cmdUpdate]).Position = 2;
+        cmdUpdate.ShowAll();
+        cmdUpdate.Visible = true;
+        cmdUpdate.TooltipText = "Check for a new version of " + modFunctions.ProductName + ".";
+        ((Gtk.Box.BoxChild) pnlUpdate[cmdUpdate]).PackType = Gtk.PackType.Start;
+        ((Gtk.Box.BoxChild) pnlUpdate[cmdUpdate]).Fill = false;
+        ((Gtk.Box.BoxChild) pnlUpdate[cmdUpdate]).Expand = false;
+        cmdUpdate.Clicked += cmdUpdate_Click;
+      }
+      int lHeight = 24;
+      lblProduct.HeightRequest = lHeight;
+      lblVersion.HeightRequest = lHeight;
+      lblCompany.HeightRequest = lHeight;
     }
     void HandleWindowStateEvent(object o, Gtk.WindowStateEventArgs args)
     {
