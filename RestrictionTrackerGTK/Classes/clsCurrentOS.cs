@@ -50,6 +50,8 @@ namespace RestrictionTrackerGTK
         Name = Name.Replace(" )", ")");
         Name = Name.Trim();
  
+        Name = Name.Replace("NT 10.", "10 %bit 10.");
+        Name = Name.Replace("NT 6.3", "8.1 %bit 6.3");
         Name = Name.Replace("NT 6.2", "8 %bit 6.2");
         Name = Name.Replace("NT 6.1", "7 %bit 6.1");
         Name = Name.Replace("NT 6.0", "Vista %bit 6.0");
