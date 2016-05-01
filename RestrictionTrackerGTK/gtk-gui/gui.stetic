@@ -32,7 +32,7 @@
 (Hold CTRL to reload database.)</property>
                 <property name="CanFocus">True</property>
                 <property name="Type">TextOnly</property>
-                <property name="Label" translatable="yes">Refresh</property>
+                <property name="Label" translatable="yes">_Refresh</property>
                 <property name="UseUnderline">True</property>
               </widget>
               <packing>
@@ -46,7 +46,7 @@
                 <property name="Tooltip" translatable="yes">View your bandwidth history.</property>
                 <property name="CanFocus">True</property>
                 <property name="Type">TextOnly</property>
-                <property name="Label" translatable="yes">History</property>
+                <property name="Label" translatable="yes">_History</property>
                 <property name="UseUnderline">True</property>
               </widget>
               <packing>
@@ -60,7 +60,7 @@
                 <property name="Tooltip" translatable="yes">Change program settings.</property>
                 <property name="CanFocus">True</property>
                 <property name="Type">TextOnly</property>
-                <property name="Label" translatable="yes">Configuration</property>
+                <property name="Label" translatable="yes">_Configuration</property>
                 <property name="UseUnderline">True</property>
               </widget>
               <packing>
@@ -74,7 +74,7 @@
                 <property name="Tooltip" translatable="yes">View information about Satellite Restriction Tracker and check for updates.</property>
                 <property name="CanFocus">True</property>
                 <property name="Type">TextOnly</property>
-                <property name="Label" translatable="yes">About</property>
+                <property name="Label" translatable="yes">_About</property>
                 <property name="UseUnderline">True</property>
               </widget>
               <packing>
@@ -970,8 +970,6 @@
     <property name="AllowGrow">False</property>
     <property name="DefaultWidth">420</property>
     <property name="DefaultHeight">300</property>
-    <property name="SkipPagerHint">True</property>
-    <property name="SkipTaskbarHint">True</property>
     <signal name="Hidden" handler="OnHidden" />
     <child>
       <widget class="Gtk.HBox" id="pnlAbout">
@@ -1274,7 +1272,7 @@
                         <property name="Tooltip" translatable="yes">Query the database to get the entire history.</property>
                         <property name="CanFocus">True</property>
                         <property name="Type">TextOnly</property>
-                        <property name="Label" translatable="yes">All Time</property>
+                        <property name="Label" translatable="yes">_All Time</property>
                         <property name="UseUnderline">True</property>
                       </widget>
                       <packing>
@@ -1299,7 +1297,7 @@
                         <property name="Tooltip" translatable="yes">Query the database to get your requested history.</property>
                         <property name="CanFocus">True</property>
                         <property name="Type">TextOnly</property>
-                        <property name="Label" translatable="yes">Query</property>
+                        <property name="Label" translatable="yes">_Query</property>
                         <property name="UseUnderline">True</property>
                       </widget>
                       <packing>
@@ -1322,7 +1320,7 @@
                         <property name="Tooltip" translatable="yes">Query the database to get today's history.</property>
                         <property name="CanFocus">True</property>
                         <property name="Type">TextOnly</property>
-                        <property name="Label" translatable="yes">Today</property>
+                        <property name="Label" translatable="yes">T_oday</property>
                         <property name="UseUnderline">True</property>
                       </widget>
                       <packing>
@@ -1343,7 +1341,8 @@
                       <widget class="Gtk.Label" id="lblFrom">
                         <property name="MemberName" />
                         <property name="Xalign">0</property>
-                        <property name="LabelProp" translatable="yes">From:</property>
+                        <property name="LabelProp" translatable="yes">_From:</property>
+                        <property name="UseUnderline">True</property>
                       </widget>
                       <packing>
                         <property name="AutoSize">True</property>
@@ -1361,7 +1360,8 @@
                       <widget class="Gtk.Label" id="lblTo">
                         <property name="MemberName" />
                         <property name="Xalign">0</property>
-                        <property name="LabelProp" translatable="yes">To:</property>
+                        <property name="LabelProp" translatable="yes">_To:</property>
+                        <property name="UseUnderline">True</property>
                       </widget>
                       <packing>
                         <property name="TopAttach">1</property>
@@ -1382,7 +1382,7 @@
                         <property name="MemberName" />
                         <property name="Tooltip" translatable="yes">Display history in a line graph.</property>
                         <property name="CanFocus">True</property>
-                        <property name="Label" translatable="yes">Graph</property>
+                        <property name="Label" translatable="yes">_Graph</property>
                         <property name="Active">True</property>
                         <property name="DrawIndicator">True</property>
                         <property name="HasLabel">True</property>
@@ -1409,7 +1409,7 @@
                         <property name="MemberName" />
                         <property name="Tooltip" translatable="yes">Display history in a grid.</property>
                         <property name="CanFocus">True</property>
-                        <property name="Label" translatable="yes">Grid</property>
+                        <property name="Label" translatable="yes">Gri_d</property>
                         <property name="DrawIndicator">True</property>
                         <property name="HasLabel">True</property>
                         <property name="UseUnderline">True</property>
@@ -1538,7 +1538,7 @@
                 <property name="Tooltip" translatable="yes">Read a DataBase, XML, or CSV file into the history.</property>
                 <property name="CanFocus">True</property>
                 <property name="Type">TextOnly</property>
-                <property name="Label" translatable="yes">Import Database</property>
+                <property name="Label" translatable="yes">_Import Database</property>
                 <property name="UseUnderline">True</property>
               </widget>
               <packing>
@@ -1554,7 +1554,7 @@
                 <property name="Tooltip" translatable="yes">Make a backup DataBase, XML, or CSV file.</property>
                 <property name="CanFocus">True</property>
                 <property name="Type">TextOnly</property>
-                <property name="Label" translatable="yes">Export Database</property>
+                <property name="Label" translatable="yes">_Export Database</property>
                 <property name="UseUnderline">True</property>
               </widget>
               <packing>
@@ -1570,7 +1570,7 @@
                 <property name="Tooltip" translatable="yes">Close the History window.</property>
                 <property name="CanFocus">True</property>
                 <property name="Type">TextOnly</property>
-                <property name="Label" translatable="yes">_Close</property>
+                <property name="Label" translatable="yes">Close</property>
                 <property name="UseUnderline">True</property>
               </widget>
               <packing>
@@ -1586,7 +1586,7 @@
                 <property name="MemberName" />
                 <property name="Tooltip" translatable="yes">Export only the data within the Age Parameters range.</property>
                 <property name="CanFocus">True</property>
-                <property name="Label" translatable="yes">Export Selected Range</property>
+                <property name="Label" translatable="yes">Export Selected _Range</property>
                 <property name="DrawIndicator">True</property>
                 <property name="HasLabel">True</property>
                 <property name="UseUnderline">True</property>
@@ -1642,7 +1642,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Dialog" id="RestrictionTrackerGTK.dlgConfig" design-size="448 574">
+  <widget class="Gtk.Dialog" id="RestrictionTrackerGTK.dlgConfig" design-size="376 499">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Satellite Restriction Tracker Configuration</property>
     <property name="Icon">resource:RestrictionTrackerGTK.Resources.norm.ico</property>
@@ -1771,6 +1771,7 @@
                         <property name="Xalign">0</property>
                         <property name="LabelProp" translatable="yes">Product _Key:</property>
                         <property name="UseUnderline">True</property>
+                        <property name="MnemonicWidget">txtKey1</property>
                       </widget>
                       <packing>
                         <property name="TopAttach">1</property>
@@ -2075,6 +2076,7 @@ You can choose a domain from the dropdown or enter your own to add it to the lis
                         <property name="Xalign">0</property>
                         <property name="LabelProp" translatable="yes">_Account Type:</property>
                         <property name="UseUnderline">True</property>
+                        <property name="MnemonicWidget">(None)</property>
                       </widget>
                       <packing>
                         <property name="TopAttach">2</property>
@@ -2098,6 +2100,7 @@ You can choose a domain from the dropdown or enter your own to add it to the lis
                         <property name="Xalign">0</property>
                         <property name="LabelProp" translatable="yes">_Domain:</property>
                         <property name="UseUnderline">True</property>
+                        <property name="MnemonicWidget">cmbProvider</property>
                       </widget>
                       <packing>
                         <property name="TopAttach">1</property>
@@ -2366,6 +2369,7 @@ You can choose a domain from the dropdown or enter your own to add it to the lis
                         <property name="Xalign">0</property>
                         <property name="LabelProp" translatable="yes">_Username:</property>
                         <property name="UseUnderline">True</property>
+                        <property name="MnemonicWidget">txtAccount</property>
                       </widget>
                       <packing>
                         <property name="TopAttach">1</property>
@@ -2411,6 +2415,7 @@ login.</property>
                         <property name="Xalign">0</property>
                         <property name="LabelProp" translatable="yes">_Password:</property>
                         <property name="UseUnderline">True</property>
+                        <property name="MnemonicWidget">txtPassword</property>
                       </widget>
                       <packing>
                         <property name="TopAttach">2</property>
@@ -2684,6 +2689,7 @@ If you were provided with an E-Mail address, this is the first half of that addr
                         <property name="Xalign">0</property>
                         <property name="LabelProp" translatable="yes">_Display</property>
                         <property name="UseUnderline">True</property>
+                        <property name="MnemonicWidget">txtAccuracy</property>
                       </widget>
                       <packing>
                         <property name="TopAttach">1</property>
@@ -2729,6 +2735,7 @@ If you were provided with an E-Mail address, this is the first half of that addr
                         <property name="Xalign">0</property>
                         <property name="LabelProp" translatable="yes">W_ait</property>
                         <property name="UseUnderline">True</property>
+                        <property name="MnemonicWidget">txtInterval</property>
                       </widget>
                       <packing>
                         <property name="LeftAttach">1</property>
@@ -2906,7 +2913,7 @@ If you were provided with an E-Mail address, this is the first half of that addr
                         <property name="Tooltip" translatable="yes">Choose a style for the Alert Windows used for Usage Alerts and Parse Failures.</property>
                         <property name="CanFocus">True</property>
                         <property name="Type">TextOnly</property>
-                        <property name="Label" translatable="yes">Set Alert _Style</property>
+                        <property name="Label" translatable="yes">Set A_lert Style</property>
                         <property name="UseUnderline">True</property>
                       </widget>
                       <packing>
@@ -2931,6 +2938,7 @@ If you were provided with an E-Mail address, this is the first half of that addr
                         <property name="Xalign">1</property>
                         <property name="LabelProp" translatable="yes">if usage goes _over</property>
                         <property name="UseUnderline">True</property>
+                        <property name="MnemonicWidget">txtOverSize</property>
                       </widget>
                       <packing>
                         <property name="TopAttach">2</property>
@@ -2976,6 +2984,7 @@ If you were provided with an E-Mail address, this is the first half of that addr
                         <property name="Xalign">1</property>
                         <property name="LabelProp" translatable="yes">w_ithin</property>
                         <property name="UseUnderline">True</property>
+                        <property name="MnemonicWidget">txtOverTime</property>
                       </widget>
                       <packing>
                         <property name="TopAttach">3</property>
@@ -3542,6 +3551,7 @@ and the Tray Icon.</property>
                         <property name="Xalign">0</property>
                         <property name="LabelProp" translatable="yes">_Wait</property>
                         <property name="UseUnderline">True</property>
+                        <property name="MnemonicWidget">txtStartWait</property>
                       </widget>
                       <packing>
                         <property name="TopAttach">1</property>
@@ -4098,7 +4108,9 @@ URL</property>
                           <widget class="Gtk.Label" id="lblProxyType">
                             <property name="MemberName" />
                             <property name="Xalign">0</property>
-                            <property name="LabelProp" translatable="yes">Proxy Type:</property>
+                            <property name="LabelProp" translatable="yes">_Proxy Type:</property>
+                            <property name="UseUnderline">True</property>
+                            <property name="MnemonicWidget">cmbProxyType</property>
                           </widget>
                           <packing>
                             <property name="AutoSize">True</property>
@@ -4324,6 +4336,7 @@ URL</property>
                         <property name="Xalign">0</property>
                         <property name="LabelProp" translatable="yes">_Timeout:</property>
                         <property name="UseUnderline">True</property>
+                        <property name="MnemonicWidget">txtTimeout</property>
                       </widget>
                       <packing>
                         <property name="TopAttach">1</property>
@@ -4529,6 +4542,7 @@ Month</property>
                         <property name="Xalign">0</property>
                         <property name="LabelProp" translatable="yes">Perform a _check every:</property>
                         <property name="UseUnderline">True</property>
+                        <property name="MnemonicWidget">cmbUpdateInterval</property>
                       </widget>
                       <packing>
                         <property name="TopAttach">2</property>
@@ -4712,7 +4726,7 @@ By default, data is stored in the ~/.config directory.</property>
                         <property name="MemberName" />
                         <property name="Tooltip" translatable="yes">Save History Data to a custom directory.</property>
                         <property name="CanFocus">True</property>
-                        <property name="Label" translatable="yes">C_ustom:</property>
+                        <property name="Label" translatable="yes">_Custom:</property>
                         <property name="Active">True</property>
                         <property name="DrawIndicator">True</property>
                         <property name="HasLabel">True</property>
@@ -5110,7 +5124,7 @@ By default, data is stored in the ~/.config directory.</property>
             <property name="CanDefault">True</property>
             <property name="CanFocus">True</property>
             <property name="Type">TextOnly</property>
-            <property name="Label" translatable="yes">_Close</property>
+            <property name="Label" translatable="yes">Close</property>
             <property name="UseUnderline">True</property>
             <property name="ResponseId">-1</property>
           </widget>

@@ -1,6 +1,7 @@
 using System;
 using Gtk;
 using RestrictionLibrary;
+using System.Diagnostics;
 namespace RestrictionTrackerGTK
 {
   public partial class frmHistory : Gtk.Window
@@ -80,6 +81,9 @@ namespace RestrictionTrackerGTK
       dtwFrom.ShowAll();
       dtwTo.ShowAll();
 
+      lblFrom.MnemonicWidget = ((Entry) ((HBox) ((EventBox) ((HBox) dtwFrom.Children[0]).Children[0]).Children[0]).Children[0]);
+      lblTo.MnemonicWidget = ((Entry) ((HBox) ((EventBox) ((HBox) dtwTo.Children[0]).Children[0]).Children[0]).Children[0]);
+
       ResetDates();
       dtwFrom.Date = dtwFrom.MinDate;
       dtwTo.Date = dtwTo.MaxDate;
@@ -89,15 +93,15 @@ namespace RestrictionTrackerGTK
         case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
         case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
         case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
-          ((Gtk.Label) cmd30Days.Child).LabelProp = "This Period";
+          ((Gtk.Label) cmd30Days.Child).LabelProp = "T_his Period";
           cmd30Days.TooltipMarkup = "Query the database to get the history of this usage period.";
-          ((Gtk.Label) cmd60Days.Child).LabelProp = "Last Period";
+          ((Gtk.Label) cmd60Days.Child).LabelProp = "_Last Period";
           cmd60Days.TooltipMarkup = "Query the database to get the history of this usage period and the previous usage period.";
           break;
         default:
-          ((Gtk.Label) cmd30Days.Child).LabelProp = "30 Days";
+          ((Gtk.Label) cmd30Days.Child).LabelProp = "_30 Days";
           cmd30Days.TooltipMarkup = "Query the database to get the history of the last 30 days.";
-          ((Gtk.Label) cmd60Days.Child).LabelProp = "60 Days";
+          ((Gtk.Label) cmd60Days.Child).LabelProp = "_60 Days";
           cmd60Days.TooltipMarkup = "Query the database to get the history of the last 60 days.";
           break;
       }
@@ -257,6 +261,9 @@ namespace RestrictionTrackerGTK
               pnlGraph.CheckResize();
               lastRect = this.Allocation;
               pctDld.Pixbuf = BadDataNote(BadDataNotes.Null, pctDld.Allocation.Size);
+              modFunctions.ClearGraphData();
+              graphSpaceD = System.Drawing.Rectangle.Empty;
+              graphSpaceU = System.Drawing.Rectangle.Empty;
               HideProgress();
             }
             else if (lItems == null || lItems.Length == 0)
@@ -266,6 +273,9 @@ namespace RestrictionTrackerGTK
               pnlGraph.CheckResize();
               lastRect = this.Allocation;
               pctDld.Pixbuf = BadDataNote(BadDataNotes.None, pctDld.Allocation.Size);
+              modFunctions.ClearGraphData();
+              graphSpaceD = System.Drawing.Rectangle.Empty;
+              graphSpaceU = System.Drawing.Rectangle.Empty;
               HideProgress();
             }
             else if (lItems.Length == 1)
@@ -275,6 +285,9 @@ namespace RestrictionTrackerGTK
               pnlGraph.CheckResize();
               lastRect = this.Allocation;
               pctDld.Pixbuf = BadDataNote(BadDataNotes.One, pctDld.Allocation.Size);
+              modFunctions.ClearGraphData();
+              graphSpaceD = System.Drawing.Rectangle.Empty;
+              graphSpaceU = System.Drawing.Rectangle.Empty;
               HideProgress();
             }
             else
@@ -371,6 +384,8 @@ namespace RestrictionTrackerGTK
       {
         System.DateTime dNow = CalculateNow(graphSpaceD, graphMinX, graphMaxX, e.Event.X);
         DataBase.DataRow gShow = modFunctions.GetGraphData(dNow, true);
+        if (gShow.IsEmpty())
+          return;
         string showTime = gShow.sDATETIME;
         string Show = showTime + " : " + gShow.sDOWNLOAD + " MB / " + gShow.sDOWNLIM + " MB";
         if (static_pctDld_MouseMove_lastShow == Show)
@@ -400,6 +415,8 @@ namespace RestrictionTrackerGTK
       {
         System.DateTime dNow = CalculateNow(graphSpaceU, graphMinX, graphMaxX, e.Event.X);
         DataBase.DataRow gShow = modFunctions.GetGraphData(dNow, false);
+        if (gShow.IsEmpty())
+          return;
         string Show = gShow.sDATETIME + " : " + gShow.sUPLOAD + " MB / " + gShow.sUPLIM + " MB";
         if (static_pctUld_MouseMove_lastShow == Show)
         {
@@ -426,10 +443,9 @@ namespace RestrictionTrackerGTK
     #region "Buttons"
     private void cmdQuery_Click(System.Object sender, System.EventArgs e)
     {
-      grpAge.Sensitive = false;
+      ToggleInterface(false, true);
       System.DateTime dFrom = System.DateTime.Parse(dtwFrom.Date.Date.ToShortDateString() + " 00:00:00 AM");
       System.DateTime dTo = System.DateTime.Parse(dtwTo.Date.Date.ToShortDateString() + " 11:59:59 PM");
-      DataBase.DataRow[] lItems = null;
       ShowProgress("Querying DataBase...", "Reading Rows...");
       bool runResize = false;
       if (optGraph.Active)
@@ -450,7 +466,7 @@ namespace RestrictionTrackerGTK
         }
         if (modDB.usageDB != null && modDB.usageDB.Count > 0)
         {
-          lItems = Array.FindAll(modDB.usageDB.ToArray(), (DataBase.DataRow satRow) => satRow.DATETIME.CompareTo(dFrom) >= 0 & satRow.DATETIME.CompareTo(dTo) <= 0);
+          DataBase.DataRow[] lItems = Array.FindAll(modDB.usageDB.ToArray(), (DataBase.DataRow satRow) => satRow.DATETIME.CompareTo(dFrom) >= 0 & satRow.DATETIME.CompareTo(dTo) <= 0);
           extraData = lItems;
           DoResize(true);
         }
@@ -468,6 +484,7 @@ namespace RestrictionTrackerGTK
           pnlGraph.Visible = false;
           pnlHistory.Remove(pnlGraph);
         }
+        DataBase.DataRow[] lItems = null;
         if (modDB.usageDB != null && modDB.usageDB.Count > 0)
         {
           lItems = Array.FindAll(modDB.usageDB.ToArray(), (DataBase.DataRow satRow) => satRow.DATETIME.CompareTo(dFrom) >= 0 & satRow.DATETIME.CompareTo(dTo) <= 0);
@@ -630,7 +647,7 @@ namespace RestrictionTrackerGTK
       {
         mySettings.Ago = 1;
       }
-      grpAge.Sensitive = true;
+      ToggleInterface(true, true);
     }
     private void cmdToday_Click(System.Object sender, System.EventArgs e)
     {
@@ -1080,6 +1097,24 @@ namespace RestrictionTrackerGTK
         }
       }
     }
+    private void ToggleInterface(bool Enable, bool IncludeImport)
+    {
+      lblFrom.Sensitive = Enable;
+      dtwFrom.Sensitive = Enable;
+      lblTo.Sensitive = Enable;
+      dtwTo.Sensitive = Enable;
+      cmdToday.Sensitive = Enable;
+      cmd30Days.Sensitive = Enable;
+      cmd60Days.Sensitive = Enable;
+      cmdAllTime.Sensitive = Enable;
+      optGraph.Sensitive = Enable;
+      optGrid.Sensitive = Enable;
+      cmdQuery.Sensitive = Enable;
+      if (IncludeImport)
+        cmdImport.Sensitive = Enable;
+      cmdExport.Sensitive = Enable;
+      chkExportRange.Sensitive = Enable;
+    }
     private void ResetDates()
     {
       System.DateTime dMin = default(System.DateTime);
@@ -1120,37 +1155,11 @@ namespace RestrictionTrackerGTK
         dtwTo.MinDate = fDate;
       if ((dtwFrom.MinDate == fDate) & (dtwTo.MinDate == fDate))
       {
-        lblFrom.Sensitive = false;
-        dtwFrom.Sensitive = false;
-        lblTo.Sensitive = false;
-        dtwTo.Sensitive = false;
-        optGraph.Sensitive = false;
-        optGrid.Sensitive = false;
-        cmdQuery.Sensitive = false;
-        cmdToday.Sensitive = false;
-        cmd30Days.Sensitive = false;
-        cmd60Days.Sensitive = false;
-        cmdAllTime.Sensitive = false;
-        grpAge.Sensitive = false;
-        cmdExport.Sensitive = false;
-        chkExportRange.Sensitive = false;
+        ToggleInterface(false, false);
       }
       else
       {
-        lblFrom.Sensitive = true;
-        dtwFrom.Sensitive = true;
-        lblTo.Sensitive = true;
-        dtwTo.Sensitive = true;
-        optGraph.Sensitive = true;
-        optGrid.Sensitive = true;
-        cmdQuery.Sensitive = true;
-        cmdToday.Sensitive = true;
-        cmd30Days.Sensitive = true;
-        cmd60Days.Sensitive = true;
-        cmdAllTime.Sensitive = true;
-        grpAge.Sensitive = true;
-        cmdExport.Sensitive = true;
-        chkExportRange.Sensitive = true;
+        ToggleInterface(true, false);
       }
     }
     #endregion

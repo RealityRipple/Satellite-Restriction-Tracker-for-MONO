@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.Security.Policy;
 using RestrictionTrackerGTK;
+using System.Diagnostics;
 namespace RestrictionTrackerGTK
 {
   public partial class frmMain: Gtk.Window
@@ -2792,25 +2793,45 @@ namespace RestrictionTrackerGTK
     [GLib.ConnectBefore]
     protected void cmdRefresh_Click(object sender, ButtonReleaseEventArgs e)
     {
+      if (e != null)
+      {
+        if (e.Event.Button != 1)
+          return;
+        if (e.Event.X < 0)
+          return;
+        if (e.Event.X > cmdRefresh.Allocation.Size.Width)
+          return;
+        if (e.Event.Y < 0)
+          return;
+        if (e.Event.Y > cmdRefresh.Allocation.Size.Height)
+          return;
+      }
       InitAccount();
       if ((!String.IsNullOrEmpty(sAccount)) & (!String.IsNullOrEmpty(sProvider)) & (!String.IsNullOrEmpty(sPassword)))
       {
         EnableProgressIcon();
         SetNextLoginTime();
-        if ((e.Event.State & Gtk.Accelerator.DefaultModMask) == Gdk.ModifierType.ControlMask)
+        if (e != null)
         {
-          updateFull = true;
-          FullCheck = true;
-          cmdRefresh.Sensitive = false;
-          SetStatusText("Reloading", "Reloading History...", false);
-          ShowProgress("Reloading History...", "Reading DataBase...", true);
-          modDB.LOG_Initialize(sAccount, true);
-          HideProgress();
-          if (ClosingTime)
+          if ((e.Event.State & Gtk.Accelerator.DefaultModMask) == Gdk.ModifierType.ControlMask)
           {
-            return;
+            updateFull = true;
+            FullCheck = true;
+            cmdRefresh.Sensitive = false;
+            SetStatusText("Reloading", "Reloading History...", false);
+            ShowProgress("Reloading History...", "Reading DataBase...", true);
+            modDB.LOG_Initialize(sAccount, true);
+            HideProgress();
+            if (ClosingTime)
+            {
+              return;
+            }
+            cmdRefresh.Sensitive = true;
           }
-          cmdRefresh.Sensitive = true;
+          else
+          {
+            updateFull = false;
+          }
         }
         else
         {
@@ -3006,7 +3027,7 @@ namespace RestrictionTrackerGTK
     #region "Graph"
     protected void mnuGraphRefresh_Click(object sender, EventArgs e)
     {
-      cmdRefresh.Click();
+      cmdRefresh_Click(sender, null);
     }
     protected void mnuGraphColors_Click(object sender, EventArgs e)
     {
@@ -3757,24 +3778,23 @@ namespace RestrictionTrackerGTK
       result = result.Trim();
     }
     #region "Failure Reports"
-    public void FailResponse(bool Ret)
+    public void FailResponse(string Ret)
     {
-      string sRet = "F";
-      if (Ret)
-        sRet = "T";
-      ResolveEventArgs ea = new ResolveEventArgs(sRet);
+      ResolveEventArgs ea = new ResolveEventArgs(Ret);
       Gtk.Application.Invoke(null, (EventArgs) ea, Main_FailResponse);
     }
     private void Main_FailResponse(object sender, EventArgs ea)
     {
       ResolveEventArgs e = (ResolveEventArgs) ea;
-      bool ret = (e.Name == "T");
+      string Ret = e.Name;
       modFunctions.MakeNotifier(ref taskNotifier, false);
       if (taskNotifier != null)
       {
         taskNotifierEvent(true);
-        if (ret)
+        if (Ret == "added")
           taskNotifier.Show("Error Report Sent", "Your report has been received by " + modFunctions.CompanyName + ".\nThank you for helping to improve " + modFunctions.ProductName + "!", 200, 15 * 1000, 100);
+        else if (Ret == "exists")
+          taskNotifier.Show("Error Already Reported", "This error has already been reported. It should be fixed in the next release.\nThank you anyway!", 200, 15 * 1000, 100);
         else
           taskNotifier.Show("Error Reporting Error", modFunctions.ProductName + " was unable to contact the " + modFunctions.CompanyName + " servers. Please check your internet connection.", 200, 30 * 1000, 100);
       }

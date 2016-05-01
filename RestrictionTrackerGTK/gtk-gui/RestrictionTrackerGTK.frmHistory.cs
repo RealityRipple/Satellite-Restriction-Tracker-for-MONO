@@ -118,7 +118,7 @@ namespace RestrictionTrackerGTK
 			this.cmdAllTime.CanFocus = true;
 			this.cmdAllTime.Name = "cmdAllTime";
 			this.cmdAllTime.UseUnderline = true;
-			this.cmdAllTime.Label = global::Mono.Unix.Catalog.GetString ("All Time");
+			this.cmdAllTime.Label = global::Mono.Unix.Catalog.GetString ("_All Time");
 			this.pnlAge.Add (this.cmdAllTime);
 			global::Gtk.Table.TableChild w5 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.cmdAllTime]));
 			w5.TopAttach = ((uint)(1));
@@ -133,7 +133,7 @@ namespace RestrictionTrackerGTK
 			this.cmdQuery.CanFocus = true;
 			this.cmdQuery.Name = "cmdQuery";
 			this.cmdQuery.UseUnderline = true;
-			this.cmdQuery.Label = global::Mono.Unix.Catalog.GetString ("Query");
+			this.cmdQuery.Label = global::Mono.Unix.Catalog.GetString ("_Query");
 			this.pnlAge.Add (this.cmdQuery);
 			global::Gtk.Table.TableChild w6 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.cmdQuery]));
 			w6.LeftAttach = ((uint)(3));
@@ -146,7 +146,7 @@ namespace RestrictionTrackerGTK
 			this.cmdToday.CanFocus = true;
 			this.cmdToday.Name = "cmdToday";
 			this.cmdToday.UseUnderline = true;
-			this.cmdToday.Label = global::Mono.Unix.Catalog.GetString ("Today");
+			this.cmdToday.Label = global::Mono.Unix.Catalog.GetString ("T_oday");
 			this.pnlAge.Add (this.cmdToday);
 			global::Gtk.Table.TableChild w7 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.cmdToday]));
 			w7.LeftAttach = ((uint)(4));
@@ -157,7 +157,8 @@ namespace RestrictionTrackerGTK
 			this.lblFrom = new global::Gtk.Label ();
 			this.lblFrom.Name = "lblFrom";
 			this.lblFrom.Xalign = 0F;
-			this.lblFrom.LabelProp = global::Mono.Unix.Catalog.GetString ("From:");
+			this.lblFrom.LabelProp = global::Mono.Unix.Catalog.GetString ("_From:");
+			this.lblFrom.UseUnderline = true;
 			this.pnlAge.Add (this.lblFrom);
 			global::Gtk.Table.TableChild w8 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.lblFrom]));
 			w8.XOptions = ((global::Gtk.AttachOptions)(4));
@@ -166,7 +167,8 @@ namespace RestrictionTrackerGTK
 			this.lblTo = new global::Gtk.Label ();
 			this.lblTo.Name = "lblTo";
 			this.lblTo.Xalign = 0F;
-			this.lblTo.LabelProp = global::Mono.Unix.Catalog.GetString ("To:");
+			this.lblTo.LabelProp = global::Mono.Unix.Catalog.GetString ("_To:");
+			this.lblTo.UseUnderline = true;
 			this.pnlAge.Add (this.lblTo);
 			global::Gtk.Table.TableChild w9 = ((global::Gtk.Table.TableChild)(this.pnlAge [this.lblTo]));
 			w9.TopAttach = ((uint)(1));
@@ -174,7 +176,7 @@ namespace RestrictionTrackerGTK
 			w9.XOptions = ((global::Gtk.AttachOptions)(4));
 			w9.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAge.Gtk.Table+TableChild
-			this.optGraph = new global::Gtk.RadioButton (global::Mono.Unix.Catalog.GetString ("Graph"));
+			this.optGraph = new global::Gtk.RadioButton (global::Mono.Unix.Catalog.GetString ("_Graph"));
 			this.optGraph.TooltipMarkup = "Display history in a line graph.";
 			this.optGraph.CanFocus = true;
 			this.optGraph.Name = "optGraph";
@@ -190,7 +192,7 @@ namespace RestrictionTrackerGTK
 			w10.XOptions = ((global::Gtk.AttachOptions)(4));
 			w10.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAge.Gtk.Table+TableChild
-			this.optGrid = new global::Gtk.RadioButton (global::Mono.Unix.Catalog.GetString ("Grid"));
+			this.optGrid = new global::Gtk.RadioButton (global::Mono.Unix.Catalog.GetString ("Gri_d"));
 			this.optGrid.TooltipMarkup = "Display history in a grid.";
 			this.optGrid.CanFocus = true;
 			this.optGrid.Name = "optGrid";
@@ -279,7 +281,7 @@ namespace RestrictionTrackerGTK
 			this.cmdImport.CanFocus = true;
 			this.cmdImport.Name = "cmdImport";
 			this.cmdImport.UseUnderline = true;
-			this.cmdImport.Label = global::Mono.Unix.Catalog.GetString ("Import Database");
+			this.cmdImport.Label = global::Mono.Unix.Catalog.GetString ("_Import Database");
 			this.pnlButtons.Add (this.cmdImport);
 			global::Gtk.Box.BoxChild w22 = ((global::Gtk.Box.BoxChild)(this.pnlButtons [this.cmdImport]));
 			w22.Position = 1;
@@ -291,7 +293,7 @@ namespace RestrictionTrackerGTK
 			this.cmdExport.CanFocus = true;
 			this.cmdExport.Name = "cmdExport";
 			this.cmdExport.UseUnderline = true;
-			this.cmdExport.Label = global::Mono.Unix.Catalog.GetString ("Export Database");
+			this.cmdExport.Label = global::Mono.Unix.Catalog.GetString ("_Export Database");
 			this.pnlButtons.Add (this.cmdExport);
 			global::Gtk.Box.BoxChild w23 = ((global::Gtk.Box.BoxChild)(this.pnlButtons [this.cmdExport]));
 			w23.Position = 2;
@@ -303,7 +305,7 @@ namespace RestrictionTrackerGTK
 			this.cmdClose.CanFocus = true;
 			this.cmdClose.Name = "cmdClose";
 			this.cmdClose.UseUnderline = true;
-			this.cmdClose.Label = global::Mono.Unix.Catalog.GetString ("_Close");
+			this.cmdClose.Label = global::Mono.Unix.Catalog.GetString ("Close");
 			this.pnlButtons.Add (this.cmdClose);
 			global::Gtk.Box.BoxChild w24 = ((global::Gtk.Box.BoxChild)(this.pnlButtons [this.cmdClose]));
 			w24.PackType = ((global::Gtk.PackType)(1));
@@ -315,7 +317,7 @@ namespace RestrictionTrackerGTK
 			this.chkExportRange.TooltipMarkup = "Export only the data within the Age Parameters range.";
 			this.chkExportRange.CanFocus = true;
 			this.chkExportRange.Name = "chkExportRange";
-			this.chkExportRange.Label = global::Mono.Unix.Catalog.GetString ("Export Selected Range");
+			this.chkExportRange.Label = global::Mono.Unix.Catalog.GetString ("Export Selected _Range");
 			this.chkExportRange.DrawIndicator = true;
 			this.chkExportRange.UseUnderline = true;
 			this.pnlButtons.Add (this.chkExportRange);

@@ -35,8 +35,6 @@ namespace RestrictionTrackerGTK
 			this.AllowGrow = false;
 			this.DefaultWidth = 420;
 			this.DefaultHeight = 300;
-			this.SkipPagerHint = true;
-			this.SkipTaskbarHint = true;
 			// Container child RestrictionTrackerGTK.frmAbout.Gtk.Container+ContainerChild
 			this.pnlAbout = new global::Gtk.HBox ();
 			this.pnlAbout.Name = "pnlAbout";

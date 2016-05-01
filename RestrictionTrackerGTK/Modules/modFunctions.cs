@@ -642,24 +642,22 @@ namespace RestrictionTrackerGTK
     {
       try
       {
-        string sFailFile = "SRT-MONO-ReadFail-" + DateTime.Now.ToString("G") + "-v" + ProductVersion + ".txt";
-        sFailFile = sFailFile.Replace("/", "-");
-        sFailFile = sFailFile.Replace(":", "-");
-        System.Net.WebRequest ftpSave = System.Net.FtpWebRequest.Create("ftp://realityripple.com/" + sFailFile);
-        ftpSave.Proxy = new System.Net.WebProxy();
-        ftpSave.Credentials = modCreds.FTPCredentials(); //Use [new System.Net.NetworkCredential("FTPUSER", "FTPPASS");] to upload failures to a FTP location.
-        ftpSave.Method = System.Net.WebRequestMethods.Ftp.UploadFile;
-        using (Stream ftpStream = ftpSave.GetRequestStream())
-        {
-          byte[] bHTTP = System.Text.Encoding.UTF8.GetBytes(sData.ToString());
-          ftpStream.Write(bHTTP, 0, bHTTP.Length);
-          ftpStream.Close();
-        }
-        MainClass.fMain.FailResponse(true);
+        byte[] bData = System.Text.Encoding.UTF8.GetBytes((string) sData);
+        string sBase64Data = Convert.ToBase64String(bData, Base64FormattingOptions.None);
+        WebClientEx sckUpload = new WebClientEx();
+        System.Collections.Specialized.NameValueCollection paramList = new System.Collections.Specialized.NameValueCollection();
+        paramList.Add("eFile", sBase64Data);
+        string sRet = sckUpload.UploadValues("http://wb.realityripple.com/errmsgs.php", "POST", paramList);
+        if (sRet == "e exists")
+          MainClass.fMain.FailResponse("exists");
+        else if (sRet == "e added")
+          MainClass.fMain.FailResponse("added");
+        else
+          MainClass.fMain.FailResponse("error");
       }
       catch
       {
-        MainClass.fMain.FailResponse(false);
+        MainClass.fMain.FailResponse("error");
       }
     }
     public static string PercentEncode(string inString)
@@ -1285,6 +1283,11 @@ namespace RestrictionTrackerGTK
       g.DrawLine(new Pen(ColorText), lYWidth, yTop + yHeight, ImgSize.Width, yTop + yHeight);
       g.Dispose();
       return iPic;
+    }
+    public static void ClearGraphData()
+    {
+      dData = null;
+      uData = null;
     }
     #endregion
     #region "Progress"

@@ -6,6 +6,7 @@ using RestrictionLibrary;
 using Gtk;
 using System.Drawing;
 using System.Security.Principal;
+using System.Diagnostics;
 namespace RestrictionTrackerGTK
 {
   public partial class dlgConfig : Gtk.Dialog
@@ -109,6 +110,7 @@ namespace RestrictionTrackerGTK
           optAccountTypeRPX.Active = true;
           break;
       }
+      lblAccountType.MnemonicWidget = chkAccountTypeAuto;
       chkAccountTypeAuto.Active = !mySettings.AccountTypeForced;
       string sKey = mySettings.RemoteKey;
       if (sKey.Contains("-"))

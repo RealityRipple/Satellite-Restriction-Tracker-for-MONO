@@ -916,7 +916,7 @@ namespace RestrictionTrackerGTK
 			this.cmdAlertStyle.CanFocus = true;
 			this.cmdAlertStyle.Name = "cmdAlertStyle";
 			this.cmdAlertStyle.UseUnderline = true;
-			this.cmdAlertStyle.Label = global::Mono.Unix.Catalog.GetString ("Set Alert _Style");
+			this.cmdAlertStyle.Label = global::Mono.Unix.Catalog.GetString ("Set A_lert Style");
 			this.pnlPrefAlert.Add (this.cmdAlertStyle);
 			global::Gtk.Table.TableChild w65 = ((global::Gtk.Table.TableChild)(this.pnlPrefAlert [this.cmdAlertStyle]));
 			w65.TopAttach = ((uint)(1));
@@ -1575,7 +1575,8 @@ namespace RestrictionTrackerGTK
 			this.lblProxyType = new global::Gtk.Label ();
 			this.lblProxyType.Name = "lblProxyType";
 			this.lblProxyType.Xalign = 0F;
-			this.lblProxyType.LabelProp = global::Mono.Unix.Catalog.GetString ("Proxy Type:");
+			this.lblProxyType.LabelProp = global::Mono.Unix.Catalog.GetString ("_Proxy Type:");
+			this.lblProxyType.UseUnderline = true;
 			this.pnlProxy.Add (this.lblProxyType);
 			global::Gtk.Table.TableChild w115 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.lblProxyType]));
 			w115.XOptions = ((global::Gtk.AttachOptions)(4));
@@ -1917,7 +1918,7 @@ namespace RestrictionTrackerGTK
 			w140.RightAttach = ((uint)(4));
 			w140.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAdvancedData.Gtk.Table+TableChild
-			this.optHistoryCustom = new global::Gtk.RadioButton (global::Mono.Unix.Catalog.GetString ("C_ustom:"));
+			this.optHistoryCustom = new global::Gtk.RadioButton (global::Mono.Unix.Catalog.GetString ("_Custom:"));
 			this.optHistoryCustom.TooltipMarkup = "Save History Data to a custom directory.";
 			this.optHistoryCustom.CanFocus = true;
 			this.optHistoryCustom.Name = "optHistoryCustom";
@@ -2147,7 +2148,7 @@ namespace RestrictionTrackerGTK
 			this.cmdClose.CanFocus = true;
 			this.cmdClose.Name = "cmdClose";
 			this.cmdClose.UseUnderline = true;
-			this.cmdClose.Label = global::Mono.Unix.Catalog.GetString ("_Close");
+			this.cmdClose.Label = global::Mono.Unix.Catalog.GetString ("Close");
 			w157.Add (this.cmdClose);
 			global::Gtk.ButtonBox.ButtonBoxChild w159 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w157 [this.cmdClose]));
 			w159.Position = 1;
@@ -2156,8 +2157,20 @@ namespace RestrictionTrackerGTK
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			this.DefaultWidth = 448;
-			this.DefaultHeight = 574;
+			this.DefaultWidth = 376;
+			this.DefaultHeight = 499;
+			this.lblKey.MnemonicWidget = this.txtKey1;
+			this.lblProvider.MnemonicWidget = this.cmbProvider;
+			this.lblAccount.MnemonicWidget = this.txtAccount;
+			this.lblPassword.MnemonicWidget = this.txtPassword;
+			this.lblAccuracy1.MnemonicWidget = this.txtAccuracy;
+			this.lblInterval1.MnemonicWidget = this.txtInterval;
+			this.lblOverSize1.MnemonicWidget = this.txtOverSize;
+			this.lblOverTime1.MnemonicWidget = this.txtOverTime;
+			this.lblStartWait1.MnemonicWidget = this.txtStartWait;
+			this.lblProxyType.MnemonicWidget = this.cmbProxyType;
+			this.lblTimeout1.MnemonicWidget = this.txtTimeout;
+			this.lblUpdateInterval.MnemonicWidget = this.cmbUpdateInterval;
 			this.Show ();
 		}
 	}

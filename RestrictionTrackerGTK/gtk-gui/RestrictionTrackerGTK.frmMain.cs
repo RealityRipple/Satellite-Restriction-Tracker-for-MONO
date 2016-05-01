@@ -112,7 +112,7 @@ namespace RestrictionTrackerGTK
 			this.cmdRefresh.CanFocus = true;
 			this.cmdRefresh.Name = "cmdRefresh";
 			this.cmdRefresh.UseUnderline = true;
-			this.cmdRefresh.Label = global::Mono.Unix.Catalog.GetString ("Refresh");
+			this.cmdRefresh.Label = global::Mono.Unix.Catalog.GetString ("_Refresh");
 			this.pnlButtons.Add (this.cmdRefresh);
 			global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.pnlButtons [this.cmdRefresh]));
 			w1.Position = 0;
@@ -122,7 +122,7 @@ namespace RestrictionTrackerGTK
 			this.cmdHistory.CanFocus = true;
 			this.cmdHistory.Name = "cmdHistory";
 			this.cmdHistory.UseUnderline = true;
-			this.cmdHistory.Label = global::Mono.Unix.Catalog.GetString ("History");
+			this.cmdHistory.Label = global::Mono.Unix.Catalog.GetString ("_History");
 			this.pnlButtons.Add (this.cmdHistory);
 			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.pnlButtons [this.cmdHistory]));
 			w2.Position = 1;
@@ -132,7 +132,7 @@ namespace RestrictionTrackerGTK
 			this.cmdConfig.CanFocus = true;
 			this.cmdConfig.Name = "cmdConfig";
 			this.cmdConfig.UseUnderline = true;
-			this.cmdConfig.Label = global::Mono.Unix.Catalog.GetString ("Configuration");
+			this.cmdConfig.Label = global::Mono.Unix.Catalog.GetString ("_Configuration");
 			this.pnlButtons.Add (this.cmdConfig);
 			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.pnlButtons [this.cmdConfig]));
 			w3.Position = 2;
@@ -142,7 +142,7 @@ namespace RestrictionTrackerGTK
 			this.cmdAbout.CanFocus = true;
 			this.cmdAbout.Name = "cmdAbout";
 			this.cmdAbout.UseUnderline = true;
-			this.cmdAbout.Label = global::Mono.Unix.Catalog.GetString ("About");
+			this.cmdAbout.Label = global::Mono.Unix.Catalog.GetString ("_About");
 			this.pnlButtons.Add (this.cmdAbout);
 			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.pnlButtons [this.cmdAbout]));
 			w4.PackType = ((global::Gtk.PackType)(1));

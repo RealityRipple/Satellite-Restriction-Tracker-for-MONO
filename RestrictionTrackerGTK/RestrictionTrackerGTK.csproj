@@ -167,7 +167,6 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Classes\Visual Elements\clsListView.cs" />
     <Compile Include="Classes\Visual Elements\clsTaskbarNotifier.cs" />
-    <Compile Include="Modules\modCreds.cs" />
     <Compile Include="Classes\MacInterop\clsIgeMacMenu.cs" />
     <Compile Include="Forms\Dialogs\dlgAlertSelection.cs" />
     <Compile Include="Forms\Dialogs\dlgCustomColors.cs" />
