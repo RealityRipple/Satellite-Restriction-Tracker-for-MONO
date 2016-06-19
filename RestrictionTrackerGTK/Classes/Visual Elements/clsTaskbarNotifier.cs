@@ -7,7 +7,8 @@ namespace RestrictionTrackerGTK
   /// <summary>
   /// TaskbarNotifier allows to display MSN style/Skinned instant messaging popups
   /// </summary>
-  public class TaskbarNotifier : Gtk.Window
+  public class TaskbarNotifier :
+    Gtk.Window
   {
     #region TaskbarNotifier Protected Members
     protected Bitmap BackgroundBitmap = null;
@@ -58,7 +59,8 @@ namespace RestrictionTrackerGTK
     /// <summary>
     /// The Constructor for TaskbarNotifier
     /// </summary>
-    public TaskbarNotifier():base(Gtk.WindowType.Popup)
+    public TaskbarNotifier() :
+      base(Gtk.WindowType.Popup)
     {
       AppPaintable = true;
       SkipPagerHint = true;

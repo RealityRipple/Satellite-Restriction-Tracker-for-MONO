@@ -4,7 +4,8 @@ using System.IO;
 using Gtk;
 namespace RestrictionTrackerGTK
 {
-  public partial class dlgAlertSelection : Gtk.Dialog
+  public partial class dlgAlertSelection :
+    Gtk.Dialog
   {
     private ScrolledWindow sclStyles;
     private ListBox lstStyles;
@@ -121,7 +122,7 @@ namespace RestrictionTrackerGTK
             {
               break;
             }
-          } while (lstStyles.Model.IterNext (ref iter));
+          } while (lstStyles.Model.IterNext(ref iter));
           string sIndex = lstStyles.Model.GetStringFromIter(iter);
           if (sIndex == "0")
           {
@@ -213,7 +214,7 @@ namespace RestrictionTrackerGTK
       pctPreview.WidthRequest = preview.Width;
       pctPreview.HeightRequest = preview.Height;
       pctPreview.Pixbuf = preview;
-      cmdSave.Sensitive = ! (selected[0].ToLower() == AlertStyle.ToLower());
+      cmdSave.Sensitive = !(selected[0].ToLower() == AlertStyle.ToLower());
       cmdRemove.Sensitive = !(selected[0].ToLower() == "default");
     }
     private void lstStyles_DragMotion(object sender, DragMotionArgs e)
@@ -331,7 +332,7 @@ namespace RestrictionTrackerGTK
                   Add = false;
                   break;
                 }
-              } while (lstStyles.Model.IterNext (ref iter));
+              } while (lstStyles.Model.IterNext(ref iter));
               if (Add)
               {
                 lstStyles.AddItem(sTitle);
@@ -349,7 +350,7 @@ namespace RestrictionTrackerGTK
                     lstStyles.Selection.SelectIter(iterSel);
                     break;
                   }
-                } while (lstStyles.Model.IterNext (ref iterSel));
+                } while (lstStyles.Model.IterNext(ref iterSel));
               }
             }
           }
@@ -420,7 +421,7 @@ namespace RestrictionTrackerGTK
                   Add = false;
                   break;
                 }
-              } while (lstStyles.Model.IterNext (ref iter));
+              } while (lstStyles.Model.IterNext(ref iter));
               if (Add)
               {
                 lstStyles.AddItem(sTitle);
@@ -438,7 +439,7 @@ namespace RestrictionTrackerGTK
                     lstStyles.Selection.SelectIter(iterSel);
                     break;
                   }
-                } while (lstStyles.Model.IterNext (ref iterSel));
+                } while (lstStyles.Model.IterNext(ref iterSel));
               }
             }
           }
@@ -460,7 +461,7 @@ namespace RestrictionTrackerGTK
           {
             break;
           }
-        } while (lstStyles.Model.IterNext (ref iter));
+        } while (lstStyles.Model.IterNext(ref iter));
         string sIndex = lstStyles.Model.GetStringFromIter(iter);
         if (sIndex == "0")
         {
@@ -500,7 +501,8 @@ namespace RestrictionTrackerGTK
   }
   class ListBox : ListView<string>
   {
-    public ListBox(params string[] columnNames) : base(columnNames)
+    public ListBox(params string[] columnNames) :
+      base(columnNames)
     {
 
     }

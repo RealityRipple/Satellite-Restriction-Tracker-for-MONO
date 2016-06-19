@@ -28,11 +28,11 @@ public class NotifierStyle
   }
   public NotifierStyle(string BGPath, string ClosePath, string LocPath)
   {
-    using (Image iBG = Image.FromFile (BGPath))
+    using (Image iBG = Image.FromFile(BGPath))
     {
-      using (Bitmap bg = new Bitmap(iBG.Width,iBG.Height))
+      using (Bitmap bg = new Bitmap(iBG.Width, iBG.Height))
       {
-        using (Graphics g = Graphics.FromImage (bg))
+        using (Graphics g = Graphics.FromImage(bg))
         {
           g.DrawImage(iBG, 0, 0);
         }
@@ -40,11 +40,11 @@ public class NotifierStyle
       }
     }
 
-    using (Image iClose = Image.FromFile (ClosePath))
+    using (Image iClose = Image.FromFile(ClosePath))
     {
-      using (Bitmap close = new Bitmap(iClose.Width,iClose.Height))
+      using (Bitmap close = new Bitmap(iClose.Width, iClose.Height))
       {
-        using (Graphics g = Graphics.FromImage (close))
+        using (Graphics g = Graphics.FromImage(close))
         {
           g.DrawImage(iClose, 0, 0);
         }
@@ -53,14 +53,14 @@ public class NotifierStyle
     }
 
     string locData = "";
-    using (FileStream fs = new FileStream(LocPath, FileMode.Open,FileAccess.Read,FileShare.Read))
+    using (FileStream fs = new FileStream(LocPath, FileMode.Open, FileAccess.Read, FileShare.Read))
     {
       byte[] inData = new byte[fs.Length];
       fs.Read(inData, 0, (int) fs.Length);
       locData = System.Text.Encoding.GetEncoding("latin1").GetString(inData);
     }
     locData = locData.Replace("\n\r", "\n").Replace("\r", "\n");
-    while (locData.Contains ("\n\n"))
+    while (locData.Contains("\n\n"))
     {
       locData = locData.Replace("\n\n", "\n");
     }

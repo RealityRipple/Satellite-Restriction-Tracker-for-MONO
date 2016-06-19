@@ -3,7 +3,8 @@ using RestrictionLibrary;
 using System.Drawing;
 namespace RestrictionTrackerGTK
 {
-  public partial class dlgCustomColors : Gtk.Dialog
+  public partial class dlgCustomColors :
+    Gtk.Dialog
   {
     private long lDown;
     private long lUp;
@@ -301,7 +302,7 @@ namespace RestrictionTrackerGTK
     private void RedrawImages()
     {
       if (pctMain.Allocation.Width == 1 & pctMain.Allocation.Height == 1 &
-        pctHistory.Allocation.Width == 1 & pctHistory.Allocation.Height == 1)
+          pctHistory.Allocation.Width == 1 & pctHistory.Allocation.Height == 1)
         return;
       Color mda = modFunctions.GdkColorToDrawingColor(cmdMainDownA.Color);
       Color mdb = modFunctions.GdkColorToDrawingColor(cmdMainDownB.Color);

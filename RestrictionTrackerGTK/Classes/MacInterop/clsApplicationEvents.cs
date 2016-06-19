@@ -114,7 +114,8 @@ namespace MacInterop
     }
     #endregion
   }
-  public class ApplicationEventArgs : EventArgs
+  public class ApplicationEventArgs :
+    EventArgs
   {
     public bool Handled { get; set; }
     internal CarbonEventHandlerStatus HandledStatus
@@ -125,7 +126,8 @@ namespace MacInterop
       }
     }
   }
-  public class ApplicationQuitEventArgs : ApplicationEventArgs
+  public class ApplicationQuitEventArgs :
+    ApplicationEventArgs
   {
     public bool UserCancelled { get; set; }
   }

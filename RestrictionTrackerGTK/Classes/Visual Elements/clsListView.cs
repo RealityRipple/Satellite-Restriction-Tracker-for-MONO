@@ -7,9 +7,11 @@ namespace RestrictionTrackerGTK
   /// <para>A single column list, text comes from object.ToString()</para>
   /// <para>For multicolumns, see ListView&lt;ClassType&gt;</para>
   /// </summary>
-  public class ListView : ListView<object>
+  public class ListView :
+    ListView<object>
   {
-    public ListView(string columnTitle) : base(columnTitle)
+    public ListView(string columnTitle) :
+      base(columnTitle)
     {
     }
     protected override void RenderCell(CellRendererText render, int index, object item)
@@ -22,7 +24,8 @@ namespace RestrictionTrackerGTK
   /// To get multiple columns, pass that number of parameters to the constructor
   /// and implement RenderCell accordingly.
   /// </summary>
-  public abstract class ListView<T> : TreeView
+  public abstract class ListView<T> :
+    TreeView
   {
     /// <summary>
     /// List of all items selected
@@ -72,7 +75,7 @@ namespace RestrictionTrackerGTK
     }
     public void RemoveItem(T item)
     {
-      if (! storeList.ContainsKey(item))
+      if (!storeList.ContainsKey(item))
       {
         return;
       }

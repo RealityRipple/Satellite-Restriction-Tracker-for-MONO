@@ -57,7 +57,8 @@ namespace MacInterop
       ige_mac_menu_add_app_menu_item(Handle, menu_item == null ? IntPtr.Zero : menu_item.Handle, native_label);
       GLib.Marshaller.Free(native_label);
     }
-    public IgeMacMenuGroup(IntPtr raw) : base(raw)
+    public IgeMacMenuGroup(IntPtr raw) :
+      base(raw)
     {
     }
   }

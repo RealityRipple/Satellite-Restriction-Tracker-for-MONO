@@ -4,7 +4,8 @@ using RestrictionLibrary;
 using System.Diagnostics;
 namespace RestrictionTrackerGTK
 {
-  public partial class frmHistory : Gtk.Window
+  public partial class frmHistory :
+    Gtk.Window
   {
     DateTimeWidget dtwFrom;
     DateTimeWidget dtwTo;
@@ -19,14 +20,15 @@ namespace RestrictionTrackerGTK
     private DataBase.DataRow[] extraData;
     private localRestrictionTracker.SatHostTypes useStyle = localRestrictionTracker.SatHostTypes.Other;
     private delegate void ParameterizedInvoker(object parameter);
-    private delegate void ParameterizedInvoker2(object param1,object param2);
+    private delegate void ParameterizedInvoker2(object param1, object param2);
     private enum BadDataNotes
     {
       Null,
       None,
       One
     }
-    public frmHistory() : base(Gtk.WindowType.Toplevel)
+    public frmHistory() :
+      base(Gtk.WindowType.Toplevel)
     {
       Gdk.Geometry geo = new Gdk.Geometry();
       geo.MinWidth = 575;
@@ -723,9 +725,9 @@ namespace RestrictionTrackerGTK
               if (i < modDB.usageDB.Count - 1)
                 nextDB = modDB.usageDB.ToArray()[i + 1];
               if (((thisDB.DOWNLOAD < lastDB.DOWNLOAD) | (thisDB.DOWNLOAD == 0 & lastDB.DOWNLOAD == 0)) &
-                ((thisDB.UPLOAD < lastDB.UPLOAD) | (thisDB.UPLOAD == 0 & lastDB.UPLOAD == 0)) &
-                !(lastDB.DOWNLOAD == 0 & lastDB.UPLOAD == 0) &
-                !(nextDB.DOWNLOAD == lastDB.DOWNLOAD & nextDB.UPLOAD == lastDB.UPLOAD))
+                  ((thisDB.UPLOAD < lastDB.UPLOAD) | (thisDB.UPLOAD == 0 & lastDB.UPLOAD == 0)) &
+                  !(lastDB.DOWNLOAD == 0 & lastDB.UPLOAD == 0) &
+                  !(nextDB.DOWNLOAD == lastDB.DOWNLOAD & nextDB.UPLOAD == lastDB.UPLOAD))
               {
                 if (DateTime.Today.Subtract(thisDB.DATETIME).TotalDays > 0)
                 {
@@ -832,13 +834,13 @@ namespace RestrictionTrackerGTK
               if (i < modDB.usageDB.Count - 1)
                 nextDB = modDB.usageDB.ToArray()[i + 1];
               if (((thisDB.DOWNLOAD < lastDB.DOWNLOAD) | (thisDB.DOWNLOAD == 0 & lastDB.DOWNLOAD == 0)) &
-                ((thisDB.UPLOAD < lastDB.UPLOAD) | (thisDB.UPLOAD == 0 & lastDB.UPLOAD == 0)) &
-                !(lastDB.DOWNLOAD == 0 & lastDB.UPLOAD == 0) &
-                !(nextDB.DOWNLOAD == lastDB.DOWNLOAD & nextDB.UPLOAD == lastDB.UPLOAD))
+                  ((thisDB.UPLOAD < lastDB.UPLOAD) | (thisDB.UPLOAD == 0 & lastDB.UPLOAD == 0)) &
+                  !(lastDB.DOWNLOAD == 0 & lastDB.UPLOAD == 0) &
+                  !(nextDB.DOWNLOAD == lastDB.DOWNLOAD & nextDB.UPLOAD == lastDB.UPLOAD))
               {
                 if (DateTime.Today.Subtract(thisDB.DATETIME).TotalDays > 6)
                 {
-                  Finds ++;
+                  Finds++;
                   if (Finds == 2)
                   {
                     if (thisDB.DATETIME > dtwFrom.MaxDate)
@@ -1291,7 +1293,7 @@ namespace RestrictionTrackerGTK
           date = d;
         }
       }
-      public delegate void DateChangedHandler(object o,DateChangedEventArgs date);
+      public delegate void DateChangedHandler(object o, DateChangedEventArgs date);
       public event DateChangedHandler DateChanged;
       public DateTime Date
       {
@@ -1485,7 +1487,8 @@ namespace RestrictionTrackerGTK
     #region "List Views"
     class DataListView : ListView<DataBase.DataRow>
     {
-      public DataListView(params string[] columnNames) : base(columnNames)
+      public DataListView(params string[] columnNames) :
+        base(columnNames)
       {
       }
       protected override void RenderCell(CellRendererText render, int index, DataBase.DataRow item)
@@ -1503,7 +1506,8 @@ namespace RestrictionTrackerGTK
     }
     class WildBlueView : DataListView
     {
-      public WildBlueView() : base("Date and Time", "Download", "Upload")
+      public WildBlueView() :
+        base("Date and Time", "Download", "Upload")
       {
       }
       protected override void RenderCell(CellRendererText render, int index, DataBase.DataRow item)
@@ -1524,7 +1528,8 @@ namespace RestrictionTrackerGTK
     }
     class WildBlueLimsView : DataListView
     {
-      public WildBlueLimsView() : base("Date and Time", "Download / Limit", "Upload / Limit")
+      public WildBlueLimsView() :
+        base("Date and Time", "Download / Limit", "Upload / Limit")
       {
       }
       protected override void RenderCell(CellRendererText render, int index, DataBase.DataRow item)
@@ -1545,7 +1550,8 @@ namespace RestrictionTrackerGTK
     }
     class RuralPortalView : DataListView
     {
-      public RuralPortalView() : base("Date and Time", "Used", "Total")
+      public RuralPortalView() :
+        base("Date and Time", "Used", "Total")
       {
       }
       protected override void RenderCell(CellRendererText render, int index, DataBase.DataRow item)
@@ -1566,7 +1572,8 @@ namespace RestrictionTrackerGTK
     }
     class DishNetView : DataListView
     {
-      public DishNetView() : base("Date and Time", "Anytime", "Off-Peak")
+      public DishNetView() :
+        base("Date and Time", "Anytime", "Off-Peak")
       {
       }
       protected override void RenderCell(CellRendererText render, int index, DataBase.DataRow item)
@@ -1587,7 +1594,8 @@ namespace RestrictionTrackerGTK
     }
     class DishNetLimsView : DataListView
     {
-      public DishNetLimsView() : base("Date and Time", "Anytime / Limit", "Off-Peak / Limit")
+      public DishNetLimsView() :
+        base("Date and Time", "Anytime / Limit", "Off-Peak / Limit")
       {
       }
       protected override void RenderCell(CellRendererText render, int index, DataBase.DataRow item)

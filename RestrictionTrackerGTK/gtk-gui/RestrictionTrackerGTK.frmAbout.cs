@@ -5,18 +5,31 @@ namespace RestrictionTrackerGTK
 	public partial class frmAbout
 	{
 		private global::Gtk.HBox pnlAbout;
+		
 		private global::Gtk.Image LogoPictureBox;
+		
 		private global::Gtk.VBox pnlText;
+		
 		private global::Gtk.Label lblProduct;
+		
 		private global::Gtk.Label lblVersion;
+		
 		private global::Gtk.HBox pnlUpdate;
+		
 		private global::Gtk.Image pctUpdate;
+		
 		private global::Gtk.Label lblUpdate;
+		
 		private global::Gtk.Label lblCompany;
+		
 		private global::Gtk.ScrolledWindow scrlDescription;
+		
 		private global::Gtk.TextView txtDescription;
+		
 		private global::Gtk.HBox pnlButtons;
+		
 		private global::Gtk.Button cmdDonate;
+		
 		private global::Gtk.Button cmdOK;
 
 		protected virtual void Build ()

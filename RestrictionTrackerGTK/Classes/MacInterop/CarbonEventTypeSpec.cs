@@ -12,7 +12,8 @@ namespace MacInterop
       this.EventClass = eventClass;
       this.EventKind = eventKind;
     }
-    public CarbonEventTypeSpec(CarbonEventApple kind) : this (CarbonEventClass.AppleEvent, (uint) kind)
+    public CarbonEventTypeSpec(CarbonEventApple kind) :
+      this(CarbonEventClass.AppleEvent, (uint) kind)
     {
     }
     public static implicit operator CarbonEventTypeSpec(CarbonEventApple kind)

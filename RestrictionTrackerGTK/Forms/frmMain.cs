@@ -9,7 +9,8 @@ using RestrictionTrackerGTK;
 using System.Diagnostics;
 namespace RestrictionTrackerGTK
 {
-  public partial class frmMain: Gtk.Window
+  public partial class frmMain :
+    Gtk.Window
   {
     private localRestrictionTracker.SatHostTypes myPanel;
     public static object trayIcon;
@@ -39,11 +40,16 @@ namespace RestrictionTrackerGTK
     {
       get
       {
-        return (mTraySupport > 0);
+        return (mTraySupport != TraySupport.Off);
       }
     }
-    private byte mTraySupport = 0;
-    //0=off, 1==standard, 2=appind
+    private enum TraySupport
+    {
+      Off = 0,
+      Standard = 1,
+      AppIndicator = 2
+    }
+    private TraySupport mTraySupport = TraySupport.Off;
     private int trayRes = 16;
     private String _IconFolder = "";
     private String IconFolder
@@ -78,6 +84,7 @@ namespace RestrictionTrackerGTK
     private uint tmrSpeed;
     private uint tmrStatus;
     private uint tmrShow;
+    private uint tmrShowConfig;
     private delegate void MethodInvoker();
     private delegate void ParamaterizedInvoker(object parameter);
     private clsUpdate updateChecker;
@@ -448,7 +455,8 @@ namespace RestrictionTrackerGTK
     }
     #endregion
     #region "Form Events"
-    public frmMain(): base (Gtk.WindowType.Toplevel)
+    public frmMain() :
+      base(Gtk.WindowType.Toplevel)
     {
       sUpdatePath = modFunctions.AppDataPath + "Setup";
       if (CurrentOS.IsMac)
@@ -496,7 +504,6 @@ namespace RestrictionTrackerGTK
       {
         ReLoadSettings();
       }
-      System.Net.ServicePointManager.SecurityProtocol = mySettings.Protocol;
       System.Net.ServicePointManager.ServerCertificateValidationCallback += (o, certificate, chain, errors) => true;
 
       NextGrabTick = long.MinValue;
@@ -527,9 +534,9 @@ namespace RestrictionTrackerGTK
       {
         if (e.Size > 7)
         {
-          if (mTraySupport == 0)
+          if (mTraySupport == TraySupport.Off)
           {
-            mTraySupport = 1;
+            mTraySupport = TraySupport.Standard;
             trayRes = e.Size;
             MakeIconListing();
             if (tmrShow != 0)
@@ -559,7 +566,7 @@ namespace RestrictionTrackerGTK
         tmrShow = 0;
         if (((StatusIcon) trayIcon).Embedded)
         {
-          mTraySupport = 1;
+          mTraySupport = TraySupport.Standard;
           trayRes = ((StatusIcon) trayIcon).Size;
           if (trayRes < 8)
             trayRes = 8;
@@ -576,7 +583,7 @@ namespace RestrictionTrackerGTK
           try
           {
             trayIcon = new AppIndicator.ApplicationIndicator("restriction-tracker", "norm", AppIndicator.Category.Communications, IconFolder);
-            mTraySupport = 2;
+            mTraySupport = TraySupport.AppIndicator;
             ((AppIndicator.ApplicationIndicator) trayIcon).Menu = mnuTray;
             SetTrayText(modFunctions.ProductName);
             firstRestore = false;
@@ -584,7 +591,7 @@ namespace RestrictionTrackerGTK
           catch (Exception)
           {
             Directory.Delete(IconFolder, true);
-            mTraySupport = 0;
+            mTraySupport = TraySupport.Off;
             firstRestore = true;
           }
         }
@@ -754,8 +761,8 @@ namespace RestrictionTrackerGTK
           SetTag(LoadStates.Loaded);
           this.Resize(mySettings.MainSize.Width, mySettings.MainSize.Height);
           Main_SizeChanged(null, null);
-
-          cmdConfig.Click();
+          //cmdConfig.Click();
+          tmrShowConfig = GLib.Timeout.Add(1000, tmrShowConfig_Tick);
         }
       }
     }
@@ -1197,7 +1204,61 @@ namespace RestrictionTrackerGTK
     public void ReLoadSettings()
     {
       mySettings = new AppSettings();
-      System.Net.ServicePointManager.SecurityProtocol = mySettings.Protocol;
+      SecurityProtocolTypeEx useProtocol = SecurityProtocolTypeEx.None;
+      foreach (SecurityProtocolTypeEx protocolTest in Enum.GetValues(typeof(SecurityProtocolTypeEx)))
+      {
+        if (((SecurityProtocolTypeEx) mySettings.Protocol & protocolTest) == protocolTest)
+        {
+          try
+          {
+            System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) protocolTest;
+            useProtocol |= protocolTest;
+          }
+          catch (Exception)
+          {
+          }
+        }
+      }
+      if (useProtocol == SecurityProtocolTypeEx.None)
+      {
+        if (string.IsNullOrEmpty(mySettings.RemoteKey))
+        {
+          foreach (SecurityProtocolTypeEx protocolTest in Enum.GetValues(typeof(SecurityProtocolTypeEx)))
+          {
+            try
+            {
+              System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) protocolTest;
+              useProtocol |= protocolTest;
+            }
+            catch (Exception)
+            {
+            }
+          }
+          try
+          {
+            System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) useProtocol;
+            mySettings.Protocol = (System.Net.SecurityProtocolType) useProtocol;
+            mySettings.Save(); 
+          }
+          catch (Exception)
+          {
+          }
+        }
+        else
+        {
+          System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.None;
+        }
+      }
+      else
+      {
+        try
+        {
+          System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) useProtocol;
+        }
+        catch (Exception)
+        {
+        }
+      }
       modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
       modFunctions.NOTIFIER_STYLE = modFunctions.LoadAlertStyle(mySettings.AlertStyle);
       if (TraySupported)
@@ -1463,6 +1524,24 @@ namespace RestrictionTrackerGTK
     }
     #endregion
     #region "Login Functions"
+    private bool tmrShowConfig_Tick()
+    {
+      Gtk.Application.Invoke(null, null, Main_ShowConfig);
+      return false;
+    }
+    private void Main_ShowConfig(object o, EventArgs e)
+    {
+      if (tmrShowConfig != 0)
+      {
+        GLib.Source.Remove(tmrShowConfig);
+        tmrShowConfig = 0;
+      }
+      if (((Gtk.Label) mnuRestore.Child).Text == "Restore")
+      {
+        ShowFromTray();
+      }
+      cmdConfig.Click();
+    }
     private bool tmrUpdate_Tick()
     {
       if (NextGrabTick != long.MaxValue)
@@ -1784,7 +1863,15 @@ namespace RestrictionTrackerGTK
           DisplayUsage(false, false);
           break;
         case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.LoginFailure:
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), e.Message, true);
+          if (e.Message.StartsWith("POSSIBLE TLS ERROR - "))
+          {
+            string sMessage = e.Message.Substring(21);
+            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Your Operating System or version of MONO is too old for this connection. I'm trying to find a way around this problem.\nFor more information, search for \"TLS 1.2 MONO\".\n\n" + sMessage, true);
+          }
+          else
+          {
+            SetStatusText(modDB.LOG_GetLast().ToString("g"), e.Message, true);
+          }
           if (!string.IsNullOrEmpty(e.Fail))
           {
             FailFile(e.Fail);
@@ -2393,8 +2480,8 @@ namespace RestrictionTrackerGTK
       tmrChanges = new System.Threading.Timer(DisplayChangeInterval, (object) "RURAL", 75, System.Threading.Timeout.Infinite);
       pctRural.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctRural.Allocation.Size, lDown, lDownLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
       sTTT = "Satellite Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
-        "Last Updated " + sLastUpdate + "\n" +
-        "Using " + MBorGB(lDown) + " of " + MBorGB(lDownLim) + " (" + AccuratePercent((double) lDown / lDownLim) + ")";
+      "Last Updated " + sLastUpdate + "\n" +
+      "Using " + MBorGB(lDown) + " of " + MBorGB(lDownLim) + " (" + AccuratePercent((double) lDown / lDownLim) + ")";
       if (lDownLim > lDown)
       {
         sTTT += "\n" + MBorGB(lDownLim - lDown) + " Free";
@@ -2530,9 +2617,9 @@ namespace RestrictionTrackerGTK
         opFree = "";
       }
       sTTT = "Satellite Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
-        "Last Updated " + sLastUpdate + "\n" +
-        "Anytime: " + MBorGB(lDown) + " (" + AccuratePercent((double) lDown / lDownLim) + ")" + atFree + "\n" +
-        "Off-Peak: " + MBorGB(lUp) + " (" + AccuratePercent((double) lUp / lUpLim) + ")" + opFree;
+      "Last Updated " + sLastUpdate + "\n" +
+      "Anytime: " + MBorGB(lDown) + " (" + AccuratePercent((double) lDown / lDownLim) + ")" + atFree + "\n" +
+      "Off-Peak: " + MBorGB(lUp) + " (" + AccuratePercent((double) lUp / lUpLim) + ")" + opFree;
       if (tmrIcon != 0)
       {
         GLib.Source.Remove(tmrIcon);
@@ -2673,9 +2760,9 @@ namespace RestrictionTrackerGTK
         uFree = "";
       }
       sTTT = "Satellite Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
-        "Last Updated " + sLastUpdate + "\n" +
-        "Download: " + MBorGB(lDown) + " (" + AccuratePercent((double) lDown / lDownLim) + ")" + dFree + "\n" +
-        "Upload: " + MBorGB(lUp) + " (" + AccuratePercent((double) lUp / lUpLim) + ")" + uFree;
+      "Last Updated " + sLastUpdate + "\n" +
+      "Download: " + MBorGB(lDown) + " (" + AccuratePercent((double) lDown / lDownLim) + ")" + dFree + "\n" +
+      "Upload: " + MBorGB(lUp) + " (" + AccuratePercent((double) lUp / lUpLim) + ")" + uFree;
       if (tmrIcon != 0)
       {
         GLib.Source.Remove(tmrIcon);
@@ -2991,6 +3078,7 @@ namespace RestrictionTrackerGTK
       MainClass.fAbout.Show();
       MainClass.fAbout.Present();
     }
+
     #endregion
     #region "Menus"
     #region "Tray"
@@ -3064,6 +3152,7 @@ namespace RestrictionTrackerGTK
       MainClass.fCustomColors.Destroy();
       MainClass.fCustomColors = null;
     }
+
     #endregion
     #endregion
     #region "StatusBar"
@@ -3229,7 +3318,7 @@ namespace RestrictionTrackerGTK
     {
       if (TrayState && TraySupported)
       {
-        if (mTraySupport == 2)
+        if (mTraySupport == TraySupport.AppIndicator)
         {
           try
           {
@@ -3237,10 +3326,10 @@ namespace RestrictionTrackerGTK
           }
           catch (Exception)
           {
-            mTraySupport = 1;
+            mTraySupport = TraySupport.Standard;
           }
         }
-        if (mTraySupport == 1)
+        if (mTraySupport == TraySupport.Standard)
           ((StatusIcon) trayIcon).Visible = true;
         SetTrayIcon(trayResource);
       }
@@ -3249,7 +3338,7 @@ namespace RestrictionTrackerGTK
     {
       if (TraySupported)
       {
-        if (mTraySupport == 2)
+        if (mTraySupport == TraySupport.AppIndicator)
         {
           try
           {
@@ -3257,10 +3346,10 @@ namespace RestrictionTrackerGTK
           }
           catch (Exception)
           {
-            mTraySupport = 1;
+            mTraySupport = TraySupport.Standard;
           }
         }
-        if (mTraySupport == 1)
+        if (mTraySupport == TraySupport.Standard)
           ((StatusIcon) trayIcon).Visible = false;
       }
     }
@@ -3269,7 +3358,7 @@ namespace RestrictionTrackerGTK
       trayResource = resource;
       if (TrayState && TraySupported)
       {
-        if (mTraySupport == 2)
+        if (mTraySupport == TraySupport.AppIndicator)
         {
           try
           {
@@ -3277,10 +3366,10 @@ namespace RestrictionTrackerGTK
           }
           catch (Exception)
           {
-            mTraySupport = 1;
+            mTraySupport = TraySupport.Standard;
           }
         }
-        if (mTraySupport == 1)
+        if (mTraySupport == TraySupport.Standard)
           ((StatusIcon) trayIcon).File = System.IO.Path.Combine(IconFolder, resource + ".png");
       }
     }
@@ -3288,7 +3377,7 @@ namespace RestrictionTrackerGTK
     {
       if (TraySupported)
       {
-        if (mTraySupport == 2)
+        if (mTraySupport == TraySupport.AppIndicator)
         {
           try
           {
@@ -3296,10 +3385,10 @@ namespace RestrictionTrackerGTK
           }
           catch (Exception)
           {
-            mTraySupport = 1;
+            mTraySupport = TraySupport.Standard;
           }
         }
-        if (mTraySupport == 1)
+        if (mTraySupport == TraySupport.Standard)
         {
           ((StatusIcon) trayIcon).Tooltip = tooltip;
           ((StatusIcon) trayIcon).Blinking = false;

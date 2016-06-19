@@ -4,16 +4,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 namespace MacInterop
 {
-  internal delegate CarbonEventHandlerStatus EventDelegate(IntPtr callRef,IntPtr eventRef,IntPtr userData);
+  internal delegate CarbonEventHandlerStatus EventDelegate(IntPtr callRef, IntPtr eventRef, IntPtr userData);
   internal static class Carbon
   {
     public const string CarbonLib = "/System/Library/Frameworks/Carbon.framework/Versions/Current/Carbon";
-    [DllImport (CarbonLib)]
+    [DllImport(CarbonLib)]
     public static extern IntPtr GetApplicationEventTarget();
     #region Event handler installation
-    [DllImport (CarbonLib)]
+    [DllImport(CarbonLib)]
     static extern EventStatus InstallEventHandler(IntPtr target, EventDelegate handler, uint count, CarbonEventTypeSpec[] types, IntPtr user_data, out IntPtr handlerRef);
-    [DllImport (CarbonLib)]
+    [DllImport(CarbonLib)]
     public static extern EventStatus RemoveEventHandler(IntPtr handlerRef);
     public static IntPtr InstallEventHandler(IntPtr target, EventDelegate handler, CarbonEventTypeSpec[] types)
     {

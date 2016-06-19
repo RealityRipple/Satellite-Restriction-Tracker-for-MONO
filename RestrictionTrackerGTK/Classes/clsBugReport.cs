@@ -18,7 +18,7 @@ namespace MantisBugTracker
       httpToken.SendHeaders = new System.Net.WebHeaderCollection();
       httpToken.SendHeaders.Add(System.Net.HttpRequestHeader.Referer, "http://bugs.realityripple.com/login_select_proj_page.php?bug_report_page.php");
       string sTok = httpToken.UploadValues("http://bugs.realityripple.com/set_project.php", "POST", pD1);
-      if (sTok.StartsWith("Error: ")) 
+      if (sTok.StartsWith("Error: "))
         return null;
       if (sTok.Contains("bug_report_token"))
       {
@@ -61,7 +61,7 @@ namespace MantisBugTracker
       WebClientEx httpReport = new WebClientEx();
       httpReport.CookieJar = cJar;
       sRet = httpReport.UploadValues("http://bugs.realityripple.com/bug_report.php", "POST", pData);
-      if (sRet.StartsWith("Error: ")) 
+      if (sRet.StartsWith("Error: "))
         return null;
       if (sRet.Contains("Operation successful."))
       {

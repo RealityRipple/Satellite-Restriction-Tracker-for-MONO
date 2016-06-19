@@ -12,7 +12,7 @@ namespace RestrictionTrackerGTK
   public class clsFavicon : IDisposable
   {
     private RestrictionLibrary.WebClientCore wsFile;
-    public delegate void DownloadIconCompletedCallback(Gdk.Pixbuf icon16,Gdk.Pixbuf icon32,object token,Exception Error);
+    public delegate void DownloadIconCompletedCallback(Gdk.Pixbuf icon16, Gdk.Pixbuf icon32, object token, Exception Error);
     private DownloadIconCompletedCallback c_callback;
     public clsFavicon(string URL, DownloadIconCompletedCallback callback, object token)
     {

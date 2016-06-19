@@ -5,35 +5,65 @@ namespace RestrictionTrackerGTK
 	public partial class frmHistory
 	{
 		private global::Gtk.VBox pnlHistory;
+		
 		private global::Gtk.Frame grpAge;
+		
 		private global::Gtk.Alignment algnAge;
+		
 		private global::Gtk.Table pnlAge;
+		
 		private global::Gtk.Alignment algnFrom;
+		
 		private global::Gtk.Alignment algnTo;
+		
 		private global::Gtk.Button cmd30Days;
+		
 		private global::Gtk.Button cmd60Days;
+		
 		private global::Gtk.Button cmdAllTime;
+		
 		private global::Gtk.Button cmdQuery;
+		
 		private global::Gtk.Button cmdToday;
+		
 		private global::Gtk.Label lblFrom;
+		
 		private global::Gtk.Label lblTo;
+		
 		private global::Gtk.RadioButton optGraph;
+		
 		private global::Gtk.RadioButton optGrid;
+		
 		private global::Gtk.Image pctErr;
+		
 		private global::Gtk.Label GtkLabel8;
+		
 		private global::Gtk.VBox pnlGraph;
+		
 		private global::Gtk.EventBox evnDld;
+		
 		private global::Gtk.Image pctDld;
+		
 		private global::Gtk.EventBox evnUld;
+		
 		private global::Gtk.Image pctUld;
+		
 		private global::Gtk.HBox pnlButtons;
+		
 		private global::Gtk.Label lblBackup;
+		
 		private global::Gtk.Button cmdImport;
+		
 		private global::Gtk.Button cmdExport;
+		
 		private global::Gtk.Button cmdClose;
+		
 		private global::Gtk.CheckButton chkExportRange;
+		
 		private global::Gtk.Statusbar sbHistoryStatus;
+		
 		private global::Gtk.ProgressBar pbHistoryStatus;
+		
 		private global::Gtk.Label lblHistoryStatus;
 
 		protected virtual void Build ()

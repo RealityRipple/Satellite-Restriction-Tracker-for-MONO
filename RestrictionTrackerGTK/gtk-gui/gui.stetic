@@ -6,7 +6,7 @@
   </configuration>
   <import>
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <widget-library name="../../appindicator-sharp.dll" />
+    <widget-library name="appindicator-sharp" />
     <widget-library name="../bin/Debug/RestrictionTracker.exe" internal="true" />
   </import>
   <widget class="Gtk.Window" id="RestrictionTrackerGTK.frmMain" design-size="455 454">
@@ -214,7 +214,7 @@
                                             <child>
                                               <widget class="Gtk.Label" id="lblDFree">
                                                 <property name="MemberName" />
-                                                <property name="LabelProp" translatable="yes">Available:</property>
+                                                <property name="LabelProp" translatable="yes">Free:</property>
                                               </widget>
                                               <packing>
                                                 <property name="Position">0</property>
@@ -392,7 +392,7 @@
                                             <child>
                                               <widget class="Gtk.Label" id="lblUFree">
                                                 <property name="MemberName" />
-                                                <property name="LabelProp" translatable="yes">Available:</property>
+                                                <property name="LabelProp" translatable="yes">Free:</property>
                                               </widget>
                                               <packing>
                                                 <property name="Position">0</property>
@@ -637,7 +637,7 @@
                                 <child>
                                   <widget class="Gtk.Label" id="lblExedeRemain">
                                     <property name="MemberName" />
-                                    <property name="LabelProp" translatable="yes">Available:</property>
+                                    <property name="LabelProp" translatable="yes">Free:</property>
                                   </widget>
                                   <packing>
                                     <property name="Position">0</property>
@@ -786,7 +786,7 @@
                                 <child>
                                   <widget class="Gtk.Label" id="lblRuralRemain">
                                     <property name="MemberName" />
-                                    <property name="LabelProp" translatable="yes">Available:</property>
+                                    <property name="LabelProp" translatable="yes">Free:</property>
                                   </widget>
                                   <packing>
                                     <property name="Position">0</property>
@@ -1663,7 +1663,7 @@
           <widget class="Gtk.Notebook" id="tbsConfig">
             <property name="MemberName" />
             <property name="CanFocus">True</property>
-            <property name="CurrentPage">0</property>
+            <property name="CurrentPage">2</property>
             <child>
               <widget class="Gtk.Table" id="pnlAccount">
                 <property name="MemberName" />
@@ -3088,6 +3088,7 @@ usage.</property>
                         <property name="BottomAttach">3</property>
                         <property name="LeftAttach">2</property>
                         <property name="RightAttach">3</property>
+                        <property name="XPadding">3</property>
                         <property name="AutoSize">True</property>
                         <property name="XOptions">Fill</property>
                         <property name="YOptions">Fill</property>
@@ -3118,6 +3119,7 @@ usage.</property>
                         <property name="BottomAttach">4</property>
                         <property name="LeftAttach">2</property>
                         <property name="RightAttach">3</property>
+                        <property name="XPadding">3</property>
                         <property name="AutoSize">True</property>
                         <property name="XOptions">Fill</property>
                         <property name="YOptions">Fill</property>
@@ -3165,6 +3167,7 @@ usage.</property>
                       <packing>
                         <property name="LeftAttach">2</property>
                         <property name="RightAttach">3</property>
+                        <property name="XPadding">8</property>
                         <property name="AutoSize">False</property>
                         <property name="XOptions">0</property>
                         <property name="YOptions">0</property>
@@ -3188,6 +3191,7 @@ and the Tray Icon.</property>
                       <packing>
                         <property name="LeftAttach">1</property>
                         <property name="RightAttach">2</property>
+                        <property name="XPadding">3</property>
                         <property name="AutoSize">True</property>
                         <property name="XOptions">Fill</property>
                         <property name="YOptions">Fill</property>
@@ -3835,18 +3839,15 @@ and the Tray Icon.</property>
                   <widget class="Gtk.Table" id="pnlNetworkProtocol">
                     <property name="MemberName" />
                     <property name="NRows">2</property>
-                    <property name="NColumns">3</property>
+                    <property name="NColumns">5</property>
                     <property name="RowSpacing">2</property>
                     <property name="ColumnSpacing">2</property>
                     <child>
-                      <placeholder />
-                    </child>
-                    <child>
-                      <widget class="Gtk.CheckButton" id="chkNetworkProtocolSSL">
+                      <widget class="Gtk.CheckButton" id="chkNetworkProtocolSSL3">
                         <property name="MemberName" />
-                        <property name="Tooltip" translatable="yes">Check this box to use the older SSL 3.0 instead of TLS 1.0 for secure connections.</property>
+                        <property name="Tooltip" translatable="yes">Check this box to allow use of the older SSL 3.0 protocol, which may be vulnerable to attacks.</property>
                         <property name="CanFocus">True</property>
-                        <property name="Label" translatable="yes">Use _Legacy SSL 3.0</property>
+                        <property name="Label" translatable="yes">SS_L 3.0</property>
                         <property name="DrawIndicator">True</property>
                         <property name="HasLabel">True</property>
                         <property name="UseUnderline">True</property>
@@ -3868,6 +3869,84 @@ and the Tray Icon.</property>
                       </packing>
                     </child>
                     <child>
+                      <widget class="Gtk.CheckButton" id="chkNetworkProtocolTLS10">
+                        <property name="MemberName" />
+                        <property name="Tooltip" translatable="yes">Check this box to allow use of the older TLS 1.0 protocol, which may be vulnerable to attacks.</property>
+                        <property name="CanFocus">True</property>
+                        <property name="Label" translatable="yes">TLS 1.0</property>
+                        <property name="DrawIndicator">True</property>
+                        <property name="HasLabel">True</property>
+                        <property name="UseUnderline">True</property>
+                      </widget>
+                      <packing>
+                        <property name="TopAttach">1</property>
+                        <property name="BottomAttach">2</property>
+                        <property name="LeftAttach">2</property>
+                        <property name="RightAttach">3</property>
+                        <property name="AutoSize">True</property>
+                        <property name="XOptions">Fill</property>
+                        <property name="YOptions">Fill</property>
+                        <property name="XExpand">False</property>
+                        <property name="XFill">True</property>
+                        <property name="XShrink">False</property>
+                        <property name="YExpand">False</property>
+                        <property name="YFill">True</property>
+                        <property name="YShrink">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="Gtk.CheckButton" id="chkNetworkProtocolTLS11">
+                        <property name="MemberName" />
+                        <property name="Tooltip" translatable="yes">Check this box to allow use of the newer TLS 1.1 protocol, which requires an updated version of MONO.</property>
+                        <property name="CanFocus">True</property>
+                        <property name="Label" translatable="yes">TLS 1.1</property>
+                        <property name="DrawIndicator">True</property>
+                        <property name="HasLabel">True</property>
+                        <property name="UseUnderline">True</property>
+                      </widget>
+                      <packing>
+                        <property name="TopAttach">1</property>
+                        <property name="BottomAttach">2</property>
+                        <property name="LeftAttach">3</property>
+                        <property name="RightAttach">4</property>
+                        <property name="AutoSize">True</property>
+                        <property name="XOptions">Fill</property>
+                        <property name="YOptions">Fill</property>
+                        <property name="XExpand">False</property>
+                        <property name="XFill">True</property>
+                        <property name="XShrink">False</property>
+                        <property name="YExpand">False</property>
+                        <property name="YFill">True</property>
+                        <property name="YShrink">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="Gtk.CheckButton" id="chkNetworkProtocolTLS12">
+                        <property name="MemberName" />
+                        <property name="Tooltip" translatable="yes">Check this box to allow use of the newer TLS 1.2 protocol, which requires an updated version of MONO.</property>
+                        <property name="CanFocus">True</property>
+                        <property name="Label" translatable="yes">TLS 1.2</property>
+                        <property name="DrawIndicator">True</property>
+                        <property name="HasLabel">True</property>
+                        <property name="UseUnderline">True</property>
+                      </widget>
+                      <packing>
+                        <property name="TopAttach">1</property>
+                        <property name="BottomAttach">2</property>
+                        <property name="LeftAttach">4</property>
+                        <property name="RightAttach">5</property>
+                        <property name="AutoSize">True</property>
+                        <property name="XOptions">Fill</property>
+                        <property name="YOptions">Fill</property>
+                        <property name="XExpand">False</property>
+                        <property name="XFill">True</property>
+                        <property name="XShrink">False</property>
+                        <property name="YExpand">False</property>
+                        <property name="YFill">True</property>
+                        <property name="YShrink">False</property>
+                      </packing>
+                    </child>
+                    <child>
                       <widget class="Gtk.Label" id="lblNetworkProtocolDescription">
                         <property name="MemberName" />
                         <property name="Xalign">0</property>
@@ -3877,7 +3956,7 @@ others may require modern TLS.</property>
                       </widget>
                       <packing>
                         <property name="LeftAttach">1</property>
-                        <property name="RightAttach">3</property>
+                        <property name="RightAttach">5</property>
                         <property name="AutoSize">True</property>
                         <property name="XOptions">Fill</property>
                         <property name="YOptions">Fill</property>
@@ -4008,14 +4087,14 @@ URL</property>
                           <packing>
                             <property name="LeftAttach">1</property>
                             <property name="RightAttach">3</property>
-                            <property name="AutoSize">True</property>
+                            <property name="AutoSize">False</property>
                             <property name="XOptions">Fill</property>
-                            <property name="YOptions">Fill</property>
+                            <property name="YOptions">0</property>
                             <property name="XExpand">False</property>
                             <property name="XFill">True</property>
                             <property name="XShrink">False</property>
                             <property name="YExpand">False</property>
-                            <property name="YFill">True</property>
+                            <property name="YFill">False</property>
                             <property name="YShrink">False</property>
                           </packing>
                         </child>
@@ -4497,14 +4576,14 @@ Never check for updates (not recommended)</property>
                       <packing>
                         <property name="LeftAttach">1</property>
                         <property name="RightAttach">3</property>
-                        <property name="AutoSize">True</property>
+                        <property name="AutoSize">False</property>
                         <property name="XOptions">Fill</property>
-                        <property name="YOptions">Fill</property>
+                        <property name="YOptions">0</property>
                         <property name="XExpand">False</property>
                         <property name="XFill">True</property>
                         <property name="XShrink">False</property>
                         <property name="YExpand">False</property>
-                        <property name="YFill">True</property>
+                        <property name="YFill">False</property>
                         <property name="YShrink">False</property>
                       </packing>
                     </child>
@@ -4525,14 +4604,14 @@ Month</property>
                         <property name="BottomAttach">3</property>
                         <property name="LeftAttach">2</property>
                         <property name="RightAttach">3</property>
-                        <property name="AutoSize">True</property>
+                        <property name="AutoSize">False</property>
                         <property name="XOptions">Fill</property>
-                        <property name="YOptions">Fill</property>
+                        <property name="YOptions">0</property>
                         <property name="XExpand">False</property>
                         <property name="XFill">True</property>
                         <property name="XShrink">False</property>
                         <property name="YExpand">False</property>
-                        <property name="YFill">True</property>
+                        <property name="YFill">False</property>
                         <property name="YShrink">False</property>
                       </packing>
                     </child>

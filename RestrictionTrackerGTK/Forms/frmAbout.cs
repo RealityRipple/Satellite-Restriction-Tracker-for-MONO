@@ -2,7 +2,8 @@ using System;
 using System.IO;
 namespace RestrictionTrackerGTK
 {
-  public partial class frmAbout : Gtk.Window
+  public partial class frmAbout :
+    Gtk.Window
   {
     private string sUpdatePath = System.IO.Path.Combine(modFunctions.AppData, "Setup");
     private clsUpdate updateChecker;
@@ -11,7 +12,8 @@ namespace RestrictionTrackerGTK
     private Gtk.Button cmdUpdate;
     private delegate void MethodInvoker();
     #region "Form Events"
-    public frmAbout() : base(Gtk.WindowType.Toplevel)
+    public frmAbout() :
+      base(Gtk.WindowType.Toplevel)
     {
       sUpdatePath = string.Empty;
       if (CurrentOS.IsMac)

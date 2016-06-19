@@ -3,7 +3,8 @@ using System.Threading;
 using RestrictionLibrary;
 namespace RestrictionTrackerGTK
 {
-  public partial class dlgUpdate : Gtk.Dialog
+  public partial class dlgUpdate :
+    Gtk.Dialog
   {
     private bool Ret;
     public dlgUpdate()
@@ -50,8 +51,8 @@ namespace RestrictionTrackerGTK
         lblTitle.LabelProp = modFunctions.ProductName + " Update";
       }
       string newVer = "Version %v has been released and is available for download.\n" +
-        "To keep up-to-date with the latest features, improvements, bug fixes, and\n" +
-        "meter compliance, please update %p immediately.";
+                      "To keep up-to-date with the latest features, improvements, bug fixes, and\n" +
+                      "meter compliance, please update %p immediately.";
       newVer = newVer.Replace("%v", modFunctions.DisplayVersion(Version));
       newVer = newVer.Replace("%p", modFunctions.ProductName);
       lblNewVer.LabelProp = newVer;

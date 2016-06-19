@@ -7,9 +7,12 @@ using Gtk;
 using System.Drawing;
 using System.Security.Principal;
 using System.Diagnostics;
+using System.Security.Policy;
+using System.Runtime.InteropServices;
 namespace RestrictionTrackerGTK
 {
-  public partial class dlgConfig : Gtk.Dialog
+  public partial class dlgConfig :
+    Gtk.Dialog
   {
     private RestrictionLibrary.remoteRestrictionTracker remoteTest;
     private bool bSaved, bAccount, bLoaded, bHardChange, bRemoteAcct;
@@ -267,7 +270,53 @@ namespace RestrictionTrackerGTK
         }
       }
       cmbProxyType_Changed(null, null);
-      chkNetworkProtocolSSL.Active = (mySettings.Protocol == System.Net.SecurityProtocolType.Ssl3);
+      SecurityProtocolTypeEx myProtocol = (SecurityProtocolTypeEx) System.Net.ServicePointManager.SecurityProtocol;
+      try
+      {
+        System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Ssl3;
+        chkNetworkProtocolSSL3.Visible = true;
+        chkNetworkProtocolSSL3.Active = ((((SecurityProtocolTypeEx) mySettings.Protocol) & SecurityProtocolTypeEx.Ssl3) == SecurityProtocolTypeEx.Ssl3);
+      }
+      catch (Exception)
+      {
+        chkNetworkProtocolSSL3.Visible = false;
+        chkNetworkProtocolSSL3.Active = false;
+      }
+      try
+      {
+        System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls10;
+        chkNetworkProtocolTLS10.Visible = true;
+        chkNetworkProtocolTLS10.Active = ((((SecurityProtocolTypeEx) mySettings.Protocol) & SecurityProtocolTypeEx.Tls10) == SecurityProtocolTypeEx.Tls10);
+      }
+      catch (Exception)
+      {
+        chkNetworkProtocolTLS10.Visible = false;
+        chkNetworkProtocolTLS10.Active = false;
+      }
+      try
+      {
+        System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls11;
+        chkNetworkProtocolTLS11.Visible = true;
+        chkNetworkProtocolTLS11.Active = ((((SecurityProtocolTypeEx) mySettings.Protocol) & SecurityProtocolTypeEx.Tls11) == SecurityProtocolTypeEx.Tls11);
+      }
+      catch (Exception)
+      {
+        chkNetworkProtocolTLS11.Visible = false;
+        chkNetworkProtocolTLS11.Active = false;
+      }
+      try
+      {
+        System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls12;
+        chkNetworkProtocolTLS12.Visible = true;
+        chkNetworkProtocolTLS12.Active = ((((SecurityProtocolTypeEx) mySettings.Protocol) & SecurityProtocolTypeEx.Tls12) == SecurityProtocolTypeEx.Tls12);
+      }
+      catch (Exception)
+      {
+        chkNetworkProtocolTLS12.Visible = false;
+        chkNetworkProtocolTLS12.Active = false;
+      }
+      System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) myProtocol;
+
       if (string.IsNullOrEmpty(mySettings.NetTestURL))
       {
         optNetTestNone.Active = true;
@@ -455,7 +504,10 @@ namespace RestrictionTrackerGTK
       txtProxyPassword.Changed += ValuesChanged;
       txtProxyDomain.Changed += ValuesChanged;
       //
-      chkNetworkProtocolSSL.Toggled += ValuesChanged;
+      chkNetworkProtocolSSL3.Toggled += ValuesChanged;
+      chkNetworkProtocolTLS10.Toggled += ValuesChanged;
+      chkNetworkProtocolTLS11.Toggled += ValuesChanged;
+      chkNetworkProtocolTLS12.Toggled += ValuesChanged;
       //
       cmbUpdateAutomation.Changed += cmbUpdateAutomation_Changed;
       chkUpdateBETA.Clicked += ValuesChanged;
@@ -1319,21 +1371,46 @@ namespace RestrictionTrackerGTK
     {
       if (String.IsNullOrEmpty(txtAccount.Text))
       {
-        modFunctions.ShowMessageBox(this, "Please enter your ViaSat account Username.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+        modFunctions.ShowMessageBox(this, "Please enter your ViaSat account Username before saving the configuration.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
         txtAccount.GrabFocus();
-        return;
-      }
-      if (String.IsNullOrEmpty(cmbProvider.Entry.Text))
-      {
-        modFunctions.ShowMessageBox(this, "Please enter your ViaSat Provider address or select one from the list.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
-        cmbProvider.GrabFocus();
         return;
       }
       if (String.IsNullOrEmpty(txtPassword.Text))
       {
-        modFunctions.ShowMessageBox(this, "Please enter your ViaSat account Password.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+        modFunctions.ShowMessageBox(this, "Please enter your ViaSat account Password before saving the configuration.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
         txtPassword.GrabFocus();
         return;
+      }
+      if (String.IsNullOrEmpty(cmbProvider.Entry.Text))
+      {
+        modFunctions.ShowMessageBox(this, "Please enter your ViaSat Provider address or select one from the list before saving the configuration.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+        cmbProvider.GrabFocus();
+        return;
+      }
+      if (!bRemoteAcct & !(chkNetworkProtocolSSL3.Active | chkNetworkProtocolTLS10.Active | chkNetworkProtocolTLS11.Active | chkNetworkProtocolTLS12.Active))
+      {
+        modFunctions.ShowMessageBox(this, "Please select at least one Security Protocol type to connect with before saving the configuration.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+        if (chkNetworkProtocolTLS12.CanFocus)
+        {
+          chkNetworkProtocolTLS12.GrabFocus();
+        }
+        else if (chkNetworkProtocolTLS11.CanFocus)
+        {
+          chkNetworkProtocolTLS11.GrabFocus();
+        }
+        else if (chkNetworkProtocolTLS10.CanFocus)
+        {
+          chkNetworkProtocolTLS10.GrabFocus();
+        }
+        else if (chkNetworkProtocolSSL3.CanFocus)
+        {
+          chkNetworkProtocolSSL3.GrabFocus();
+        }
+        else
+        {
+          lblNetworkProtocolDescription.GrabFocus();
+        }
+
       }
       if (String.IsNullOrEmpty(txtHistoryDir.CurrentFolder))
       {
@@ -1349,10 +1426,10 @@ namespace RestrictionTrackerGTK
         }
       }
       if (cmbProvider.Entry.Text.ToLower().Contains("excede") ||
-        cmbProvider.Entry.Text.ToLower().Contains("force") ||
-        cmbProvider.Entry.Text.ToLower().Contains("mysso") ||
-        cmbProvider.Entry.Text.ToLower().Contains("myexede") ||
-        cmbProvider.Entry.Text.ToLower().Contains("my.exede"))
+          cmbProvider.Entry.Text.ToLower().Contains("force") ||
+          cmbProvider.Entry.Text.ToLower().Contains("mysso") ||
+          cmbProvider.Entry.Text.ToLower().Contains("myexede") ||
+          cmbProvider.Entry.Text.ToLower().Contains("my.exede"))
         cmbProvider.Entry.Text = "exede.net";
       if (string.Compare(mySettings.Account, txtAccount.Text + "@" + cmbProvider.Entry.Text, true) != 0)
       {
@@ -1688,13 +1765,22 @@ namespace RestrictionTrackerGTK
           }
         }
       }
-      if (chkNetworkProtocolSSL.Active)
+      mySettings.Protocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.None;
+      if (chkNetworkProtocolSSL3.Active)
       {
-        mySettings.Protocol = System.Net.SecurityProtocolType.Ssl3;
+        mySettings.Protocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Ssl3;
       }
-      else
+      if (chkNetworkProtocolTLS10.Active)
       {
-        mySettings.Protocol = System.Net.SecurityProtocolType.Tls;
+        mySettings.Protocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls10;
+      }
+      if (chkNetworkProtocolTLS11.Active)
+      {
+        mySettings.Protocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls11;
+      }
+      if (chkNetworkProtocolTLS12.Active)
+      {
+        mySettings.Protocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls12;
       }
       string sNetTestIco = System.IO.Path.Combine(modFunctions.AppDataPath, "netTest.png");
       try
@@ -1785,6 +1871,8 @@ namespace RestrictionTrackerGTK
         }
       }
       string sKey = txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text;
+      if (sKey.Contains("--"))
+        sKey = "";
       if (string.Compare(mySettings.RemoteKey, sKey, true) != 0)
         return true;
       if ((int) mySettings.StartWait - txtStartWait.Value != 0)
@@ -1926,11 +2014,19 @@ namespace RestrictionTrackerGTK
           }
         }
       }
-      if (mySettings.Protocol == System.Net.SecurityProtocolType.Ssl3 && !chkNetworkProtocolSSL.Active)
+      if ((((SecurityProtocolTypeEx) mySettings.Protocol & SecurityProtocolTypeEx.Ssl3) == SecurityProtocolTypeEx.Ssl3) == !chkNetworkProtocolSSL3.Active)
       {
         return true;
       }
-      else if (mySettings.Protocol == System.Net.SecurityProtocolType.Tls && chkNetworkProtocolSSL.Active)
+      if ((((SecurityProtocolTypeEx) mySettings.Protocol & SecurityProtocolTypeEx.Tls10) == SecurityProtocolTypeEx.Tls10) == !chkNetworkProtocolTLS10.Active)
+      {
+        return true;
+      }
+      if ((((SecurityProtocolTypeEx) mySettings.Protocol & SecurityProtocolTypeEx.Tls11) == SecurityProtocolTypeEx.Tls11) == !chkNetworkProtocolTLS11.Active)
+      {
+        return true;
+      }
+      if ((((SecurityProtocolTypeEx) mySettings.Protocol & SecurityProtocolTypeEx.Tls12) == SecurityProtocolTypeEx.Tls12) == !chkNetworkProtocolTLS12.Active)
       {
         return true;
       }

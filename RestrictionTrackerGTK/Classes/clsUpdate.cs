@@ -2,7 +2,8 @@ using System;
 using RestrictionLibrary;
 namespace RestrictionTrackerGTK
 {
-  public class clsUpdate : IDisposable
+  public class clsUpdate :
+    IDisposable
   {
     private const string VersionURL = "http://update.realityripple.com/Satellite_Restriction_Tracker/ver";
     public class ProgressEventArgs : EventArgs
@@ -21,7 +22,8 @@ namespace RestrictionTrackerGTK
     {
       public ResultType Result;
       public string Version;
-      internal CheckEventArgs(ResultType rtResult, string sVersion, Exception ex, bool bCancelled, object state) : base(ex, bCancelled, state)
+      internal CheckEventArgs(ResultType rtResult, string sVersion, Exception ex, bool bCancelled, object state) :
+        base(ex, bCancelled, state)
       {
         Version = sVersion;
         Result = rtResult;
@@ -30,27 +32,29 @@ namespace RestrictionTrackerGTK
     public class DownloadEventArgs : System.ComponentModel.AsyncCompletedEventArgs
     {
       public string Version;
-      internal DownloadEventArgs(string sVersion, Exception ex, bool bCancelled, object state) : base(ex, bCancelled, state)
+      internal DownloadEventArgs(string sVersion, Exception ex, bool bCancelled, object state) :
+        base(ex, bCancelled, state)
       {
         Version = sVersion;
       }
-      internal DownloadEventArgs(string sVersion, System.ComponentModel.AsyncCompletedEventArgs e) : base(e.Error,e.Cancelled,e.UserState)
+      internal DownloadEventArgs(string sVersion, System.ComponentModel.AsyncCompletedEventArgs e) :
+        base(e.Error, e.Cancelled, e.UserState)
       {
         Version = sVersion;
       }
     }
     public event CheckingVersionEventHandler CheckingVersion;
-    public delegate void CheckingVersionEventHandler(object sender,EventArgs e);
+    public delegate void CheckingVersionEventHandler(object sender, EventArgs e);
     public event CheckProgressChangedEventHandler CheckProgressChanged;
-    public delegate void CheckProgressChangedEventHandler(object sender,ProgressEventArgs e);
+    public delegate void CheckProgressChangedEventHandler(object sender, ProgressEventArgs e);
     public event CheckResultEventHandler CheckResult;
-    public delegate void CheckResultEventHandler(object sender,CheckEventArgs e);
+    public delegate void CheckResultEventHandler(object sender, CheckEventArgs e);
     public event DownloadingUpdateEventHandler DownloadingUpdate;
-    public delegate void DownloadingUpdateEventHandler(object sender,EventArgs e);
+    public delegate void DownloadingUpdateEventHandler(object sender, EventArgs e);
     public event UpdateProgressChangedEventHandler UpdateProgressChanged;
-    public delegate void UpdateProgressChangedEventHandler(object sender,ProgressEventArgs e);
+    public delegate void UpdateProgressChangedEventHandler(object sender, ProgressEventArgs e);
     public event DownloadResultEventHandler DownloadResult;
-    public delegate void DownloadResultEventHandler(object sender,DownloadEventArgs e);
+    public delegate void DownloadResultEventHandler(object sender, DownloadEventArgs e);
     private RestrictionLibrary.WebClientCore wsVer;
     private string DownloadURL;
     private string VerNumber;
