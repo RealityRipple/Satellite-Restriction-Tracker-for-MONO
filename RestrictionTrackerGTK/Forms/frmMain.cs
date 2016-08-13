@@ -1808,7 +1808,7 @@ namespace RestrictionTrackerGTK
               if (e.Stage < 1)
                 SetStatusText(modDB.LOG_GetLast().ToString("g"), "Re-Authenticating...", false);
               else
-                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Re-Authenticating (Attempt " + e.Stage + "...", false);
+                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Re-Authenticating (Attempt " + e.Stage + ")...", false);
               break;
             case localRestrictionTracker.ConnectionSubStates.Verify:
               SetStatusText(modDB.LOG_GetLast().ToString("g"), "Verifying Authentication...", false);
