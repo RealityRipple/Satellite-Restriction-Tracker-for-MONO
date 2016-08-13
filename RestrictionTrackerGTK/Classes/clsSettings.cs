@@ -36,6 +36,7 @@ namespace RestrictionTrackerGTK
     private TrayStyles m_TrayIcon;
     private bool m_TrayClose;
     private bool m_AutoHide;
+    private bool m_TLSProxy;
     private string m_ProxySetting;
     private string m_NetTest;
     private SecurityProtocolType m_Protocol;
@@ -256,6 +257,10 @@ namespace RestrictionTrackerGTK
                     else if (xName.CompareTo("AutoHide") == 0)
                     {
                       m_AutoHide = (xValue.CompareTo("True") == 0);
+                    }
+                    else if (xName.CompareTo("TLSProxy") == 0)
+                    {
+                      m_TLSProxy = (xValue.CompareTo("True") == 0);
                     }
                     else if (xName.CompareTo("Proxy") == 0)
                     {
@@ -578,6 +583,7 @@ namespace RestrictionTrackerGTK
       m_TrayIcon = TrayStyles.Always;
       m_TrayClose = false;
       m_AutoHide = true;
+      m_TLSProxy = false;
       m_ProxySetting = "System";
       m_Protocol = (System.Net.SecurityProtocolType) (SecurityProtocolTypeEx.Tls11 | SecurityProtocolTypeEx.Tls12);
       m_NetTest = null;
@@ -677,6 +683,9 @@ namespace RestrictionTrackerGTK
       string sAutoHide = "True";
       if (!m_AutoHide)
         sAutoHide = "False";
+      string sTLSProxy = "True";
+      if (!m_TLSProxy)
+        sTLSProxy = "False";
       string sTrayClose = "True";
       if (!m_TrayClose)
         sTrayClose = "False";
@@ -752,6 +761,9 @@ namespace RestrictionTrackerGTK
                     "      </setting>\n" +
                     "      <setting name=\"AutoHide\">\n" +
                     "        <value>" + sAutoHide + "</value>\n" +
+                    "      </setting>\n" +
+                    "      <setting name=\"TLSProxy\">\n" +
+                    "        <value>" + sTLSProxy + "</value>\n" +
                     "      </setting>\n" +
                     "      <setting name=\"Proxy\">\n" +
                     "        <value>" + m_ProxySetting + "</value>\n" +
@@ -1291,6 +1303,17 @@ namespace RestrictionTrackerGTK
       set
       {
         m_AutoHide = value;
+      }
+    }
+    public bool TLSProxy
+    {
+      get
+      {
+        return m_TLSProxy;
+      }
+      set
+      {
+        m_TLSProxy = value;
       }
     }
     public IWebProxy Proxy

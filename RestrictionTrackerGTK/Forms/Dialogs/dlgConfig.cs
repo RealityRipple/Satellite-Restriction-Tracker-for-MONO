@@ -270,53 +270,58 @@ namespace RestrictionTrackerGTK
         }
       }
       cmbProxyType_Changed(null, null);
+      chkNetworkProtocolSSL3.Active = ((((SecurityProtocolTypeEx) mySettings.Protocol) & SecurityProtocolTypeEx.Ssl3) == SecurityProtocolTypeEx.Ssl3);
+      chkNetworkProtocolTLS10.Active = ((((SecurityProtocolTypeEx) mySettings.Protocol) & SecurityProtocolTypeEx.Tls10) == SecurityProtocolTypeEx.Tls10);
+      chkNetworkProtocolTLS11.Active = ((((SecurityProtocolTypeEx) mySettings.Protocol) & SecurityProtocolTypeEx.Tls11) == SecurityProtocolTypeEx.Tls11);
+      chkNetworkProtocolTLS12.Active = ((((SecurityProtocolTypeEx) mySettings.Protocol) & SecurityProtocolTypeEx.Tls12) == SecurityProtocolTypeEx.Tls12);
+      bool useTLSProxy = false;
+      /*
       SecurityProtocolTypeEx myProtocol = (SecurityProtocolTypeEx) System.Net.ServicePointManager.SecurityProtocol;
       try
       {
         System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Ssl3;
-        chkNetworkProtocolSSL3.Visible = true;
-        chkNetworkProtocolSSL3.Active = ((((SecurityProtocolTypeEx) mySettings.Protocol) & SecurityProtocolTypeEx.Ssl3) == SecurityProtocolTypeEx.Ssl3);
       }
       catch (Exception)
       {
-        chkNetworkProtocolSSL3.Visible = false;
-        chkNetworkProtocolSSL3.Active = false;
+        useTLSProxy = true;
       }
       try
       {
         System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls10;
-        chkNetworkProtocolTLS10.Visible = true;
-        chkNetworkProtocolTLS10.Active = ((((SecurityProtocolTypeEx) mySettings.Protocol) & SecurityProtocolTypeEx.Tls10) == SecurityProtocolTypeEx.Tls10);
       }
       catch (Exception)
       {
-        chkNetworkProtocolTLS10.Visible = false;
-        chkNetworkProtocolTLS10.Active = false;
+        useTLSProxy = true;
       }
       try
       {
         System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls11;
-        chkNetworkProtocolTLS11.Visible = true;
-        chkNetworkProtocolTLS11.Active = ((((SecurityProtocolTypeEx) mySettings.Protocol) & SecurityProtocolTypeEx.Tls11) == SecurityProtocolTypeEx.Tls11);
       }
       catch (Exception)
       {
-        chkNetworkProtocolTLS11.Visible = false;
-        chkNetworkProtocolTLS11.Active = false;
+        useTLSProxy = true;
       }
       try
       {
         System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls12;
-        chkNetworkProtocolTLS12.Visible = true;
-        chkNetworkProtocolTLS12.Active = ((((SecurityProtocolTypeEx) mySettings.Protocol) & SecurityProtocolTypeEx.Tls12) == SecurityProtocolTypeEx.Tls12);
       }
       catch (Exception)
       {
-        chkNetworkProtocolTLS12.Visible = false;
-        chkNetworkProtocolTLS12.Active = false;
+        useTLSProxy = true;
       }
       System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) myProtocol;
-
+      */
+      useTLSProxy = true;
+      if (useTLSProxy)
+      {
+        chkTLSProxy.Visible = true;
+        chkTLSProxy.Active = mySettings.TLSProxy;
+      }
+      else
+      {
+        chkTLSProxy.Active = false;
+        chkTLSProxy.Visible = false;
+      }
       if (string.IsNullOrEmpty(mySettings.NetTestURL))
       {
         optNetTestNone.Active = true;
@@ -504,6 +509,7 @@ namespace RestrictionTrackerGTK
       txtProxyPassword.Changed += ValuesChanged;
       txtProxyDomain.Changed += ValuesChanged;
       //
+      chkTLSProxy.Toggled += ValuesChanged;
       chkNetworkProtocolSSL3.Toggled += ValuesChanged;
       chkNetworkProtocolTLS10.Toggled += ValuesChanged;
       chkNetworkProtocolTLS11.Toggled += ValuesChanged;
@@ -1765,6 +1771,7 @@ namespace RestrictionTrackerGTK
           }
         }
       }
+      mySettings.TLSProxy = chkTLSProxy.Active;
       mySettings.Protocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.None;
       if (chkNetworkProtocolSSL3.Active)
       {
@@ -2013,6 +2020,10 @@ namespace RestrictionTrackerGTK
             }
           }
         }
+      }
+      if (mySettings.TLSProxy != chkTLSProxy.Active)
+      {
+        return true;
       }
       if ((((SecurityProtocolTypeEx) mySettings.Protocol & SecurityProtocolTypeEx.Ssl3) == SecurityProtocolTypeEx.Ssl3) == !chkNetworkProtocolSSL3.Active)
       {

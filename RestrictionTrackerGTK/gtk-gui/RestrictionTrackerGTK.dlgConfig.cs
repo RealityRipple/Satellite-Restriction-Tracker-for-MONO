@@ -210,6 +210,8 @@ namespace RestrictionTrackerGTK
 		
 		private global::Gtk.CheckButton chkNetworkProtocolTLS12;
 		
+		private global::Gtk.CheckButton chkTLSProxy;
+		
 		private global::Gtk.Label lblNetworkProtocolDescription;
 		
 		private global::Gtk.Image pctNetworkProtocolIcon;
@@ -643,7 +645,6 @@ namespace RestrictionTrackerGTK
 			this.optAccountTypeDNX.TooltipMarkup = "Exede package through Dish.";
 			this.optAccountTypeDNX.CanFocus = true;
 			this.optAccountTypeDNX.Name = "optAccountTypeDNX";
-			this.optAccountTypeDNX.Active = true;
 			this.optAccountTypeDNX.DrawIndicator = true;
 			this.optAccountTypeDNX.UseUnderline = true;
 			this.optAccountTypeDNX.Group = new global::GLib.SList (global::System.IntPtr.Zero);
@@ -1571,7 +1572,7 @@ namespace RestrictionTrackerGTK
 			w96.XOptions = ((global::Gtk.AttachOptions)(0));
 			w96.YOptions = ((global::Gtk.AttachOptions)(1));
 			// Container child pnlNetwork.Gtk.Table+TableChild
-			this.pnlNetworkProtocol = new global::Gtk.Table (((uint)(2)), ((uint)(5)), false);
+			this.pnlNetworkProtocol = new global::Gtk.Table (((uint)(2)), ((uint)(6)), false);
 			this.pnlNetworkProtocol.Name = "pnlNetworkProtocol";
 			this.pnlNetworkProtocol.RowSpacing = ((uint)(2));
 			this.pnlNetworkProtocol.ColumnSpacing = ((uint)(2));
@@ -1587,8 +1588,8 @@ namespace RestrictionTrackerGTK
 			global::Gtk.Table.TableChild w97 = ((global::Gtk.Table.TableChild)(this.pnlNetworkProtocol [this.chkNetworkProtocolSSL3]));
 			w97.TopAttach = ((uint)(1));
 			w97.BottomAttach = ((uint)(2));
-			w97.LeftAttach = ((uint)(1));
-			w97.RightAttach = ((uint)(2));
+			w97.LeftAttach = ((uint)(2));
+			w97.RightAttach = ((uint)(3));
 			w97.XOptions = ((global::Gtk.AttachOptions)(4));
 			w97.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlNetworkProtocol.Gtk.Table+TableChild
@@ -1603,8 +1604,8 @@ namespace RestrictionTrackerGTK
 			global::Gtk.Table.TableChild w98 = ((global::Gtk.Table.TableChild)(this.pnlNetworkProtocol [this.chkNetworkProtocolTLS10]));
 			w98.TopAttach = ((uint)(1));
 			w98.BottomAttach = ((uint)(2));
-			w98.LeftAttach = ((uint)(2));
-			w98.RightAttach = ((uint)(3));
+			w98.LeftAttach = ((uint)(3));
+			w98.RightAttach = ((uint)(4));
 			w98.XOptions = ((global::Gtk.AttachOptions)(4));
 			w98.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlNetworkProtocol.Gtk.Table+TableChild
@@ -1619,8 +1620,8 @@ namespace RestrictionTrackerGTK
 			global::Gtk.Table.TableChild w99 = ((global::Gtk.Table.TableChild)(this.pnlNetworkProtocol [this.chkNetworkProtocolTLS11]));
 			w99.TopAttach = ((uint)(1));
 			w99.BottomAttach = ((uint)(2));
-			w99.LeftAttach = ((uint)(3));
-			w99.RightAttach = ((uint)(4));
+			w99.LeftAttach = ((uint)(4));
+			w99.RightAttach = ((uint)(5));
 			w99.XOptions = ((global::Gtk.AttachOptions)(4));
 			w99.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlNetworkProtocol.Gtk.Table+TableChild
@@ -1635,10 +1636,26 @@ namespace RestrictionTrackerGTK
 			global::Gtk.Table.TableChild w100 = ((global::Gtk.Table.TableChild)(this.pnlNetworkProtocol [this.chkNetworkProtocolTLS12]));
 			w100.TopAttach = ((uint)(1));
 			w100.BottomAttach = ((uint)(2));
-			w100.LeftAttach = ((uint)(4));
-			w100.RightAttach = ((uint)(5));
+			w100.LeftAttach = ((uint)(5));
+			w100.RightAttach = ((uint)(6));
 			w100.XOptions = ((global::Gtk.AttachOptions)(4));
 			w100.YOptions = ((global::Gtk.AttachOptions)(4));
+			// Container child pnlNetworkProtocol.Gtk.Table+TableChild
+			this.chkTLSProxy = new global::Gtk.CheckButton ();
+			this.chkTLSProxy.TooltipMarkup = "If your Operating System does not support the Security Protocol required for your provider, you can use this Proxy to connect through the RealityRipple.com server.";
+			this.chkTLSProxy.CanFocus = true;
+			this.chkTLSProxy.Name = "chkTLSProxy";
+			this.chkTLSProxy.Label = global::Mono.Unix.Catalog.GetString ("Proxy");
+			this.chkTLSProxy.DrawIndicator = true;
+			this.chkTLSProxy.UseUnderline = true;
+			this.pnlNetworkProtocol.Add (this.chkTLSProxy);
+			global::Gtk.Table.TableChild w101 = ((global::Gtk.Table.TableChild)(this.pnlNetworkProtocol [this.chkTLSProxy]));
+			w101.TopAttach = ((uint)(1));
+			w101.BottomAttach = ((uint)(2));
+			w101.LeftAttach = ((uint)(1));
+			w101.RightAttach = ((uint)(2));
+			w101.XOptions = ((global::Gtk.AttachOptions)(4));
+			w101.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlNetworkProtocol.Gtk.Table+TableChild
 			this.lblNetworkProtocolDescription = new global::Gtk.Label ();
 			this.lblNetworkProtocolDescription.Name = "lblNetworkProtocolDescription";
@@ -1646,11 +1663,11 @@ namespace RestrictionTrackerGTK
 			this.lblNetworkProtocolDescription.LabelProp = global::Mono.Unix.Catalog.GetString ("Some servers may prefer the older SSL protocol,\nothers may require modern TLS.");
 			this.lblNetworkProtocolDescription.Wrap = true;
 			this.pnlNetworkProtocol.Add (this.lblNetworkProtocolDescription);
-			global::Gtk.Table.TableChild w101 = ((global::Gtk.Table.TableChild)(this.pnlNetworkProtocol [this.lblNetworkProtocolDescription]));
-			w101.LeftAttach = ((uint)(1));
-			w101.RightAttach = ((uint)(5));
-			w101.XOptions = ((global::Gtk.AttachOptions)(4));
-			w101.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w102 = ((global::Gtk.Table.TableChild)(this.pnlNetworkProtocol [this.lblNetworkProtocolDescription]));
+			w102.LeftAttach = ((uint)(1));
+			w102.RightAttach = ((uint)(6));
+			w102.XOptions = ((global::Gtk.AttachOptions)(4));
+			w102.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlNetworkProtocol.Gtk.Table+TableChild
 			this.pctNetworkProtocolIcon = new global::Gtk.Image ();
 			this.pctNetworkProtocolIcon.WidthRequest = 48;
@@ -1661,16 +1678,16 @@ namespace RestrictionTrackerGTK
 			this.pctNetworkProtocolIcon.Yalign = 0F;
 			this.pctNetworkProtocolIcon.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("RestrictionTrackerGTK.Resources.config.linux.network_security.png");
 			this.pnlNetworkProtocol.Add (this.pctNetworkProtocolIcon);
-			global::Gtk.Table.TableChild w102 = ((global::Gtk.Table.TableChild)(this.pnlNetworkProtocol [this.pctNetworkProtocolIcon]));
-			w102.BottomAttach = ((uint)(2));
-			w102.XOptions = ((global::Gtk.AttachOptions)(4));
-			w102.YOptions = ((global::Gtk.AttachOptions)(4));
-			this.pnlNetwork.Add (this.pnlNetworkProtocol);
-			global::Gtk.Table.TableChild w103 = ((global::Gtk.Table.TableChild)(this.pnlNetwork [this.pnlNetworkProtocol]));
-			w103.TopAttach = ((uint)(7));
-			w103.BottomAttach = ((uint)(8));
+			global::Gtk.Table.TableChild w103 = ((global::Gtk.Table.TableChild)(this.pnlNetworkProtocol [this.pctNetworkProtocolIcon]));
+			w103.BottomAttach = ((uint)(2));
 			w103.XOptions = ((global::Gtk.AttachOptions)(4));
 			w103.YOptions = ((global::Gtk.AttachOptions)(4));
+			this.pnlNetwork.Add (this.pnlNetworkProtocol);
+			global::Gtk.Table.TableChild w104 = ((global::Gtk.Table.TableChild)(this.pnlNetwork [this.pnlNetworkProtocol]));
+			w104.TopAttach = ((uint)(7));
+			w104.BottomAttach = ((uint)(8));
+			w104.XOptions = ((global::Gtk.AttachOptions)(4));
+			w104.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlNetwork.Gtk.Table+TableChild
 			this.pnlNetworkProxy = new global::Gtk.Table (((uint)(2)), ((uint)(3)), false);
 			this.pnlNetworkProxy.Name = "pnlNetworkProxy";
@@ -1682,11 +1699,11 @@ namespace RestrictionTrackerGTK
 			this.lblNetworkProxyDescription.Xalign = 0F;
 			this.lblNetworkProxyDescription.LabelProp = global::Mono.Unix.Catalog.GetString ("If you connect through a proxy, enter the IP or URL here.");
 			this.pnlNetworkProxy.Add (this.lblNetworkProxyDescription);
-			global::Gtk.Table.TableChild w104 = ((global::Gtk.Table.TableChild)(this.pnlNetworkProxy [this.lblNetworkProxyDescription]));
-			w104.LeftAttach = ((uint)(1));
-			w104.RightAttach = ((uint)(3));
-			w104.XOptions = ((global::Gtk.AttachOptions)(4));
-			w104.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w105 = ((global::Gtk.Table.TableChild)(this.pnlNetworkProxy [this.lblNetworkProxyDescription]));
+			w105.LeftAttach = ((uint)(1));
+			w105.RightAttach = ((uint)(3));
+			w105.XOptions = ((global::Gtk.AttachOptions)(4));
+			w105.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlNetworkProxy.Gtk.Table+TableChild
 			this.pctNetworkProxyIcon = new global::Gtk.Image ();
 			this.pctNetworkProxyIcon.WidthRequest = 48;
@@ -1697,10 +1714,10 @@ namespace RestrictionTrackerGTK
 			this.pctNetworkProxyIcon.Yalign = 0F;
 			this.pctNetworkProxyIcon.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("RestrictionTrackerGTK.Resources.config.linux.net_proxy.png");
 			this.pnlNetworkProxy.Add (this.pctNetworkProxyIcon);
-			global::Gtk.Table.TableChild w105 = ((global::Gtk.Table.TableChild)(this.pnlNetworkProxy [this.pctNetworkProxyIcon]));
-			w105.BottomAttach = ((uint)(2));
-			w105.XOptions = ((global::Gtk.AttachOptions)(4));
-			w105.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w106 = ((global::Gtk.Table.TableChild)(this.pnlNetworkProxy [this.pctNetworkProxyIcon]));
+			w106.BottomAttach = ((uint)(2));
+			w106.XOptions = ((global::Gtk.AttachOptions)(4));
+			w106.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlNetworkProxy.Gtk.Table+TableChild
 			this.pnlProxy = new global::Gtk.Table (((uint)(7)), ((uint)(3)), false);
 			this.pnlProxy.Name = "pnlProxy";
@@ -1716,60 +1733,60 @@ namespace RestrictionTrackerGTK
 			this.cmbProxyType.Name = "cmbProxyType";
 			this.cmbProxyType.Active = 0;
 			this.pnlProxy.Add (this.cmbProxyType);
-			global::Gtk.Table.TableChild w106 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.cmbProxyType]));
-			w106.LeftAttach = ((uint)(1));
-			w106.RightAttach = ((uint)(3));
-			w106.XOptions = ((global::Gtk.AttachOptions)(4));
-			w106.YOptions = ((global::Gtk.AttachOptions)(0));
+			global::Gtk.Table.TableChild w107 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.cmbProxyType]));
+			w107.LeftAttach = ((uint)(1));
+			w107.RightAttach = ((uint)(3));
+			w107.XOptions = ((global::Gtk.AttachOptions)(4));
+			w107.YOptions = ((global::Gtk.AttachOptions)(0));
 			// Container child pnlProxy.Gtk.Table+TableChild
 			this.lblProxyAddr = new global::Gtk.Label ();
 			this.lblProxyAddr.Name = "lblProxyAddr";
 			this.lblProxyAddr.Xalign = 0F;
 			this.lblProxyAddr.LabelProp = global::Mono.Unix.Catalog.GetString ("IP Address:");
 			this.pnlProxy.Add (this.lblProxyAddr);
-			global::Gtk.Table.TableChild w107 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.lblProxyAddr]));
-			w107.TopAttach = ((uint)(1));
-			w107.BottomAttach = ((uint)(2));
-			w107.XOptions = ((global::Gtk.AttachOptions)(4));
-			w107.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w108 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.lblProxyAddr]));
+			w108.TopAttach = ((uint)(1));
+			w108.BottomAttach = ((uint)(2));
+			w108.XOptions = ((global::Gtk.AttachOptions)(4));
+			w108.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlProxy.Gtk.Table+TableChild
 			this.lblProxyDomain = new global::Gtk.Label ();
 			this.lblProxyDomain.Name = "lblProxyDomain";
 			this.lblProxyDomain.Xalign = 0F;
 			this.lblProxyDomain.LabelProp = global::Mono.Unix.Catalog.GetString ("Domain:");
 			this.pnlProxy.Add (this.lblProxyDomain);
-			global::Gtk.Table.TableChild w108 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.lblProxyDomain]));
-			w108.TopAttach = ((uint)(5));
-			w108.BottomAttach = ((uint)(6));
-			w108.RightAttach = ((uint)(3));
-			w108.XOptions = ((global::Gtk.AttachOptions)(4));
-			w108.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w109 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.lblProxyDomain]));
+			w109.TopAttach = ((uint)(5));
+			w109.BottomAttach = ((uint)(6));
+			w109.RightAttach = ((uint)(3));
+			w109.XOptions = ((global::Gtk.AttachOptions)(4));
+			w109.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlProxy.Gtk.Table+TableChild
 			this.lblProxyPassword = new global::Gtk.Label ();
 			this.lblProxyPassword.Name = "lblProxyPassword";
 			this.lblProxyPassword.Xalign = 0F;
 			this.lblProxyPassword.LabelProp = global::Mono.Unix.Catalog.GetString ("Password:");
 			this.pnlProxy.Add (this.lblProxyPassword);
-			global::Gtk.Table.TableChild w109 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.lblProxyPassword]));
-			w109.TopAttach = ((uint)(3));
-			w109.BottomAttach = ((uint)(4));
-			w109.LeftAttach = ((uint)(1));
-			w109.RightAttach = ((uint)(3));
-			w109.XOptions = ((global::Gtk.AttachOptions)(4));
-			w109.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w110 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.lblProxyPassword]));
+			w110.TopAttach = ((uint)(3));
+			w110.BottomAttach = ((uint)(4));
+			w110.LeftAttach = ((uint)(1));
+			w110.RightAttach = ((uint)(3));
+			w110.XOptions = ((global::Gtk.AttachOptions)(4));
+			w110.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlProxy.Gtk.Table+TableChild
 			this.lblProxyPort = new global::Gtk.Label ();
 			this.lblProxyPort.Name = "lblProxyPort";
 			this.lblProxyPort.Xalign = 0F;
 			this.lblProxyPort.LabelProp = global::Mono.Unix.Catalog.GetString ("Port:");
 			this.pnlProxy.Add (this.lblProxyPort);
-			global::Gtk.Table.TableChild w110 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.lblProxyPort]));
-			w110.TopAttach = ((uint)(1));
-			w110.BottomAttach = ((uint)(2));
-			w110.LeftAttach = ((uint)(1));
-			w110.RightAttach = ((uint)(3));
-			w110.XOptions = ((global::Gtk.AttachOptions)(4));
-			w110.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w111 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.lblProxyPort]));
+			w111.TopAttach = ((uint)(1));
+			w111.BottomAttach = ((uint)(2));
+			w111.LeftAttach = ((uint)(1));
+			w111.RightAttach = ((uint)(3));
+			w111.XOptions = ((global::Gtk.AttachOptions)(4));
+			w111.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlProxy.Gtk.Table+TableChild
 			this.lblProxyType = new global::Gtk.Label ();
 			this.lblProxyType.Name = "lblProxyType";
@@ -1777,20 +1794,20 @@ namespace RestrictionTrackerGTK
 			this.lblProxyType.LabelProp = global::Mono.Unix.Catalog.GetString ("_Proxy Type:");
 			this.lblProxyType.UseUnderline = true;
 			this.pnlProxy.Add (this.lblProxyType);
-			global::Gtk.Table.TableChild w111 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.lblProxyType]));
-			w111.XOptions = ((global::Gtk.AttachOptions)(4));
-			w111.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w112 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.lblProxyType]));
+			w112.XOptions = ((global::Gtk.AttachOptions)(4));
+			w112.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlProxy.Gtk.Table+TableChild
 			this.lblProxyUser = new global::Gtk.Label ();
 			this.lblProxyUser.Name = "lblProxyUser";
 			this.lblProxyUser.Xalign = 0F;
 			this.lblProxyUser.LabelProp = global::Mono.Unix.Catalog.GetString ("Username:");
 			this.pnlProxy.Add (this.lblProxyUser);
-			global::Gtk.Table.TableChild w112 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.lblProxyUser]));
-			w112.TopAttach = ((uint)(3));
-			w112.BottomAttach = ((uint)(4));
-			w112.XOptions = ((global::Gtk.AttachOptions)(4));
-			w112.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w113 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.lblProxyUser]));
+			w113.TopAttach = ((uint)(3));
+			w113.BottomAttach = ((uint)(4));
+			w113.XOptions = ((global::Gtk.AttachOptions)(4));
+			w113.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlProxy.Gtk.Table+TableChild
 			this.txtProxyAddress = new global::Gtk.Entry ();
 			this.txtProxyAddress.TooltipMarkup = "Address of HTTP Proxy to connect through.";
@@ -1800,11 +1817,11 @@ namespace RestrictionTrackerGTK
 			this.txtProxyAddress.WidthChars = 15;
 			this.txtProxyAddress.InvisibleChar = '●';
 			this.pnlProxy.Add (this.txtProxyAddress);
-			global::Gtk.Table.TableChild w113 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.txtProxyAddress]));
-			w113.TopAttach = ((uint)(2));
-			w113.BottomAttach = ((uint)(3));
-			w113.XOptions = ((global::Gtk.AttachOptions)(4));
-			w113.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w114 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.txtProxyAddress]));
+			w114.TopAttach = ((uint)(2));
+			w114.BottomAttach = ((uint)(3));
+			w114.XOptions = ((global::Gtk.AttachOptions)(4));
+			w114.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlProxy.Gtk.Table+TableChild
 			this.txtProxyDomain = new global::Gtk.Entry ();
 			this.txtProxyDomain.TooltipMarkup = "Optional Domain for HTTP Proxy authentication.";
@@ -1813,12 +1830,12 @@ namespace RestrictionTrackerGTK
 			this.txtProxyDomain.IsEditable = true;
 			this.txtProxyDomain.InvisibleChar = '●';
 			this.pnlProxy.Add (this.txtProxyDomain);
-			global::Gtk.Table.TableChild w114 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.txtProxyDomain]));
-			w114.TopAttach = ((uint)(6));
-			w114.BottomAttach = ((uint)(7));
-			w114.RightAttach = ((uint)(3));
-			w114.XOptions = ((global::Gtk.AttachOptions)(4));
-			w114.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w115 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.txtProxyDomain]));
+			w115.TopAttach = ((uint)(6));
+			w115.BottomAttach = ((uint)(7));
+			w115.RightAttach = ((uint)(3));
+			w115.XOptions = ((global::Gtk.AttachOptions)(4));
+			w115.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlProxy.Gtk.Table+TableChild
 			this.txtProxyPassword = new global::Gtk.Entry ();
 			this.txtProxyPassword.TooltipMarkup = "Optional Password for HTTP Proxy authentication.";
@@ -1828,13 +1845,13 @@ namespace RestrictionTrackerGTK
 			this.txtProxyPassword.WidthChars = 15;
 			this.txtProxyPassword.InvisibleChar = '●';
 			this.pnlProxy.Add (this.txtProxyPassword);
-			global::Gtk.Table.TableChild w115 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.txtProxyPassword]));
-			w115.TopAttach = ((uint)(4));
-			w115.BottomAttach = ((uint)(5));
-			w115.LeftAttach = ((uint)(1));
-			w115.RightAttach = ((uint)(3));
-			w115.XOptions = ((global::Gtk.AttachOptions)(4));
-			w115.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w116 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.txtProxyPassword]));
+			w116.TopAttach = ((uint)(4));
+			w116.BottomAttach = ((uint)(5));
+			w116.LeftAttach = ((uint)(1));
+			w116.RightAttach = ((uint)(3));
+			w116.XOptions = ((global::Gtk.AttachOptions)(4));
+			w116.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlProxy.Gtk.Table+TableChild
 			this.txtProxyPort = new global::Gtk.SpinButton (1, 65535, 1);
 			this.txtProxyPort.TooltipMarkup = "Port to connect to HTTP proxy over.";
@@ -1845,13 +1862,13 @@ namespace RestrictionTrackerGTK
 			this.txtProxyPort.Numeric = true;
 			this.txtProxyPort.Value = 8080;
 			this.pnlProxy.Add (this.txtProxyPort);
-			global::Gtk.Table.TableChild w116 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.txtProxyPort]));
-			w116.TopAttach = ((uint)(2));
-			w116.BottomAttach = ((uint)(3));
-			w116.LeftAttach = ((uint)(1));
-			w116.RightAttach = ((uint)(2));
-			w116.XOptions = ((global::Gtk.AttachOptions)(4));
-			w116.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w117 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.txtProxyPort]));
+			w117.TopAttach = ((uint)(2));
+			w117.BottomAttach = ((uint)(3));
+			w117.LeftAttach = ((uint)(1));
+			w117.RightAttach = ((uint)(2));
+			w117.XOptions = ((global::Gtk.AttachOptions)(4));
+			w117.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlProxy.Gtk.Table+TableChild
 			this.txtProxyUser = new global::Gtk.Entry ();
 			this.txtProxyUser.TooltipMarkup = "Optional Username for HTTP Proxy authentication.";
@@ -1861,25 +1878,25 @@ namespace RestrictionTrackerGTK
 			this.txtProxyUser.WidthChars = 15;
 			this.txtProxyUser.InvisibleChar = '●';
 			this.pnlProxy.Add (this.txtProxyUser);
-			global::Gtk.Table.TableChild w117 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.txtProxyUser]));
-			w117.TopAttach = ((uint)(4));
-			w117.BottomAttach = ((uint)(5));
-			w117.XOptions = ((global::Gtk.AttachOptions)(4));
-			w117.YOptions = ((global::Gtk.AttachOptions)(4));
-			this.pnlNetworkProxy.Add (this.pnlProxy);
-			global::Gtk.Table.TableChild w118 = ((global::Gtk.Table.TableChild)(this.pnlNetworkProxy [this.pnlProxy]));
-			w118.TopAttach = ((uint)(1));
-			w118.BottomAttach = ((uint)(2));
-			w118.LeftAttach = ((uint)(1));
-			w118.RightAttach = ((uint)(2));
+			global::Gtk.Table.TableChild w118 = ((global::Gtk.Table.TableChild)(this.pnlProxy [this.txtProxyUser]));
+			w118.TopAttach = ((uint)(4));
+			w118.BottomAttach = ((uint)(5));
 			w118.XOptions = ((global::Gtk.AttachOptions)(4));
 			w118.YOptions = ((global::Gtk.AttachOptions)(4));
-			this.pnlNetwork.Add (this.pnlNetworkProxy);
-			global::Gtk.Table.TableChild w119 = ((global::Gtk.Table.TableChild)(this.pnlNetwork [this.pnlNetworkProxy]));
-			w119.TopAttach = ((uint)(4));
-			w119.BottomAttach = ((uint)(5));
+			this.pnlNetworkProxy.Add (this.pnlProxy);
+			global::Gtk.Table.TableChild w119 = ((global::Gtk.Table.TableChild)(this.pnlNetworkProxy [this.pnlProxy]));
+			w119.TopAttach = ((uint)(1));
+			w119.BottomAttach = ((uint)(2));
+			w119.LeftAttach = ((uint)(1));
+			w119.RightAttach = ((uint)(2));
 			w119.XOptions = ((global::Gtk.AttachOptions)(4));
 			w119.YOptions = ((global::Gtk.AttachOptions)(4));
+			this.pnlNetwork.Add (this.pnlNetworkProxy);
+			global::Gtk.Table.TableChild w120 = ((global::Gtk.Table.TableChild)(this.pnlNetwork [this.pnlNetworkProxy]));
+			w120.TopAttach = ((uint)(4));
+			w120.BottomAttach = ((uint)(5));
+			w120.XOptions = ((global::Gtk.AttachOptions)(4));
+			w120.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlNetwork.Gtk.Table+TableChild
 			this.pnlNetworkTimeout = new global::Gtk.Table (((uint)(2)), ((uint)(5)), false);
 			this.pnlNetworkTimeout.Name = "pnlNetworkTimeout";
@@ -1892,11 +1909,11 @@ namespace RestrictionTrackerGTK
 			this.lblNetworkTimeoutDescription.LabelProp = global::Mono.Unix.Catalog.GetString ("The connection to the server is closed if no response is received in a set amount of time.");
 			this.lblNetworkTimeoutDescription.Wrap = true;
 			this.pnlNetworkTimeout.Add (this.lblNetworkTimeoutDescription);
-			global::Gtk.Table.TableChild w120 = ((global::Gtk.Table.TableChild)(this.pnlNetworkTimeout [this.lblNetworkTimeoutDescription]));
-			w120.LeftAttach = ((uint)(1));
-			w120.RightAttach = ((uint)(5));
-			w120.XOptions = ((global::Gtk.AttachOptions)(4));
-			w120.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w121 = ((global::Gtk.Table.TableChild)(this.pnlNetworkTimeout [this.lblNetworkTimeoutDescription]));
+			w121.LeftAttach = ((uint)(1));
+			w121.RightAttach = ((uint)(5));
+			w121.XOptions = ((global::Gtk.AttachOptions)(4));
+			w121.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlNetworkTimeout.Gtk.Table+TableChild
 			this.lblTimeout1 = new global::Gtk.Label ();
 			this.lblTimeout1.Name = "lblTimeout1";
@@ -1904,26 +1921,26 @@ namespace RestrictionTrackerGTK
 			this.lblTimeout1.LabelProp = global::Mono.Unix.Catalog.GetString ("_Timeout:");
 			this.lblTimeout1.UseUnderline = true;
 			this.pnlNetworkTimeout.Add (this.lblTimeout1);
-			global::Gtk.Table.TableChild w121 = ((global::Gtk.Table.TableChild)(this.pnlNetworkTimeout [this.lblTimeout1]));
-			w121.TopAttach = ((uint)(1));
-			w121.BottomAttach = ((uint)(2));
-			w121.LeftAttach = ((uint)(1));
-			w121.RightAttach = ((uint)(2));
-			w121.XOptions = ((global::Gtk.AttachOptions)(4));
-			w121.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w122 = ((global::Gtk.Table.TableChild)(this.pnlNetworkTimeout [this.lblTimeout1]));
+			w122.TopAttach = ((uint)(1));
+			w122.BottomAttach = ((uint)(2));
+			w122.LeftAttach = ((uint)(1));
+			w122.RightAttach = ((uint)(2));
+			w122.XOptions = ((global::Gtk.AttachOptions)(4));
+			w122.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlNetworkTimeout.Gtk.Table+TableChild
 			this.lblTimeout2 = new global::Gtk.Label ();
 			this.lblTimeout2.Name = "lblTimeout2";
 			this.lblTimeout2.Xalign = 0F;
 			this.lblTimeout2.LabelProp = global::Mono.Unix.Catalog.GetString ("seconds");
 			this.pnlNetworkTimeout.Add (this.lblTimeout2);
-			global::Gtk.Table.TableChild w122 = ((global::Gtk.Table.TableChild)(this.pnlNetworkTimeout [this.lblTimeout2]));
-			w122.TopAttach = ((uint)(1));
-			w122.BottomAttach = ((uint)(2));
-			w122.LeftAttach = ((uint)(3));
-			w122.RightAttach = ((uint)(4));
-			w122.XOptions = ((global::Gtk.AttachOptions)(4));
-			w122.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w123 = ((global::Gtk.Table.TableChild)(this.pnlNetworkTimeout [this.lblTimeout2]));
+			w123.TopAttach = ((uint)(1));
+			w123.BottomAttach = ((uint)(2));
+			w123.LeftAttach = ((uint)(3));
+			w123.RightAttach = ((uint)(4));
+			w123.XOptions = ((global::Gtk.AttachOptions)(4));
+			w123.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlNetworkTimeout.Gtk.Table+TableChild
 			this.pctNetworkTimeoutIcon = new global::Gtk.Image ();
 			this.pctNetworkTimeoutIcon.WidthRequest = 48;
@@ -1934,10 +1951,10 @@ namespace RestrictionTrackerGTK
 			this.pctNetworkTimeoutIcon.Yalign = 0F;
 			this.pctNetworkTimeoutIcon.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("RestrictionTrackerGTK.Resources.config.linux.net_network.png");
 			this.pnlNetworkTimeout.Add (this.pctNetworkTimeoutIcon);
-			global::Gtk.Table.TableChild w123 = ((global::Gtk.Table.TableChild)(this.pnlNetworkTimeout [this.pctNetworkTimeoutIcon]));
-			w123.BottomAttach = ((uint)(2));
-			w123.XOptions = ((global::Gtk.AttachOptions)(4));
-			w123.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w124 = ((global::Gtk.Table.TableChild)(this.pnlNetworkTimeout [this.pctNetworkTimeoutIcon]));
+			w124.BottomAttach = ((uint)(2));
+			w124.XOptions = ((global::Gtk.AttachOptions)(4));
+			w124.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlNetworkTimeout.Gtk.Table+TableChild
 			this.txtTimeout = new global::Gtk.SpinButton (0, 600, 1);
 			this.txtTimeout.TooltipMarkup = "Number of seconds to wait between network communications.";
@@ -1948,19 +1965,19 @@ namespace RestrictionTrackerGTK
 			this.txtTimeout.Numeric = true;
 			this.txtTimeout.Value = 60;
 			this.pnlNetworkTimeout.Add (this.txtTimeout);
-			global::Gtk.Table.TableChild w124 = ((global::Gtk.Table.TableChild)(this.pnlNetworkTimeout [this.txtTimeout]));
-			w124.TopAttach = ((uint)(1));
-			w124.BottomAttach = ((uint)(2));
-			w124.LeftAttach = ((uint)(2));
-			w124.RightAttach = ((uint)(3));
-			w124.XOptions = ((global::Gtk.AttachOptions)(4));
-			w124.YOptions = ((global::Gtk.AttachOptions)(4));
-			this.pnlNetwork.Add (this.pnlNetworkTimeout);
-			global::Gtk.Table.TableChild w125 = ((global::Gtk.Table.TableChild)(this.pnlNetwork [this.pnlNetworkTimeout]));
+			global::Gtk.Table.TableChild w125 = ((global::Gtk.Table.TableChild)(this.pnlNetworkTimeout [this.txtTimeout]));
 			w125.TopAttach = ((uint)(1));
 			w125.BottomAttach = ((uint)(2));
+			w125.LeftAttach = ((uint)(2));
+			w125.RightAttach = ((uint)(3));
 			w125.XOptions = ((global::Gtk.AttachOptions)(4));
 			w125.YOptions = ((global::Gtk.AttachOptions)(4));
+			this.pnlNetwork.Add (this.pnlNetworkTimeout);
+			global::Gtk.Table.TableChild w126 = ((global::Gtk.Table.TableChild)(this.pnlNetwork [this.pnlNetworkTimeout]));
+			w126.TopAttach = ((uint)(1));
+			w126.BottomAttach = ((uint)(2));
+			w126.XOptions = ((global::Gtk.AttachOptions)(4));
+			w126.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlNetwork.Gtk.Table+TableChild
 			this.pnlNetworkUpdate = new global::Gtk.Table (((uint)(3)), ((uint)(4)), false);
 			this.pnlNetworkUpdate.Name = "pnlNetworkUpdate";
@@ -1975,13 +1992,13 @@ namespace RestrictionTrackerGTK
 			this.chkUpdateBETA.DrawIndicator = true;
 			this.chkUpdateBETA.UseUnderline = true;
 			this.pnlNetworkUpdate.Add (this.chkUpdateBETA);
-			global::Gtk.Table.TableChild w126 = ((global::Gtk.Table.TableChild)(this.pnlNetworkUpdate [this.chkUpdateBETA]));
-			w126.TopAttach = ((uint)(1));
-			w126.BottomAttach = ((uint)(2));
-			w126.LeftAttach = ((uint)(1));
-			w126.RightAttach = ((uint)(3));
-			w126.XOptions = ((global::Gtk.AttachOptions)(4));
-			w126.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w127 = ((global::Gtk.Table.TableChild)(this.pnlNetworkUpdate [this.chkUpdateBETA]));
+			w127.TopAttach = ((uint)(1));
+			w127.BottomAttach = ((uint)(2));
+			w127.LeftAttach = ((uint)(1));
+			w127.RightAttach = ((uint)(3));
+			w127.XOptions = ((global::Gtk.AttachOptions)(4));
+			w127.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlNetworkUpdate.Gtk.Table+TableChild
 			this.cmbUpdateAutomation = global::Gtk.ComboBox.NewText ();
 			this.cmbUpdateAutomation.AppendText (global::Mono.Unix.Catalog.GetString ("Install updates automatically (recommended)"));
@@ -1991,11 +2008,11 @@ namespace RestrictionTrackerGTK
 			this.cmbUpdateAutomation.Name = "cmbUpdateAutomation";
 			this.cmbUpdateAutomation.Active = 1;
 			this.pnlNetworkUpdate.Add (this.cmbUpdateAutomation);
-			global::Gtk.Table.TableChild w127 = ((global::Gtk.Table.TableChild)(this.pnlNetworkUpdate [this.cmbUpdateAutomation]));
-			w127.LeftAttach = ((uint)(1));
-			w127.RightAttach = ((uint)(3));
-			w127.XOptions = ((global::Gtk.AttachOptions)(4));
-			w127.YOptions = ((global::Gtk.AttachOptions)(0));
+			global::Gtk.Table.TableChild w128 = ((global::Gtk.Table.TableChild)(this.pnlNetworkUpdate [this.cmbUpdateAutomation]));
+			w128.LeftAttach = ((uint)(1));
+			w128.RightAttach = ((uint)(3));
+			w128.XOptions = ((global::Gtk.AttachOptions)(4));
+			w128.YOptions = ((global::Gtk.AttachOptions)(0));
 			// Container child pnlNetworkUpdate.Gtk.Table+TableChild
 			this.cmbUpdateInterval = global::Gtk.ComboBox.NewText ();
 			this.cmbUpdateInterval.AppendText (global::Mono.Unix.Catalog.GetString ("Day"));
@@ -2007,13 +2024,13 @@ namespace RestrictionTrackerGTK
 			this.cmbUpdateInterval.Name = "cmbUpdateInterval";
 			this.cmbUpdateInterval.Active = 3;
 			this.pnlNetworkUpdate.Add (this.cmbUpdateInterval);
-			global::Gtk.Table.TableChild w128 = ((global::Gtk.Table.TableChild)(this.pnlNetworkUpdate [this.cmbUpdateInterval]));
-			w128.TopAttach = ((uint)(2));
-			w128.BottomAttach = ((uint)(3));
-			w128.LeftAttach = ((uint)(2));
-			w128.RightAttach = ((uint)(3));
-			w128.XOptions = ((global::Gtk.AttachOptions)(4));
-			w128.YOptions = ((global::Gtk.AttachOptions)(0));
+			global::Gtk.Table.TableChild w129 = ((global::Gtk.Table.TableChild)(this.pnlNetworkUpdate [this.cmbUpdateInterval]));
+			w129.TopAttach = ((uint)(2));
+			w129.BottomAttach = ((uint)(3));
+			w129.LeftAttach = ((uint)(2));
+			w129.RightAttach = ((uint)(3));
+			w129.XOptions = ((global::Gtk.AttachOptions)(4));
+			w129.YOptions = ((global::Gtk.AttachOptions)(0));
 			// Container child pnlNetworkUpdate.Gtk.Table+TableChild
 			this.lblUpdateInterval = new global::Gtk.Label ();
 			this.lblUpdateInterval.Name = "lblUpdateInterval";
@@ -2021,13 +2038,13 @@ namespace RestrictionTrackerGTK
 			this.lblUpdateInterval.LabelProp = global::Mono.Unix.Catalog.GetString ("Perform a _check every:");
 			this.lblUpdateInterval.UseUnderline = true;
 			this.pnlNetworkUpdate.Add (this.lblUpdateInterval);
-			global::Gtk.Table.TableChild w129 = ((global::Gtk.Table.TableChild)(this.pnlNetworkUpdate [this.lblUpdateInterval]));
-			w129.TopAttach = ((uint)(2));
-			w129.BottomAttach = ((uint)(3));
-			w129.LeftAttach = ((uint)(1));
-			w129.RightAttach = ((uint)(2));
-			w129.XOptions = ((global::Gtk.AttachOptions)(4));
-			w129.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w130 = ((global::Gtk.Table.TableChild)(this.pnlNetworkUpdate [this.lblUpdateInterval]));
+			w130.TopAttach = ((uint)(2));
+			w130.BottomAttach = ((uint)(3));
+			w130.LeftAttach = ((uint)(1));
+			w130.RightAttach = ((uint)(2));
+			w130.XOptions = ((global::Gtk.AttachOptions)(4));
+			w130.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlNetworkUpdate.Gtk.Table+TableChild
 			this.pctNetworkUpdateIcon = new global::Gtk.Image ();
 			this.pctNetworkUpdateIcon.WidthRequest = 48;
@@ -2038,20 +2055,20 @@ namespace RestrictionTrackerGTK
 			this.pctNetworkUpdateIcon.Yalign = 0F;
 			this.pctNetworkUpdateIcon.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("RestrictionTrackerGTK.Resources.config.linux.net_update.png");
 			this.pnlNetworkUpdate.Add (this.pctNetworkUpdateIcon);
-			global::Gtk.Table.TableChild w130 = ((global::Gtk.Table.TableChild)(this.pnlNetworkUpdate [this.pctNetworkUpdateIcon]));
-			w130.BottomAttach = ((uint)(3));
-			w130.XOptions = ((global::Gtk.AttachOptions)(4));
-			w130.YOptions = ((global::Gtk.AttachOptions)(4));
-			this.pnlNetwork.Add (this.pnlNetworkUpdate);
-			global::Gtk.Table.TableChild w131 = ((global::Gtk.Table.TableChild)(this.pnlNetwork [this.pnlNetworkUpdate]));
-			w131.TopAttach = ((uint)(10));
-			w131.BottomAttach = ((uint)(11));
+			global::Gtk.Table.TableChild w131 = ((global::Gtk.Table.TableChild)(this.pnlNetworkUpdate [this.pctNetworkUpdateIcon]));
+			w131.BottomAttach = ((uint)(3));
 			w131.XOptions = ((global::Gtk.AttachOptions)(4));
 			w131.YOptions = ((global::Gtk.AttachOptions)(4));
+			this.pnlNetwork.Add (this.pnlNetworkUpdate);
+			global::Gtk.Table.TableChild w132 = ((global::Gtk.Table.TableChild)(this.pnlNetwork [this.pnlNetworkUpdate]));
+			w132.TopAttach = ((uint)(10));
+			w132.BottomAttach = ((uint)(11));
+			w132.XOptions = ((global::Gtk.AttachOptions)(4));
+			w132.YOptions = ((global::Gtk.AttachOptions)(4));
 			this.tbsConfig.Add (this.pnlNetwork);
-			global::Gtk.Notebook.NotebookChild w132 = ((global::Gtk.Notebook.NotebookChild)(this.tbsConfig [this.pnlNetwork]));
-			w132.Position = 2;
-			w132.TabExpand = true;
+			global::Gtk.Notebook.NotebookChild w133 = ((global::Gtk.Notebook.NotebookChild)(this.tbsConfig [this.pnlNetwork]));
+			w133.Position = 2;
+			w133.TabExpand = true;
 			// Notebook tab
 			this.lblNetworkTitle = new global::Gtk.Label ();
 			this.lblNetworkTitle.Name = "lblNetworkTitle";
@@ -2070,9 +2087,9 @@ namespace RestrictionTrackerGTK
 			this.lblAdvancedDataTitle.LabelProp = global::Mono.Unix.Catalog.GetString ("<span weight=\"bold\">Data Directory</span>");
 			this.lblAdvancedDataTitle.UseMarkup = true;
 			this.pnlAdvanced.Add (this.lblAdvancedDataTitle);
-			global::Gtk.Table.TableChild w133 = ((global::Gtk.Table.TableChild)(this.pnlAdvanced [this.lblAdvancedDataTitle]));
-			w133.XOptions = ((global::Gtk.AttachOptions)(4));
-			w133.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w134 = ((global::Gtk.Table.TableChild)(this.pnlAdvanced [this.lblAdvancedDataTitle]));
+			w134.XOptions = ((global::Gtk.AttachOptions)(4));
+			w134.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAdvanced.Gtk.Table+TableChild
 			this.lblAdvancedNetTestTitle = new global::Gtk.Label ();
 			this.lblAdvancedNetTestTitle.Name = "lblAdvancedNetTestTitle";
@@ -2080,11 +2097,11 @@ namespace RestrictionTrackerGTK
 			this.lblAdvancedNetTestTitle.LabelProp = global::Mono.Unix.Catalog.GetString ("<span weight=\"bold\">Internet Speed Test Website</span>");
 			this.lblAdvancedNetTestTitle.UseMarkup = true;
 			this.pnlAdvanced.Add (this.lblAdvancedNetTestTitle);
-			global::Gtk.Table.TableChild w134 = ((global::Gtk.Table.TableChild)(this.pnlAdvanced [this.lblAdvancedNetTestTitle]));
-			w134.TopAttach = ((uint)(3));
-			w134.BottomAttach = ((uint)(4));
-			w134.XOptions = ((global::Gtk.AttachOptions)(4));
-			w134.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w135 = ((global::Gtk.Table.TableChild)(this.pnlAdvanced [this.lblAdvancedNetTestTitle]));
+			w135.TopAttach = ((uint)(3));
+			w135.BottomAttach = ((uint)(4));
+			w135.XOptions = ((global::Gtk.AttachOptions)(4));
+			w135.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAdvanced.Gtk.Table+TableChild
 			this.pnlAdvancedData = new global::Gtk.Table (((uint)(4)), ((uint)(4)), false);
 			this.pnlAdvancedData.Name = "pnlAdvancedData";
@@ -2098,13 +2115,13 @@ namespace RestrictionTrackerGTK
 			this.cmdHistoryDirOpen.UseUnderline = true;
 			this.cmdHistoryDirOpen.Label = global::Mono.Unix.Catalog.GetString ("_Open Data Directory");
 			this.pnlAdvancedData.Add (this.cmdHistoryDirOpen);
-			global::Gtk.Table.TableChild w135 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedData [this.cmdHistoryDirOpen]));
-			w135.TopAttach = ((uint)(3));
-			w135.BottomAttach = ((uint)(4));
-			w135.LeftAttach = ((uint)(1));
-			w135.RightAttach = ((uint)(3));
-			w135.XOptions = ((global::Gtk.AttachOptions)(0));
-			w135.YOptions = ((global::Gtk.AttachOptions)(0));
+			global::Gtk.Table.TableChild w136 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedData [this.cmdHistoryDirOpen]));
+			w136.TopAttach = ((uint)(3));
+			w136.BottomAttach = ((uint)(4));
+			w136.LeftAttach = ((uint)(1));
+			w136.RightAttach = ((uint)(3));
+			w136.XOptions = ((global::Gtk.AttachOptions)(0));
+			w136.YOptions = ((global::Gtk.AttachOptions)(0));
 			// Container child pnlAdvancedData.Gtk.Table+TableChild
 			this.lblAdvancedDataDescription = new global::Gtk.Label ();
 			this.lblAdvancedDataDescription.Name = "lblAdvancedDataDescription";
@@ -2112,27 +2129,26 @@ namespace RestrictionTrackerGTK
 			this.lblAdvancedDataDescription.LabelProp = global::Mono.Unix.Catalog.GetString ("Your usage data will be stored in this directory.\nBy default, data is stored in the ~/.config directory.");
 			this.lblAdvancedDataDescription.Wrap = true;
 			this.pnlAdvancedData.Add (this.lblAdvancedDataDescription);
-			global::Gtk.Table.TableChild w136 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedData [this.lblAdvancedDataDescription]));
-			w136.LeftAttach = ((uint)(1));
-			w136.RightAttach = ((uint)(4));
-			w136.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w137 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedData [this.lblAdvancedDataDescription]));
+			w137.LeftAttach = ((uint)(1));
+			w137.RightAttach = ((uint)(4));
+			w137.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAdvancedData.Gtk.Table+TableChild
 			this.optHistoryCustom = new global::Gtk.RadioButton (global::Mono.Unix.Catalog.GetString ("_Custom:"));
 			this.optHistoryCustom.TooltipMarkup = "Save History Data to a custom directory.";
 			this.optHistoryCustom.CanFocus = true;
 			this.optHistoryCustom.Name = "optHistoryCustom";
-			this.optHistoryCustom.Active = true;
 			this.optHistoryCustom.DrawIndicator = true;
 			this.optHistoryCustom.UseUnderline = true;
 			this.optHistoryCustom.Group = new global::GLib.SList (global::System.IntPtr.Zero);
 			this.pnlAdvancedData.Add (this.optHistoryCustom);
-			global::Gtk.Table.TableChild w137 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedData [this.optHistoryCustom]));
-			w137.TopAttach = ((uint)(2));
-			w137.BottomAttach = ((uint)(3));
-			w137.LeftAttach = ((uint)(1));
-			w137.RightAttach = ((uint)(2));
-			w137.XOptions = ((global::Gtk.AttachOptions)(4));
-			w137.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w138 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedData [this.optHistoryCustom]));
+			w138.TopAttach = ((uint)(2));
+			w138.BottomAttach = ((uint)(3));
+			w138.LeftAttach = ((uint)(1));
+			w138.RightAttach = ((uint)(2));
+			w138.XOptions = ((global::Gtk.AttachOptions)(4));
+			w138.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAdvancedData.Gtk.Table+TableChild
 			this.optHistoryLocalConfig = new global::Gtk.RadioButton (global::Mono.Unix.Catalog.GetString ("~/.config"));
 			this.optHistoryLocalConfig.TooltipMarkup = "Save History Data to your local account's ~/.config directory.";
@@ -2142,13 +2158,13 @@ namespace RestrictionTrackerGTK
 			this.optHistoryLocalConfig.UseUnderline = true;
 			this.optHistoryLocalConfig.Group = this.optHistoryCustom.Group;
 			this.pnlAdvancedData.Add (this.optHistoryLocalConfig);
-			global::Gtk.Table.TableChild w138 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedData [this.optHistoryLocalConfig]));
-			w138.TopAttach = ((uint)(1));
-			w138.BottomAttach = ((uint)(2));
-			w138.LeftAttach = ((uint)(1));
-			w138.RightAttach = ((uint)(3));
-			w138.XOptions = ((global::Gtk.AttachOptions)(4));
-			w138.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w139 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedData [this.optHistoryLocalConfig]));
+			w139.TopAttach = ((uint)(1));
+			w139.BottomAttach = ((uint)(2));
+			w139.LeftAttach = ((uint)(1));
+			w139.RightAttach = ((uint)(3));
+			w139.XOptions = ((global::Gtk.AttachOptions)(4));
+			w139.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAdvancedData.Gtk.Table+TableChild
 			this.pctAdvancedDataIcon = new global::Gtk.Image ();
 			this.pctAdvancedDataIcon.WidthRequest = 48;
@@ -2159,10 +2175,10 @@ namespace RestrictionTrackerGTK
 			this.pctAdvancedDataIcon.Yalign = 0F;
 			this.pctAdvancedDataIcon.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("RestrictionTrackerGTK.Resources.config.linux.advanced_data.png");
 			this.pnlAdvancedData.Add (this.pctAdvancedDataIcon);
-			global::Gtk.Table.TableChild w139 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedData [this.pctAdvancedDataIcon]));
-			w139.BottomAttach = ((uint)(4));
-			w139.XOptions = ((global::Gtk.AttachOptions)(4));
-			w139.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w140 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedData [this.pctAdvancedDataIcon]));
+			w140.BottomAttach = ((uint)(4));
+			w140.XOptions = ((global::Gtk.AttachOptions)(4));
+			w140.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAdvancedData.Gtk.Table+TableChild
 			this.txtHistoryDir = new global::Gtk.FileChooserButton (global::Mono.Unix.Catalog.GetString ("Select a Directory"), ((global::Gtk.FileChooserAction)(2)));
 			this.txtHistoryDir.TooltipMarkup = "Directory used to save History Data.";
@@ -2170,18 +2186,18 @@ namespace RestrictionTrackerGTK
 			this.txtHistoryDir.Name = "txtHistoryDir";
 			this.txtHistoryDir.ShowHidden = true;
 			this.pnlAdvancedData.Add (this.txtHistoryDir);
-			global::Gtk.Table.TableChild w140 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedData [this.txtHistoryDir]));
-			w140.TopAttach = ((uint)(2));
-			w140.BottomAttach = ((uint)(3));
-			w140.LeftAttach = ((uint)(2));
-			w140.RightAttach = ((uint)(3));
-			w140.YOptions = ((global::Gtk.AttachOptions)(4));
-			this.pnlAdvanced.Add (this.pnlAdvancedData);
-			global::Gtk.Table.TableChild w141 = ((global::Gtk.Table.TableChild)(this.pnlAdvanced [this.pnlAdvancedData]));
-			w141.TopAttach = ((uint)(1));
-			w141.BottomAttach = ((uint)(2));
-			w141.XOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w141 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedData [this.txtHistoryDir]));
+			w141.TopAttach = ((uint)(2));
+			w141.BottomAttach = ((uint)(3));
+			w141.LeftAttach = ((uint)(2));
+			w141.RightAttach = ((uint)(3));
 			w141.YOptions = ((global::Gtk.AttachOptions)(4));
+			this.pnlAdvanced.Add (this.pnlAdvancedData);
+			global::Gtk.Table.TableChild w142 = ((global::Gtk.Table.TableChild)(this.pnlAdvanced [this.pnlAdvancedData]));
+			w142.TopAttach = ((uint)(1));
+			w142.BottomAttach = ((uint)(2));
+			w142.XOptions = ((global::Gtk.AttachOptions)(4));
+			w142.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAdvanced.Gtk.Table+TableChild
 			this.pnlAdvancedNetTest = new global::Gtk.Table (((uint)(5)), ((uint)(4)), false);
 			this.pnlAdvancedNetTest.Name = "pnlAdvancedNetTest";
@@ -2194,27 +2210,26 @@ namespace RestrictionTrackerGTK
 			this.lblAdvancedNetTestDescription.LabelProp = global::Mono.Unix.Catalog.GetString ("You can add a link to an Internet Speed Test to the Main window of Satellite Restriction Tracker if you wish to check your current speeds when you look at your usage data.");
 			this.lblAdvancedNetTestDescription.Wrap = true;
 			this.pnlAdvancedNetTest.Add (this.lblAdvancedNetTestDescription);
-			global::Gtk.Table.TableChild w142 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedNetTest [this.lblAdvancedNetTestDescription]));
-			w142.LeftAttach = ((uint)(1));
-			w142.RightAttach = ((uint)(4));
-			w142.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w143 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedNetTest [this.lblAdvancedNetTestDescription]));
+			w143.LeftAttach = ((uint)(1));
+			w143.RightAttach = ((uint)(4));
+			w143.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAdvancedNetTest.Gtk.Table+TableChild
 			this.optNetTestCustom = new global::Gtk.RadioButton (global::Mono.Unix.Catalog.GetString ("C_ustom:"));
 			this.optNetTestCustom.TooltipMarkup = "Show a link to a custom website on the Main window.";
 			this.optNetTestCustom.CanFocus = true;
 			this.optNetTestCustom.Name = "optNetTestCustom";
-			this.optNetTestCustom.Active = true;
 			this.optNetTestCustom.DrawIndicator = true;
 			this.optNetTestCustom.UseUnderline = true;
 			this.optNetTestCustom.Group = new global::GLib.SList (global::System.IntPtr.Zero);
 			this.pnlAdvancedNetTest.Add (this.optNetTestCustom);
-			global::Gtk.Table.TableChild w143 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedNetTest [this.optNetTestCustom]));
-			w143.TopAttach = ((uint)(4));
-			w143.BottomAttach = ((uint)(5));
-			w143.LeftAttach = ((uint)(1));
-			w143.RightAttach = ((uint)(2));
-			w143.XOptions = ((global::Gtk.AttachOptions)(4));
-			w143.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w144 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedNetTest [this.optNetTestCustom]));
+			w144.TopAttach = ((uint)(4));
+			w144.BottomAttach = ((uint)(5));
+			w144.LeftAttach = ((uint)(1));
+			w144.RightAttach = ((uint)(2));
+			w144.XOptions = ((global::Gtk.AttachOptions)(4));
+			w144.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAdvancedNetTest.Gtk.Table+TableChild
 			this.optNetTestNone = new global::Gtk.RadioButton (global::Mono.Unix.Catalog.GetString ("None"));
 			this.optNetTestNone.TooltipMarkup = "Don't show a link to any Internet Speed Test website.";
@@ -2224,13 +2239,13 @@ namespace RestrictionTrackerGTK
 			this.optNetTestNone.UseUnderline = true;
 			this.optNetTestNone.Group = this.optNetTestCustom.Group;
 			this.pnlAdvancedNetTest.Add (this.optNetTestNone);
-			global::Gtk.Table.TableChild w144 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedNetTest [this.optNetTestNone]));
-			w144.TopAttach = ((uint)(1));
-			w144.BottomAttach = ((uint)(2));
-			w144.LeftAttach = ((uint)(1));
-			w144.RightAttach = ((uint)(3));
-			w144.XOptions = ((global::Gtk.AttachOptions)(4));
-			w144.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w145 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedNetTest [this.optNetTestNone]));
+			w145.TopAttach = ((uint)(1));
+			w145.BottomAttach = ((uint)(2));
+			w145.LeftAttach = ((uint)(1));
+			w145.RightAttach = ((uint)(3));
+			w145.XOptions = ((global::Gtk.AttachOptions)(4));
+			w145.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAdvancedNetTest.Gtk.Table+TableChild
 			this.optNetTestSpeedTest = new global::Gtk.RadioButton (global::Mono.Unix.Catalog.GetString ("SpeedTest.net"));
 			this.optNetTestSpeedTest.TooltipMarkup = "Show a link to SpeedTest.Net on the Main window.";
@@ -2240,13 +2255,13 @@ namespace RestrictionTrackerGTK
 			this.optNetTestSpeedTest.UseUnderline = true;
 			this.optNetTestSpeedTest.Group = this.optNetTestCustom.Group;
 			this.pnlAdvancedNetTest.Add (this.optNetTestSpeedTest);
-			global::Gtk.Table.TableChild w145 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedNetTest [this.optNetTestSpeedTest]));
-			w145.TopAttach = ((uint)(3));
-			w145.BottomAttach = ((uint)(4));
-			w145.LeftAttach = ((uint)(1));
-			w145.RightAttach = ((uint)(3));
-			w145.XOptions = ((global::Gtk.AttachOptions)(4));
-			w145.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w146 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedNetTest [this.optNetTestSpeedTest]));
+			w146.TopAttach = ((uint)(3));
+			w146.BottomAttach = ((uint)(4));
+			w146.LeftAttach = ((uint)(1));
+			w146.RightAttach = ((uint)(3));
+			w146.XOptions = ((global::Gtk.AttachOptions)(4));
+			w146.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAdvancedNetTest.Gtk.Table+TableChild
 			this.optNetTestTestMyNet = new global::Gtk.RadioButton (global::Mono.Unix.Catalog.GetString ("TestMy.Net"));
 			this.optNetTestTestMyNet.TooltipMarkup = "Show a link to TestMy.Net on the Main window.";
@@ -2256,13 +2271,13 @@ namespace RestrictionTrackerGTK
 			this.optNetTestTestMyNet.UseUnderline = true;
 			this.optNetTestTestMyNet.Group = this.optNetTestCustom.Group;
 			this.pnlAdvancedNetTest.Add (this.optNetTestTestMyNet);
-			global::Gtk.Table.TableChild w146 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedNetTest [this.optNetTestTestMyNet]));
-			w146.TopAttach = ((uint)(2));
-			w146.BottomAttach = ((uint)(3));
-			w146.LeftAttach = ((uint)(1));
-			w146.RightAttach = ((uint)(3));
-			w146.XOptions = ((global::Gtk.AttachOptions)(4));
-			w146.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w147 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedNetTest [this.optNetTestTestMyNet]));
+			w147.TopAttach = ((uint)(2));
+			w147.BottomAttach = ((uint)(3));
+			w147.LeftAttach = ((uint)(1));
+			w147.RightAttach = ((uint)(3));
+			w147.XOptions = ((global::Gtk.AttachOptions)(4));
+			w147.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAdvancedNetTest.Gtk.Table+TableChild
 			this.pctAdvancedNetTestIcon = new global::Gtk.Image ();
 			this.pctAdvancedNetTestIcon.WidthRequest = 48;
@@ -2273,10 +2288,10 @@ namespace RestrictionTrackerGTK
 			this.pctAdvancedNetTestIcon.Yalign = 0F;
 			this.pctAdvancedNetTestIcon.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_none.png");
 			this.pnlAdvancedNetTest.Add (this.pctAdvancedNetTestIcon);
-			global::Gtk.Table.TableChild w147 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedNetTest [this.pctAdvancedNetTestIcon]));
-			w147.BottomAttach = ((uint)(5));
-			w147.XOptions = ((global::Gtk.AttachOptions)(4));
-			w147.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w148 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedNetTest [this.pctAdvancedNetTestIcon]));
+			w148.BottomAttach = ((uint)(5));
+			w148.XOptions = ((global::Gtk.AttachOptions)(4));
+			w148.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAdvancedNetTest.Gtk.Table+TableChild
 			this.txtNetTestCustom = new global::Gtk.Entry ();
 			this.txtNetTestCustom.TooltipMarkup = "Enter the URL of the site you want to link to on the Main window.";
@@ -2285,34 +2300,34 @@ namespace RestrictionTrackerGTK
 			this.txtNetTestCustom.IsEditable = true;
 			this.txtNetTestCustom.InvisibleChar = '•';
 			this.pnlAdvancedNetTest.Add (this.txtNetTestCustom);
-			global::Gtk.Table.TableChild w148 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedNetTest [this.txtNetTestCustom]));
-			w148.TopAttach = ((uint)(4));
-			w148.BottomAttach = ((uint)(5));
-			w148.LeftAttach = ((uint)(2));
-			w148.RightAttach = ((uint)(3));
-			w148.XOptions = ((global::Gtk.AttachOptions)(4));
-			w148.YOptions = ((global::Gtk.AttachOptions)(4));
-			this.pnlAdvanced.Add (this.pnlAdvancedNetTest);
-			global::Gtk.Table.TableChild w149 = ((global::Gtk.Table.TableChild)(this.pnlAdvanced [this.pnlAdvancedNetTest]));
+			global::Gtk.Table.TableChild w149 = ((global::Gtk.Table.TableChild)(this.pnlAdvancedNetTest [this.txtNetTestCustom]));
 			w149.TopAttach = ((uint)(4));
 			w149.BottomAttach = ((uint)(5));
+			w149.LeftAttach = ((uint)(2));
+			w149.RightAttach = ((uint)(3));
 			w149.XOptions = ((global::Gtk.AttachOptions)(4));
 			w149.YOptions = ((global::Gtk.AttachOptions)(4));
+			this.pnlAdvanced.Add (this.pnlAdvancedNetTest);
+			global::Gtk.Table.TableChild w150 = ((global::Gtk.Table.TableChild)(this.pnlAdvanced [this.pnlAdvancedNetTest]));
+			w150.TopAttach = ((uint)(4));
+			w150.BottomAttach = ((uint)(5));
+			w150.XOptions = ((global::Gtk.AttachOptions)(4));
+			w150.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlAdvanced.Gtk.Table+TableChild
 			this.pnlAdvancedSpace1 = new global::Gtk.Table (((uint)(1)), ((uint)(1)), false);
 			this.pnlAdvancedSpace1.Name = "pnlAdvancedSpace1";
 			this.pnlAdvancedSpace1.RowSpacing = ((uint)(2));
 			this.pnlAdvancedSpace1.ColumnSpacing = ((uint)(2));
 			this.pnlAdvanced.Add (this.pnlAdvancedSpace1);
-			global::Gtk.Table.TableChild w150 = ((global::Gtk.Table.TableChild)(this.pnlAdvanced [this.pnlAdvancedSpace1]));
-			w150.TopAttach = ((uint)(2));
-			w150.BottomAttach = ((uint)(3));
-			w150.XOptions = ((global::Gtk.AttachOptions)(0));
-			w150.YOptions = ((global::Gtk.AttachOptions)(1));
+			global::Gtk.Table.TableChild w151 = ((global::Gtk.Table.TableChild)(this.pnlAdvanced [this.pnlAdvancedSpace1]));
+			w151.TopAttach = ((uint)(2));
+			w151.BottomAttach = ((uint)(3));
+			w151.XOptions = ((global::Gtk.AttachOptions)(0));
+			w151.YOptions = ((global::Gtk.AttachOptions)(1));
 			this.tbsConfig.Add (this.pnlAdvanced);
-			global::Gtk.Notebook.NotebookChild w151 = ((global::Gtk.Notebook.NotebookChild)(this.tbsConfig [this.pnlAdvanced]));
-			w151.Position = 3;
-			w151.TabExpand = true;
+			global::Gtk.Notebook.NotebookChild w152 = ((global::Gtk.Notebook.NotebookChild)(this.tbsConfig [this.pnlAdvanced]));
+			w152.Position = 3;
+			w152.TabExpand = true;
 			// Notebook tab
 			this.lblAdvancedTitle = new global::Gtk.Label ();
 			this.lblAdvancedTitle.Name = "lblAdvancedTitle";
@@ -2320,16 +2335,16 @@ namespace RestrictionTrackerGTK
 			this.tbsConfig.SetTabLabel (this.pnlAdvanced, this.lblAdvancedTitle);
 			this.lblAdvancedTitle.ShowAll ();
 			w1.Add (this.tbsConfig);
-			global::Gtk.Box.BoxChild w152 = ((global::Gtk.Box.BoxChild)(w1 [this.tbsConfig]));
-			w152.Position = 0;
-			w152.Expand = false;
-			w152.Fill = false;
+			global::Gtk.Box.BoxChild w153 = ((global::Gtk.Box.BoxChild)(w1 [this.tbsConfig]));
+			w153.Position = 0;
+			w153.Expand = false;
+			w153.Fill = false;
 			// Internal child RestrictionTrackerGTK.dlgConfig.ActionArea
-			global::Gtk.HButtonBox w153 = this.ActionArea;
-			w153.Name = "dialog1_ActionArea";
-			w153.Spacing = 10;
-			w153.BorderWidth = ((uint)(5));
-			w153.LayoutStyle = ((global::Gtk.ButtonBoxStyle)(4));
+			global::Gtk.HButtonBox w154 = this.ActionArea;
+			w154.Name = "dialog1_ActionArea";
+			w154.Spacing = 10;
+			w154.BorderWidth = ((uint)(5));
+			w154.LayoutStyle = ((global::Gtk.ButtonBoxStyle)(4));
 			// Container child dialog1_ActionArea.Gtk.ButtonBox+ButtonBoxChild
 			this.cmdSave = new global::Gtk.Button ();
 			this.cmdSave.CanDefault = true;
@@ -2337,10 +2352,10 @@ namespace RestrictionTrackerGTK
 			this.cmdSave.Name = "cmdSave";
 			this.cmdSave.UseUnderline = true;
 			this.cmdSave.Label = global::Mono.Unix.Catalog.GetString ("_Save");
-			w153.Add (this.cmdSave);
-			global::Gtk.ButtonBox.ButtonBoxChild w154 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w153 [this.cmdSave]));
-			w154.Expand = false;
-			w154.Fill = false;
+			w154.Add (this.cmdSave);
+			global::Gtk.ButtonBox.ButtonBoxChild w155 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w154 [this.cmdSave]));
+			w155.Expand = false;
+			w155.Fill = false;
 			// Container child dialog1_ActionArea.Gtk.ButtonBox+ButtonBoxChild
 			this.cmdClose = new global::Gtk.Button ();
 			this.cmdClose.CanDefault = true;
@@ -2348,11 +2363,11 @@ namespace RestrictionTrackerGTK
 			this.cmdClose.Name = "cmdClose";
 			this.cmdClose.UseUnderline = true;
 			this.cmdClose.Label = global::Mono.Unix.Catalog.GetString ("Close");
-			w153.Add (this.cmdClose);
-			global::Gtk.ButtonBox.ButtonBoxChild w155 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w153 [this.cmdClose]));
-			w155.Position = 1;
-			w155.Expand = false;
-			w155.Fill = false;
+			w154.Add (this.cmdClose);
+			global::Gtk.ButtonBox.ButtonBoxChild w156 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w154 [this.cmdClose]));
+			w156.Position = 1;
+			w156.Expand = false;
+			w156.Fill = false;
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
