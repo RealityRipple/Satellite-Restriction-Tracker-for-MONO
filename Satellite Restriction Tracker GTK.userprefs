@@ -2,9 +2,7 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/home/andy/Documents/Satellite Restriction Tracker for MONO/RestrictionTrackerGTK/Forms/frmMain.cs" line="1665" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <AuthorInfo Name="Andrew Sachen" Email="webmaster@RealityRipple.com" Copyright="http://srt.realityripple.com" Company="RealityRipple Software" Trademark="Satellite Restriction Tracker by RealityRipple Software." />
