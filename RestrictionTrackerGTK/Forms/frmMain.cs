@@ -1204,26 +1204,12 @@ namespace RestrictionTrackerGTK
     public void ReLoadSettings()
     {
       mySettings = new AppSettings();
-      SecurityProtocolTypeEx useProtocol = SecurityProtocolTypeEx.None;
-      foreach (SecurityProtocolTypeEx protocolTest in Enum.GetValues(typeof(SecurityProtocolTypeEx)))
+      if (!mySettings.TLSProxy)
       {
-        if (((SecurityProtocolTypeEx) mySettings.Protocol & protocolTest) == protocolTest)
+        SecurityProtocolTypeEx useProtocol = SecurityProtocolTypeEx.None;
+        foreach (SecurityProtocolTypeEx protocolTest in Enum.GetValues(typeof(SecurityProtocolTypeEx)))
         {
-          try
-          {
-            System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) protocolTest;
-            useProtocol |= protocolTest;
-          }
-          catch (Exception)
-          {
-          }
-        }
-      }
-      if (useProtocol == SecurityProtocolTypeEx.None)
-      {
-        if (string.IsNullOrEmpty(mySettings.RemoteKey))
-        {
-          foreach (SecurityProtocolTypeEx protocolTest in Enum.GetValues(typeof(SecurityProtocolTypeEx)))
+          if (((SecurityProtocolTypeEx) mySettings.Protocol & protocolTest) == protocolTest)
           {
             try
             {
@@ -1234,29 +1220,46 @@ namespace RestrictionTrackerGTK
             {
             }
           }
-          try
+        }
+        if (useProtocol == SecurityProtocolTypeEx.None)
+        {
+          if (string.IsNullOrEmpty(mySettings.RemoteKey))
           {
-            System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) useProtocol;
-            mySettings.Protocol = (System.Net.SecurityProtocolType) useProtocol;
-            mySettings.Save(); 
+            foreach (SecurityProtocolTypeEx protocolTest in Enum.GetValues(typeof(SecurityProtocolTypeEx)))
+            {
+              try
+              {
+                System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) protocolTest;
+                useProtocol |= protocolTest;
+              }
+              catch (Exception)
+              {
+              }
+            }
+            try
+            {
+              System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) useProtocol;
+              mySettings.Protocol = (System.Net.SecurityProtocolType) useProtocol;
+              mySettings.Save(); 
+            }
+            catch (Exception)
+            {
+            }
           }
-          catch (Exception)
+          else
           {
+            System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.None;
           }
         }
         else
         {
-          System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.None;
-        }
-      }
-      else
-      {
-        try
-        {
-          System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) useProtocol;
-        }
-        catch (Exception)
-        {
+          try
+          {
+            System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) useProtocol;
+          }
+          catch (Exception)
+          {
+          }
         }
       }
       modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
@@ -1863,10 +1866,14 @@ namespace RestrictionTrackerGTK
           DisplayUsage(false, false);
           break;
         case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.LoginFailure:
-          if (e.Message.StartsWith("POSSIBLE TLS ERROR - "))
+          if (e.Message == "TLS ERROR")
+          {
+            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Security Protocol not supported by MONO at this time. Please use the TLS Proxy feature for now.", true);
+          }
+          else if (e.Message.StartsWith("POSSIBLE TLS ERROR - "))
           {
             string sMessage = e.Message.Substring(21);
-            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Your Operating System or version of MONO is too old for this connection. I'm trying to find a way around this problem.\nFor more information, search for \"TLS 1.2 MONO\".\n\n" + sMessage, true);
+            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Security Protocol not supported by MONO at this time. Please use the TLS Proxy feature for now.\n" + sMessage, true);
           }
           else
           {

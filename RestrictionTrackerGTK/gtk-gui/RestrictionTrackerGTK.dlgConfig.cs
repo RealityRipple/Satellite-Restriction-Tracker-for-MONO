@@ -645,6 +645,7 @@ namespace RestrictionTrackerGTK
 			this.optAccountTypeDNX.TooltipMarkup = "Exede package through Dish.";
 			this.optAccountTypeDNX.CanFocus = true;
 			this.optAccountTypeDNX.Name = "optAccountTypeDNX";
+			this.optAccountTypeDNX.Active = true;
 			this.optAccountTypeDNX.DrawIndicator = true;
 			this.optAccountTypeDNX.UseUnderline = true;
 			this.optAccountTypeDNX.Group = new global::GLib.SList (global::System.IntPtr.Zero);
@@ -1572,7 +1573,7 @@ namespace RestrictionTrackerGTK
 			w96.XOptions = ((global::Gtk.AttachOptions)(0));
 			w96.YOptions = ((global::Gtk.AttachOptions)(1));
 			// Container child pnlNetwork.Gtk.Table+TableChild
-			this.pnlNetworkProtocol = new global::Gtk.Table (((uint)(2)), ((uint)(6)), false);
+			this.pnlNetworkProtocol = new global::Gtk.Table (((uint)(3)), ((uint)(6)), false);
 			this.pnlNetworkProtocol.Name = "pnlNetworkProtocol";
 			this.pnlNetworkProtocol.RowSpacing = ((uint)(2));
 			this.pnlNetworkProtocol.ColumnSpacing = ((uint)(2));
@@ -1588,8 +1589,8 @@ namespace RestrictionTrackerGTK
 			global::Gtk.Table.TableChild w97 = ((global::Gtk.Table.TableChild)(this.pnlNetworkProtocol [this.chkNetworkProtocolSSL3]));
 			w97.TopAttach = ((uint)(1));
 			w97.BottomAttach = ((uint)(2));
-			w97.LeftAttach = ((uint)(2));
-			w97.RightAttach = ((uint)(3));
+			w97.LeftAttach = ((uint)(3));
+			w97.RightAttach = ((uint)(4));
 			w97.XOptions = ((global::Gtk.AttachOptions)(4));
 			w97.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlNetworkProtocol.Gtk.Table+TableChild
@@ -1604,8 +1605,8 @@ namespace RestrictionTrackerGTK
 			global::Gtk.Table.TableChild w98 = ((global::Gtk.Table.TableChild)(this.pnlNetworkProtocol [this.chkNetworkProtocolTLS10]));
 			w98.TopAttach = ((uint)(1));
 			w98.BottomAttach = ((uint)(2));
-			w98.LeftAttach = ((uint)(3));
-			w98.RightAttach = ((uint)(4));
+			w98.LeftAttach = ((uint)(4));
+			w98.RightAttach = ((uint)(5));
 			w98.XOptions = ((global::Gtk.AttachOptions)(4));
 			w98.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlNetworkProtocol.Gtk.Table+TableChild
@@ -1618,10 +1619,10 @@ namespace RestrictionTrackerGTK
 			this.chkNetworkProtocolTLS11.UseUnderline = true;
 			this.pnlNetworkProtocol.Add (this.chkNetworkProtocolTLS11);
 			global::Gtk.Table.TableChild w99 = ((global::Gtk.Table.TableChild)(this.pnlNetworkProtocol [this.chkNetworkProtocolTLS11]));
-			w99.TopAttach = ((uint)(1));
-			w99.BottomAttach = ((uint)(2));
-			w99.LeftAttach = ((uint)(4));
-			w99.RightAttach = ((uint)(5));
+			w99.TopAttach = ((uint)(2));
+			w99.BottomAttach = ((uint)(3));
+			w99.LeftAttach = ((uint)(3));
+			w99.RightAttach = ((uint)(4));
 			w99.XOptions = ((global::Gtk.AttachOptions)(4));
 			w99.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlNetworkProtocol.Gtk.Table+TableChild
@@ -1634,10 +1635,10 @@ namespace RestrictionTrackerGTK
 			this.chkNetworkProtocolTLS12.UseUnderline = true;
 			this.pnlNetworkProtocol.Add (this.chkNetworkProtocolTLS12);
 			global::Gtk.Table.TableChild w100 = ((global::Gtk.Table.TableChild)(this.pnlNetworkProtocol [this.chkNetworkProtocolTLS12]));
-			w100.TopAttach = ((uint)(1));
-			w100.BottomAttach = ((uint)(2));
-			w100.LeftAttach = ((uint)(5));
-			w100.RightAttach = ((uint)(6));
+			w100.TopAttach = ((uint)(2));
+			w100.BottomAttach = ((uint)(3));
+			w100.LeftAttach = ((uint)(4));
+			w100.RightAttach = ((uint)(5));
 			w100.XOptions = ((global::Gtk.AttachOptions)(4));
 			w100.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlNetworkProtocol.Gtk.Table+TableChild
@@ -1645,17 +1646,17 @@ namespace RestrictionTrackerGTK
 			this.chkTLSProxy.TooltipMarkup = "If your Operating System does not support the Security Protocol required for your provider, you can use this Proxy to connect through the RealityRipple.com server.";
 			this.chkTLSProxy.CanFocus = true;
 			this.chkTLSProxy.Name = "chkTLSProxy";
-			this.chkTLSProxy.Label = global::Mono.Unix.Catalog.GetString ("Proxy");
+			this.chkTLSProxy.Label = global::Mono.Unix.Catalog.GetString ("TLS Proxy");
 			this.chkTLSProxy.DrawIndicator = true;
 			this.chkTLSProxy.UseUnderline = true;
 			this.pnlNetworkProtocol.Add (this.chkTLSProxy);
 			global::Gtk.Table.TableChild w101 = ((global::Gtk.Table.TableChild)(this.pnlNetworkProtocol [this.chkTLSProxy]));
 			w101.TopAttach = ((uint)(1));
-			w101.BottomAttach = ((uint)(2));
+			w101.BottomAttach = ((uint)(3));
 			w101.LeftAttach = ((uint)(1));
 			w101.RightAttach = ((uint)(2));
 			w101.XOptions = ((global::Gtk.AttachOptions)(4));
-			w101.YOptions = ((global::Gtk.AttachOptions)(4));
+			w101.YOptions = ((global::Gtk.AttachOptions)(0));
 			// Container child pnlNetworkProtocol.Gtk.Table+TableChild
 			this.lblNetworkProtocolDescription = new global::Gtk.Label ();
 			this.lblNetworkProtocolDescription.Name = "lblNetworkProtocolDescription";
@@ -2138,6 +2139,7 @@ namespace RestrictionTrackerGTK
 			this.optHistoryCustom.TooltipMarkup = "Save History Data to a custom directory.";
 			this.optHistoryCustom.CanFocus = true;
 			this.optHistoryCustom.Name = "optHistoryCustom";
+			this.optHistoryCustom.Active = true;
 			this.optHistoryCustom.DrawIndicator = true;
 			this.optHistoryCustom.UseUnderline = true;
 			this.optHistoryCustom.Group = new global::GLib.SList (global::System.IntPtr.Zero);
@@ -2219,6 +2221,7 @@ namespace RestrictionTrackerGTK
 			this.optNetTestCustom.TooltipMarkup = "Show a link to a custom website on the Main window.";
 			this.optNetTestCustom.CanFocus = true;
 			this.optNetTestCustom.Name = "optNetTestCustom";
+			this.optNetTestCustom.Active = true;
 			this.optNetTestCustom.DrawIndicator = true;
 			this.optNetTestCustom.UseUnderline = true;
 			this.optNetTestCustom.Group = new global::GLib.SList (global::System.IntPtr.Zero);
