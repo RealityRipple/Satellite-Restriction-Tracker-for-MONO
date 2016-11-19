@@ -93,7 +93,7 @@ namespace RestrictionTrackerGTK
                         foreach (XmlAttribute m_attrib in m_node.Attributes)
                         {
                           if (m_attrib.Name.CompareTo("type") == 0)
-                            m_AccountType = modFunctions.StringToHostType(m_attrib.InnerText);
+                            m_AccountType = srlFunctions.StringToHostType(m_attrib.InnerText);
                           else if (m_attrib.Name.CompareTo("forceType") == 0)
                             m_AccountTypeF = (m_attrib.InnerText == "True");
                         }
@@ -674,7 +674,7 @@ namespace RestrictionTrackerGTK
         sProtocol = sProtocol.Substring(0, sProtocol.Length - 2);
       }
       string sAccountType = "Other";
-      sAccountType = modFunctions.HostTypeToString(m_AccountType);
+      sAccountType = srlFunctions.HostTypeToString(m_AccountType);
       string sTrayIcon = "Always";
       if (m_TrayIcon == TrayStyles.Never)
         sTrayIcon = "Never";

@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using System.Security.Policy;
 using RestrictionTrackerGTK;
 using System.Diagnostics;
+using System.Reflection;
+
+
 namespace RestrictionTrackerGTK
 {
   public partial class frmMain :
@@ -376,7 +379,7 @@ namespace RestrictionTrackerGTK
     private void Main_TypeDetermined(object sender, EventArgs ea)
     {
       TypeDeterminedEventArgs e = (TypeDeterminedEventArgs) ea;
-      NextGrabTick = modFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
+      NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       if (e.HostGroup == DetermineType.SatHostGroup.Other)
       {
         if (tmrIcon != 0)
@@ -426,7 +429,7 @@ namespace RestrictionTrackerGTK
     private void Main_TypeDeterminedOffline(object sender, EventArgs ea)
     {
       TypeDeterminedOfflineEventArgs e = (TypeDeterminedOfflineEventArgs) ea;
-      NextGrabTick = modFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
+      NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       if (e.HostType == localRestrictionTracker.SatHostTypes.Other)
       {
         if (tmrIcon != 0)
@@ -1556,27 +1559,27 @@ namespace RestrictionTrackerGTK
           if (minutesSinceLast < mySettings.Interval)
           {
             long msSinceLast = minutesSinceLast * 60 * 1000;
-            NextGrabTick = modFunctions.TickCount() + (msInterval - msSinceLast) + (2 * 60 * 1000);
+            NextGrabTick = srlFunctions.TickCount() + (msInterval - msSinceLast) + (2 * 60 * 1000);
           }
           else
           {
-            NextGrabTick = modFunctions.TickCount();
+            NextGrabTick = srlFunctions.TickCount();
           }
-          if (NextGrabTick - modFunctions.TickCount() < mySettings.StartWait * 60 * 1000)
+          if (NextGrabTick - srlFunctions.TickCount() < mySettings.StartWait * 60 * 1000)
           {
-            NextGrabTick = modFunctions.TickCount() + (mySettings.StartWait * 60 * 1000);
+            NextGrabTick = srlFunctions.TickCount() + (mySettings.StartWait * 60 * 1000);
           }
         }
-        if (modFunctions.TickCount() >= NextGrabTick)
+        if (srlFunctions.TickCount() >= NextGrabTick)
         {
           if ((mySettings.UpdateType != UpdateTypes.None) && (Math.Abs(DateTime.Now.Subtract(mySettings.LastUpdate).TotalDays) > mySettings.UpdateTime))
           {
             CheckForUpdates();
-            NextGrabTick = modFunctions.TickCount() + 10 * 60 * 1000;
+            NextGrabTick = srlFunctions.TickCount() + 10 * 60 * 1000;
           }
           else if (tmrSpeed != 0)
           {
-            NextGrabTick = modFunctions.TickCount() + 10 * 60 * 1000;
+            NextGrabTick = srlFunctions.TickCount() + 10 * 60 * 1000;
           }
           else
           {
@@ -1607,7 +1610,7 @@ namespace RestrictionTrackerGTK
                 }
               }
             }
-            NextGrabTick = modFunctions.TickCount() + msInterval;
+            NextGrabTick = srlFunctions.TickCount() + msInterval;
           }
         }
       }
@@ -1633,7 +1636,7 @@ namespace RestrictionTrackerGTK
         if (cmdRefresh.Sensitive)
         {
           cmdRefresh.Sensitive = false;
-          NextGrabTick = modFunctions.TickCount() + (mySettings.Timeout * 1000);
+          NextGrabTick = srlFunctions.TickCount() + (mySettings.Timeout * 1000);
           if (KeyCheck(mySettings.RemoteKey))
           {
             MethodInvoker remoteInvoker = GetRemoteUsage;
@@ -1667,7 +1670,7 @@ namespace RestrictionTrackerGTK
           }
           SetStatusText(modDB.LOG_GetLast().ToString("g"), "Restarting Connection in 5 seconds...", false);
           DisplayUsage(false, false);
-          NextGrabTick = modFunctions.TickCount() + 5000;
+          NextGrabTick = srlFunctions.TickCount() + 5000;
         }
       }
     }
@@ -1729,7 +1732,7 @@ namespace RestrictionTrackerGTK
       }
       if (e.HardTime)
       {
-        NextGrabTick = modFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
+        NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       }
       else
       {
@@ -1770,11 +1773,11 @@ namespace RestrictionTrackerGTK
       }
       if (MinutesAhead > -1)
       {
-        NextGrabTick = modFunctions.TickCount() + (MinutesAhead * 60 * 1000);
+        NextGrabTick = srlFunctions.TickCount() + (MinutesAhead * 60 * 1000);
       }
       else
       {
-        NextGrabTick = modFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
+        NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       }
     }
     #endregion
@@ -1786,7 +1789,7 @@ namespace RestrictionTrackerGTK
     private void Main_LocalDataConnectionStatus(object o, EventArgs ea)
     {
       localRestrictionTracker.ConnectionStatusEventArgs e = (localRestrictionTracker.ConnectionStatusEventArgs) ea;
-      NextGrabTick = modFunctions.TickCount() + ((mySettings.Timeout + 15) * 1000);
+      NextGrabTick = srlFunctions.TickCount() + ((mySettings.Timeout + 15) * 1000);
       switch (e.Status)
       {
         case localRestrictionTracker.ConnectionStates.Initialize:
@@ -1828,10 +1831,10 @@ namespace RestrictionTrackerGTK
               SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Home Page...", false);
               break;
             case localRestrictionTracker.ConnectionSubStates.LoadAJAX:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading AJAX Data (" + e.Stage + " of 4)...", false);
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading AJAX Data (" + e.Stage + " of " + localData.ExedeAJAXFirstTryRequests + ")...", false);
               break;
             case localRestrictionTracker.ConnectionSubStates.LoadAJAXRetry:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Re-Downloading AJAX Data (" + e.Stage + " of 8)...", false);
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Re-Downloading AJAX Data (" + e.Stage + " of " + localData.ExedeAJAXSecondTryRequests + ")...", false);
               break;
             case localRestrictionTracker.ConnectionSubStates.LoadTable:
               SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Usage Table...", false);
@@ -1930,7 +1933,7 @@ namespace RestrictionTrackerGTK
     {
       localRestrictionTracker.TYPEA2ResultEventArgs e = (localRestrictionTracker.TYPEA2ResultEventArgs) ea;
       SetStatusText(e.Update.ToString("g"), "Saving History...", false);
-      NextGrabTick = modFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
+      NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       modDB.LOG_Add(e.Update, e.AnyTime, e.AnyTimeLimit, e.OffPeak, e.OffPeakLimit, true);
       myPanel = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
@@ -1953,7 +1956,7 @@ namespace RestrictionTrackerGTK
     {
       localRestrictionTracker.TYPEBResultEventArgs e = (localRestrictionTracker.TYPEBResultEventArgs) ea;
       SetStatusText(e.Update.ToString("g"), "Saving History...", false);
-      NextGrabTick = modFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
+      NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       modDB.LOG_Add(e.Update, e.Used, e.Limit, e.Used, e.Limit, true);
       myPanel = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
@@ -1976,7 +1979,7 @@ namespace RestrictionTrackerGTK
     {
       localRestrictionTracker.TYPEAResultEventArgs e = (localRestrictionTracker.TYPEAResultEventArgs) ea;
       SetStatusText(e.Update.ToString("g"), "Saving History...", false);
-      NextGrabTick = modFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
+      NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       modDB.LOG_Add(e.Update, e.Download, e.DownloadLimit, e.Upload, e.UploadLimit, true);
       myPanel = localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY;
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY;
@@ -1999,7 +2002,7 @@ namespace RestrictionTrackerGTK
     {
       localRestrictionTracker.TYPEAResultEventArgs e = (localRestrictionTracker.TYPEAResultEventArgs) ea;
       SetStatusText(e.Update.ToString("g"), "Saving History...", false);
-      NextGrabTick = modFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
+      NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       modDB.LOG_Add(e.Update, e.Download, e.DownloadLimit, e.Upload, e.UploadLimit, true);
       myPanel = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
@@ -2022,7 +2025,7 @@ namespace RestrictionTrackerGTK
     {
       localRestrictionTracker.TYPEBResultEventArgs e = (localRestrictionTracker.TYPEBResultEventArgs) ea;
       SetStatusText(e.Update.ToString("g"), "Saving History...", false);
-      NextGrabTick = modFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
+      NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       modDB.LOG_Add(e.Update, e.Used, e.Limit, e.Used, e.Limit, true);
       myPanel = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
@@ -2120,7 +2123,7 @@ namespace RestrictionTrackerGTK
     }
     private void Main_RemoteDataOKKey(object o, EventArgs e)
     {
-      NextGrabTick = modFunctions.TickCount() + (mySettings.Timeout * 1000);
+      NextGrabTick = srlFunctions.TickCount() + (mySettings.Timeout * 1000);
       SetStatusText(modDB.LOG_GetLast().ToString("g"), "Account Accessed! Getting Usage...", false);
     }
     private void remoteData_Success(object sender, remoteRestrictionTracker.SuccessEventArgs e)
@@ -2131,7 +2134,7 @@ namespace RestrictionTrackerGTK
     {
       remoteRestrictionTracker.SuccessEventArgs e = (remoteRestrictionTracker.SuccessEventArgs) ea;
       string LastTime = modDB.LOG_GetLast().ToString("g");
-      NextGrabTick = modFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
+      NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       if (FullCheck)
       {
         SetStatusText(LastTime, "Synchronizing History...", false);
@@ -2147,7 +2150,7 @@ namespace RestrictionTrackerGTK
         mySettings.Save();
         int iPercent = 0;
         int iInterval = 1;
-        long iStart = modFunctions.TickCount();
+        long iStart = srlFunctions.TickCount();
         for (int I = 0; I <= e.Results.Length - 1; I++)
         {
           remoteRestrictionTracker.SuccessEventArgs.Result Row = e.Results[I];
@@ -2164,7 +2167,7 @@ namespace RestrictionTrackerGTK
               Gtk.Main.Iteration();
               if ((iPercent == 4))
               {
-                long iDur = modFunctions.TickCount() - iStart;
+                long iDur = srlFunctions.TickCount() - iStart;
                 if (iDur <= 700)
                 {
                   iInterval = 2;
@@ -2511,7 +2514,7 @@ namespace RestrictionTrackerGTK
       SetTrayText(sTTT);
       if (mySettings.Overuse > 0)
       {
-        if (lastBalloon > 0 && modFunctions.TickCount() - lastBalloon < mySettings.Overtime * 60 * 1000)
+        if (lastBalloon > 0 && srlFunctions.TickCount() - lastBalloon < mySettings.Overtime * 60 * 1000)
         {
           return;
         }
@@ -2531,7 +2534,7 @@ namespace RestrictionTrackerGTK
                 taskNotifierEvent(true);
                 taskNotifier.Show("Excessive Usage Detected", modFunctions.ProductName + " has logged a usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
               }
-              lastBalloon = modFunctions.TickCount();
+              lastBalloon = srlFunctions.TickCount();
               break;
             }
           }
@@ -2640,7 +2643,7 @@ namespace RestrictionTrackerGTK
       SetTrayText(sTTT);
       if (mySettings.Overuse > 0)
       {
-        if (lastBalloon > 0 && modFunctions.TickCount() - lastBalloon < mySettings.Overtime * 60 * 1000)
+        if (lastBalloon > 0 && srlFunctions.TickCount() - lastBalloon < mySettings.Overtime * 60 * 1000)
         {
           return;
         }
@@ -2660,7 +2663,7 @@ namespace RestrictionTrackerGTK
                 taskNotifierEvent(true);
                 taskNotifier.Show("Excessive Usage Detected", modFunctions.ProductName + " has logged a usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
               }
-              lastBalloon = modFunctions.TickCount();
+              lastBalloon = srlFunctions.TickCount();
               break;
             }
             else if (lUp - lItems[I].UPLOAD >= mySettings.Overuse)
@@ -2673,7 +2676,7 @@ namespace RestrictionTrackerGTK
                 taskNotifierEvent(true);
                 taskNotifier.Show("Excessive Off-Peak Usage Detected", modFunctions.ProductName + " has logged an Off-Peak usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
               }
-              lastBalloon = modFunctions.TickCount();
+              lastBalloon = srlFunctions.TickCount();
               break;
             }
           }
@@ -2783,7 +2786,7 @@ namespace RestrictionTrackerGTK
       SetTrayText(sTTT);
       if (mySettings.Overuse > 0)
       {
-        if (lastBalloon > 0 && modFunctions.TickCount() - lastBalloon < mySettings.Overtime * 60 * 1000)
+        if (lastBalloon > 0 && srlFunctions.TickCount() - lastBalloon < mySettings.Overtime * 60 * 1000)
         {
           return;
         }
@@ -2803,7 +2806,7 @@ namespace RestrictionTrackerGTK
                 taskNotifierEvent(true);
                 taskNotifier.Show("Excessive Download Detected", modFunctions.ProductName + " has logged a download of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
               }
-              lastBalloon = modFunctions.TickCount();
+              lastBalloon = srlFunctions.TickCount();
               break;
             }
             else if (lUp - lItems[I].UPLOAD >= mySettings.Overuse)
@@ -2816,7 +2819,7 @@ namespace RestrictionTrackerGTK
                 taskNotifierEvent(true);
                 taskNotifier.Show("Excessive Upload Detected", modFunctions.ProductName + " has logged an upload usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
               }
-              lastBalloon = modFunctions.TickCount();
+              lastBalloon = srlFunctions.TickCount();
               break;
             }
           }
@@ -3001,7 +3004,7 @@ namespace RestrictionTrackerGTK
       MainClass.fConfig.Hide();
       MainClass.fConfig.Destroy();
       MainClass.fConfig = null;
-      long waitTime = modFunctions.TickCount() + 2000;
+      long waitTime = srlFunctions.TickCount() + 2000;
       if (myState != LoadStates.Loaded)
       {
         if (myState != LoadStates.Lookup)
@@ -3013,7 +3016,7 @@ namespace RestrictionTrackerGTK
         {
           System.Threading.Thread.Sleep(0);
           System.Threading.Thread.Sleep(1);
-          if (modFunctions.TickCount() > waitTime)
+          if (srlFunctions.TickCount() > waitTime)
             break;
         }
       }
@@ -3519,7 +3522,7 @@ namespace RestrictionTrackerGTK
         }
       }
       SetStatusText(modDB.LOG_GetLast().ToString("g"), "Checking for Software Update...", false);
-      NextGrabTick = modFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
+      NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       if (updateChecker != null)
       {
         updateCheckerEvent(false);
@@ -3964,7 +3967,7 @@ namespace RestrictionTrackerGTK
     private bool tmrStatus_Tick()
     {
       long lNext = NextGrabTick;
-      long lNow = modFunctions.TickCount();
+      long lNow = srlFunctions.TickCount();
       if (lNext == long.MaxValue)
       {
         lblStatus.TooltipText = "Update Temporarily Paused - " + PauseActivity;

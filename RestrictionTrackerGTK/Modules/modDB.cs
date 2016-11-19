@@ -139,7 +139,7 @@ namespace RestrictionTrackerGTK
         {
           sFile = Path.Combine(modFunctions.MySaveDir(true), "History-" + sAccount + ".wb");
           usageDB.Save(sFile, withDisplay);
-          if (modFunctions.InUseChecker(Path.Combine(modFunctions.MySaveDir(true), "History-" + sAccount + ".xml"), FileAccess.Write))
+          if (srlFunctions.InUseChecker(Path.Combine(modFunctions.MySaveDir(true), "History-" + sAccount + ".xml"), FileAccess.Write))
           {
             File.Delete(Path.Combine(modFunctions.MySaveDir(true), "History-" + sAccount + ".xml"));
           }
@@ -207,7 +207,7 @@ namespace RestrictionTrackerGTK
         isSaving = true;
         if (!Directory.Exists(Path.GetDirectoryName(sFile)))
           Directory.CreateDirectory(Path.GetDirectoryName(sFile));
-        if (modFunctions.InUseChecker(sFile, FileAccess.Write))
+        if (srlFunctions.InUseChecker(sFile, FileAccess.Write))
         {
           usageDB.Save(sFile, withDisplay);
         }

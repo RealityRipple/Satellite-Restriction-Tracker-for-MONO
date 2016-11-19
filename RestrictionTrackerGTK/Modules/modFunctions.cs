@@ -247,47 +247,47 @@ namespace RestrictionTrackerGTK
     {
       return new string[] { "exede.net", "wildblue.net", "dish.net", "dishmail.net", "kitcarson.net", "plateauwb.net", "wbaccess.net", "novecnet.com", "northlc.com", "oecblue.net", "seidata.com", "oecblue.com", "hcecwildblue.com", "trueband.net", "trueband.com", "fhrd.net", "scpwildblue.com", "oeccwildblue.com", "bessi.net", "mlecwb.net", "erec.net", "winntelwb.coop", "coopsone.com", "kiamichiwb.org", "kmwb.net", "directv.net" };
     }
-    public static localRestrictionTracker.SatHostTypes StringToHostType(string st)
-    {
-      switch (st.ToUpper())
-      {
-        case "WBL":
-        case "WILDBLUE":
-          return localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
-        case "WBX":
-        case "EXEDE":
-        case "WBV":
-          return localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
-        case "RPL":
-          return localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY;
-        case "RPX":
-        case "RURALPORTAL":
-          return localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
-        case "DNX":
-        case "DISHNET":
-          return localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
-        default:
-          return localRestrictionTracker.SatHostTypes.Other;
-      }
-    }
-    public static string HostTypeToString(localRestrictionTracker.SatHostTypes ht)
-    {
-      switch (ht)
-      {
-        case  localRestrictionTracker.SatHostTypes.WildBlue_LEGACY:
-          return "WBL";
-        case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
-          return "WBX";
-        case localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
-          return "RPL";
-        case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
-          return "RPX";
-        case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
-          return "DNX";
-        default:
-          return "O";
-      }
-    }
+    //    public static localRestrictionTracker.SatHostTypes StringToHostType(string st)
+    //    {
+    //      switch (st.ToUpper())
+    //      {
+    //        case "WBL":
+    //        case "WILDBLUE":
+    //          return localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
+    //        case "WBX":
+    //        case "EXEDE":
+    //        case "WBV":
+    //          return localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
+    //        case "RPL":
+    //          return localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY;
+    //        case "RPX":
+    //        case "RURALPORTAL":
+    //          return localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
+    //        case "DNX":
+    //        case "DISHNET":
+    //          return localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
+    //        default:
+    //          return localRestrictionTracker.SatHostTypes.Other;
+    //      }
+    //    }
+    //    public static string HostTypeToString(localRestrictionTracker.SatHostTypes ht)
+    //    {
+    //      switch (ht)
+    //      {
+    //        case  localRestrictionTracker.SatHostTypes.WildBlue_LEGACY:
+    //          return "WBL";
+    //        case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
+    //          return "WBX";
+    //        case localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
+    //          return "RPL";
+    //        case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
+    //          return "RPX";
+    //        case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
+    //          return "DNX";
+    //        default:
+    //          return "O";
+    //      }
+    //    }
     public static string ConvertTime(UInt64 lngMS, bool Abbreviated = false, bool Trimmed = true)
     {
       UInt64 lngSeconds = lngMS / 1000;
@@ -660,32 +660,32 @@ namespace RestrictionTrackerGTK
         MainClass.fMain.FailResponse("error");
       }
     }
-    public static string PercentEncode(string inString)
-    {
-      string sRet = string.Empty;
-      if (string.IsNullOrEmpty(inString))
-        return inString;
-      for (int I = inString.Length - 1; I >= 0; I += -1)
-      {
-        int iChar = Convert.ToInt32(inString[I]);
-        if ((iChar >= 48 && iChar <= 57) || (iChar <= 65 && iChar >= 90) || (iChar <= 97 && iChar >= 122))
-          sRet = inString[I].ToString() + sRet;
-        else if (iChar == 32)
-          sRet = "+" + sRet;
-        else
-          sRet = "%" + PadHex(iChar, 2) + sRet;
-      }
-      return sRet;
-    }
-    private static string PadHex(Int32 Value, UInt16 Length)
-    {
-      string sVal = Convert.ToString(Value, 16);
-      while (sVal.Length < Length)
-      {
-        sVal = "0" + sVal;
-      }
-      return sVal;
-    }
+    //    public static string PercentEncode(string inString)
+    //    {
+    //      string sRet = string.Empty;
+    //      if (string.IsNullOrEmpty(inString))
+    //        return inString;
+    //      for (int I = inString.Length - 1; I >= 0; I += -1)
+    //      {
+    //        int iChar = Convert.ToInt32(inString[I]);
+    //        if ((iChar >= 48 && iChar <= 57) || (iChar <= 65 && iChar >= 90) || (iChar <= 97 && iChar >= 122))
+    //          sRet = inString[I].ToString() + sRet;
+    //        else if (iChar == 32)
+    //          sRet = "+" + sRet;
+    //        else
+    //          sRet = "%" + PadHex(iChar, 2) + sRet;
+    //      }
+    //      return sRet;
+    //    }
+    //    private static string PadHex(Int32 Value, UInt16 Length)
+    //    {
+    //      string sVal = Convert.ToString(Value, 16);
+    //      while (sVal.Length < Length)
+    //      {
+    //        sVal = "0" + sVal;
+    //      }
+    //      return sVal;
+    //    }
     public static byte CopyDirectory(string FromDir, string ToDir)
     {
       if (Directory.Exists(FromDir))
@@ -1931,58 +1931,58 @@ namespace RestrictionTrackerGTK
       return(outColors);
     }
     #endregion
-    /// <summary>
-    /// Attempts to see if a file is in use, waiting up to five seconds for it to be freed.
-    /// </summary>
-    /// <param name="Filename">The exact path to the file which needs to be checked.</param>
-    /// <param name="access">Write permissions required for checking.</param>
-    /// <returns>True on available, false on in use.</returns>
-    /// <remarks></remarks>
-    public static bool InUseChecker(string Filename, FileAccess access)
-    {
-      if (!File.Exists(Filename))
-      {
-        return true;
-      }
-      long iStart = TickCount();
-      do
-      {
-        try
-        {
-          switch (access)
-          {
-            case FileAccess.Read:
-              //only check for ability to read
-              using (FileStream fs = File.Open(Filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
-              {
-                if (fs.CanRead)
-                {
-                  return true;
-                }
-              }
-
-              break;
-            case FileAccess.Write:
-            case FileAccess.ReadWrite:
-              //check for ability to write
-              using (FileStream fs = File.Open(Filename, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite | FileShare.Delete))
-              {
-                if (fs.CanWrite)
-                {
-                  return true;
-                }
-              }
-              break;
-          }
-        }
-        catch (Exception)
-        {
-        }
-        System.Threading.Thread.Sleep(0);
-        System.Threading.Thread.Sleep(100);
-      } while (TickCount() - iStart < 5000);
-      return false;
-    }
+    //    /// <summary>
+    //    /// Attempts to see if a file is in use, waiting up to five seconds for it to be freed.
+    //    /// </summary>
+    //    /// <param name="Filename">The exact path to the file which needs to be checked.</param>
+    //    /// <param name="access">Write permissions required for checking.</param>
+    //    /// <returns>True on available, false on in use.</returns>
+    //    /// <remarks></remarks>
+    //    public static bool InUseChecker(string Filename, FileAccess access)
+    //    {
+    //      if (!File.Exists(Filename))
+    //      {
+    //        return true;
+    //      }
+    //      long iStart = TickCount();
+    //      do
+    //      {
+    //        try
+    //        {
+    //          switch (access)
+    //          {
+    //            case FileAccess.Read:
+    //              //only check for ability to read
+    //              using (FileStream fs = File.Open(Filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
+    //              {
+    //                if (fs.CanRead)
+    //                {
+    //                  return true;
+    //                }
+    //              }
+    //
+    //              break;
+    //            case FileAccess.Write:
+    //            case FileAccess.ReadWrite:
+    //              //check for ability to write
+    //              using (FileStream fs = File.Open(Filename, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite | FileShare.Delete))
+    //              {
+    //                if (fs.CanWrite)
+    //                {
+    //                  return true;
+    //                }
+    //              }
+    //              break;
+    //          }
+    //        }
+    //        catch (Exception)
+    //        {
+    //        }
+    //        System.Threading.Thread.Sleep(0);
+    //        System.Threading.Thread.Sleep(100);
+    //      } while (TickCount() - iStart < 5000);
+    //      return false;
+    //    }
     public static DateTime DateAdd(DateInterval interval, double number, DateTime dateValue)
     {
       switch (interval)
@@ -2064,10 +2064,10 @@ namespace RestrictionTrackerGTK
       ret = ret.Replace("-", "");
       return ret.Length == 0;
     }
-    public static long TickCount()
-    {
-      return (long) ((System.Diagnostics.Stopwatch.GetTimestamp() / (double) System.Diagnostics.Stopwatch.Frequency) * 1000);
-    }
+    //    public static long TickCount()
+    //    {
+    //      return (long) ((System.Diagnostics.Stopwatch.GetTimestamp() / (double) System.Diagnostics.Stopwatch.Frequency) * 1000);
+    //    }
     public static string ProductVersion
     {
       get
@@ -2145,11 +2145,11 @@ namespace RestrictionTrackerGTK
           System.Diagnostics.Process.Start(cap);
           if (!File.Exists(screenPath))
           {
-            long lStart = TickCount();
+            long lStart = srlFunctions.TickCount();
             do
             {
               System.Threading.Thread.Sleep(1);
-            } while ((!File.Exists(screenPath)) & (TickCount() - lStart < 7000));
+            } while ((!File.Exists(screenPath)) & (srlFunctions.TickCount() - lStart < 7000));
           }
           if (File.Exists(screenPath))
           {

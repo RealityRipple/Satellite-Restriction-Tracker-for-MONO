@@ -3,6 +3,9 @@ using System.IO;
 using Gtk;
 using MacInterop;
 using MantisBugTracker;
+using RestrictionLibrary;
+
+
 namespace RestrictionTrackerGTK
 {
   class MainClass
@@ -13,7 +16,7 @@ namespace RestrictionTrackerGTK
     public static dlgCustomColors fCustomColors;
     public static frmHistory fHistory;
     public static frmMain fMain;
-    public static void Main(string[] args)
+    public static void Main()
     {
       Application.Init();
       if (!modFunctions.RunningLock())
@@ -172,7 +175,7 @@ namespace RestrictionTrackerGTK
     }
     private static string DoubleEncode(string inString)
     {
-      return modFunctions.PercentEncode(modFunctions.PercentEncode(inString));
+      return srlFunctions.PercentEncode(srlFunctions.PercentEncode(inString));
     }
     static void SizeAllocateLabel(object o, SizeAllocatedArgs e)
     {
