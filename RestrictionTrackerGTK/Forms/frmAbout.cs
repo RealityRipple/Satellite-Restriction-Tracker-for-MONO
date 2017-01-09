@@ -33,7 +33,7 @@ namespace RestrictionTrackerGTK
       else
         lblProduct.Markup = "<a href=\"http://srt.realityripple.com/For_MONO/\">" + modFunctions.ProductName + " for MONO</a>";
       modFunctions.PrepareLink(lblVersion);
-      lblVersion.Markup = "<a href=\"http://srt.realityripple.com/changes.php\">Version " + modFunctions.DisplayVersion(modFunctions.ProductVersion) + "</a>";
+      lblVersion.Markup = "<a href=\"http://srt.realityripple.com/changes.php\">Version " + modFunctions.DisplayVersion(modFunctions.ProductVersion) + "</a> on " + RestrictionLibrary.srlFunctions.GetCLRCleanVersion();
       modFunctions.PrepareLink(lblCompany);
       lblCompany.Markup = "<a href=\"http://realityripple.com/\">" + modFunctions.CompanyName + "</a>";
       txtDescription.Buffer.Text = "The RestrictionTracker utility monitors and logs ViaSat network usage and limits. It includes graphing software to let you monitor your usage history and predict future usage levels. All application coding by Andrew Sachen. This application is not endorsed by ViaSat, WildBlue, Exede, or any affiliate companies.";
