@@ -1,0 +1,691 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+RestrictionTrackerLib
+</name>
+</assembly>
+<members>
+<member name="P:RestrictionLibrary.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:RestrictionLibrary.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="P:RestrictionLibrary.My.Resources.Resources.sat">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+</summary>
+</member><member name="T:RestrictionLibrary.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="F:RestrictionLibrary.DataBase.DataRow.DATETIME">
+	<summary>
+ The Date and Time of the data stored in this row.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:RestrictionLibrary.DataBase.DataRow.DOWNLOAD">
+	<summary>
+ The number of Megabytes used in download activity at the specified date and time.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:RestrictionLibrary.DataBase.DataRow.DOWNLIM">
+	<summary>
+ The maximum number of Megabytes allowed in download activity for the plan at the specified date and time.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:RestrictionLibrary.DataBase.DataRow.UPLOAD">
+	<summary>
+ The number of Megabytes used in upload activity at the specified date and time.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:RestrictionLibrary.DataBase.DataRow.UPLIM">
+	<summary>
+ The maximum number of Megabytes allowed in upload activity for the plan at the specified date and time.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.DataBase.DataRow.#ctor(System.DateTime,System.Int64,System.Int64,System.Int64,System.Int64)">
+	<summary>
+ Create a new DataRow entry.
+ </summary>
+	<param name="dTime">The Date and Time of the entry.</param>
+	<param name="lDown">The number of Megabytes used in download activity for this entry.</param>
+	<param name="lDownLim">The maximum number of Megabytes allowed in download activity for this entry.</param>
+	<param name="lUp">The number of Megabytes used in upload activity for this entry.</param>
+	<param name="lUpLim">The maximum number of Megabytes allowed in upload activity for this entry.</param>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.DataBase.DataRow.sDATETIME">
+	<summary>
+ Get a string representation of the Date and Time of the data stored in this row.
+ </summary>
+	<returns>The date and time are returned in the format "MM/DD/YYYY HH:MM", or the standard "g".</returns>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.DataBase.DataRow.sDOWNLOAD">
+	<summary>
+ Get a string representation of the number of Megabytes used in download activity for this row.
+ </summary>
+	<returns>The download value is returned with standard thousands separators and no decimal.</returns>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.DataBase.DataRow.sDOWNLIM">
+	<summary>
+ Get a string representation of the number of Megabytes allowed in download activity for this row.
+ </summary>
+	<returns>The download limit is returned with standard thousands separators and no decimal.</returns>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.DataBase.DataRow.sUPLOAD">
+	<summary>
+ Get a string representation of the number of Megabytes used in upload activity for this row.
+ </summary>
+	<returns>The upload value is returned with standard thousands separators and no decimal.</returns>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.DataBase.DataRow.sUPLIM">
+	<summary>
+ Get a string representation of the number of Megabytes allowed in upload activity for this row.
+ </summary>
+	<returns>The upload limit is returned with standard thousands separators and no decimal.</returns>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.DataBase.DataRow.ToString">
+	<summary>
+ Get a string representation of this row in the format "MM/DD/YYYY HH:MM [Down: 0,000/0,000][, ][Up: 0,000/0,000]".
+ </summary>
+	<returns>The return value will always contain the <see cref="P:RestrictionLibrary.DataBase.DataRow.sDATETIME"/> value, and will be followed with Download and/or Upload values if either the value or limit is greater than 0.</returns>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.DataBase.DataRow.Empty">
+	<summary>
+ This is a standard empty DataRow with all values set to zero.
+ </summary>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.DataBase.DataRow.IsEmpty(RestrictionLibrary.DataBase.DataRow)">
+	<summary>
+ Check a <see cref="T:RestrictionLibrary.DataBase.DataRow"/> entry to see if it is empty or unset.
+ </summary>
+	<param name="dRow">The <see cref="T:RestrictionLibrary.DataBase.DataRow"/> entry you wish to check.</param>
+	<returns>A boolean value of <c>True</c> is returned if the <paramref name="dRow"/> entry is empty, <c>False</c> otherwise.</returns>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.DataBase.DataRow.IsEmpty">
+	<summary>
+ Check this <see cref="T:RestrictionLibrary.DataBase.DataRow"/> entry to see if it is empty or unset.
+ </summary>
+	<returns>A boolean value of <c>True</c> is returned if this entry is empty, <c>False</c> otherwise.</returns>
+	<remarks></remarks>
+</member><member name="T:RestrictionLibrary.DataBase.DataRow">
+	<summary>
+ Stores information about usage activity at a single date and time.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.DataBase.#ctor">
+	<summary>
+ Create a new DataBase with no entries.
+ </summary>
+	<remarks>If this subroutine is called on an existing database, it will be erased.</remarks>
+</member><member name="F:RestrictionLibrary.DataBase.StopNew">
+	<summary>
+ Set this value to true to stop loading a databased called from the initialization subroutine.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.DataBase.ProgressStateEventArgs.#ctor(System.Int32,System.Int32)">
+	<summary>
+ A progress value containing the current number of things done and the total number of things to do.
+ </summary>
+	<param name="Value">The current number of things that have been done.</param>
+	<param name="Total">The total number of things there are to do.</param>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.DataBase.ProgressStateEventArgs.Value">
+	<summary>
+ The Current number of things that have been done.
+ </summary>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.DataBase.ProgressStateEventArgs.Total">
+	<summary>
+ The total number of things to do.
+ </summary>
+	<remarks></remarks>
+</member><member name="E:RestrictionLibrary.DataBase.ProgressState">
+	<summary>
+ The loading of the DataBase has progressed to a specific point.
+ </summary>
+	<param name="sender">A reference to this <see cref="T:RestrictionLibrary.DataBase"/> class.</param>
+	<param name="e">A <see cref="T:RestrictionLibrary.DataBase.ProgressStateEventArgs"/> entry with the current Value and Total of the DataBase load's progress.</param>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.DataBase.#ctor(System.String,System.Boolean)">
+	<summary>
+ Create a new DataBase with entries loaded from the specified <paramref name="Path"/>.
+ </summary>
+	<param name="Path">Path to a saved DataBase in either WB, XML, or CSV formats.</param>
+	<param name="withDisplay">Return the current progress of the load through the ProgressState event.</param>
+	<remarks>This subroutine will not begin the load process. You must call <see cref="M:RestrictionLibrary.DataBase.StartNew"/> to begin loading the database. This is to allow initialization and loading at separate times or on separate threads.</remarks>
+</member><member name="M:RestrictionLibrary.DataBase.StartNew">
+	<summary>
+ Begin loading DataBase entries from the path specified in the snitialization subroutine.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.DataBase.Sort">
+	<summary>
+ Organize the entire DataBase by date and time.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.DataBase.Add(RestrictionLibrary.DataBase.DataRow)">
+	<summary>
+ Add a new DataRow entry to the DataBase.
+ </summary>
+	<param name="item">The new DataRow entry to add.</param>
+	<remarks>The entry won't be added if it's less than one minute apart from another DataRow in the DataBase.</remarks>
+</member><member name="M:RestrictionLibrary.DataBase.Merge(RestrictionLibrary.DataBase,System.Boolean)">
+	<summary>
+ Add all the entries of another DataBase into this one.
+ </summary>
+	<param name="db">The other DataBase to include in this one.</param>
+	<param name="withDisplay">Return the current progress of the merge through the ProgressState event.</param>
+	<remarks>The original DataBase will not be modified or erased by this process.</remarks>
+</member><member name="M:RestrictionLibrary.DataBase.Clear">
+	<summary>
+ Remove all entries from this DataBase.
+ </summary>
+	<remarks>This is literally identical to the initialization subroutine without parameters.</remarks>
+</member><member name="M:RestrictionLibrary.DataBase.Contains(RestrictionLibrary.DataBase.DataRow)">
+	<summary>
+ Check for existence of an item by searching for an exact match. 
+ </summary>
+	<param name="item">The exact match of the <see cref="T:RestrictionLibrary.DataBase.DataRow"/> you wish to find.</param>
+	<returns><c>True</c> is returned if the DataBase contains at least one copy of the <paramref name="item"/>, <c>False</c> otherwise.</returns>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.DataBase.CopyTo(RestrictionLibrary.DataBase.DataRow[],System.Int32)">
+	<summary>
+ Copy data from this DataBase into an array of DataRows.
+ </summary>
+	<param name="array">The array of <see cref="T:RestrictionLibrary.DataBase.DataRow"/>s in which to copy this DataBase.</param>
+	<param name="arrayIndex">The location at which to start copying data into in the <paramref name="array"/>.</param>
+	<remarks>
+ The number of items to be copied will be equal to the space allocated for items in the <paramref name="array"/> from the <paramref name="arrayIndex"/> value to the end.
+ </remarks>
+</member><member name="M:RestrictionLibrary.DataBase.ToArray">
+	<summary>
+ Convert this DataBase into an array of <see cref="T:RestrictionLibrary.DataBase.DataRow"/> entries.
+ </summary>
+	<returns>The full list of entries in this DataBase.</returns>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.DataBase.Count">
+	<summary>
+ The total number of entries in this DataBase.
+ </summary>
+	<remarks>The value will be 0 if the DataBase is not initialized or if it's been erased.</remarks>
+</member><member name="P:RestrictionLibrary.DataBase.IsReadOnly">
+	<summary>
+ Gets a value indicating whether the DataBase is read-only.
+ </summary>
+	<value></value>
+	<returns>This property is always false because it is always false for all arrays.</returns>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.DataBase.Remove(RestrictionLibrary.DataBase.DataRow)">
+	<summary>
+ Remove a DataRow entry from the DataBase.
+ </summary>
+	<param name="item">The DataRow entry to remove.</param>
+	<returns><c>True</c> if the entry was successfully removed from the DataBase, <c>False</c> if the entry could not be found.</returns>
+	<remarks>This function only uses the <see cref="F:RestrictionLibrary.DataBase.DataRow.DATETIME"/> value to compare against entries in the DataBase.</remarks>
+</member><member name="M:RestrictionLibrary.DataBase.Remove(System.DateTime)">
+	<summary>
+ Remove a DataRow entry from the DataBase.
+ </summary>
+	<param name="DateTime">The Date and Time of the DataRow entry to remove.</param>
+	<returns><c>True</c> if the entry was successfully removed from the DataBase, <c>False</c> if the entry could not be found.</returns>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.DataBase.GetEnumerator">
+	<summary>
+ Returns an enumerator that iterates through the DataBase.
+ </summary>
+	<returns>A <see cref="T:System.Collections.Generic.IEnumerable`1"/> that can be used to iterate through the DataBase.</returns>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.DataBase.GetEnumerator1">
+	<summary>
+ Returns an enumerator that iterates through the DataBase.
+ </summary>
+	<returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the DataBase.</returns>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.DataBase.GetLast">
+	<summary>
+ Returns the latest entry in the DataBase.
+ </summary>
+	<returns></returns>
+	<remarks>This function will sort the DataBase before returning a value.</remarks>
+</member><member name="M:RestrictionLibrary.DataBase.ToString">
+	<summary>
+ A full XML representation of the DataBase.
+ </summary>
+	<returns></returns>
+	<remarks>This function will sort the DataBase before returning a value.</remarks>
+</member><member name="M:RestrictionLibrary.DataBase.ToString(System.Boolean)">
+	<summary>
+ A full XML representation of the DataBase.
+ </summary>
+	<param name="withDisplay">Return the current progress of the function through the ProgressState event.</param>
+	<returns></returns>
+	<remarks>This function will sort the DataBase before returning a value.</remarks>
+</member><member name="M:RestrictionLibrary.DataBase.Save(System.String,System.Boolean)">
+	<summary>
+ Save the DataBase to the specified <paramref name="Path"/>.
+ </summary>
+	<param name="Path">Path to a save location for the DataBase in either WB, XML, or CSV formats.</param>
+	<param name="withDisplay">Return the current progress of the save through the ProgressState event.</param>
+	<returns><c>True</c> is returned if </returns>
+	<remarks></remarks>
+</member><member name="T:RestrictionLibrary.DataBase">
+	<summary>
+ Stores information about usage activity for an account, with access to subroutines and functions for manipulating the list and storing it as one of three file types.
+ </summary>
+	<remarks>This class also contains a child <see cref="T:RestrictionLibrary.DataBase.DataRow"/> class which provides access to individual events of this larger list and is used as a Type in some instances.</remarks>
+</member><member name="P:RestrictionLibrary.RR_HMAC.HashName">
+	<summary>
+ Gets or sets the name of the hash algorithm to use for hashing.
+ </summary>
+	<value></value>
+	<returns>The name of the hash algorithm.</returns>
+	<remarks></remarks>
+	<exception cref="T:System.Security.Cryptography.CryptographicException">The current hash algorithm cannot be changed.</exception>
+</member><member name="P:RestrictionLibrary.RR_HMAC.Key">
+	<summary>
+ Gets or sets the key to use in the hash algorithm.
+ </summary>
+	<value></value>
+	<returns>The key to use in the hash algorithm.</returns>
+	<remarks></remarks>
+	<exception cref="T:System.Security.Cryptography.CryptographicException">An attempt is made to change the System.Security.Cryptography.HMAC.Key property after hashing has begun.</exception>
+</member><member name="M:RestrictionLibrary.RR_HMAC.Initialize">
+	<summary>
+ Initializes an instance of the default implementation of <see cref="T:RestrictionLibrary.RR_HMAC"/>.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.RR_HMAC.Create">
+	<summary>
+ Creates an instance of the default implementation of a Hash-based Message Authentication Code (HMAC).
+ </summary>
+	<returns>A new instance of an HMAC.</returns>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.RR_HMAC.Create(System.String)">
+	<summary>
+ Creates an instance of the default implementation of a Hash-based Message Authentication Code (HMAC).
+ </summary>
+	<param name="algorithmName">The HMAC implementation to use.</param>
+	<returns>A new instance of the specified HMAC implementation.</returns>
+	<remarks></remarks>
+</member><member name="T:RestrictionLibrary.RR_HMAC">
+	<summary>
+ Represents the abstract class from which RR_HMACSHA512 must derive.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.RR_HMACSHA512.#ctor">
+	<summary>
+ Initializes a new instance of the <see cref="T:RestrictionLibrary.RR_HMACSHA512"/> class with a randomly generated key.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.RR_HMACSHA512.#ctor(System.Byte[])">
+	<summary>
+ Initializes a new instance of the <see cref="T:RestrictionLibrary.RR_HMACSHA512"/> class with the specified key data.
+ </summary>
+	<param name="key__1">The secret key for System.Security.Cryptography.HMACSHA512 encryption. The key can be any length. However, if it is more than 64 bytes long it will be hashed (using SHA-1) to derive a 64-byte key. Therefore, the recommended size of the secret key is 64 bytes.</param>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.RR_HMACSHA512.ProduceLegacyHmacValues">
+	<summary>
+ Provides a workaround for the .NET Framework version 2.0 implementation of the <see cref="T:RestrictionLibrary.RR_HMACSHA512"/> algorithm, which is inconsistent with the .NET Framework version 2.0 Service Pack 1 implementation.
+ </summary>
+	<value></value>
+	<returns>true to enable .NET Framework version 2.0 Service Pack 1 applications to interact with .NET Framework 2.0 applications; otherwise, false.</returns>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.StoredPassword.DecryptApp(System.String)">
+	<summary>
+ Decrypt a password that was encrypted with the Tracker EXE GUID.
+ </summary>
+	<param name="PassCrypt">The base64 encoded encrypted password.</param>
+	<returns>The raw password which was encrypted.</returns>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.StoredPassword.EncryptApp(System.String)">
+	<summary>
+ Encrypt a password using the Tracker EXE GUID.
+ </summary>
+	<param name="Password">The password to encrypt.</param>
+	<returns>An base64 output of the encrypted password.</returns>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.StoredPassword.DecryptLogger(System.String)">
+	<summary>
+ Decrypt a password that was encrypted with the Logger EXE GUID.
+ </summary>
+	<param name="PassCrypt">The base64 encoded encrypted password.</param>
+	<returns>The raw password which was encrypted.</returns>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.StoredPassword.EncryptLogger(System.String)">
+	<summary>
+ Encrypt a password using the Logger EXE GUID.
+ </summary>
+	<param name="Password">The password to encrypt.</param>
+	<returns>An base64 output of the encrypted password.</returns>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.WebClientCore.#ctor(System.Boolean)">
+	<summary>
+ Create a new instance of the <see cref="T:RestrictionLibrary.WebClientCore"/> Class.
+ </summary>
+	<param name="useEvents">If set to <c>True</c>, failures will trigger events, if <c>False</c>, failures will throw errors.</param>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.WebClientCore.#ctor">
+	<summary>
+ Create a new instance of the <see cref="T:RestrictionLibrary.WebClientCore"/> Class.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:RestrictionLibrary.WebClientCore.ErrorEventArgs.#ctor(System.Exception)">
+	<summary>
+ Create a new instance of the <see cref="T:RestrictionLibrary.WebClientCore.ErrorEventArgs"/> Class for use with the <see cref="E:RestrictionLibrary.WebClientCore.Failure"/> event.
+ </summary>
+	<param name="Err">The Exception being passed through the <see cref="E:RestrictionLibrary.WebClientCore.Failure"/> event.</param>
+	<remarks></remarks>
+</member><member name="T:RestrictionLibrary.WebClientCore.ErrorEventArgs">
+	<summary>
+ A <see cref="T:RestrictionLibrary.WebClientCore"/> Upload or Download request failure message containing an <see cref="T:System.Exception"/>.
+ </summary>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.WebClientCore.CookieJar">
+	<summary>
+ Acts as the container for a collection of <see cref="T:System.Net.CookieCollection"/> objects for use with an instance of the <see cref="T:RestrictionLibrary.WebClientCore"/> class.
+ </summary>
+	<value>A new CookieJar to use in place of the default empty Jar. This is useful for sharing and storing sessions and cookies across multiple <see cref="T:RestrictionLibrary.WebClientCore"/> instances.</value>
+	<returns>The current CookieJar for this <see cref="T:RestrictionLibrary.WebClientCore"/>.</returns>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.WebClientCore.ResponseURI">
+	<summary>
+ The <see cref="T:System.Uri"/> of the last <see cref="M:RestrictionLibrary.WebClientCore.GetWebResponse(System.Net.WebRequest)"/> event after any redirection.
+ </summary>
+	<returns>Initially, the value will be <c>Nothing</c> until a <see cref="M:RestrictionLibrary.WebClientCore.GetWebResponse(System.Net.WebRequest)"/> event occurs. It may be equal to the <see cref="T:System.Uri"/> sent in a Download or Upload request, or it may be modified during the request as per page redirection standards*.</returns>
+	<remarks>*Page Redirection can be disabled using the <see cref="P:RestrictionLibrary.WebClientCore.ManualRedirect"/> property. The standards followed if <see cref="P:RestrictionLibrary.WebClientCore.ManualRedirect"/> is set to <c>False</c> are the HTTP 300 Status Code set of errors. Up to 50 redirects are allowed if <see cref="P:System.Net.HttpWebRequest.MaximumAutomaticRedirections"/> has not been set manually.</remarks>
+</member><member name="P:RestrictionLibrary.WebClientCore.Timeout">
+	<summary>
+ Gets or sets the time-out value in seconds for the <see cref="M:System.Net.HttpWebRequest.GetResponse"/> and <see cref="M:System.Net.HttpWebRequest.GetRequestStream"/> methods.
+ </summary>
+	<value></value>
+	<returns>The number of milliseconds to wait before the request times out. The default is 120 seconds.</returns>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.WebClientCore.ReadWriteTimeout">
+	<summary>
+ Gets or sets a time-out in seconds when writing to or reading from a stream.
+ </summary>
+	<value></value>
+	<returns>The number of seconds before the writing or reading times out. The default value is 300 seconds (5 minutes).</returns>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.WebClientCore.HTTPVersion">
+	<summary>
+ Gets or sets the version of HTTP to use for the request.
+ </summary>
+	<value></value>
+	<returns>The HTTP version to use for the request. The default is <see cref="F:System.Net.HttpVersion.Version11"/>.</returns>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.WebClientCore.ErrorBypass">
+	<summary>
+ Gets or sets a <see cref="T:System.Boolean"/> value which determines how the <see cref="T:RestrictionLibrary.WebClientCore"/> reacts to the HTTP 400 Status Code set of errors.
+ </summary>
+	<value>If set to <c>True</c> and the error contains a <see cref="T:System.Net.WebResponse"/> value, that response is sent instead of an error.</value>
+	<returns>If <c>True</c>, errors may be bypassed and trigger Upload and Download completion events, if possible. If <c>False</c>, all error responses are treated as errors. The default value is <c>True</c>.</returns>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.WebClientCore.KeepAlive">
+	<summary>
+ Gets or sets a value that indicates whether to make a persistent connection to the Internet resource.
+ </summary>
+	<value>If set to <c>True</c>, the <see cref="T:RestrictionLibrary.WebClientCore"/> will send a Connection HTTP header with the value Keep-alive; if <c>False</c>, Close.</value>
+	<returns><c>True</c> if the request to the Internet resource should contain a Connection HTTP header with the value Keep-alive; otherwise, <c>False</c>. The default is <c>True</c>.</returns>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.WebClientCore.ManualRedirect">
+	<summary>
+ Gets or sets a <see cref="T:System.Boolean"/> value which determines how the <see cref="T:RestrictionLibrary.WebClientCore"/> reacts to the HTTP 300 Status Code set of errors.
+ </summary>
+	<value></value>
+	<returns><c>False</c> if the request should automatically follow redirection responses from the Internet resource; otherwise, <c>True</c>. The default value is <c>True</c>.</returns>
+	<remarks></remarks>
+</member><member name="E:RestrictionLibrary.WebClientCore.Failure">
+	<summary>
+ A <see cref="T:RestrictionLibrary.WebClientCore"/> Upload or Download request has failed.
+ </summary>
+	<param name="sender">The class which is triggering the event.</param>
+	<param name="e">The exception contained in an EventArg</param>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.WebClientCore.UserAgent">
+	<summary>
+ The User Agent for Satellite Restriction Tracker
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.WebClientEx.Timeout">
+	<summary>
+ Gets or sets the time-out value in seconds for the <see cref="M:System.Net.HttpWebRequest.GetResponse"/> and <see cref="M:System.Net.HttpWebRequest.GetRequestStream"/> methods.
+ </summary>
+	<value></value>
+	<returns>The number of milliseconds to wait before the request times out. The default is 180 seconds.</returns>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.WebClientEx.ReadWriteTimeout">
+	<summary>
+ Gets or sets a time-out in seconds when writing to or reading from a stream.
+ </summary>
+	<value></value>
+	<returns>The number of seconds before the writing or reading times out. The default value is 7200 seconds (2 hours).</returns>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.WebClientEx.Proxy">
+	<summary>
+ Gets or sets the proxy used by this <see cref="T:RestrictionLibrary.WebClientEx"/> object.
+ </summary>
+	<value></value>
+	<returns>An <see cref="T:System.Net.IWebProxy"/> instance used to send requests.</returns>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.WebClientEx.CookieJar">
+	<summary>
+ Acts as the container for a collection of <see cref="T:System.Net.CookieCollection"/> objects for use with an instance of the <see cref="T:RestrictionLibrary.WebClientEx"/> class.
+ </summary>
+	<value>A new CookieJar to use in place of the default empty Jar. This is useful for sharing and storing sessions and cookies across multiple <see cref="T:RestrictionLibrary.WebClientEx"/> instances.</value>
+	<returns>The current CookieJar for this <see cref="T:RestrictionLibrary.WebClientEx"/>.</returns>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.WebClientEx.Encoding">
+	<summary>
+ Gets and sets the System.Text.Encoding used to upload and download strings.
+ </summary>
+	<value></value>
+	<returns>A System.Text.Encoding that is used to encode strings. The default value of this property is <see cref="F:RestrictionLibrary.srlFunctions.LATIN_1"/>.</returns>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.WebClientEx.ResponseURI">
+	<summary>
+ The <see cref="T:System.Uri"/> of the last <see cref="M:RestrictionLibrary.WebClientCore.GetWebResponse(System.Net.WebRequest)"/> event after any redirection.
+ </summary>
+	<returns>Initially, the value will be <c>Nothing</c> until a <see cref="M:RestrictionLibrary.WebClientCore.GetWebResponse(System.Net.WebRequest)"/> event occurs. It may be equal to the <see cref="T:System.Uri"/> sent in a Download or Upload request, or it may be modified during the request as per page redirection standards*.</returns>
+	<remarks>*Page Redirection can be disabled using the <see cref="P:RestrictionLibrary.WebClientEx.ManualRedirect"/> property. The standards followed if <see cref="P:RestrictionLibrary.WebClientEx.ManualRedirect"/> is set to <c>False</c> are the HTTP 300 Status Code set of errors. Up to 50 redirects are allowed if <see cref="P:System.Net.HttpWebRequest.MaximumAutomaticRedirections"/> has not been set manually.</remarks>
+</member><member name="P:RestrictionLibrary.WebClientEx.ErrorBypass">
+	<summary>
+ Gets or sets a <see cref="T:System.Boolean"/> value which determines how the <see cref="T:RestrictionLibrary.WebClientCore"/> reacts to the HTTP 400 Status Code set of errors.
+ </summary>
+	<value>If set to <c>True</c> and the error contains a <see cref="T:System.Net.WebResponse"/> value, that response is sent instead of an error.</value>
+	<returns>If <c>True</c>, errors may be bypassed and trigger Upload and Download completion events, if possible. If <c>False</c>, all error responses are treated as errors. The default value is <c>True</c>.</returns>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.WebClientEx.KeepAlive">
+	<summary>
+ Gets or sets a value that indicates whether to make a persistent connection to the Internet resource.
+ </summary>
+	<value>If set to <c>True</c>, the <see cref="T:RestrictionLibrary.WebClientCore"/> will send a Connection HTTP header with the value Keep-alive; if <c>False</c>, Close.</value>
+	<returns><c>True</c> if the request to the Internet resource should contain a Connection HTTP header with the value Keep-alive; otherwise, <c>False</c>. The default is <c>True</c>.</returns>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.WebClientEx.ManualRedirect">
+	<summary>
+ Gets or sets a <see cref="T:System.Boolean"/> value which determines how the <see cref="T:RestrictionLibrary.WebClientCore"/> reacts to the HTTP 300 Status Code set of errors.
+ </summary>
+	<value></value>
+	<returns><c>False</c> if the request should automatically follow redirection responses from the Internet resource; otherwise, <c>True</c>. The default value is <c>True</c>.</returns>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.WebClientEx.SendHeaders">
+	<summary>
+ Gets or sets a collection of header name/value pairs associated with the request.
+ </summary>
+	<value></value>
+	<returns>A <see cref="T:System.Net.WebHeaderCollection"/> containing header name/value pairs associated with this request.</returns>
+	<remarks></remarks>
+</member><member name="P:RestrictionLibrary.WebClientEx.IsBusy">
+	<summary>
+ Returns a Boolean value that provides information about the state of the request.
+ </summary>
+	<value></value>
+	<returns>If <c>True</c>, the request has been processed and is being sent, the client is waiting for the server, or data is being received in response. Otherwise, the request has not yet been sent or a response has already been received.</returns>
+	<remarks></remarks>
+</member><member name="F:RestrictionLibrary.SecurityProtocolTypeEx.None">
+	<summary>
+ Specifies no security protocol is to be used.
+ </summary>
+	<remarks>This value is technically invalid, but exists for use with Settings to allow no protocol to be selected in the case of a Remote Usage Service subscription.</remarks>
+</member><member name="F:RestrictionLibrary.SecurityProtocolTypeEx.Ssl3">
+	<summary>
+ Specifies the Secure Socket Layer (SSL) 3.0 security protocol.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:RestrictionLibrary.SecurityProtocolTypeEx.Tls10">
+	<summary>
+ Specifies the Transport Layer Security (TLS) 1.0 security protocol.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:RestrictionLibrary.SecurityProtocolTypeEx.Tls11">
+	<summary>
+ Specifies the Transport Layer Security (TLS) 1.1 security protocol.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:RestrictionLibrary.SecurityProtocolTypeEx.Tls12">
+	<summary>
+ Specifies the Transport Layer Security (TLS) 1.2 security protocol.
+ </summary>
+	<remarks></remarks>
+</member><member name="T:RestrictionLibrary.SecurityProtocolTypeEx">
+	<summary>
+ Specifies the security protocols that are supported by the Schannel security package.
+ </summary>
+	<remarks>This contains the additional TLS 1.1 and 1.2 standards lacking in <see cref="T:System.Net.SecurityProtocolType"/>, which require newer .NET Framework versions.</remarks>
+</member><member name="F:RestrictionLibrary.srlFunctions.LATIN_1">
+	<summary>
+ ISO-8859-1 Latin-1 Encoding
+ </summary>
+	<remarks>Charset for Latin-1 when using Text Encoding functions.</remarks>
+</member><member name="M:RestrictionLibrary.srlFunctions.PercentEncode(System.String)">
+	<summary>
+ Encodes a string for use in HTML form submissions.
+ </summary>
+	<param name="string">The string you wish to percent-encode.</param>
+	<returns>A string identical to <paramref name="string"/> except that nonalphanumeric characters are encoded for use in HTML forms.</returns>
+	<remarks>
+		<para>This function percent-encodes all non-alphanumeric characters with four exceptions.</para>
+		<para><c>Spaces</c> will be replaced with a "+" rather than "%20".</para>
+		<para><c>Hyphens</c>, <c>Underscores</c>, and <c>Asterisks</c> will be left alone.</para>
+	</remarks>
+</member><member name="M:RestrictionLibrary.srlFunctions.PadHex(System.UInt32)">
+	<summary>
+ Convert an <c>Integer</c> into a hexadecimal string with an appropriate zero-prefix padding.
+ </summary>
+	<param name="value">The base-10 number you wish to convert to base-16.</param>
+	<returns>A string containing the hexadecimal value that was passed to the function.</returns>
+	<remarks>
+		<para>If the length of the hexadecimal value is less than 8 characters and odd, one zero is prefixed.</para>
+		<para>If the length of the hexadecimal value is between 9 and 15 characters, enough zeroes are prefixed to bring the length to 16.</para>
+		<para>If the length of the hexadecimal value is between 17 and 31 characters, the string will be padded to 32.</para>
+		<para>If the length of the hexadecimal value is between 33 and 63 characters, the string will be padded to 64.</para>
+		<para>If the length of the hexadecimal value is between 65 and 127 characters, the string will be padded to 128.</para>
+		<para>If the length of the hexadecimal value is greater than 128, the string will not be padded.</para>
+	</remarks>
+</member><member name="M:RestrictionLibrary.srlFunctions.PadHex(System.UInt32,System.UInt16)">
+	<summary>
+ Convert an <c>Integer</c> into a hexadecimal string with a specific zero-prefix padding.
+ </summary>
+	<param name="value">The base-10 number you wish to convert to base-16.</param>
+	<param name="padTo">The minimum length of the output value.</param>
+	<returns>A string containing the hexadecimal value that was passed to the function.</returns>
+	<remarks>If the length of the hexadecimal value is greater than <paramref name="padTo"/> then no padding is performed.</remarks>
+</member><member name="M:RestrictionLibrary.srlFunctions.HexDecode(System.String)">
+	<summary>
+ Reverts hexadecimal HTML entities in a string to their original characters.
+ </summary>
+	<param name="string">The string you wish to decode.</param>
+	<returns>A string identical to <paramref name="string"/> except that all encoded values have been decoded.</returns>
+	<remarks>A hexadecimal HTML entity is in the form of &amp;#xNN;, where NN is a hexadecimal ASCII value for the character it represents.</remarks>
+</member><member name="M:RestrictionLibrary.srlFunctions.NetworkErrorToString(System.Exception,System.String)">
+	<summary>
+ Converts an <see cref="T:System.Exception"/> to a more pleasant and human-readable network error message.
+ </summary>
+	<param name="ex">The network exception which should be converted. Any exceptions which are not recognized will be reported.</param>
+	<param name="dataPath">The folder where socket errors will be saved to if they are not recognized.</param>
+	<returns>A simpler and cleaner description of the network error passed in <paramref name="ex"/>.</returns>
+	<remarks>See Also: <seealso cref="M:RestrictionLibrary.srlFunctions.ReportSocketError(System.Exception,System.String)"/></remarks>
+</member><member name="M:RestrictionLibrary.srlFunctions.ReportSocketError(System.Exception,System.String)">
+	<summary>
+ Saves an <see cref="T:System.Exception"/> to a network error log which will later be reported.
+ </summary>
+	<param name="ex">The exception which needs to be reported.</param>
+	<param name="dataPath">The folder where socket errors will be saved to.</param>
+	<remarks>See Also: <seealso cref="M:RestrictionLibrary.srlFunctions.NetworkErrorToString(System.Exception,System.String)"/>, <seealso cref="M:RestrictionLibrary.srlFunctions.SendSocketErrors(System.String)"/>.</remarks>
+</member><member name="M:RestrictionLibrary.srlFunctions.SendSocketErrors(System.String)">
+	<summary>
+ Loads network errors from a log file and reports them to the RealityRipple.com server.
+ </summary>
+	<param name="dataPath">The folder where socket errors will be loaded from.</param>
+	<remarks>See Also: <seealso cref="M:RestrictionLibrary.srlFunctions.ReportSocketError(System.Exception,System.String)"/></remarks>
+</member><member name="M:RestrictionLibrary.srlFunctions.HostTypeToString(RestrictionLibrary.localRestrictionTracker.SatHostTypes)">
+	<summary>
+ Converts a <see cref="T:RestrictionLibrary.localRestrictionTracker.SatHostTypes"/> value to a simple string.
+ </summary>
+	<param name="hostType">A Satellite Internet host type enumeration.</param>
+	<returns>If the <paramref name="hostType"/> is a valid <see cref="T:RestrictionLibrary.localRestrictionTracker.SatHostTypes"/>, the return will be a three-letter value. Otherwise, it will be the letter "O".</returns>
+	<remarks>
+		<para>WildBlue_LEGACY: "WBL"</para>
+		<para>WildBlue_EXEDE: "WBX"</para>
+		<para>RuralPortal_LEGACY: "RPL"</para>
+		<para>RuralPortal_EXEDE: "RPX"</para>
+		<para>DishNet_EXEDE: "DNX"</para>
+		<para>Other Values: "O"</para>
+		<para>See Also: <seealso cref="M:RestrictionLibrary.srlFunctions.StringToHostType(System.String)"/></para>
+	</remarks>
+</member><member name="M:RestrictionLibrary.srlFunctions.StringToHostType(System.String)">
+	<summary>
+ Converts a simple string value to a <see cref="T:RestrictionLibrary.localRestrictionTracker.SatHostTypes"/>.
+ </summary>
+	<param name="host">The string to be converted to a <see cref="T:RestrictionLibrary.localRestrictionTracker.SatHostTypes"/> enumeration value.</param>
+	<returns>The closest <see cref="T:RestrictionLibrary.localRestrictionTracker.SatHostTypes"/> match detected.</returns>
+	<remarks>
+		<para>These values are <i>not</i> case-sensitive.</para>
+		<para>"WBL", "WildBlue": WildBlue_LEGACY</para>
+		<para>"WBX", "WBV", "Exede": WildBlue_EXEDE</para>
+		<para>"RPL", "RuralPortal": RuralPortal_LEGACY</para>
+		<para>"RPX": RuralPortal_EXEDE</para>
+		<para>"DNX", "DishNet": DishNet_EXEDE</para>
+		<para>Other Values: Other</para>
+		<para>See Also: <seealso cref="M:RestrictionLibrary.srlFunctions.HostTypeToString(RestrictionLibrary.localRestrictionTracker.SatHostTypes)"/></para>
+	</remarks>
+</member><member name="M:RestrictionLibrary.srlFunctions.InUseChecker(System.String,System.IO.FileAccess)">
+	<summary>
+ Attempts to see if a file is in use, waiting for it to be freed.
+ </summary>
+	<param name="path">The exact path to the file which needs to be checked.</param>
+	<param name="access">Write permissions required for checking.</param>
+	<returns><c>True</c> on available, <c>False</c> on in use.</returns>
+	<remarks>This function can take up to five seconds while waiting for successful file access.</remarks>
+</member><member name="M:RestrictionLibrary.srlFunctions.TickCount">
+	<summary>
+ Number of ticks since the computer started up.
+ </summary>
+</member><member name="M:RestrictionLibrary.srlFunctions.IterativeEqualityCheck(System.Byte[],System.Byte[])">
+	<summary>
+ Iterates through two <see cref="T:System.Byte">Byte arrays</see> to ensure their precise equality.
+ </summary>
+	<param name="inArray1">One of two byte arrays to check for exact equality.</param>
+	<param name="inArray2">The other of two byte arrays to check for exact equality.</param>
+	<returns><c>True</c> if both arrays are binary equal, <c>False</c> otherwise.</returns>
+	<remarks>If the lengths of the arrays is different, the result will be <c>False</c>.</remarks>
+</member><member name="M:RestrictionLibrary.srlFunctions.GetCLRVersion">
+	<summary>
+ Common Language Runtime exact version number.
+ </summary>
+</member><member name="M:RestrictionLibrary.srlFunctions.GetCLRCleanVersion">
+	<summary>
+ Common Language Runtime Name and Release version.
+ </summary>
+</member>
+</members>
+</doc>
