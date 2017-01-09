@@ -65,6 +65,7 @@ namespace RestrictionTrackerGTK
       try
       {
         WebClientEx wsString = new WebClientEx();
+        wsString.KeepAlive = false;
         wsString.ErrorBypass = true;
         wsString.ManualRedirect = false;
         string sRet = wsString.DownloadString(URI.OriginalString);
@@ -167,6 +168,7 @@ namespace RestrictionTrackerGTK
       try
       {
         wsFile = new WebClientCore();
+        wsFile.KeepAlive = false;
         wsFile.ErrorBypass = true;
         wsFile.ManualRedirect = false;
         System.Threading.Timer tmrSocket = new System.Threading.Timer(new TimerCallback(DownloadFile), new object[] { URL, Filename, token, trySimpler }, 250, System.Threading.Timeout.Infinite);

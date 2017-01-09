@@ -14,6 +14,7 @@ namespace MantisBugTracker
       pD1.Add("make_default", String.Empty);
       WebClientEx httpToken = new WebClientEx();
       cJar = new System.Net.CookieContainer();
+      httpToken.KeepAlive = false;
       httpToken.CookieJar = cJar;
       httpToken.SendHeaders = new System.Net.WebHeaderCollection();
       httpToken.SendHeaders.Add(System.Net.HttpRequestHeader.Referer, "http://bugs.realityripple.com/login_select_proj_page.php?bug_report_page.php");
@@ -59,6 +60,7 @@ namespace MantisBugTracker
       pData.Add("report_stay", String.Empty);
       string sRet;
       WebClientEx httpReport = new WebClientEx();
+      httpReport.KeepAlive = false;
       httpReport.CookieJar = cJar;
       sRet = httpReport.UploadValues("http://bugs.realityripple.com/bug_report.php", "POST", pData);
       if (sRet.StartsWith("Error: "))

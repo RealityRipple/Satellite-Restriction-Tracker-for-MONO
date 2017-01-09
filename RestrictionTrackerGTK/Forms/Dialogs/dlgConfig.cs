@@ -1163,6 +1163,7 @@ namespace RestrictionTrackerGTK
     private void Main_PopulateHostList(object sender, EventArgs e)
     {
       WebClientEx wsHostList = new WebClientEx();
+      wsHostList.KeepAlive = false;
       string sHostList = wsHostList.DownloadString("http://wb.realityripple.com/hosts/");
       if (sHostList.StartsWith("Error: "))
         return;

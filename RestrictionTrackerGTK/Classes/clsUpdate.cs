@@ -65,6 +65,7 @@ namespace RestrictionTrackerGTK
       wsVer.DownloadProgressChanged += wsVer_DownloadProgressChanged;
       wsVer.DownloadStringCompleted += wsVer_DownloadStringCompleted;
       wsVer.DownloadFileCompleted += wsVer_DownloadFileCompleted;
+      wsVer.KeepAlive = false;
       wsVer.Proxy = myS.Proxy;
       wsVer.Timeout = myS.Timeout;
       myS = null;
@@ -79,7 +80,7 @@ namespace RestrictionTrackerGTK
       string sVerStr = null;
       AppSettings mySettings = new AppSettings();
       WebClientEx wsCheck = new WebClientEx();
-      ;
+      wsCheck.KeepAlive = false;
       wsCheck.Proxy = mySettings.Proxy;
       wsCheck.Timeout = mySettings.Timeout;
       sVerStr = wsCheck.DownloadString(VersionURL);

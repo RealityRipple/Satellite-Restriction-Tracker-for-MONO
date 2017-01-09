@@ -645,6 +645,7 @@ namespace RestrictionTrackerGTK
         byte[] bData = System.Text.Encoding.UTF8.GetBytes((string) sData);
         string sBase64Data = Convert.ToBase64String(bData, Base64FormattingOptions.None);
         WebClientEx sckUpload = new WebClientEx();
+        sckUpload.KeepAlive = false;
         System.Collections.Specialized.NameValueCollection paramList = new System.Collections.Specialized.NameValueCollection();
         paramList.Add("eFile", sBase64Data);
         string sRet = sckUpload.UploadValues("http://wb.realityripple.com/errmsgs.php", "POST", paramList);

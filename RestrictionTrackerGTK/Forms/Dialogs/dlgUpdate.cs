@@ -117,6 +117,7 @@ namespace RestrictionTrackerGTK
     {
       string sRet = null;
       WebClientEx sckVerInfo = new WebClientEx();
+      sckVerInfo.KeepAlive = false;
       if (lblBETA.Visible)
       {
         sRet = sckVerInfo.DownloadString("http://update.realityripple.com/Satellite_Restriction_Tracker/infob");
