@@ -616,15 +616,18 @@ namespace RestrictionTrackerGTK
       ResizeIcon("free.ico").Save(System.IO.Path.Combine(IconFolder, "free.png"), System.Drawing.Imaging.ImageFormat.Png);
       ResizeIcon("restricted.ico").Save(System.IO.Path.Combine(IconFolder, "restricted.png"), System.Drawing.Imaging.ImageFormat.Png);
       ResizePng("error.png").Save(System.IO.Path.Combine(IconFolder, "error.png"), System.Drawing.Imaging.ImageFormat.Png);
+      ResizeIcon("throbsprite.0.ico").Save(System.IO.Path.Combine(IconFolder, "throb_0.png"), System.Drawing.Imaging.ImageFormat.Png);
       ResizeIcon("throbsprite.1.ico").Save(System.IO.Path.Combine(IconFolder, "throb_1.png"), System.Drawing.Imaging.ImageFormat.Png);
       ResizeIcon("throbsprite.2.ico").Save(System.IO.Path.Combine(IconFolder, "throb_2.png"), System.Drawing.Imaging.ImageFormat.Png);
       ResizeIcon("throbsprite.3.ico").Save(System.IO.Path.Combine(IconFolder, "throb_3.png"), System.Drawing.Imaging.ImageFormat.Png);
       ResizeIcon("throbsprite.4.ico").Save(System.IO.Path.Combine(IconFolder, "throb_4.png"), System.Drawing.Imaging.ImageFormat.Png);
       ResizeIcon("throbsprite.5.ico").Save(System.IO.Path.Combine(IconFolder, "throb_5.png"), System.Drawing.Imaging.ImageFormat.Png);
+      ResizeIcon("throbsprite.6.ico").Save(System.IO.Path.Combine(IconFolder, "throb_6.png"), System.Drawing.Imaging.ImageFormat.Png);
       ResizeIcon("throbsprite.7.ico").Save(System.IO.Path.Combine(IconFolder, "throb_7.png"), System.Drawing.Imaging.ImageFormat.Png);
       ResizeIcon("throbsprite.8.ico").Save(System.IO.Path.Combine(IconFolder, "throb_8.png"), System.Drawing.Imaging.ImageFormat.Png);
       ResizeIcon("throbsprite.9.ico").Save(System.IO.Path.Combine(IconFolder, "throb_9.png"), System.Drawing.Imaging.ImageFormat.Png);
       ResizeIcon("throbsprite.10.ico").Save(System.IO.Path.Combine(IconFolder, "throb_10.png"), System.Drawing.Imaging.ImageFormat.Png);
+      ResizeIcon("throbsprite.11.ico").Save(System.IO.Path.Combine(IconFolder, "throb_11.png"), System.Drawing.Imaging.ImageFormat.Png);
       MakeCustomIconListing();
     }
     private System.Drawing.Bitmap ResizeIcon(string resource)
@@ -1024,13 +1027,14 @@ namespace RestrictionTrackerGTK
     {
       if (trayRes < 8)
         trayRes = 8;
+      string trayIcoVal = "";
       if (myPanel == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY || myPanel == localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY || myPanel == localRestrictionTracker.SatHostTypes.DishNet_EXEDE)
       {
         if (lblDldUsed.Text == " -- ")
         {
           pctDld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(evnDld.Allocation.Size, 0, 0, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
           pctUld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(evnUld.Allocation.Size, 0, 0, mySettings.Accuracy, mySettings.Colors.MainUpA, mySettings.Colors.MainUpB, mySettings.Colors.MainUpC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-          SetTrayIcon("norm");
+          trayIcoVal = "norm";
         }
         else
         {
@@ -1038,7 +1042,7 @@ namespace RestrictionTrackerGTK
           pctUld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(evnDld.Allocation.Size, wb_up, wb_ulim, mySettings.Accuracy, mySettings.Colors.MainUpA, mySettings.Colors.MainUpB, mySettings.Colors.MainUpC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
           int d = (int) Math.Round(((double) wb_down / wb_dlim) * trayRes);
           int u = (int) Math.Round(((double) wb_up / wb_ulim) * trayRes);
-          SetTrayIcon("graph_wb_" + d + "x" + u); 
+          trayIcoVal = "graph_wb_" + d + "x" + u;
         }
       }
       else if (myPanel == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE || myPanel == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
@@ -1046,7 +1050,7 @@ namespace RestrictionTrackerGTK
         if (lblRuralUsedVal.Text == " -- ")
         {
           pctRural.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctRural.Allocation.Size, 0, 1, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-          SetTrayIcon("norm");
+          trayIcoVal = "norm";
         }
         else
         {
@@ -1054,7 +1058,7 @@ namespace RestrictionTrackerGTK
           int u = (int) Math.Round(((double) r_used / r_lim) * trayRes);
           if (u > trayRes)
             u = trayRes;
-          SetTrayIcon("graph_r_" + u);
+          trayIcoVal = "graph_r_" + u;
         }
       }
       else if (myPanel == localRestrictionTracker.SatHostTypes.Other)
@@ -1079,6 +1083,17 @@ namespace RestrictionTrackerGTK
           lblRRS.Markup = markupList[lblRRS.Name + lblRRS.Handle.ToString("x")];
         }
         lblRRS.TooltipText = "Visit RealityRipple.com.";
+      }
+      if (trayIcoVal != "")
+      {
+        if (tmrIcon == 0)
+        {
+          SetTrayIcon(trayIcoVal);
+        }
+        else
+        {
+          sIconBefore = trayIcoVal;
+        }
       }
     }
     private uint tmrRestored;
@@ -1444,6 +1459,9 @@ namespace RestrictionTrackerGTK
       {
         return;
       }
+      sIconBefore = trayResource;
+      bIconStop = false;
+      iIconItem = 0;
       tmrIcon = GLib.Timeout.Add(200, tmrIcon_Tick);
     }
     private void StartTimer()
@@ -2500,17 +2518,13 @@ namespace RestrictionTrackerGTK
       {
         sTTT += "\n" + MBorGB(lDown - lDownLim) + " Over";
       }
-      if (tmrIcon != 0)
-      {
-        GLib.Source.Remove(tmrIcon);
-        tmrIcon = 0;
-      }
       if (trayRes < 8)
         trayRes = 8;
       int u = (int) Math.Round(((double) lDown / lDownLim) * trayRes);
       if (u > trayRes)
         u = trayRes;
-      SetTrayIcon("graph_r_" + u);
+      sIconBefore = "graph_r_" + u;
+      bIconStop = true;
       SetTrayText(sTTT);
       if (mySettings.Overuse > 0)
       {
@@ -2630,16 +2644,12 @@ namespace RestrictionTrackerGTK
       "Last Updated " + sLastUpdate + "\n" +
       "Anytime: " + MBorGB(lDown) + " (" + AccuratePercent((double) lDown / lDownLim) + ")" + atFree + "\n" +
       "Off-Peak: " + MBorGB(lUp) + " (" + AccuratePercent((double) lUp / lUpLim) + ")" + opFree;
-      if (tmrIcon != 0)
-      {
-        GLib.Source.Remove(tmrIcon);
-        tmrIcon = 0;
-      }
       if (trayRes < 8)
         trayRes = 8;
       int d = (int) Math.Round(((double) lDown / lDownLim) * trayRes);
       int u = (int) Math.Round(((double) lUp / lUpLim) * trayRes);
-      SetTrayIcon("graph_wb_" + d + "x" + u);
+      sIconBefore = "graph_wb_" + d + "x" + u;
+      bIconStop = true;
       SetTrayText(sTTT);
       if (mySettings.Overuse > 0)
       {
@@ -2773,16 +2783,12 @@ namespace RestrictionTrackerGTK
       "Last Updated " + sLastUpdate + "\n" +
       "Download: " + MBorGB(lDown) + " (" + AccuratePercent((double) lDown / lDownLim) + ")" + dFree + "\n" +
       "Upload: " + MBorGB(lUp) + " (" + AccuratePercent((double) lUp / lUpLim) + ")" + uFree;
-      if (tmrIcon != 0)
-      {
-        GLib.Source.Remove(tmrIcon);
-        tmrIcon = 0;
-      }
       if (trayRes < 8)
         trayRes = 8;
       int d = (int) Math.Round(((double) lDown / lDownLim) * trayRes);
       int u = (int) Math.Round(((double) lUp / lUpLim) * trayRes);
-      SetTrayIcon("graph_wb_" + d + "x" + u);
+      sIconBefore = "graph_wb_" + d + "x" + u;
+      bIconStop = true;
       SetTrayText(sTTT);
       if (mySettings.Overuse > 0)
       {
@@ -2876,12 +2882,8 @@ namespace RestrictionTrackerGTK
 
         myPanel = localRestrictionTracker.SatHostTypes.Other;
         SetTrayText(this.Title);
-        if (tmrIcon != 0)
-        {
-          GLib.Source.Remove(tmrIcon);
-          tmrIcon = 0;
-        }
-        SetTrayIcon("norm");
+        sIconBefore = "norm";
+        bIconStop = true;
       }
     }
     #endregion
@@ -3251,15 +3253,28 @@ namespace RestrictionTrackerGTK
     }
     #endregion
     #region "Tray Icon"
+    bool bIconStop;
     int iIconItem;
+    string sIconBefore;
     private bool tmrIcon_Tick()
     {
+      if (tmrIcon == 0)
+        return false;
+      if (iIconItem == 0 && bIconStop)
+      {
+        if (tmrIcon != 0)
+        {
+          GLib.Source.Remove(tmrIcon);
+          tmrIcon = 0;
+        }
+        SetTrayIcon(sIconBefore);
+        bIconStop = false;
+        return false;
+      }
       switch (iIconItem)
       {
         case 0:
-        case 6:
-        case 11:
-          SetTrayIcon("norm");
+          SetTrayIcon("throb_0");
           break;
         case 1: 
           SetTrayIcon("throb_1");
@@ -3276,6 +3291,9 @@ namespace RestrictionTrackerGTK
         case 5:
           SetTrayIcon("throb_5");
           break;
+        case 6:
+          SetTrayIcon("throb_6");
+          break;
         case 7: 
           SetTrayIcon("throb_7");
           break;
@@ -3287,6 +3305,9 @@ namespace RestrictionTrackerGTK
           break;
         case 10: 
           SetTrayIcon("throb_10");
+          break;
+        case 11: 
+          SetTrayIcon("throb_11");
           break;
       }
       iIconItem += 1;

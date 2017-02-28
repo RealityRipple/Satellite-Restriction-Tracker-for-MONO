@@ -145,6 +145,12 @@
     <EmbeddedResource Include="Resources\config\os x\advanced_nettest_none.png" />
     <EmbeddedResource Include="Resources\modem16.png" />
     <EmbeddedResource Include="Resources\modem32.png" />
+    <EmbeddedResource Include="Resources\tray_16\throbsprite\0.ico" />
+    <EmbeddedResource Include="Resources\tray_16\throbsprite\11.ico" />
+    <EmbeddedResource Include="Resources\tray_16\throbsprite\6.ico" />
+    <EmbeddedResource Include="Resources\tray_32\throbsprite\0.ico" />
+    <EmbeddedResource Include="Resources\tray_32\throbsprite\11.ico" />
+    <EmbeddedResource Include="Resources\tray_32\throbsprite\6.ico" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gtk-gui\generated.cs" />
