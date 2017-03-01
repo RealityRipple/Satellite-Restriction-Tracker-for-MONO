@@ -1168,7 +1168,6 @@ namespace RestrictionTrackerGTK
       {
         long lVal = -1;
         long lLow = long.MaxValue;
-        long lHigh = 0;
         for (int J = 0; J <= Data.Length - 1; J++)
         {
           if (Math.Abs(DateDiff(dInterval, Data[J].DATETIME, DateAdd(dInterval, I, lStart))) == 0)
@@ -1178,19 +1177,56 @@ namespace RestrictionTrackerGTK
               jLim = Data[J].UPLIM;
             else
               jLim = Data[J].DOWNLIM;
-            if (lHigh < jLim)
-              lHigh = jLim;
             if (lLow > jLim)
               lLow = jLim;
           }
         }
-        if (lHigh > 0 & lLow < long.MaxValue)
+        if (lLow < long.MaxValue)
         {
-          lVal = (lHigh + lLow) / 2;
+          lVal = lLow;
         }
-        if (lVal == -1 & lastLVal > 0)
+        else
         {
-          lVal = lastLVal;
+          if (I == lMaxTime)
+          {
+            if (lastLVal > 0)
+              lVal = lastLVal;
+            else
+              lVal = 0;
+          }
+          else
+          {
+            long nextLVal = long.MaxValue;
+            long K = I;
+            while (nextLVal == long.MaxValue)
+            {
+              K++;
+              if (K > lMaxTime)
+                break;
+              for (int J = 0; J < Data.Length; J++)
+              {
+                if (Math.Abs(DateDiff(dInterval, Data[J].DATETIME, DateAdd(dInterval, K, lStart))) == 0)
+                {
+                  long jLim = 0;
+                  if (Down == 255)
+                    jLim = Data[J].UPLIM;
+                  else
+                    jLim = Data[J].DOWNLIM;
+                  if (nextLVal > jLim)
+                    nextLVal = jLim;
+                }
+              }
+            }
+            if (nextLVal < long.MaxValue)
+            {
+              if (lastLVal > nextLVal)
+                lVal = nextLVal;
+              else
+                lVal = lastLVal;
+            }
+            else
+              lVal = lastLVal;
+          }
         }
         lMaxPoints[I].X = (int) (lYWidth + (I * dCompInter) + 1);
         lMaxPoints[I].Y = (int) (yTop + yHeight - (lVal / (double) lMax * yHeight));
@@ -1215,7 +1251,6 @@ namespace RestrictionTrackerGTK
       {
         long lVal = -1;
         long lLow = long.MaxValue;
-        long lHigh = 0;
         for (int J = 0; J <= Data.Length - 1; J++)
         {
           if (Math.Abs(DateDiff(dInterval, Data[J].DATETIME, DateAdd(dInterval, I, lStart))) == 0)
@@ -1225,19 +1260,56 @@ namespace RestrictionTrackerGTK
               jVal = Data[J].UPLOAD;
             else
               jVal = Data[J].DOWNLOAD;
-            if (lHigh < jVal)
-              lHigh = jVal;
             if (lLow > jVal)
               lLow = jVal;
           }
         }
-        if (lHigh > 0 & lLow < long.MaxValue)
+        if (lLow < long.MaxValue)
         {
-          lVal = (lHigh + lLow) / 2;
+          lVal = lLow;
         }
-        if (lVal == -1 & lastLVal > 0)
+        else
         {
-          lVal = lastLVal;
+          if (I == lMaxTime)
+          {
+            if (lastLVal > 0)
+              lVal = lastLVal;
+            else
+              lVal = 0;
+          }
+          else
+          {
+            long nextLVal = long.MaxValue;
+            long K = I;
+            while (nextLVal == long.MaxValue)
+            {
+              K++;
+              if (K > lMaxTime)
+                break;
+              for (int J = 0; J < Data.Length; J++)
+              {
+                if (Math.Abs(DateDiff(dInterval, Data[J].DATETIME, DateAdd(dInterval, K, lStart))) == 0)
+                {
+                  long jVal = 0;
+                  if (Down == 255)
+                    jVal = Data[J].UPLOAD;
+                  else
+                    jVal = Data[J].DOWNLOAD;
+                  if (nextLVal > jVal)
+                    nextLVal = jVal;
+                }
+              }
+            }
+            if (nextLVal < long.MaxValue)
+            {
+              if (lastLVal > nextLVal)
+                lVal = nextLVal;
+              else
+                lVal = lastLVal;
+            }
+            else
+              lVal = lastLVal;
+          }
         }
         lPoints[I].X = (int) (lYWidth + (I * dCompInter) + 1);
         lPoints[I].Y = (int) (yTop + yHeight - (lVal / (double) lMax * yHeight));
