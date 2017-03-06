@@ -74,7 +74,7 @@ namespace RestrictionTrackerGTK
           sExt = System.IO.Path.GetExtension(sTitle).ToLower() + sExt;
           sTitle = System.IO.Path.GetFileNameWithoutExtension(sTitle);
         }
-        if (sExt == ".tgz" || sExt == ".tar.gz" || sExt == ".tar")
+        if (sExt == ".tgz" | sExt == ".tar.gz" | sExt == ".tar")
         {
           lstStyles.AddItem(sTitle);
           lstStyles.Model.IterNext(ref iter);
@@ -280,7 +280,7 @@ namespace RestrictionTrackerGTK
               sExt = System.IO.Path.GetExtension(sTitle).ToLower() + sExt;
               sTitle = System.IO.Path.GetFileNameWithoutExtension(sTitle);
             }
-            if (sExt == ".tgz" || sExt == ".tar.gz" || sExt == ".tar")
+            if (sExt == ".tgz" | sExt == ".tar.gz" | sExt == ".tar")
             {
               Added = true;
               break;
@@ -317,7 +317,7 @@ namespace RestrictionTrackerGTK
               sExt = System.IO.Path.GetExtension(sTitle).ToLower() + sExt;
               sTitle = System.IO.Path.GetFileNameWithoutExtension(sTitle);
             }
-            if (sExt == ".tgz" || sExt == ".tar.gz" || sExt == ".tar")
+            if (sExt == ".tgz" | sExt == ".tar.gz" | sExt == ".tar")
             {
               File.Copy(StylePath, System.IO.Path.Combine(modFunctions.AppData, sTitle + sExt), true);
               TreeIter iter;
@@ -406,7 +406,7 @@ namespace RestrictionTrackerGTK
               sExt = System.IO.Path.GetExtension(sTitle).ToLower() + sExt;
               sTitle = System.IO.Path.GetFileNameWithoutExtension(sTitle);
             }
-            if (sExt == ".tgz" || sExt == ".tar.gz" || sExt == ".tar")
+            if (sExt == ".tgz" | sExt == ".tar.gz" | sExt == ".tar")
             {
               File.Copy(StylePath, System.IO.Path.Combine(modFunctions.AppData, sTitle + sExt), true);
               TreeIter iter;

@@ -116,7 +116,7 @@ namespace RestrictionTrackerGTK
     }
     public static void MakeNotifier(ref TaskbarNotifier taskNotifier, bool ContentClickable)
     {
-      if (NOTIFIER_STYLE.Background == null || NOTIFIER_STYLE.CloseButton == null)
+      if (NOTIFIER_STYLE.Background == null | NOTIFIER_STYLE.CloseButton == null)
       {
         taskNotifier = null;
         return;
@@ -134,7 +134,7 @@ namespace RestrictionTrackerGTK
     }
     public static void MakeNotifier(ref TaskbarNotifier taskNotifier, bool ContentClickable, NotifierStyle customStyle)
     {
-      if (customStyle.Background == null || customStyle.CloseButton == null)
+      if (customStyle.Background == null | customStyle.CloseButton == null)
       {
         taskNotifier = null;
         return;
@@ -661,32 +661,6 @@ namespace RestrictionTrackerGTK
         MainClass.fMain.FailResponse("error");
       }
     }
-    //    public static string PercentEncode(string inString)
-    //    {
-    //      string sRet = string.Empty;
-    //      if (string.IsNullOrEmpty(inString))
-    //        return inString;
-    //      for (int I = inString.Length - 1; I >= 0; I += -1)
-    //      {
-    //        int iChar = Convert.ToInt32(inString[I]);
-    //        if ((iChar >= 48 && iChar <= 57) || (iChar <= 65 && iChar >= 90) || (iChar <= 97 && iChar >= 122))
-    //          sRet = inString[I].ToString() + sRet;
-    //        else if (iChar == 32)
-    //          sRet = "+" + sRet;
-    //        else
-    //          sRet = "%" + PadHex(iChar, 2) + sRet;
-    //      }
-    //      return sRet;
-    //    }
-    //    private static string PadHex(Int32 Value, UInt16 Length)
-    //    {
-    //      string sVal = Convert.ToString(Value, 16);
-    //      while (sVal.Length < Length)
-    //      {
-    //        sVal = "0" + sVal;
-    //      }
-    //      return sVal;
-    //    }
     public static byte CopyDirectory(string FromDir, string ToDir)
     {
       if (Directory.Exists(FromDir))
@@ -957,17 +931,18 @@ namespace RestrictionTrackerGTK
       g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
       int lYWidth = (int) g.MeasureString(yMax.ToString().Trim() + " MB", tFont).Width + 10;
       int lXHeight = (int) g.MeasureString(DateTime.Now.ToString("g"), tFont).Height + 10;
+      long lLineWidth = (ImgSize.Width - 4) - lYWidth - 1;
       g.Clear(ColorBG);
       int yTop = lXHeight / 2;
       int yHeight = (int) (ImgSize.Height - (lXHeight * 1.5));
       if (Down == 255)
       {
-        uGraph = new Rectangle(lYWidth, yTop, (ImgSize.Width - 4) - lYWidth, yHeight);
+        uGraph = new Rectangle(lYWidth, yTop, (int) lLineWidth + 1, yHeight);
         uData = Data;
       }
       else
       {
-        dGraph = new Rectangle(lYWidth, yTop, (ImgSize.Width - 4) - lYWidth, yHeight);
+        dGraph = new Rectangle(lYWidth, yTop, (int) lLineWidth + 1, yHeight);
         dData = Data;
       }
       g.DrawLine(new Pen(ColorText), lYWidth, yTop, lYWidth, yTop + yHeight);
@@ -994,146 +969,239 @@ namespace RestrictionTrackerGTK
       }
       System.DateTime lStart = Data[0].DATETIME;
       System.DateTime lEnd = Data[Data.Length - 1].DATETIME;
-      DateInterval dInterval = DateInterval.Minute;
-      uint lInterval = 1;
-      double lBitInterval = 1.0;
-      uint lLabelInterval = 5;
-      long lDiff = Math.Abs(DateDiff(DateInterval.Minute, lStart, lEnd));
-      if (lDiff <= 61)
+      DateInterval dAxisInterval = DateInterval.Minute;
+      uint lAxisInterval = 1;
+      double lAxisSubInterval = 1.0;
+      uint lAxisLabelInterval = 5;
+      long lMaxTime = Math.Abs(DateDiff(DateInterval.Second, lStart, lEnd));
+      double dPPS = (double) lLineWidth / (double) lMaxTime;
+      double dSPP = 1 / dPPS;
+      DateInterval dGraphInterval = DateInterval.Second;
+      uint lGraphInterval = (uint) Math.Ceiling(dSPP);
+      if (lGraphInterval >= 60)
       {
-        lInterval = 5;
-        lBitInterval = 1;
-        lLabelInterval = 10;
-        dInterval = DateInterval.Minute;
+        dGraphInterval = DateInterval.Minute;
+        lGraphInterval = (uint) Math.Floor(lGraphInterval / 60.0);
+        if (lGraphInterval >= 60)
+        {
+          dGraphInterval = DateInterval.Hour;
+          lGraphInterval = (uint) Math.Floor(lGraphInterval / 60.0);
+          if (lGraphInterval >= 24)
+          {
+            dGraphInterval = DateInterval.Day;
+            lGraphInterval = (uint) Math.Floor(lGraphInterval / 24.0);
+          }
+        }
       }
-      else if (lDiff < 60 * 13)
+      string sDispV = "g";
+      long lDiff = Math.Abs(DateDiff(DateInterval.Minute, lStart, lEnd));
+      if (lDiff <= 60)
       {
-        lInterval = 60;
-        lBitInterval = 30;
-        lLabelInterval = 60 * 2;
-        dInterval = DateInterval.Minute;
+        lAxisInterval = 5;
+        lAxisSubInterval = 2.5;
+        lAxisLabelInterval = 10;
+        dAxisInterval = DateInterval.Minute;
+        sDispV = "t";
+      }
+      else if (lDiff <= 60 * 12)
+      {
+        lAxisInterval = 60;
+        lAxisSubInterval = 30;
+        lAxisLabelInterval = 120;
+        dAxisInterval = DateInterval.Minute;
+        sDispV = "t";
       }
       else if (lDiff <= 60 * 24)
       {
-        lInterval = 6;
-        lBitInterval = 1;
-        lLabelInterval = 6;
-        dInterval = DateInterval.Hour;
+        lAxisInterval = 96;
+        lAxisSubInterval = 48;
+        lAxisLabelInterval = 192;
+        dAxisInterval = DateInterval.Minute;
+        sDispV = "t";
       }
       else if (lDiff <= 60 * 24 * 2)
       {
-        lInterval = 12;
-        lBitInterval = 6;
-        lLabelInterval = 24;
-        dInterval = DateInterval.Hour;
+        lAxisInterval = 4;
+        lAxisSubInterval = 2;
+        lAxisLabelInterval = 12;
+        dAxisInterval = DateInterval.Hour;
+        sDispV = "g";
       }
-      else if (lDiff <= 60 * 24 * 6)
+      else if (lDiff <= 60 * 24 * 3)
       {
-        lInterval = 24;
-        lBitInterval = 12;
-        lLabelInterval = 24;
-        dInterval = DateInterval.Hour;
+        lAxisInterval = 6;
+        lAxisSubInterval = 3;
+        lAxisLabelInterval = 18;
+        dAxisInterval = DateInterval.Hour;
+        sDispV = "g";
       }
-      else if (lDiff <= 60 * 24 * 12)
+      else if (lDiff <= 60 * 24 * 5)
       {
-        lInterval = 2;
-        lBitInterval = 1;
-        lLabelInterval = 2;
-        dInterval = DateInterval.Day;
+        lAxisInterval = 12;
+        lAxisSubInterval = 6;
+        lAxisLabelInterval = 24;
+        dAxisInterval = DateInterval.Hour;
+        sDispV = "d";
+      }
+      else if (lDiff <= 60 * 24 * 7)
+      {
+        lAxisInterval = 12;
+        lAxisSubInterval = 6;
+        lAxisLabelInterval = 24;
+        dAxisInterval = DateInterval.Hour;
+        sDispV = "d";
+      }
+      else if (lDiff <= 60 * 24 * 13)
+      {
+        lAxisInterval = 24;
+        lAxisSubInterval = 12;
+        lAxisLabelInterval = 48;
+        dAxisInterval = DateInterval.Hour;
+        sDispV = "d";
+      }
+      else if (lDiff <= 60 * 24 * 18)
+      {
+        lAxisInterval = 36;
+        lAxisSubInterval = 12;
+        lAxisLabelInterval = 72;
+        dAxisInterval = DateInterval.Hour;
+        sDispV = "d";
       }
       else if (lDiff <= 60 * 24 * 20)
       {
-        lInterval = 2;
-        lBitInterval = 1;
-        lLabelInterval = 4;
-        dInterval = DateInterval.Day;
+        lAxisInterval = 2;
+        lAxisSubInterval = 1;
+        lAxisLabelInterval = 4;
+        dAxisInterval = DateInterval.Day;
+        sDispV = "d";
       }
       else if (lDiff <= 60 * 24 * 27)
       {
-        lInterval = 2;
-        lBitInterval = 1;
-        lLabelInterval = 7;
-        dInterval = DateInterval.Day;
+        lAxisInterval = 3;
+        lAxisSubInterval = 1;
+        lAxisLabelInterval = 6;
+        dAxisInterval = DateInterval.Day;
+        sDispV = "d";
       }
-      else if (lDiff <= 60 * 24 * 40)
+      else if (lDiff <= 60 * 24 * 29)
       {
-        lInterval = 4;
-        lBitInterval = 2;
-        lLabelInterval = 7;
-        dInterval = DateInterval.Day;
+        lAxisInterval = 3;
+        lAxisSubInterval = 1.5;
+        lAxisLabelInterval = 6;
+        dAxisInterval = DateInterval.Day;
+        sDispV = "d";
+      }
+      else if (lDiff <= 60 * 24 * 55)
+      {
+        lAxisInterval = 4;
+        lAxisSubInterval = 2;
+        lAxisLabelInterval = 8;
+        dAxisInterval = DateInterval.Day;
+        sDispV = "d";
       }
       else if (lDiff <= 60 * 24 * 90)
       {
-        lInterval = 14;
-        lBitInterval = 7;
-        lLabelInterval = 14;
-        dInterval = DateInterval.Day;
+        lAxisInterval = 6;
+        lAxisSubInterval = 3;
+        lAxisLabelInterval = 12;
+        dAxisInterval = DateInterval.Day;
+        sDispV = "d";
+      }
+      else if (lDiff <= 60 * 24 * 120)
+      {
+        lAxisInterval = 8;
+        lAxisSubInterval = 4;
+        lAxisLabelInterval = 16;
+        dAxisInterval = DateInterval.Day;
+        sDispV = "d";
+      }
+      else if (lDiff <= 60 * 24 * 180)
+      {
+        lAxisInterval = 16;
+        lAxisSubInterval = 8;
+        lAxisLabelInterval = 32;
+        dAxisInterval = DateInterval.Day;
+        sDispV = "d";
+      }
+      else if (lDiff <= 60 * 24 * 210)
+      {
+        lAxisInterval = 24;
+        lAxisSubInterval = 12;
+        lAxisLabelInterval = 48;
+        dAxisInterval = DateInterval.Day;
+        sDispV = "d";
       }
       else if (lDiff <= 60 * 24 * 240)
       {
-        lInterval = 30;
-        lBitInterval = 15;
-        lLabelInterval = 30;
-        dInterval = DateInterval.Day;
-      }
-      else if (lDiff <= 60 * 24 * 365)
-      {
-        lInterval = 60;
-        lBitInterval = 30;
-        lLabelInterval = 90;
-        dInterval = DateInterval.Day;
+        lAxisInterval = 30;
+        lAxisSubInterval = 15;
+        lAxisLabelInterval = 60;
+        dAxisInterval = DateInterval.Day;
+        sDispV = "d";
       }
       else if (lDiff <= 60 * 24 * 365 * 2)
       {
-        lInterval = 90;
-        lBitInterval = 60;
-        lLabelInterval = 180;
-        dInterval = DateInterval.Day;
+        lAxisInterval = 60;
+        lAxisSubInterval = 30;
+        lAxisLabelInterval = 90;
+        dAxisInterval = DateInterval.Day;
+        sDispV = "d";
       }
       else
       {
-        lInterval = 365;
-        lBitInterval = 180;
-        lLabelInterval = 365;
-        dInterval = DateInterval.Day;
+        lAxisInterval = 90;
+        lAxisSubInterval = 45;
+        lAxisLabelInterval = 180;
+        dAxisInterval = DateInterval.Day;
+        sDispV = "d";
       }
-      long lMaxTime = Math.Abs(DateDiff(dInterval, lStart, lEnd));
-      if (lMaxTime == 0)
+      long lMaxAxisTime = Math.Abs(DateDiff(dAxisInterval, lStart, lEnd));
+      long lMaxGraphTime = Math.Abs(DateDiff(dGraphInterval, lStart, lEnd)) / lGraphInterval;
+      if (lMaxAxisTime == 0 | lMaxGraphTime == 0)
       {
         return new Bitmap(1, 1);
       }
-      long lLineWidth = (ImgSize.Width - 4) - lYWidth - 1;
-      double dCompInter = lLineWidth / (double) lMaxTime;
-      for (double i = 0; i <= lMaxTime; i += lBitInterval)
+      double dAxisCompInter = lLineWidth / (double) lMaxAxisTime;
+      double dGraphCompInter = lLineWidth / (double) lMaxGraphTime;
+      for (double i = 0; i <= lMaxAxisTime; i += lAxisSubInterval)
       {
-        int lX = (int) (lYWidth + (i * dCompInter)) + 1;
+        int lX = (int) (lYWidth + (i * dAxisCompInter)) + 1;
         if (i > 0)
-          g.DrawLine(new Pen(ColorGridLight), lX, yTop, lX, ImgSize.Height - (lXHeight + 5));
+          g.DrawLine(new Pen(ColorGridLight), lX, yTop, lX, ImgSize.Height - lXHeight);
       }
-      for (long i = 0; i <= lMaxTime; i += lInterval)
+      for (long i = 0; i <= lMaxAxisTime; i += lAxisInterval)
       {
-        int lX = (int) (lYWidth + (i * dCompInter)) + 1;
-        g.DrawLine(new Pen(ColorText), lX, ImgSize.Height - (lXHeight - 3), lX, ImgSize.Height - lXHeight);
+        int lX = (int) (lYWidth + (i * dAxisCompInter)) + 1;
         if (i > 0)
-          g.DrawLine(new Pen(ColorGridDark), lX, yTop, lX, ImgSize.Height - (lXHeight + 5));
+          g.DrawLine(new Pen(ColorText), lX, ImgSize.Height - (lXHeight - 3), lX, ImgSize.Height - lXHeight);
+        if (i > 0)
+          g.DrawLine(new Pen(ColorGridDark), lX, yTop, lX, ImgSize.Height - lXHeight);
       }
-      long lastI = (long) (lYWidth + (lMaxTime * dCompInter));
+      long lastI = (long) (lYWidth + (lMaxAxisTime * dAxisCompInter));
       if (lastI >= (ImgSize.Width - 4))
         lastI = (ImgSize.Width - 4);
-      string sDispV = "g";
-      long ddRet = DateDiff(DateInterval.Minute, lStart, lEnd);
-      if (ddRet > 1)
-        sDispV = "d";
-      else if (ddRet < 1)
-        sDispV = "t";
-      else
-        sDispV = "g";
       string sLastDisp = lEnd.ToString(sDispV);
       float iLastDispWidth = g.MeasureString(sLastDisp, tFont).Width;
-      for (long i = 0; i <= lMaxTime; i += lLabelInterval)
+      for (long i = 0; i <= lMaxAxisTime; i += lAxisLabelInterval)
       {
-        int lX = (int) (lYWidth + (i * dCompInter)) + 1;
-        string sDisp = DateAdd(dInterval, i, lStart).ToString(sDispV);
+        int lX = (int) (lYWidth + (i * dAxisCompInter)) + 1;
+        if (i == 0)
+          lX--;
+        DateTime dDisp = DateAdd(dAxisInterval, i, lStart);
+        if (sDispV != "d")
+        {
+          if (dDisp.Minute < 15)
+            dDisp = new DateTime(dDisp.Year, dDisp.Month, dDisp.Day, dDisp.Hour, 0, 0);
+          else if (dDisp.Minute < 30)
+            dDisp = new DateTime(dDisp.Year, dDisp.Month, dDisp.Day, dDisp.Hour, 15, 0);
+          else if (dDisp.Minute < 45)
+            dDisp = new DateTime(dDisp.Year, dDisp.Month, dDisp.Day, dDisp.Hour, 30, 0);
+          else
+            dDisp = new DateTime(dDisp.Year, dDisp.Month, dDisp.Day, dDisp.Hour, 45, 0);
+        }
+        string sDisp = dDisp.ToString(sDispV);
+        if (sDisp.Contains(":00"))
+          sDisp = sDisp.Replace(":00", "");
         g.DrawLine(new Pen(ColorText), lX, ImgSize.Height - (lXHeight - 5), lX, ImgSize.Height - lXHeight);
         if (lX >= (ImgSize.Width - (g.MeasureString(sDisp, tFont).Width / 2)))
         {
@@ -1160,75 +1228,77 @@ namespace RestrictionTrackerGTK
         MaxY = (int) (yTop + yHeight - (Data[Data.Length - 1].UPLIM / (double) lMax * yHeight));
       else
         MaxY = (int) (yTop + yHeight - (Data[Data.Length - 1].DOWNLIM / (double) lMax * yHeight));
-      Point[] lMaxPoints = new Point[lMaxTime + 1];
-      Point[] lPoints = new Point[lMaxTime + 4];
-      byte[] lTypes = new byte[lMaxTime + 4];
-      long lastLVal = 0;
-      for (long I = 0; I <= lMaxTime; I++)
+      Point[] lMaxPoints = new Point[lMaxGraphTime + 1];
+      Point[] lPoints = new Point[lMaxGraphTime + 4];
+      byte[] lTypes = new byte[lMaxGraphTime + 4];
+      long lastVal = 0;
+      for (long I = 0; I <= lMaxGraphTime; I++)
       {
         long lVal = -1;
-        long lLow = long.MaxValue;
+        long lHigh = 0;
+        DateTime dFind = DateAdd(dGraphInterval, I * lGraphInterval, lStart);
         for (int J = 0; J <= Data.Length - 1; J++)
         {
-          if (Math.Abs(DateDiff(dInterval, Data[J].DATETIME, DateAdd(dInterval, I, lStart))) == 0)
+          if (Math.Abs(DateDiff(dGraphInterval, Data[J].DATETIME, dFind)) <= lGraphInterval)
           {
             long jLim = 0;
             if (Down == 255)
               jLim = Data[J].UPLIM;
             else
               jLim = Data[J].DOWNLIM;
-            if (lLow > jLim)
-              lLow = jLim;
+            if (lHigh < jLim)
+              lHigh = jLim;
           }
         }
-        if (lLow < long.MaxValue)
+        if (lHigh > 0)
         {
-          lVal = lLow;
+          lVal = lHigh;
         }
         else
         {
-          if (I == lMaxTime)
+          if (I == lMaxGraphTime)
           {
-            if (lastLVal > 0)
-              lVal = lastLVal;
+            if (lastVal > 0)
+              lVal = lastVal;
             else
               lVal = 0;
           }
           else
           {
-            long nextLVal = long.MaxValue;
+            long nextHVal = 0;
             long K = I;
-            while (nextLVal == long.MaxValue)
+            while (nextHVal == 0)
             {
               K++;
-              if (K > lMaxTime)
+              if (K > lMaxGraphTime)
                 break;
+              dFind = DateAdd(dGraphInterval, K * lGraphInterval, lStart);
               for (int J = 0; J < Data.Length; J++)
               {
-                if (Math.Abs(DateDiff(dInterval, Data[J].DATETIME, DateAdd(dInterval, K, lStart))) == 0)
+                if (Math.Abs(DateDiff(dGraphInterval, Data[J].DATETIME, dFind)) <= lGraphInterval)
                 {
                   long jLim = 0;
                   if (Down == 255)
                     jLim = Data[J].UPLIM;
                   else
                     jLim = Data[J].DOWNLIM;
-                  if (nextLVal > jLim)
-                    nextLVal = jLim;
+                  if (nextHVal < jLim)
+                    nextHVal = jLim;
                 }
               }
             }
-            if (nextLVal < long.MaxValue)
+            if (nextHVal > 0)
             {
-              if (lastLVal > nextLVal)
-                lVal = nextLVal;
+              if (lastVal < nextHVal)
+                lVal = nextHVal;
               else
-                lVal = lastLVal;
+                lVal = lastVal;
             }
             else
-              lVal = lastLVal;
+              lVal = lastVal;
           }
         }
-        lMaxPoints[I].X = (int) (lYWidth + (I * dCompInter) + 1);
+        lMaxPoints[I].X = (int) (lYWidth + (I * dGraphCompInter) + 1);
         lMaxPoints[I].Y = (int) (yTop + yHeight - (lVal / (double) lMax * yHeight));
         if (I > 0)
         {
@@ -1239,79 +1309,226 @@ namespace RestrictionTrackerGTK
               J++;
             for (long K = 1; K < J; K++)
             {
-              lMaxPoints[I - K].X = (int) (lYWidth + ((I - K) * dCompInter) + 1);
+              lMaxPoints[I - K].X = (int) (lYWidth + ((I - K) * dGraphCompInter) + 1);
               lMaxPoints[I - K].Y = (lMaxPoints[I - J].Y + lMaxPoints[I].Y) / 2;
             }
           }
         }
-        lastLVal = lVal;
+        if (lVal > 0)
+          lastVal = lVal;
       }
-      lastLVal = 0;
-      for (long I = 0; I <= lMaxTime; I++)
+      lastVal = 0;
+      for (long I = 0; I <= lMaxGraphTime; I++)
       {
         long lVal = -1;
         long lLow = long.MaxValue;
-        for (int J = 0; J <= Data.Length - 1; J++)
+        long lHigh = 0;
+        long mLow = long.MaxValue;
+        long mHigh = 0;
+        DateTime dFind = DateAdd(dGraphInterval, I * lGraphInterval, lStart);
+        for (int J = 0; J < Data.Length; J++)
         {
-          if (Math.Abs(DateDiff(dInterval, Data[J].DATETIME, DateAdd(dInterval, I, lStart))) == 0)
+          if (Math.Abs(DateDiff(dGraphInterval, Data[J].DATETIME, dFind)) <= lGraphInterval)
           {
             long jVal = 0;
+            long jMax = 0;
             if (Down == 255)
+            {
               jVal = Data[J].UPLOAD;
+              jMax = Data[J].UPLIM;
+            }
             else
+            {
               jVal = Data[J].DOWNLOAD;
+              jMax = Data[J].DOWNLIM;
+            }
             if (lLow > jVal)
               lLow = jVal;
+            if (mLow > jMax)
+              mLow = jMax;
+            if (lHigh < jVal)
+              lHigh = jVal;
+            if (mHigh < jMax)
+              mHigh = jMax;
           }
         }
-        if (lLow < long.MaxValue)
+        long aMax = (long) Math.Floor((mLow + mHigh) / 2.0);
+        if (lHigh > (Math.Floor(aMax / 10.0) * 9))
         {
-          lVal = lLow;
-        }
-        else
-        {
-          if (I == lMaxTime)
+          if (lHigh > 0)
+            lVal = lHigh;
+          else
           {
-            if (lastLVal > 0)
-              lVal = lastLVal;
+            if (I == lMaxGraphTime)
+            {
+              if (lastVal > 0)
+                lVal = lastVal;
+              else
+                lVal = 0;
+            }
             else
-              lVal = 0;
+            {
+              long nextHVal = 0;
+              long K = I;
+              while (nextHVal == 0)
+              {
+                K++;
+                if (K > lMaxGraphTime)
+                  break;
+                dFind = DateAdd(dGraphInterval, K * lGraphInterval, lStart);
+                for (int J = 0; J < Data.Length; J++)
+                {
+                  if (Math.Abs(DateDiff(dGraphInterval, Data[J].DATETIME, dFind)) <= lGraphInterval)
+                  {
+                    long jVal = 0;
+                    if (Down == 255)
+                      jVal = Data[J].UPLOAD;
+                    else
+                      jVal = Data[J].DOWNLOAD;
+                    if (nextHVal < jVal)
+                      nextHVal = jVal;
+                  }
+                }
+              }
+              if (nextHVal > 0)
+              {
+                if (lastVal < nextHVal)
+                  lVal = nextHVal;
+                else
+                  lVal = lastVal;
+              }
+              else
+                lVal = lastVal;
+            }
+          }
+        }
+        else if (lLow < Math.Ceiling(aMax / 10.0))
+        {
+          if (lLow < long.MaxValue)
+          {
+            lVal = lLow;
           }
           else
           {
-            long nextLVal = long.MaxValue;
-            long K = I;
-            while (nextLVal == long.MaxValue)
+            if (I == lMaxGraphTime)
             {
-              K++;
-              if (K > lMaxTime)
-                break;
-              for (int J = 0; J < Data.Length; J++)
-              {
-                if (Math.Abs(DateDiff(dInterval, Data[J].DATETIME, DateAdd(dInterval, K, lStart))) == 0)
-                {
-                  long jVal = 0;
-                  if (Down == 255)
-                    jVal = Data[J].UPLOAD;
-                  else
-                    jVal = Data[J].DOWNLOAD;
-                  if (nextLVal > jVal)
-                    nextLVal = jVal;
-                }
-              }
-            }
-            if (nextLVal < long.MaxValue)
-            {
-              if (lastLVal > nextLVal)
-                lVal = nextLVal;
+              if (lastVal > 0)
+                lVal = lastVal;
               else
-                lVal = lastLVal;
+                lVal = 0;
             }
             else
-              lVal = lastLVal;
+            {
+              long nextLVal = long.MaxValue;
+              long K = I;
+              while (nextLVal == long.MaxValue)
+              {
+                K++;
+                if (K > lMaxGraphTime)
+                  break;
+                dFind = DateAdd(dGraphInterval, K * lGraphInterval, lStart);
+                for (int J = 0; J < Data.Length; J++)
+                {
+                  if (Math.Abs(DateDiff(dGraphInterval, Data[J].DATETIME, dFind)) <= lGraphInterval)
+                  {
+                    long jVal = 0;
+                    if (Down == 255)
+                      jVal = Data[J].UPLOAD;
+                    else
+                      jVal = Data[J].DOWNLOAD;
+                    if (nextLVal > jVal)
+                      nextLVal = jVal;
+                  }
+                }
+              }
+              if (nextLVal < long.MaxValue)
+              {
+                if (lastVal > nextLVal)
+                  lVal = nextLVal;
+                else
+                  lVal = lastVal;
+              }
+              else
+                lVal = lastVal;
+            }
           }
         }
-        lPoints[I].X = (int) (lYWidth + (I * dCompInter) + 1);
+        else
+        {
+          if ((lHigh > 0) & (lLow < long.MaxValue))
+            lVal = (long) Math.Round((lLow + lHigh) / 2.0);
+          else if (lHigh > 0)
+            lVal = lHigh;
+          else if (lLow < long.MaxValue)
+            lVal = lLow;
+          else
+          {
+            if (I == lMaxGraphTime)
+            {
+              if (lastVal > 0)
+                lVal = lastVal;
+              else
+                lVal = 0;
+            }
+            else
+            {
+              long nextLVal = long.MaxValue;
+              long K = I;
+              while (nextLVal == long.MaxValue)
+              {
+                K++;
+                if (K > lMaxGraphTime)
+                  break;
+                dFind = DateAdd(dGraphInterval, K * lGraphInterval, lStart);
+                for (int J = 0; J < Data.Length; J++)
+                {
+                  if (Math.Abs(DateDiff(dGraphInterval, Data[J].DATETIME, dFind)) <= lGraphInterval)
+                  {
+                    long jVal = 0;
+                    if (Down == 255)
+                      jVal = Data[J].UPLOAD;
+                    else
+                      jVal = Data[J].DOWNLOAD;
+                    if (nextLVal > jVal)
+                      nextLVal = jVal;
+                  }
+                }
+              }
+              long nextHVal = 0;
+              K = I;
+              while (nextHVal == 0)
+              {
+                K++;
+                if (K > lMaxGraphTime)
+                  break;
+                dFind = DateAdd(dGraphInterval, K * lGraphInterval, lStart);
+                for (int J = 0; J < Data.Length; J++)
+                {
+                  if (Math.Abs(DateDiff(dGraphInterval, Data[J].DATETIME, dFind)) <= lGraphInterval)
+                  {
+                    long jVal = 0;
+                    if (Down == 255)
+                      jVal = Data[J].UPLOAD;
+                    else
+                      jVal = Data[J].DOWNLOAD;
+                    if (nextHVal < jVal)
+                      nextHVal = jVal;
+                  }
+                }
+              }
+              if ((nextLVal < long.MaxValue) & (nextHVal > 0))
+                lVal = (long) Math.Round((nextLVal + nextHVal) / 2.0);
+              else
+                lVal = lastVal;
+            }
+          }
+        }
+        if (lVal > 0)
+          lastVal = lVal;
+        if (I > 0)
+          lPoints[I].X = (int) (lYWidth + (I * dGraphCompInter) + 1);
+        else
+          lPoints[I].X = (int) (lYWidth + (I * dGraphCompInter));
         lPoints[I].Y = (int) (yTop + yHeight - (lVal / (double) lMax * yHeight));
         if (I > 0)
         {
@@ -1322,26 +1539,25 @@ namespace RestrictionTrackerGTK
               J++;
             for (long K = 1; K < J; K++)
             {
-              lPoints[I - K].X = (int) (lYWidth + ((I - K) * dCompInter) + 1);
+              lPoints[I - K].X = (int) (lYWidth + ((I - K) * dGraphCompInter) + 1);
               lPoints[I - K].Y = (lPoints[I - J].Y + lPoints[I].Y) / 2;
             }
           }
         }
-        lastLVal = lVal;
       }
-      if (lPoints[lMaxTime].IsEmpty)
+      if (lPoints[lMaxGraphTime].IsEmpty)
       {
-        lPoints[lMaxTime] = new Point(ImgSize.Width, yTop + yHeight);
+        lPoints[lMaxGraphTime] = new Point(ImgSize.Width, yTop + yHeight);
       }
-      lPoints[lMaxTime + 1] = new Point(ImgSize.Width, yTop + yHeight);
-      lPoints[lMaxTime + 2] = new Point(lYWidth, yTop + yHeight);
-      lPoints[lMaxTime + 3] = lPoints[0];
+      lPoints[lMaxGraphTime + 1] = new Point(ImgSize.Width, yTop + yHeight);
+      lPoints[lMaxGraphTime + 2] = new Point(lYWidth, yTop + yHeight);
+      lPoints[lMaxGraphTime + 3] = lPoints[0];
       lTypes[0] = (byte) PathPointType.Start;
-      for (long I = 1; I <= lMaxTime + 2; I++)
+      for (long I = 1; I <= lMaxGraphTime + 2; I++)
       {
         lTypes[I] = (byte) PathPointType.Line;
       }
-      lTypes[lMaxTime + 3] = (byte) (PathPointType.Line | PathPointType.CloseSubpath);
+      lTypes[lMaxGraphTime + 3] = (byte) (PathPointType.Line | PathPointType.CloseSubpath);
       g.DrawLines(new Pen(new SolidBrush(ColorMax), 5), lMaxPoints);
       GraphicsPath gPath = new GraphicsPath(lPoints, lTypes);
       LinearGradientBrush fBrush = TriGradientBrush(new Point(lYWidth, MaxY), new Point(lYWidth, yTop + yHeight), Color.FromArgb(192, ColorA), Color.FromArgb(192, ColorB), Color.FromArgb(192, ColorC));

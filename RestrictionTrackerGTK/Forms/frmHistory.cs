@@ -692,7 +692,7 @@ namespace RestrictionTrackerGTK
     {
       System.DateTime RightNow = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, 0);
       System.DateTime From30DaysAgo = default(System.DateTime);
-      if (useStyle == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY || useStyle == localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY)
+      if (useStyle == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY | useStyle == localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY)
       {
         if (modFunctions.DateAdd(DateInterval.Day, -30, RightNow) > dtwFrom.MaxDate)
         {
@@ -800,7 +800,7 @@ namespace RestrictionTrackerGTK
     {
       System.DateTime RightNow = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, 0);
       System.DateTime From60DaysAgo = default(System.DateTime);
-      if (useStyle == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY || useStyle == localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY)
+      if (useStyle == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY | useStyle == localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY)
       {
         if (modFunctions.DateAdd(DateInterval.Day, -60, RightNow) > dtwFrom.MaxDate)
         {
@@ -1419,7 +1419,7 @@ namespace RestrictionTrackerGTK
       }
       private void on_keypress(object o, Gtk.KeyPressEventArgs args)
       {
-        if (args.Event.Key == Gdk.Key.Return || args.Event.Key == Gdk.Key.Escape)
+        if (args.Event.Key == Gdk.Key.Return | args.Event.Key == Gdk.Key.Escape)
         {
           popdown();
         }

@@ -28,135 +28,97 @@ namespace RestrictionTrackerGTK
 		
 		private global::Gtk.Label lblRRS;
 		
-		private global::Gtk.HBox pnlWildBlue;
+		private global::Gtk.HBox pnlTypeA;
 		
-		private global::Gtk.Frame gbDld;
+		private global::Gtk.Frame gbTypeADld;
 		
-		private global::Gtk.Alignment algnDld;
+		private global::Gtk.Alignment algnTypeADld;
 		
-		private global::Gtk.HBox pnlDld;
+		private global::Gtk.HBox pnlTypeADld;
 		
 		private global::Gtk.VBox pnlDldText;
 		
 		private global::Gtk.HBox pnlDldTextUsed;
 		
-		private global::Gtk.Label lblDUsed;
+		private global::Gtk.Label lblTypeADldUsed;
 		
-		private global::Gtk.Label lblDldUsed;
+		private global::Gtk.Label lblTypeADldUsedVal;
 		
 		private global::Gtk.HBox pnlDldTextFree;
 		
-		private global::Gtk.Label lblDFree;
+		private global::Gtk.Label lblTypeADldFree;
 		
-		private global::Gtk.Label lblDldFree;
+		private global::Gtk.Label lblTypeADldFreeVal;
 		
 		private global::Gtk.HBox pnlDldTextLimit;
 		
-		private global::Gtk.Label lblDLimit;
+		private global::Gtk.Label lblTypeADldLimit;
 		
-		private global::Gtk.Label lblDldLimit;
+		private global::Gtk.Label lblTypeADldLimitVal;
 		
-		private global::Gtk.EventBox evnDld;
+		private global::Gtk.EventBox evnTypeADld;
 		
-		private global::Gtk.Image pctDld;
+		private global::Gtk.Image pctTypeADld;
 		
-		private global::Gtk.Label lblDld;
+		private global::Gtk.Label lblTypeADld;
 		
-		private global::Gtk.Frame gbUld;
+		private global::Gtk.Frame gbTypeAUld;
 		
-		private global::Gtk.Alignment algnUld;
+		private global::Gtk.Alignment algnTypeAUld;
 		
-		private global::Gtk.HBox pnlUld;
+		private global::Gtk.HBox pnlTypeAUld;
 		
 		private global::Gtk.VBox pnlUldText;
 		
 		private global::Gtk.HBox pnlUldTextUsed;
 		
-		private global::Gtk.Label lblUUsed;
+		private global::Gtk.Label lblTypeAUldUsed;
 		
-		private global::Gtk.Label lblUldUsed;
+		private global::Gtk.Label lblTypeAUldUsedVal;
 		
 		private global::Gtk.HBox pnlUldTextFree;
 		
-		private global::Gtk.Label lblUFree;
+		private global::Gtk.Label lblTypeAUldFree;
 		
-		private global::Gtk.Label lblUldFree;
+		private global::Gtk.Label lblTypeAUldFreeVal;
 		
 		private global::Gtk.HBox pnlUldTextLimit;
 		
-		private global::Gtk.Label lblULimit;
+		private global::Gtk.Label lblTypeAUldLimit;
 		
-		private global::Gtk.Label lblUldLimit;
+		private global::Gtk.Label lblTypeAUldLimitVal;
 		
-		private global::Gtk.EventBox evnUld;
+		private global::Gtk.EventBox evnTypeAUld;
 		
-		private global::Gtk.Image pctUld;
+		private global::Gtk.Image pctTypeAUld;
 		
-		private global::Gtk.Label lblUld;
+		private global::Gtk.Label lblTypeAUld;
 		
-		private global::Gtk.HBox pnlExede;
-		
-		private global::Gtk.VBox pnlExedeNumbers;
-		
-		private global::Gtk.HBox pnlExedeDown;
-		
-		private global::Gtk.Label lblExedeDown;
-		
-		private global::Gtk.Label lblExedeDownVal;
-		
-		private global::Gtk.HBox pnlExedeUp;
-		
-		private global::Gtk.Label lblExedeUp;
-		
-		private global::Gtk.Label lblExedeUpVal;
-		
-		private global::Gtk.HBox pnlExedeUsed;
-		
-		private global::Gtk.Label lblExedeTotal;
-		
-		private global::Gtk.Label lblExedeTotalVal;
-		
-		private global::Gtk.HBox pnlExedeFree;
-		
-		private global::Gtk.Label lblExedeRemain;
-		
-		private global::Gtk.Label lblExedeRemainVal;
-		
-		private global::Gtk.HBox pnlExedeTotal;
-		
-		private global::Gtk.Label lblExedeAllowed;
-		
-		private global::Gtk.Label lblExedeAllowedVal;
-		
-		private global::Gtk.EventBox evnExede;
-		
-		private global::Gtk.Image pctExede;
-		
-		private global::Gtk.HBox pnlRural;
+		private global::Gtk.HBox pnlTypeB;
 		
 		private global::Gtk.VBox pnlRuralNumbers;
 		
 		private global::Gtk.HBox pnlRuralUsed;
 		
-		private global::Gtk.Label lblRuralUsed;
+		private global::Gtk.Label lblTypeBUsed;
 		
-		private global::Gtk.Label lblRuralUsedVal;
+		private global::Gtk.Label lblTypeBUsedVal;
 		
 		private global::Gtk.HBox pnlRuralFree;
 		
-		private global::Gtk.Label lblRuralRemain;
+		private global::Gtk.Label lblTypeBFree;
 		
-		private global::Gtk.Label lblRuralRemainVal;
+		private global::Gtk.Label lblTypeBFreeVal;
 		
 		private global::Gtk.HBox pnlRuralTotal;
 		
-		private global::Gtk.Label lblRuralAllowed;
+		private global::Gtk.Label lblTypeBLimit;
 		
-		private global::Gtk.Label lblRuralAllowedVal;
+		private global::Gtk.Label lblTypeBLimitVal;
 		
-		private global::Gtk.EventBox evnRural;
+		private global::Gtk.EventBox evnTypeB;
 		
-		private global::Gtk.Image pctRural;
+		private global::Gtk.Image pctTypeB;
 		
 		private global::Gtk.Label lblStatus;
 		
@@ -276,25 +238,25 @@ namespace RestrictionTrackerGTK
 			global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.pnlDisplays [this.pnlNothing]));
 			w8.Position = 0;
 			// Container child pnlDisplays.Gtk.Box+BoxChild
-			this.pnlWildBlue = new global::Gtk.HBox ();
-			this.pnlWildBlue.Name = "pnlWildBlue";
-			this.pnlWildBlue.Homogeneous = true;
-			// Container child pnlWildBlue.Gtk.Box+BoxChild
-			this.gbDld = new global::Gtk.Frame ();
-			this.gbDld.Name = "gbDld";
-			this.gbDld.ShadowType = ((global::Gtk.ShadowType)(2));
-			// Container child gbDld.Gtk.Container+ContainerChild
-			this.algnDld = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
-			this.algnDld.Name = "algnDld";
-			this.algnDld.LeftPadding = ((uint)(3));
-			this.algnDld.TopPadding = ((uint)(3));
-			this.algnDld.RightPadding = ((uint)(3));
-			this.algnDld.BottomPadding = ((uint)(3));
-			// Container child algnDld.Gtk.Container+ContainerChild
-			this.pnlDld = new global::Gtk.HBox ();
-			this.pnlDld.Name = "pnlDld";
-			this.pnlDld.Spacing = 6;
-			// Container child pnlDld.Gtk.Box+BoxChild
+			this.pnlTypeA = new global::Gtk.HBox ();
+			this.pnlTypeA.Name = "pnlTypeA";
+			this.pnlTypeA.Homogeneous = true;
+			// Container child pnlTypeA.Gtk.Box+BoxChild
+			this.gbTypeADld = new global::Gtk.Frame ();
+			this.gbTypeADld.Name = "gbTypeADld";
+			this.gbTypeADld.ShadowType = ((global::Gtk.ShadowType)(2));
+			// Container child gbTypeADld.Gtk.Container+ContainerChild
+			this.algnTypeADld = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+			this.algnTypeADld.Name = "algnTypeADld";
+			this.algnTypeADld.LeftPadding = ((uint)(3));
+			this.algnTypeADld.TopPadding = ((uint)(3));
+			this.algnTypeADld.RightPadding = ((uint)(3));
+			this.algnTypeADld.BottomPadding = ((uint)(3));
+			// Container child algnTypeADld.Gtk.Container+ContainerChild
+			this.pnlTypeADld = new global::Gtk.HBox ();
+			this.pnlTypeADld.Name = "pnlTypeADld";
+			this.pnlTypeADld.Spacing = 6;
+			// Container child pnlTypeADld.Gtk.Box+BoxChild
 			this.pnlDldText = new global::Gtk.VBox ();
 			this.pnlDldText.Name = "pnlDldText";
 			this.pnlDldText.Homogeneous = true;
@@ -304,20 +266,20 @@ namespace RestrictionTrackerGTK
 			this.pnlDldTextUsed.Name = "pnlDldTextUsed";
 			this.pnlDldTextUsed.Spacing = 6;
 			// Container child pnlDldTextUsed.Gtk.Box+BoxChild
-			this.lblDUsed = new global::Gtk.Label ();
-			this.lblDUsed.Name = "lblDUsed";
-			this.lblDUsed.LabelProp = global::Mono.Unix.Catalog.GetString ("Used:");
-			this.pnlDldTextUsed.Add (this.lblDUsed);
-			global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.pnlDldTextUsed [this.lblDUsed]));
+			this.lblTypeADldUsed = new global::Gtk.Label ();
+			this.lblTypeADldUsed.Name = "lblTypeADldUsed";
+			this.lblTypeADldUsed.LabelProp = global::Mono.Unix.Catalog.GetString ("Used:");
+			this.pnlDldTextUsed.Add (this.lblTypeADldUsed);
+			global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.pnlDldTextUsed [this.lblTypeADldUsed]));
 			w9.Position = 0;
 			w9.Expand = false;
 			w9.Fill = false;
 			// Container child pnlDldTextUsed.Gtk.Box+BoxChild
-			this.lblDldUsed = new global::Gtk.Label ();
-			this.lblDldUsed.Name = "lblDldUsed";
-			this.lblDldUsed.LabelProp = global::Mono.Unix.Catalog.GetString (" -- ");
-			this.pnlDldTextUsed.Add (this.lblDldUsed);
-			global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.pnlDldTextUsed [this.lblDldUsed]));
+			this.lblTypeADldUsedVal = new global::Gtk.Label ();
+			this.lblTypeADldUsedVal.Name = "lblTypeADldUsedVal";
+			this.lblTypeADldUsedVal.LabelProp = global::Mono.Unix.Catalog.GetString (" -- ");
+			this.pnlDldTextUsed.Add (this.lblTypeADldUsedVal);
+			global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.pnlDldTextUsed [this.lblTypeADldUsedVal]));
 			w10.PackType = ((global::Gtk.PackType)(1));
 			w10.Position = 1;
 			w10.Expand = false;
@@ -332,20 +294,20 @@ namespace RestrictionTrackerGTK
 			this.pnlDldTextFree.Name = "pnlDldTextFree";
 			this.pnlDldTextFree.Spacing = 6;
 			// Container child pnlDldTextFree.Gtk.Box+BoxChild
-			this.lblDFree = new global::Gtk.Label ();
-			this.lblDFree.Name = "lblDFree";
-			this.lblDFree.LabelProp = global::Mono.Unix.Catalog.GetString ("Free:");
-			this.pnlDldTextFree.Add (this.lblDFree);
-			global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.pnlDldTextFree [this.lblDFree]));
+			this.lblTypeADldFree = new global::Gtk.Label ();
+			this.lblTypeADldFree.Name = "lblTypeADldFree";
+			this.lblTypeADldFree.LabelProp = global::Mono.Unix.Catalog.GetString ("Free:");
+			this.pnlDldTextFree.Add (this.lblTypeADldFree);
+			global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.pnlDldTextFree [this.lblTypeADldFree]));
 			w12.Position = 0;
 			w12.Expand = false;
 			w12.Fill = false;
 			// Container child pnlDldTextFree.Gtk.Box+BoxChild
-			this.lblDldFree = new global::Gtk.Label ();
-			this.lblDldFree.Name = "lblDldFree";
-			this.lblDldFree.LabelProp = global::Mono.Unix.Catalog.GetString (" -- ");
-			this.pnlDldTextFree.Add (this.lblDldFree);
-			global::Gtk.Box.BoxChild w13 = ((global::Gtk.Box.BoxChild)(this.pnlDldTextFree [this.lblDldFree]));
+			this.lblTypeADldFreeVal = new global::Gtk.Label ();
+			this.lblTypeADldFreeVal.Name = "lblTypeADldFreeVal";
+			this.lblTypeADldFreeVal.LabelProp = global::Mono.Unix.Catalog.GetString (" -- ");
+			this.pnlDldTextFree.Add (this.lblTypeADldFreeVal);
+			global::Gtk.Box.BoxChild w13 = ((global::Gtk.Box.BoxChild)(this.pnlDldTextFree [this.lblTypeADldFreeVal]));
 			w13.PackType = ((global::Gtk.PackType)(1));
 			w13.Position = 1;
 			w13.Expand = false;
@@ -360,20 +322,20 @@ namespace RestrictionTrackerGTK
 			this.pnlDldTextLimit.Name = "pnlDldTextLimit";
 			this.pnlDldTextLimit.Spacing = 6;
 			// Container child pnlDldTextLimit.Gtk.Box+BoxChild
-			this.lblDLimit = new global::Gtk.Label ();
-			this.lblDLimit.Name = "lblDLimit";
-			this.lblDLimit.LabelProp = global::Mono.Unix.Catalog.GetString ("Limit:");
-			this.pnlDldTextLimit.Add (this.lblDLimit);
-			global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.pnlDldTextLimit [this.lblDLimit]));
+			this.lblTypeADldLimit = new global::Gtk.Label ();
+			this.lblTypeADldLimit.Name = "lblTypeADldLimit";
+			this.lblTypeADldLimit.LabelProp = global::Mono.Unix.Catalog.GetString ("Limit:");
+			this.pnlDldTextLimit.Add (this.lblTypeADldLimit);
+			global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.pnlDldTextLimit [this.lblTypeADldLimit]));
 			w15.Position = 0;
 			w15.Expand = false;
 			w15.Fill = false;
 			// Container child pnlDldTextLimit.Gtk.Box+BoxChild
-			this.lblDldLimit = new global::Gtk.Label ();
-			this.lblDldLimit.Name = "lblDldLimit";
-			this.lblDldLimit.LabelProp = global::Mono.Unix.Catalog.GetString (" -- ");
-			this.pnlDldTextLimit.Add (this.lblDldLimit);
-			global::Gtk.Box.BoxChild w16 = ((global::Gtk.Box.BoxChild)(this.pnlDldTextLimit [this.lblDldLimit]));
+			this.lblTypeADldLimitVal = new global::Gtk.Label ();
+			this.lblTypeADldLimitVal.Name = "lblTypeADldLimitVal";
+			this.lblTypeADldLimitVal.LabelProp = global::Mono.Unix.Catalog.GetString (" -- ");
+			this.pnlDldTextLimit.Add (this.lblTypeADldLimitVal);
+			global::Gtk.Box.BoxChild w16 = ((global::Gtk.Box.BoxChild)(this.pnlDldTextLimit [this.lblTypeADldLimitVal]));
 			w16.PackType = ((global::Gtk.PackType)(1));
 			w16.Position = 1;
 			w16.Expand = false;
@@ -383,50 +345,50 @@ namespace RestrictionTrackerGTK
 			w17.Position = 2;
 			w17.Expand = false;
 			w17.Fill = false;
-			this.pnlDld.Add (this.pnlDldText);
-			global::Gtk.Box.BoxChild w18 = ((global::Gtk.Box.BoxChild)(this.pnlDld [this.pnlDldText]));
+			this.pnlTypeADld.Add (this.pnlDldText);
+			global::Gtk.Box.BoxChild w18 = ((global::Gtk.Box.BoxChild)(this.pnlTypeADld [this.pnlDldText]));
 			w18.Position = 0;
 			w18.Expand = false;
 			w18.Fill = false;
-			// Container child pnlDld.Gtk.Box+BoxChild
-			this.evnDld = new global::Gtk.EventBox ();
-			this.evnDld.Name = "evnDld";
-			// Container child evnDld.Gtk.Container+ContainerChild
-			this.pctDld = new global::Gtk.Image ();
-			this.pctDld.TooltipMarkup = "Graph representing your download usage.";
-			this.pctDld.Name = "pctDld";
-			this.evnDld.Add (this.pctDld);
-			this.pnlDld.Add (this.evnDld);
-			global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(this.pnlDld [this.evnDld]));
+			// Container child pnlTypeADld.Gtk.Box+BoxChild
+			this.evnTypeADld = new global::Gtk.EventBox ();
+			this.evnTypeADld.Name = "evnTypeADld";
+			// Container child evnTypeADld.Gtk.Container+ContainerChild
+			this.pctTypeADld = new global::Gtk.Image ();
+			this.pctTypeADld.TooltipMarkup = "Graph representing your download usage.";
+			this.pctTypeADld.Name = "pctTypeADld";
+			this.evnTypeADld.Add (this.pctTypeADld);
+			this.pnlTypeADld.Add (this.evnTypeADld);
+			global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(this.pnlTypeADld [this.evnTypeADld]));
 			w20.Position = 1;
-			this.algnDld.Add (this.pnlDld);
-			this.gbDld.Add (this.algnDld);
-			this.lblDld = new global::Gtk.Label ();
-			this.lblDld.Name = "lblDld";
-			this.lblDld.Xalign = 0F;
-			this.lblDld.LabelProp = global::Mono.Unix.Catalog.GetString ("Download (X%)");
-			this.lblDld.UseMarkup = true;
-			this.gbDld.LabelWidget = this.lblDld;
-			this.pnlWildBlue.Add (this.gbDld);
-			global::Gtk.Box.BoxChild w23 = ((global::Gtk.Box.BoxChild)(this.pnlWildBlue [this.gbDld]));
+			this.algnTypeADld.Add (this.pnlTypeADld);
+			this.gbTypeADld.Add (this.algnTypeADld);
+			this.lblTypeADld = new global::Gtk.Label ();
+			this.lblTypeADld.Name = "lblTypeADld";
+			this.lblTypeADld.Xalign = 0F;
+			this.lblTypeADld.LabelProp = global::Mono.Unix.Catalog.GetString ("Download (X%)");
+			this.lblTypeADld.UseMarkup = true;
+			this.gbTypeADld.LabelWidget = this.lblTypeADld;
+			this.pnlTypeA.Add (this.gbTypeADld);
+			global::Gtk.Box.BoxChild w23 = ((global::Gtk.Box.BoxChild)(this.pnlTypeA [this.gbTypeADld]));
 			w23.Position = 0;
 			w23.Padding = ((uint)(3));
-			// Container child pnlWildBlue.Gtk.Box+BoxChild
-			this.gbUld = new global::Gtk.Frame ();
-			this.gbUld.Name = "gbUld";
-			this.gbUld.ShadowType = ((global::Gtk.ShadowType)(2));
-			// Container child gbUld.Gtk.Container+ContainerChild
-			this.algnUld = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
-			this.algnUld.Name = "algnUld";
-			this.algnUld.LeftPadding = ((uint)(3));
-			this.algnUld.TopPadding = ((uint)(3));
-			this.algnUld.RightPadding = ((uint)(3));
-			this.algnUld.BottomPadding = ((uint)(3));
-			// Container child algnUld.Gtk.Container+ContainerChild
-			this.pnlUld = new global::Gtk.HBox ();
-			this.pnlUld.Name = "pnlUld";
-			this.pnlUld.Spacing = 6;
-			// Container child pnlUld.Gtk.Box+BoxChild
+			// Container child pnlTypeA.Gtk.Box+BoxChild
+			this.gbTypeAUld = new global::Gtk.Frame ();
+			this.gbTypeAUld.Name = "gbTypeAUld";
+			this.gbTypeAUld.ShadowType = ((global::Gtk.ShadowType)(2));
+			// Container child gbTypeAUld.Gtk.Container+ContainerChild
+			this.algnTypeAUld = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+			this.algnTypeAUld.Name = "algnTypeAUld";
+			this.algnTypeAUld.LeftPadding = ((uint)(3));
+			this.algnTypeAUld.TopPadding = ((uint)(3));
+			this.algnTypeAUld.RightPadding = ((uint)(3));
+			this.algnTypeAUld.BottomPadding = ((uint)(3));
+			// Container child algnTypeAUld.Gtk.Container+ContainerChild
+			this.pnlTypeAUld = new global::Gtk.HBox ();
+			this.pnlTypeAUld.Name = "pnlTypeAUld";
+			this.pnlTypeAUld.Spacing = 6;
+			// Container child pnlTypeAUld.Gtk.Box+BoxChild
 			this.pnlUldText = new global::Gtk.VBox ();
 			this.pnlUldText.Name = "pnlUldText";
 			this.pnlUldText.Homogeneous = true;
@@ -436,20 +398,20 @@ namespace RestrictionTrackerGTK
 			this.pnlUldTextUsed.Name = "pnlUldTextUsed";
 			this.pnlUldTextUsed.Spacing = 6;
 			// Container child pnlUldTextUsed.Gtk.Box+BoxChild
-			this.lblUUsed = new global::Gtk.Label ();
-			this.lblUUsed.Name = "lblUUsed";
-			this.lblUUsed.LabelProp = global::Mono.Unix.Catalog.GetString ("Used:");
-			this.pnlUldTextUsed.Add (this.lblUUsed);
-			global::Gtk.Box.BoxChild w24 = ((global::Gtk.Box.BoxChild)(this.pnlUldTextUsed [this.lblUUsed]));
+			this.lblTypeAUldUsed = new global::Gtk.Label ();
+			this.lblTypeAUldUsed.Name = "lblTypeAUldUsed";
+			this.lblTypeAUldUsed.LabelProp = global::Mono.Unix.Catalog.GetString ("Used:");
+			this.pnlUldTextUsed.Add (this.lblTypeAUldUsed);
+			global::Gtk.Box.BoxChild w24 = ((global::Gtk.Box.BoxChild)(this.pnlUldTextUsed [this.lblTypeAUldUsed]));
 			w24.Position = 0;
 			w24.Expand = false;
 			w24.Fill = false;
 			// Container child pnlUldTextUsed.Gtk.Box+BoxChild
-			this.lblUldUsed = new global::Gtk.Label ();
-			this.lblUldUsed.Name = "lblUldUsed";
-			this.lblUldUsed.LabelProp = global::Mono.Unix.Catalog.GetString (" -- ");
-			this.pnlUldTextUsed.Add (this.lblUldUsed);
-			global::Gtk.Box.BoxChild w25 = ((global::Gtk.Box.BoxChild)(this.pnlUldTextUsed [this.lblUldUsed]));
+			this.lblTypeAUldUsedVal = new global::Gtk.Label ();
+			this.lblTypeAUldUsedVal.Name = "lblTypeAUldUsedVal";
+			this.lblTypeAUldUsedVal.LabelProp = global::Mono.Unix.Catalog.GetString (" -- ");
+			this.pnlUldTextUsed.Add (this.lblTypeAUldUsedVal);
+			global::Gtk.Box.BoxChild w25 = ((global::Gtk.Box.BoxChild)(this.pnlUldTextUsed [this.lblTypeAUldUsedVal]));
 			w25.PackType = ((global::Gtk.PackType)(1));
 			w25.Position = 1;
 			w25.Expand = false;
@@ -464,20 +426,20 @@ namespace RestrictionTrackerGTK
 			this.pnlUldTextFree.Name = "pnlUldTextFree";
 			this.pnlUldTextFree.Spacing = 6;
 			// Container child pnlUldTextFree.Gtk.Box+BoxChild
-			this.lblUFree = new global::Gtk.Label ();
-			this.lblUFree.Name = "lblUFree";
-			this.lblUFree.LabelProp = global::Mono.Unix.Catalog.GetString ("Free:");
-			this.pnlUldTextFree.Add (this.lblUFree);
-			global::Gtk.Box.BoxChild w27 = ((global::Gtk.Box.BoxChild)(this.pnlUldTextFree [this.lblUFree]));
+			this.lblTypeAUldFree = new global::Gtk.Label ();
+			this.lblTypeAUldFree.Name = "lblTypeAUldFree";
+			this.lblTypeAUldFree.LabelProp = global::Mono.Unix.Catalog.GetString ("Free:");
+			this.pnlUldTextFree.Add (this.lblTypeAUldFree);
+			global::Gtk.Box.BoxChild w27 = ((global::Gtk.Box.BoxChild)(this.pnlUldTextFree [this.lblTypeAUldFree]));
 			w27.Position = 0;
 			w27.Expand = false;
 			w27.Fill = false;
 			// Container child pnlUldTextFree.Gtk.Box+BoxChild
-			this.lblUldFree = new global::Gtk.Label ();
-			this.lblUldFree.Name = "lblUldFree";
-			this.lblUldFree.LabelProp = global::Mono.Unix.Catalog.GetString (" -- ");
-			this.pnlUldTextFree.Add (this.lblUldFree);
-			global::Gtk.Box.BoxChild w28 = ((global::Gtk.Box.BoxChild)(this.pnlUldTextFree [this.lblUldFree]));
+			this.lblTypeAUldFreeVal = new global::Gtk.Label ();
+			this.lblTypeAUldFreeVal.Name = "lblTypeAUldFreeVal";
+			this.lblTypeAUldFreeVal.LabelProp = global::Mono.Unix.Catalog.GetString (" -- ");
+			this.pnlUldTextFree.Add (this.lblTypeAUldFreeVal);
+			global::Gtk.Box.BoxChild w28 = ((global::Gtk.Box.BoxChild)(this.pnlUldTextFree [this.lblTypeAUldFreeVal]));
 			w28.PackType = ((global::Gtk.PackType)(1));
 			w28.Position = 1;
 			w28.Expand = false;
@@ -492,20 +454,20 @@ namespace RestrictionTrackerGTK
 			this.pnlUldTextLimit.Name = "pnlUldTextLimit";
 			this.pnlUldTextLimit.Spacing = 6;
 			// Container child pnlUldTextLimit.Gtk.Box+BoxChild
-			this.lblULimit = new global::Gtk.Label ();
-			this.lblULimit.Name = "lblULimit";
-			this.lblULimit.LabelProp = global::Mono.Unix.Catalog.GetString ("Limit:");
-			this.pnlUldTextLimit.Add (this.lblULimit);
-			global::Gtk.Box.BoxChild w30 = ((global::Gtk.Box.BoxChild)(this.pnlUldTextLimit [this.lblULimit]));
+			this.lblTypeAUldLimit = new global::Gtk.Label ();
+			this.lblTypeAUldLimit.Name = "lblTypeAUldLimit";
+			this.lblTypeAUldLimit.LabelProp = global::Mono.Unix.Catalog.GetString ("Limit:");
+			this.pnlUldTextLimit.Add (this.lblTypeAUldLimit);
+			global::Gtk.Box.BoxChild w30 = ((global::Gtk.Box.BoxChild)(this.pnlUldTextLimit [this.lblTypeAUldLimit]));
 			w30.Position = 0;
 			w30.Expand = false;
 			w30.Fill = false;
 			// Container child pnlUldTextLimit.Gtk.Box+BoxChild
-			this.lblUldLimit = new global::Gtk.Label ();
-			this.lblUldLimit.Name = "lblUldLimit";
-			this.lblUldLimit.LabelProp = global::Mono.Unix.Catalog.GetString (" -- ");
-			this.pnlUldTextLimit.Add (this.lblUldLimit);
-			global::Gtk.Box.BoxChild w31 = ((global::Gtk.Box.BoxChild)(this.pnlUldTextLimit [this.lblUldLimit]));
+			this.lblTypeAUldLimitVal = new global::Gtk.Label ();
+			this.lblTypeAUldLimitVal.Name = "lblTypeAUldLimitVal";
+			this.lblTypeAUldLimitVal.LabelProp = global::Mono.Unix.Catalog.GetString (" -- ");
+			this.pnlUldTextLimit.Add (this.lblTypeAUldLimitVal);
+			global::Gtk.Box.BoxChild w31 = ((global::Gtk.Box.BoxChild)(this.pnlUldTextLimit [this.lblTypeAUldLimitVal]));
 			w31.PackType = ((global::Gtk.PackType)(1));
 			w31.Position = 1;
 			w31.Expand = false;
@@ -515,210 +477,42 @@ namespace RestrictionTrackerGTK
 			w32.Position = 2;
 			w32.Expand = false;
 			w32.Fill = false;
-			this.pnlUld.Add (this.pnlUldText);
-			global::Gtk.Box.BoxChild w33 = ((global::Gtk.Box.BoxChild)(this.pnlUld [this.pnlUldText]));
+			this.pnlTypeAUld.Add (this.pnlUldText);
+			global::Gtk.Box.BoxChild w33 = ((global::Gtk.Box.BoxChild)(this.pnlTypeAUld [this.pnlUldText]));
 			w33.Position = 0;
 			w33.Expand = false;
 			w33.Fill = false;
-			// Container child pnlUld.Gtk.Box+BoxChild
-			this.evnUld = new global::Gtk.EventBox ();
-			this.evnUld.Name = "evnUld";
-			// Container child evnUld.Gtk.Container+ContainerChild
-			this.pctUld = new global::Gtk.Image ();
-			this.pctUld.TooltipMarkup = "Graph representing your upload usage.";
-			this.pctUld.Name = "pctUld";
-			this.evnUld.Add (this.pctUld);
-			this.pnlUld.Add (this.evnUld);
-			global::Gtk.Box.BoxChild w35 = ((global::Gtk.Box.BoxChild)(this.pnlUld [this.evnUld]));
+			// Container child pnlTypeAUld.Gtk.Box+BoxChild
+			this.evnTypeAUld = new global::Gtk.EventBox ();
+			this.evnTypeAUld.Name = "evnTypeAUld";
+			// Container child evnTypeAUld.Gtk.Container+ContainerChild
+			this.pctTypeAUld = new global::Gtk.Image ();
+			this.pctTypeAUld.TooltipMarkup = "Graph representing your upload usage.";
+			this.pctTypeAUld.Name = "pctTypeAUld";
+			this.evnTypeAUld.Add (this.pctTypeAUld);
+			this.pnlTypeAUld.Add (this.evnTypeAUld);
+			global::Gtk.Box.BoxChild w35 = ((global::Gtk.Box.BoxChild)(this.pnlTypeAUld [this.evnTypeAUld]));
 			w35.Position = 1;
-			this.algnUld.Add (this.pnlUld);
-			this.gbUld.Add (this.algnUld);
-			this.lblUld = new global::Gtk.Label ();
-			this.lblUld.Name = "lblUld";
-			this.lblUld.Xalign = 0F;
-			this.lblUld.LabelProp = global::Mono.Unix.Catalog.GetString ("Upload (X%)");
-			this.lblUld.UseMarkup = true;
-			this.gbUld.LabelWidget = this.lblUld;
-			this.pnlWildBlue.Add (this.gbUld);
-			global::Gtk.Box.BoxChild w38 = ((global::Gtk.Box.BoxChild)(this.pnlWildBlue [this.gbUld]));
+			this.algnTypeAUld.Add (this.pnlTypeAUld);
+			this.gbTypeAUld.Add (this.algnTypeAUld);
+			this.lblTypeAUld = new global::Gtk.Label ();
+			this.lblTypeAUld.Name = "lblTypeAUld";
+			this.lblTypeAUld.Xalign = 0F;
+			this.lblTypeAUld.LabelProp = global::Mono.Unix.Catalog.GetString ("Upload (X%)");
+			this.lblTypeAUld.UseMarkup = true;
+			this.gbTypeAUld.LabelWidget = this.lblTypeAUld;
+			this.pnlTypeA.Add (this.gbTypeAUld);
+			global::Gtk.Box.BoxChild w38 = ((global::Gtk.Box.BoxChild)(this.pnlTypeA [this.gbTypeAUld]));
 			w38.Position = 1;
 			w38.Padding = ((uint)(3));
-			this.pnlDisplays.Add (this.pnlWildBlue);
-			global::Gtk.Box.BoxChild w39 = ((global::Gtk.Box.BoxChild)(this.pnlDisplays [this.pnlWildBlue]));
+			this.pnlDisplays.Add (this.pnlTypeA);
+			global::Gtk.Box.BoxChild w39 = ((global::Gtk.Box.BoxChild)(this.pnlDisplays [this.pnlTypeA]));
 			w39.Position = 1;
 			// Container child pnlDisplays.Gtk.Box+BoxChild
-			this.pnlExede = new global::Gtk.HBox ();
-			this.pnlExede.Name = "pnlExede";
-			this.pnlExede.Spacing = 6;
-			// Container child pnlExede.Gtk.Box+BoxChild
-			this.pnlExedeNumbers = new global::Gtk.VBox ();
-			this.pnlExedeNumbers.Name = "pnlExedeNumbers";
-			this.pnlExedeNumbers.Homogeneous = true;
-			this.pnlExedeNumbers.Spacing = 6;
-			// Container child pnlExedeNumbers.Gtk.Box+BoxChild
-			this.pnlExedeDown = new global::Gtk.HBox ();
-			this.pnlExedeDown.Name = "pnlExedeDown";
-			this.pnlExedeDown.Spacing = 6;
-			// Container child pnlExedeDown.Gtk.Box+BoxChild
-			this.lblExedeDown = new global::Gtk.Label ();
-			this.lblExedeDown.Name = "lblExedeDown";
-			this.lblExedeDown.LabelProp = global::Mono.Unix.Catalog.GetString ("Download:");
-			this.pnlExedeDown.Add (this.lblExedeDown);
-			global::Gtk.Box.BoxChild w40 = ((global::Gtk.Box.BoxChild)(this.pnlExedeDown [this.lblExedeDown]));
-			w40.Position = 0;
-			w40.Expand = false;
-			w40.Fill = false;
-			// Container child pnlExedeDown.Gtk.Box+BoxChild
-			this.lblExedeDownVal = new global::Gtk.Label ();
-			this.lblExedeDownVal.Name = "lblExedeDownVal";
-			this.lblExedeDownVal.LabelProp = global::Mono.Unix.Catalog.GetString (" -- ");
-			this.pnlExedeDown.Add (this.lblExedeDownVal);
-			global::Gtk.Box.BoxChild w41 = ((global::Gtk.Box.BoxChild)(this.pnlExedeDown [this.lblExedeDownVal]));
-			w41.PackType = ((global::Gtk.PackType)(1));
-			w41.Position = 1;
-			w41.Expand = false;
-			w41.Fill = false;
-			this.pnlExedeNumbers.Add (this.pnlExedeDown);
-			global::Gtk.Box.BoxChild w42 = ((global::Gtk.Box.BoxChild)(this.pnlExedeNumbers [this.pnlExedeDown]));
-			w42.Position = 0;
-			w42.Expand = false;
-			w42.Fill = false;
-			// Container child pnlExedeNumbers.Gtk.Box+BoxChild
-			this.pnlExedeUp = new global::Gtk.HBox ();
-			this.pnlExedeUp.Name = "pnlExedeUp";
-			this.pnlExedeUp.Spacing = 6;
-			// Container child pnlExedeUp.Gtk.Box+BoxChild
-			this.lblExedeUp = new global::Gtk.Label ();
-			this.lblExedeUp.Name = "lblExedeUp";
-			this.lblExedeUp.LabelProp = global::Mono.Unix.Catalog.GetString ("Upload:");
-			this.pnlExedeUp.Add (this.lblExedeUp);
-			global::Gtk.Box.BoxChild w43 = ((global::Gtk.Box.BoxChild)(this.pnlExedeUp [this.lblExedeUp]));
-			w43.Position = 0;
-			w43.Expand = false;
-			w43.Fill = false;
-			// Container child pnlExedeUp.Gtk.Box+BoxChild
-			this.lblExedeUpVal = new global::Gtk.Label ();
-			this.lblExedeUpVal.Name = "lblExedeUpVal";
-			this.lblExedeUpVal.LabelProp = global::Mono.Unix.Catalog.GetString (" -- ");
-			this.pnlExedeUp.Add (this.lblExedeUpVal);
-			global::Gtk.Box.BoxChild w44 = ((global::Gtk.Box.BoxChild)(this.pnlExedeUp [this.lblExedeUpVal]));
-			w44.PackType = ((global::Gtk.PackType)(1));
-			w44.Position = 1;
-			w44.Expand = false;
-			w44.Fill = false;
-			this.pnlExedeNumbers.Add (this.pnlExedeUp);
-			global::Gtk.Box.BoxChild w45 = ((global::Gtk.Box.BoxChild)(this.pnlExedeNumbers [this.pnlExedeUp]));
-			w45.Position = 1;
-			w45.Expand = false;
-			w45.Fill = false;
-			// Container child pnlExedeNumbers.Gtk.Box+BoxChild
-			this.pnlExedeUsed = new global::Gtk.HBox ();
-			this.pnlExedeUsed.Name = "pnlExedeUsed";
-			this.pnlExedeUsed.Spacing = 6;
-			// Container child pnlExedeUsed.Gtk.Box+BoxChild
-			this.lblExedeTotal = new global::Gtk.Label ();
-			this.lblExedeTotal.Name = "lblExedeTotal";
-			this.lblExedeTotal.LabelProp = global::Mono.Unix.Catalog.GetString ("Used:");
-			this.pnlExedeUsed.Add (this.lblExedeTotal);
-			global::Gtk.Box.BoxChild w46 = ((global::Gtk.Box.BoxChild)(this.pnlExedeUsed [this.lblExedeTotal]));
-			w46.Position = 0;
-			w46.Expand = false;
-			w46.Fill = false;
-			// Container child pnlExedeUsed.Gtk.Box+BoxChild
-			this.lblExedeTotalVal = new global::Gtk.Label ();
-			this.lblExedeTotalVal.Name = "lblExedeTotalVal";
-			this.lblExedeTotalVal.LabelProp = global::Mono.Unix.Catalog.GetString (" -- ");
-			this.pnlExedeUsed.Add (this.lblExedeTotalVal);
-			global::Gtk.Box.BoxChild w47 = ((global::Gtk.Box.BoxChild)(this.pnlExedeUsed [this.lblExedeTotalVal]));
-			w47.PackType = ((global::Gtk.PackType)(1));
-			w47.Position = 1;
-			w47.Expand = false;
-			w47.Fill = false;
-			this.pnlExedeNumbers.Add (this.pnlExedeUsed);
-			global::Gtk.Box.BoxChild w48 = ((global::Gtk.Box.BoxChild)(this.pnlExedeNumbers [this.pnlExedeUsed]));
-			w48.Position = 2;
-			w48.Expand = false;
-			w48.Fill = false;
-			// Container child pnlExedeNumbers.Gtk.Box+BoxChild
-			this.pnlExedeFree = new global::Gtk.HBox ();
-			this.pnlExedeFree.Name = "pnlExedeFree";
-			this.pnlExedeFree.Spacing = 6;
-			// Container child pnlExedeFree.Gtk.Box+BoxChild
-			this.lblExedeRemain = new global::Gtk.Label ();
-			this.lblExedeRemain.Name = "lblExedeRemain";
-			this.lblExedeRemain.LabelProp = global::Mono.Unix.Catalog.GetString ("Free:");
-			this.pnlExedeFree.Add (this.lblExedeRemain);
-			global::Gtk.Box.BoxChild w49 = ((global::Gtk.Box.BoxChild)(this.pnlExedeFree [this.lblExedeRemain]));
-			w49.Position = 0;
-			w49.Expand = false;
-			w49.Fill = false;
-			// Container child pnlExedeFree.Gtk.Box+BoxChild
-			this.lblExedeRemainVal = new global::Gtk.Label ();
-			this.lblExedeRemainVal.Name = "lblExedeRemainVal";
-			this.lblExedeRemainVal.LabelProp = global::Mono.Unix.Catalog.GetString (" -- ");
-			this.pnlExedeFree.Add (this.lblExedeRemainVal);
-			global::Gtk.Box.BoxChild w50 = ((global::Gtk.Box.BoxChild)(this.pnlExedeFree [this.lblExedeRemainVal]));
-			w50.PackType = ((global::Gtk.PackType)(1));
-			w50.Position = 1;
-			w50.Expand = false;
-			w50.Fill = false;
-			this.pnlExedeNumbers.Add (this.pnlExedeFree);
-			global::Gtk.Box.BoxChild w51 = ((global::Gtk.Box.BoxChild)(this.pnlExedeNumbers [this.pnlExedeFree]));
-			w51.Position = 3;
-			w51.Expand = false;
-			w51.Fill = false;
-			// Container child pnlExedeNumbers.Gtk.Box+BoxChild
-			this.pnlExedeTotal = new global::Gtk.HBox ();
-			this.pnlExedeTotal.Name = "pnlExedeTotal";
-			this.pnlExedeTotal.Spacing = 6;
-			// Container child pnlExedeTotal.Gtk.Box+BoxChild
-			this.lblExedeAllowed = new global::Gtk.Label ();
-			this.lblExedeAllowed.Name = "lblExedeAllowed";
-			this.lblExedeAllowed.LabelProp = global::Mono.Unix.Catalog.GetString ("Limit:");
-			this.pnlExedeTotal.Add (this.lblExedeAllowed);
-			global::Gtk.Box.BoxChild w52 = ((global::Gtk.Box.BoxChild)(this.pnlExedeTotal [this.lblExedeAllowed]));
-			w52.Position = 0;
-			w52.Expand = false;
-			w52.Fill = false;
-			// Container child pnlExedeTotal.Gtk.Box+BoxChild
-			this.lblExedeAllowedVal = new global::Gtk.Label ();
-			this.lblExedeAllowedVal.Name = "lblExedeAllowedVal";
-			this.lblExedeAllowedVal.LabelProp = global::Mono.Unix.Catalog.GetString (" -- ");
-			this.pnlExedeTotal.Add (this.lblExedeAllowedVal);
-			global::Gtk.Box.BoxChild w53 = ((global::Gtk.Box.BoxChild)(this.pnlExedeTotal [this.lblExedeAllowedVal]));
-			w53.PackType = ((global::Gtk.PackType)(1));
-			w53.Position = 1;
-			w53.Expand = false;
-			w53.Fill = false;
-			this.pnlExedeNumbers.Add (this.pnlExedeTotal);
-			global::Gtk.Box.BoxChild w54 = ((global::Gtk.Box.BoxChild)(this.pnlExedeNumbers [this.pnlExedeTotal]));
-			w54.Position = 4;
-			w54.Expand = false;
-			w54.Fill = false;
-			this.pnlExede.Add (this.pnlExedeNumbers);
-			global::Gtk.Box.BoxChild w55 = ((global::Gtk.Box.BoxChild)(this.pnlExede [this.pnlExedeNumbers]));
-			w55.Position = 0;
-			w55.Expand = false;
-			w55.Fill = false;
-			// Container child pnlExede.Gtk.Box+BoxChild
-			this.evnExede = new global::Gtk.EventBox ();
-			this.evnExede.Name = "evnExede";
-			// Container child evnExede.Gtk.Container+ContainerChild
-			this.pctExede = new global::Gtk.Image ();
-			this.pctExede.TooltipMarkup = "Graph representing your bandwidth usage.";
-			this.pctExede.Name = "pctExede";
-			this.evnExede.Add (this.pctExede);
-			this.pnlExede.Add (this.evnExede);
-			global::Gtk.Box.BoxChild w57 = ((global::Gtk.Box.BoxChild)(this.pnlExede [this.evnExede]));
-			w57.Position = 1;
-			this.pnlDisplays.Add (this.pnlExede);
-			global::Gtk.Box.BoxChild w58 = ((global::Gtk.Box.BoxChild)(this.pnlDisplays [this.pnlExede]));
-			w58.Position = 2;
-			// Container child pnlDisplays.Gtk.Box+BoxChild
-			this.pnlRural = new global::Gtk.HBox ();
-			this.pnlRural.Name = "pnlRural";
-			this.pnlRural.Spacing = 6;
-			// Container child pnlRural.Gtk.Box+BoxChild
+			this.pnlTypeB = new global::Gtk.HBox ();
+			this.pnlTypeB.Name = "pnlTypeB";
+			this.pnlTypeB.Spacing = 6;
+			// Container child pnlTypeB.Gtk.Box+BoxChild
 			this.pnlRuralNumbers = new global::Gtk.VBox ();
 			this.pnlRuralNumbers.Name = "pnlRuralNumbers";
 			this.pnlRuralNumbers.Homogeneous = true;
@@ -728,104 +522,104 @@ namespace RestrictionTrackerGTK
 			this.pnlRuralUsed.Name = "pnlRuralUsed";
 			this.pnlRuralUsed.Spacing = 6;
 			// Container child pnlRuralUsed.Gtk.Box+BoxChild
-			this.lblRuralUsed = new global::Gtk.Label ();
-			this.lblRuralUsed.Name = "lblRuralUsed";
-			this.lblRuralUsed.LabelProp = global::Mono.Unix.Catalog.GetString ("Used:");
-			this.pnlRuralUsed.Add (this.lblRuralUsed);
-			global::Gtk.Box.BoxChild w59 = ((global::Gtk.Box.BoxChild)(this.pnlRuralUsed [this.lblRuralUsed]));
-			w59.Position = 0;
-			w59.Expand = false;
-			w59.Fill = false;
+			this.lblTypeBUsed = new global::Gtk.Label ();
+			this.lblTypeBUsed.Name = "lblTypeBUsed";
+			this.lblTypeBUsed.LabelProp = global::Mono.Unix.Catalog.GetString ("Used:");
+			this.pnlRuralUsed.Add (this.lblTypeBUsed);
+			global::Gtk.Box.BoxChild w40 = ((global::Gtk.Box.BoxChild)(this.pnlRuralUsed [this.lblTypeBUsed]));
+			w40.Position = 0;
+			w40.Expand = false;
+			w40.Fill = false;
 			// Container child pnlRuralUsed.Gtk.Box+BoxChild
-			this.lblRuralUsedVal = new global::Gtk.Label ();
-			this.lblRuralUsedVal.Name = "lblRuralUsedVal";
-			this.lblRuralUsedVal.LabelProp = global::Mono.Unix.Catalog.GetString (" -- ");
-			this.pnlRuralUsed.Add (this.lblRuralUsedVal);
-			global::Gtk.Box.BoxChild w60 = ((global::Gtk.Box.BoxChild)(this.pnlRuralUsed [this.lblRuralUsedVal]));
-			w60.PackType = ((global::Gtk.PackType)(1));
-			w60.Position = 1;
-			w60.Expand = false;
-			w60.Fill = false;
+			this.lblTypeBUsedVal = new global::Gtk.Label ();
+			this.lblTypeBUsedVal.Name = "lblTypeBUsedVal";
+			this.lblTypeBUsedVal.LabelProp = global::Mono.Unix.Catalog.GetString (" -- ");
+			this.pnlRuralUsed.Add (this.lblTypeBUsedVal);
+			global::Gtk.Box.BoxChild w41 = ((global::Gtk.Box.BoxChild)(this.pnlRuralUsed [this.lblTypeBUsedVal]));
+			w41.PackType = ((global::Gtk.PackType)(1));
+			w41.Position = 1;
+			w41.Expand = false;
+			w41.Fill = false;
 			this.pnlRuralNumbers.Add (this.pnlRuralUsed);
-			global::Gtk.Box.BoxChild w61 = ((global::Gtk.Box.BoxChild)(this.pnlRuralNumbers [this.pnlRuralUsed]));
-			w61.Position = 0;
-			w61.Expand = false;
-			w61.Fill = false;
+			global::Gtk.Box.BoxChild w42 = ((global::Gtk.Box.BoxChild)(this.pnlRuralNumbers [this.pnlRuralUsed]));
+			w42.Position = 0;
+			w42.Expand = false;
+			w42.Fill = false;
 			// Container child pnlRuralNumbers.Gtk.Box+BoxChild
 			this.pnlRuralFree = new global::Gtk.HBox ();
 			this.pnlRuralFree.Name = "pnlRuralFree";
 			this.pnlRuralFree.Spacing = 6;
 			// Container child pnlRuralFree.Gtk.Box+BoxChild
-			this.lblRuralRemain = new global::Gtk.Label ();
-			this.lblRuralRemain.Name = "lblRuralRemain";
-			this.lblRuralRemain.LabelProp = global::Mono.Unix.Catalog.GetString ("Free:");
-			this.pnlRuralFree.Add (this.lblRuralRemain);
-			global::Gtk.Box.BoxChild w62 = ((global::Gtk.Box.BoxChild)(this.pnlRuralFree [this.lblRuralRemain]));
-			w62.Position = 0;
-			w62.Expand = false;
-			w62.Fill = false;
+			this.lblTypeBFree = new global::Gtk.Label ();
+			this.lblTypeBFree.Name = "lblTypeBFree";
+			this.lblTypeBFree.LabelProp = global::Mono.Unix.Catalog.GetString ("Free:");
+			this.pnlRuralFree.Add (this.lblTypeBFree);
+			global::Gtk.Box.BoxChild w43 = ((global::Gtk.Box.BoxChild)(this.pnlRuralFree [this.lblTypeBFree]));
+			w43.Position = 0;
+			w43.Expand = false;
+			w43.Fill = false;
 			// Container child pnlRuralFree.Gtk.Box+BoxChild
-			this.lblRuralRemainVal = new global::Gtk.Label ();
-			this.lblRuralRemainVal.Name = "lblRuralRemainVal";
-			this.lblRuralRemainVal.LabelProp = global::Mono.Unix.Catalog.GetString (" -- ");
-			this.pnlRuralFree.Add (this.lblRuralRemainVal);
-			global::Gtk.Box.BoxChild w63 = ((global::Gtk.Box.BoxChild)(this.pnlRuralFree [this.lblRuralRemainVal]));
-			w63.PackType = ((global::Gtk.PackType)(1));
-			w63.Position = 1;
-			w63.Expand = false;
-			w63.Fill = false;
+			this.lblTypeBFreeVal = new global::Gtk.Label ();
+			this.lblTypeBFreeVal.Name = "lblTypeBFreeVal";
+			this.lblTypeBFreeVal.LabelProp = global::Mono.Unix.Catalog.GetString (" -- ");
+			this.pnlRuralFree.Add (this.lblTypeBFreeVal);
+			global::Gtk.Box.BoxChild w44 = ((global::Gtk.Box.BoxChild)(this.pnlRuralFree [this.lblTypeBFreeVal]));
+			w44.PackType = ((global::Gtk.PackType)(1));
+			w44.Position = 1;
+			w44.Expand = false;
+			w44.Fill = false;
 			this.pnlRuralNumbers.Add (this.pnlRuralFree);
-			global::Gtk.Box.BoxChild w64 = ((global::Gtk.Box.BoxChild)(this.pnlRuralNumbers [this.pnlRuralFree]));
-			w64.Position = 1;
-			w64.Expand = false;
-			w64.Fill = false;
+			global::Gtk.Box.BoxChild w45 = ((global::Gtk.Box.BoxChild)(this.pnlRuralNumbers [this.pnlRuralFree]));
+			w45.Position = 1;
+			w45.Expand = false;
+			w45.Fill = false;
 			// Container child pnlRuralNumbers.Gtk.Box+BoxChild
 			this.pnlRuralTotal = new global::Gtk.HBox ();
 			this.pnlRuralTotal.Name = "pnlRuralTotal";
 			this.pnlRuralTotal.Spacing = 6;
 			// Container child pnlRuralTotal.Gtk.Box+BoxChild
-			this.lblRuralAllowed = new global::Gtk.Label ();
-			this.lblRuralAllowed.Name = "lblRuralAllowed";
-			this.lblRuralAllowed.LabelProp = global::Mono.Unix.Catalog.GetString ("Limit:");
-			this.pnlRuralTotal.Add (this.lblRuralAllowed);
-			global::Gtk.Box.BoxChild w65 = ((global::Gtk.Box.BoxChild)(this.pnlRuralTotal [this.lblRuralAllowed]));
-			w65.Position = 0;
-			w65.Expand = false;
-			w65.Fill = false;
+			this.lblTypeBLimit = new global::Gtk.Label ();
+			this.lblTypeBLimit.Name = "lblTypeBLimit";
+			this.lblTypeBLimit.LabelProp = global::Mono.Unix.Catalog.GetString ("Limit:");
+			this.pnlRuralTotal.Add (this.lblTypeBLimit);
+			global::Gtk.Box.BoxChild w46 = ((global::Gtk.Box.BoxChild)(this.pnlRuralTotal [this.lblTypeBLimit]));
+			w46.Position = 0;
+			w46.Expand = false;
+			w46.Fill = false;
 			// Container child pnlRuralTotal.Gtk.Box+BoxChild
-			this.lblRuralAllowedVal = new global::Gtk.Label ();
-			this.lblRuralAllowedVal.Name = "lblRuralAllowedVal";
-			this.lblRuralAllowedVal.LabelProp = global::Mono.Unix.Catalog.GetString (" -- ");
-			this.pnlRuralTotal.Add (this.lblRuralAllowedVal);
-			global::Gtk.Box.BoxChild w66 = ((global::Gtk.Box.BoxChild)(this.pnlRuralTotal [this.lblRuralAllowedVal]));
-			w66.PackType = ((global::Gtk.PackType)(1));
-			w66.Position = 1;
-			w66.Expand = false;
-			w66.Fill = false;
+			this.lblTypeBLimitVal = new global::Gtk.Label ();
+			this.lblTypeBLimitVal.Name = "lblTypeBLimitVal";
+			this.lblTypeBLimitVal.LabelProp = global::Mono.Unix.Catalog.GetString (" -- ");
+			this.pnlRuralTotal.Add (this.lblTypeBLimitVal);
+			global::Gtk.Box.BoxChild w47 = ((global::Gtk.Box.BoxChild)(this.pnlRuralTotal [this.lblTypeBLimitVal]));
+			w47.PackType = ((global::Gtk.PackType)(1));
+			w47.Position = 1;
+			w47.Expand = false;
+			w47.Fill = false;
 			this.pnlRuralNumbers.Add (this.pnlRuralTotal);
-			global::Gtk.Box.BoxChild w67 = ((global::Gtk.Box.BoxChild)(this.pnlRuralNumbers [this.pnlRuralTotal]));
-			w67.Position = 2;
-			w67.Expand = false;
-			w67.Fill = false;
-			this.pnlRural.Add (this.pnlRuralNumbers);
-			global::Gtk.Box.BoxChild w68 = ((global::Gtk.Box.BoxChild)(this.pnlRural [this.pnlRuralNumbers]));
-			w68.Position = 0;
-			w68.Expand = false;
-			w68.Fill = false;
-			// Container child pnlRural.Gtk.Box+BoxChild
-			this.evnRural = new global::Gtk.EventBox ();
-			this.evnRural.Name = "evnRural";
-			// Container child evnRural.Gtk.Container+ContainerChild
-			this.pctRural = new global::Gtk.Image ();
-			this.pctRural.TooltipMarkup = "Graph representing your bandwidth usage.";
-			this.pctRural.Name = "pctRural";
-			this.evnRural.Add (this.pctRural);
-			this.pnlRural.Add (this.evnRural);
-			global::Gtk.Box.BoxChild w70 = ((global::Gtk.Box.BoxChild)(this.pnlRural [this.evnRural]));
-			w70.Position = 1;
-			this.pnlDisplays.Add (this.pnlRural);
-			global::Gtk.Box.BoxChild w71 = ((global::Gtk.Box.BoxChild)(this.pnlDisplays [this.pnlRural]));
-			w71.Position = 3;
+			global::Gtk.Box.BoxChild w48 = ((global::Gtk.Box.BoxChild)(this.pnlRuralNumbers [this.pnlRuralTotal]));
+			w48.Position = 2;
+			w48.Expand = false;
+			w48.Fill = false;
+			this.pnlTypeB.Add (this.pnlRuralNumbers);
+			global::Gtk.Box.BoxChild w49 = ((global::Gtk.Box.BoxChild)(this.pnlTypeB [this.pnlRuralNumbers]));
+			w49.Position = 0;
+			w49.Expand = false;
+			w49.Fill = false;
+			// Container child pnlTypeB.Gtk.Box+BoxChild
+			this.evnTypeB = new global::Gtk.EventBox ();
+			this.evnTypeB.Name = "evnTypeB";
+			// Container child evnTypeB.Gtk.Container+ContainerChild
+			this.pctTypeB = new global::Gtk.Image ();
+			this.pctTypeB.TooltipMarkup = "Graph representing your bandwidth usage.";
+			this.pctTypeB.Name = "pctTypeB";
+			this.evnTypeB.Add (this.pctTypeB);
+			this.pnlTypeB.Add (this.evnTypeB);
+			global::Gtk.Box.BoxChild w51 = ((global::Gtk.Box.BoxChild)(this.pnlTypeB [this.evnTypeB]));
+			w51.Position = 1;
+			this.pnlDisplays.Add (this.pnlTypeB);
+			global::Gtk.Box.BoxChild w52 = ((global::Gtk.Box.BoxChild)(this.pnlDisplays [this.pnlTypeB]));
+			w52.Position = 2;
 			this.algnUsage.Add (this.pnlDisplays);
 			this.gbUsage.Add (this.algnUsage);
 			this.lblStatus = new global::Gtk.Label ();
@@ -835,9 +629,9 @@ namespace RestrictionTrackerGTK
 			this.lblStatus.UseMarkup = true;
 			this.gbUsage.LabelWidget = this.lblStatus;
 			this.pnlDetails.Add (this.gbUsage);
-			global::Gtk.Box.BoxChild w74 = ((global::Gtk.Box.BoxChild)(this.pnlDetails [this.gbUsage]));
-			w74.Position = 1;
-			w74.Padding = ((uint)(3));
+			global::Gtk.Box.BoxChild w55 = ((global::Gtk.Box.BoxChild)(this.pnlDetails [this.gbUsage]));
+			w55.Position = 1;
+			w55.Padding = ((uint)(3));
 			// Container child pnlDetails.Gtk.Box+BoxChild
 			this.sbMainStatus = new global::Gtk.Statusbar ();
 			this.sbMainStatus.Name = "sbMainStatus";
@@ -846,41 +640,41 @@ namespace RestrictionTrackerGTK
 			this.pbMainStatus = new global::Gtk.ProgressBar ();
 			this.pbMainStatus.Name = "pbMainStatus";
 			this.sbMainStatus.Add (this.pbMainStatus);
-			global::Gtk.Box.BoxChild w75 = ((global::Gtk.Box.BoxChild)(this.sbMainStatus [this.pbMainStatus]));
-			w75.Position = 1;
+			global::Gtk.Box.BoxChild w56 = ((global::Gtk.Box.BoxChild)(this.sbMainStatus [this.pbMainStatus]));
+			w56.Position = 1;
 			// Container child sbMainStatus.Gtk.Box+BoxChild
 			this.cmdNetTest = new global::Gtk.Button ();
 			this.cmdNetTest.CanFocus = true;
 			this.cmdNetTest.Name = "cmdNetTest";
 			this.cmdNetTest.UseUnderline = true;
 			this.cmdNetTest.Relief = ((global::Gtk.ReliefStyle)(2));
-			global::Gtk.Image w76 = new global::Gtk.Image ();
-			this.cmdNetTest.Image = w76;
+			global::Gtk.Image w57 = new global::Gtk.Image ();
+			this.cmdNetTest.Image = w57;
 			this.sbMainStatus.Add (this.cmdNetTest);
-			global::Gtk.Box.BoxChild w77 = ((global::Gtk.Box.BoxChild)(this.sbMainStatus [this.cmdNetTest]));
-			w77.Position = 2;
-			w77.Expand = false;
-			w77.Fill = false;
+			global::Gtk.Box.BoxChild w58 = ((global::Gtk.Box.BoxChild)(this.sbMainStatus [this.cmdNetTest]));
+			w58.Position = 2;
+			w58.Expand = false;
+			w58.Fill = false;
 			// Container child sbMainStatus.Gtk.Box+BoxChild
 			this.lblMainStatus = new global::Gtk.Label ();
 			this.lblMainStatus.Name = "lblMainStatus";
 			this.lblMainStatus.SingleLineMode = true;
 			this.sbMainStatus.Add (this.lblMainStatus);
-			global::Gtk.Box.BoxChild w78 = ((global::Gtk.Box.BoxChild)(this.sbMainStatus [this.lblMainStatus]));
-			w78.Position = 3;
-			w78.Expand = false;
-			w78.Fill = false;
+			global::Gtk.Box.BoxChild w59 = ((global::Gtk.Box.BoxChild)(this.sbMainStatus [this.lblMainStatus]));
+			w59.Position = 3;
+			w59.Expand = false;
+			w59.Fill = false;
 			this.pnlDetails.Add (this.sbMainStatus);
-			global::Gtk.Box.BoxChild w79 = ((global::Gtk.Box.BoxChild)(this.pnlDetails [this.sbMainStatus]));
-			w79.Position = 2;
-			w79.Expand = false;
-			w79.Fill = false;
+			global::Gtk.Box.BoxChild w60 = ((global::Gtk.Box.BoxChild)(this.pnlDetails [this.sbMainStatus]));
+			w60.Position = 2;
+			w60.Expand = false;
+			w60.Fill = false;
 			this.Add (this.pnlDetails);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
 			this.DefaultWidth = 455;
-			this.DefaultHeight = 454;
+			this.DefaultHeight = 245;
 			this.Show ();
 			this.cmdNetTest.Clicked += new global::System.EventHandler (this.cmdNetTest_Clicked);
 		}

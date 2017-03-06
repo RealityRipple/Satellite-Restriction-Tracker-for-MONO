@@ -507,10 +507,15 @@ namespace RestrictionTrackerGTK
     public void SetCloseBitmap(string strFilename, Color transparencyColor, Point position)
     {
       CloseBitmap = modFunctions.MakeTransparent(new Bitmap(strFilename), transparencyColor);
-      CloseBitmapSize = new Size(CloseBitmap.Width / 3, CloseBitmap.Height);
-      CloseBitmapLocation = position;
-      if (CloseBitmap == null || CloseBitmapSize.IsEmpty)
+      if (CloseBitmap == null)
         SetDefaultBitmaps();
+      else
+      {
+        CloseBitmapSize = new Size(CloseBitmap.Width / 3, CloseBitmap.Height);
+        CloseBitmapLocation = position;
+        if (CloseBitmapSize.IsEmpty)
+          SetDefaultBitmaps();
+      }
       Refresh(true);
     }
     /// <summary>
@@ -523,10 +528,15 @@ namespace RestrictionTrackerGTK
     public void SetCloseBitmap(Image image, Color transparencyColor, Point position)
     {
       CloseBitmap = modFunctions.MakeTransparent(new Bitmap(image), transparencyColor);
-      CloseBitmapSize = new Size(CloseBitmap.Width / 3, CloseBitmap.Height);
-      CloseBitmapLocation = position;
-      if (CloseBitmap == null || CloseBitmapSize.IsEmpty)
+      if (CloseBitmap == null)
         SetDefaultBitmaps();
+      else
+      {
+        CloseBitmapSize = new Size(CloseBitmap.Width / 3, CloseBitmap.Height);
+        CloseBitmapLocation = position;
+        if (CloseBitmapSize.IsEmpty)
+          SetDefaultBitmaps();
+      }
       Refresh(true);
     }
     private void SetDefaultBitmaps()
@@ -680,14 +690,14 @@ namespace RestrictionTrackerGTK
             GLib.Source.Remove(timer);
             timer = 0;
           }
-          if ((bKeepVisibleOnMouseOver && !bIsMouseOverPopup) || (!bKeepVisibleOnMouseOver))
+          if ((bKeepVisibleOnMouseOver & !bIsMouseOverPopup) | (!bKeepVisibleOnMouseOver))
           {
             taskbarState = TaskbarStates.disappearing;
           } 
           timer = GLib.Timeout.Add(nHideEvents, OnTimer);
           return false;
         case TaskbarStates.disappearing:
-          if (bReShowOnMouseOver && bIsMouseOverPopup)
+          if (bReShowOnMouseOver & bIsMouseOverPopup)
           {
             taskbarState = TaskbarStates.appearing;
           }
@@ -731,7 +741,7 @@ namespace RestrictionTrackerGTK
       bool ret = base.OnMotionNotifyEvent(mea);
  
       bool bContentModified = false;
-      if ((mea.X > CloseBitmapLocation.X) && (mea.X < CloseBitmapLocation.X + CloseBitmapSize.Width) && (mea.Y > CloseBitmapLocation.Y) && (mea.Y < CloseBitmapLocation.Y + CloseBitmapSize.Height) && CloseClickable)
+      if ((mea.X > CloseBitmapLocation.X) & (mea.X < CloseBitmapLocation.X + CloseBitmapSize.Width) & (mea.Y > CloseBitmapLocation.Y) & (mea.Y < CloseBitmapLocation.Y + CloseBitmapSize.Height) & CloseClickable)
       {
         if (!bIsMouseOverClose)
         {
@@ -742,7 +752,7 @@ namespace RestrictionTrackerGTK
           bContentModified = true;
         }
       }
-      else if (RealContentRectangle.Contains(new Point((int) mea.X, (int) mea.Y)) && ContentClickable)
+      else if (RealContentRectangle.Contains(new Point((int) mea.X, (int) mea.Y)) & ContentClickable)
       {
         if (!bIsMouseOverContent)
         {
@@ -753,7 +763,7 @@ namespace RestrictionTrackerGTK
           bContentModified = true;
         }
       }
-      else if (RealTitleRectangle.Contains(new Point((int) mea.X, (int) mea.Y)) && TitleClickable)
+      else if (RealTitleRectangle.Contains(new Point((int) mea.X, (int) mea.Y)) & TitleClickable)
       {
         if (!bIsMouseOverTitle)
         {
@@ -766,17 +776,15 @@ namespace RestrictionTrackerGTK
       }
       else
       {
-        if (bIsMouseOverClose || bIsMouseOverTitle || bIsMouseOverContent)
+        if (bIsMouseOverClose | bIsMouseOverTitle | bIsMouseOverContent)
         {
           bContentModified = true;
         }
- 
         bIsMouseOverClose = false;
         bIsMouseOverTitle = false;
         bIsMouseOverContent = false;
         this.GdkWindow.Cursor = null;
       }
- 
       if (bContentModified)
       {
         Refresh(true);
@@ -876,7 +884,7 @@ namespace RestrictionTrackerGTK
         {
           background = modFunctions.ImageToPixbuf(modFunctions.SwapColors(offscreenBitmap, transparencyKey, Color.Black));
         }
-        else if (this.GdkWindow.FrameExtents.Location.X <= 0 || this.GdkWindow.FrameExtents.Location.Y <= 0)
+        else if (this.GdkWindow.FrameExtents.Location.X <= 0 | this.GdkWindow.FrameExtents.Location.Y <= 0)
         {
           background = modFunctions.ImageToPixbuf(modFunctions.SwapColors(offscreenBitmap, transparencyKey, Color.Black));
         }
@@ -898,7 +906,7 @@ namespace RestrictionTrackerGTK
         this.WidthRequest = background.Width;
         this.HeightRequest = background.Height;
       }
-      if (Draw && titleText != null)
+      if (Draw & titleText != null)
       {
         GdkWindow.DrawPixbuf(Style.BackgroundGC(State), background, 0, 0, 0, 0, background.Width, background.Height, Gdk.RgbDither.None, 0, 0);
       }

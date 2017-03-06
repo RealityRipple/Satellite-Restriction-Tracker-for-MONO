@@ -191,8 +191,8 @@ namespace RestrictionTrackerGTK
     private bool ClosingTime;
     private string sFailTray;
     private byte bAlert;
-    private long wb_down, wb_up, wb_dlim, wb_ulim;
-    private long r_used, r_lim;
+    private long typeA_down, typeA_up, typeA_dlim, typeA_ulim;
+    private long typeB_used, typeB_lim;
     private bool updateFull;
     private long lastBalloon;
     private bool firstRestore;
@@ -514,10 +514,9 @@ namespace RestrictionTrackerGTK
       cmdHistory.Clicked += cmdHistory_Click;
       cmdConfig.Clicked += cmdConfig_Click;
       cmdAbout.Clicked += cmdAbout_Click;
-      evnDld.ButtonReleaseEvent += evnGraph_Click;
-      evnUld.ButtonReleaseEvent += evnGraph_Click;
-      evnExede.ButtonReleaseEvent += evnGraph_Click;
-      evnRural.ButtonReleaseEvent += evnGraph_Click;
+      evnTypeADld.ButtonReleaseEvent += evnGraph_Click;
+      evnTypeAUld.ButtonReleaseEvent += evnGraph_Click;
+      evnTypeB.ButtonReleaseEvent += evnGraph_Click;
 
       pbMainStatus.Visible = false;
       lblMainStatus.Visible = false;
@@ -665,14 +664,14 @@ namespace RestrictionTrackerGTK
       if (trayRes < 8)
         trayRes = 8;
       bool doBoth = true;
-      bool doWB = false;
+      bool doTypeA = false;
       if (mySettings != null)
       {
         if (mySettings.AccountType != localRestrictionTracker.SatHostTypes.Other)
         {
           doBoth = false;
-          if (mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY || mySettings.AccountType == localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY)
-            doWB = true;
+          if (mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY | mySettings.AccountType == localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY)
+            doTypeA = true;
         }
       }
       string[] sFiles = Directory.GetFiles(IconFolder);
@@ -687,26 +686,26 @@ namespace RestrictionTrackerGTK
         {
           for (long down = 0; down <= trayRes; down++)
           {
-            using (Gdk.Pixbuf pIco = CreateTrayIcon(down, trayRes, up, trayRes))
+            using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(down, trayRes, up, trayRes))
             {
-              pIco.Save(System.IO.Path.Combine(IconFolder, "graph_wb_" + down + "x" + up + ".png"), "png");
+              pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_" + down + "x" + up + ".png"), "png");
             }
           }
-          using (Gdk.Pixbuf pIco = CreateRTrayIcon(up, trayRes))
+          using (Gdk.Pixbuf pIco = CreateTypeBTrayIcon(up, trayRes))
           {
-            pIco.Save(System.IO.Path.Combine(IconFolder, "graph_r_" + up + ".png"), "png");
+            pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typeb_" + up + ".png"), "png");
           }
         }
       }
-      else if (doWB)
+      else if (doTypeA)
       {
         for (long up = 0; up <= trayRes; up++)
         {
           for (long down = 0; down <= trayRes; down++)
           {
-            using (Gdk.Pixbuf pIco = CreateTrayIcon(down, trayRes, up, trayRes))
+            using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(down, trayRes, up, trayRes))
             {
-              pIco.Save(System.IO.Path.Combine(IconFolder, "graph_wb_" + down + "x" + up + ".png"), "png");
+              pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_" + down + "x" + up + ".png"), "png");
             }
           }
         }
@@ -715,9 +714,9 @@ namespace RestrictionTrackerGTK
       {
         for (long up = 0; up <= trayRes; up++)
         {
-          using (Gdk.Pixbuf pIco = CreateRTrayIcon(up, trayRes))
+          using (Gdk.Pixbuf pIco = CreateTypeBTrayIcon(up, trayRes))
           {
-            pIco.Save(System.IO.Path.Combine(IconFolder, "graph_r_" + up + ".png"), "png");
+            pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typeb_" + up + ".png"), "png");
           }
         }
       }
@@ -1028,37 +1027,37 @@ namespace RestrictionTrackerGTK
       if (trayRes < 8)
         trayRes = 8;
       string trayIcoVal = "";
-      if (myPanel == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY || myPanel == localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY || myPanel == localRestrictionTracker.SatHostTypes.DishNet_EXEDE)
+      if (myPanel == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY | myPanel == localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY | myPanel == localRestrictionTracker.SatHostTypes.DishNet_EXEDE)
       {
-        if (lblDldUsed.Text == " -- ")
+        if (lblTypeADldUsedVal.Text == " -- ")
         {
-          pctDld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(evnDld.Allocation.Size, 0, 0, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-          pctUld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(evnUld.Allocation.Size, 0, 0, mySettings.Accuracy, mySettings.Colors.MainUpA, mySettings.Colors.MainUpB, mySettings.Colors.MainUpC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
+          pctTypeADld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(evnTypeADld.Allocation.Size, 0, 0, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
+          pctTypeAUld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(evnTypeAUld.Allocation.Size, 0, 0, mySettings.Accuracy, mySettings.Colors.MainUpA, mySettings.Colors.MainUpB, mySettings.Colors.MainUpC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
           trayIcoVal = "norm";
         }
         else
         {
-          pctDld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(evnDld.Allocation.Size, wb_down, wb_dlim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-          pctUld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(evnDld.Allocation.Size, wb_up, wb_ulim, mySettings.Accuracy, mySettings.Colors.MainUpA, mySettings.Colors.MainUpB, mySettings.Colors.MainUpC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-          int d = (int) Math.Round(((double) wb_down / wb_dlim) * trayRes);
-          int u = (int) Math.Round(((double) wb_up / wb_ulim) * trayRes);
-          trayIcoVal = "graph_wb_" + d + "x" + u;
+          pctTypeADld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(evnTypeADld.Allocation.Size, typeA_down, typeA_dlim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
+          pctTypeAUld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(evnTypeADld.Allocation.Size, typeA_up, typeA_ulim, mySettings.Accuracy, mySettings.Colors.MainUpA, mySettings.Colors.MainUpB, mySettings.Colors.MainUpC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
+          int d = (int) Math.Round(((double) typeA_down / typeA_dlim) * trayRes);
+          int u = (int) Math.Round(((double) typeA_up / typeA_ulim) * trayRes);
+          trayIcoVal = "graph_typea_" + d + "x" + u;
         }
       }
-      else if (myPanel == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE || myPanel == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
+      else if (myPanel == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE | myPanel == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
       {
-        if (lblRuralUsedVal.Text == " -- ")
+        if (lblTypeBUsedVal.Text == " -- ")
         {
-          pctRural.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctRural.Allocation.Size, 0, 1, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
+          pctTypeB.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctTypeB.Allocation.Size, 0, 1, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
           trayIcoVal = "norm";
         }
         else
         {
-          pctRural.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctRural.Allocation.Size, r_used, r_lim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-          int u = (int) Math.Round(((double) r_used / r_lim) * trayRes);
+          pctTypeB.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctTypeB.Allocation.Size, typeB_used, typeB_lim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
+          int u = (int) Math.Round(((double) typeB_used / typeB_lim) * trayRes);
           if (u > trayRes)
             u = trayRes;
-          trayIcoVal = "graph_r_" + u;
+          trayIcoVal = "graph_typeb_" + u;
         }
       }
       else if (myPanel == localRestrictionTracker.SatHostTypes.Other)
@@ -1107,7 +1106,7 @@ namespace RestrictionTrackerGTK
       }
       if (e.Event.ChangedMask == Gdk.WindowState.Iconified)
       {
-        if (TraySupported && mySettings.TrayIconStyle != TrayStyles.Never)
+        if (TraySupported & mySettings.TrayIconStyle != TrayStyles.Never)
         {
           bool isMinimized = ((e.Event.NewWindowState & Gdk.WindowState.Iconified) == Gdk.WindowState.Iconified);
           if (isMinimized)
@@ -1134,7 +1133,7 @@ namespace RestrictionTrackerGTK
       }
       else if (e.Event.ChangedMask == Gdk.WindowState.Withdrawn)
       {
-        if (TraySupported && mySettings.TrayIconStyle != TrayStyles.Never)
+        if (TraySupported & mySettings.TrayIconStyle != TrayStyles.Never)
         {
           bool isWithdrawn = ((e.Event.NewWindowState & Gdk.WindowState.Withdrawn) == Gdk.WindowState.Withdrawn);
           if (isWithdrawn)
@@ -1482,7 +1481,7 @@ namespace RestrictionTrackerGTK
       myState = (LoadStates) o;
       if (myState == LoadStates.Loaded)
       {
-        if (TraySupported && mySettings.TrayIconStyle == TrayStyles.Never)
+        if (TraySupported & mySettings.TrayIconStyle == TrayStyles.Never)
           TrayState = false;
       }
     }
@@ -1530,7 +1529,7 @@ namespace RestrictionTrackerGTK
       }
       if (!String.IsNullOrEmpty(sAccount))
       {
-        if (sAccount.Contains("@") && sAccount.Contains("."))
+        if (sAccount.Contains("@") & sAccount.Contains("."))
         {
           sProvider = sAccount.Substring(sAccount.LastIndexOf("@") + 1).ToLower();
         }
@@ -1590,7 +1589,7 @@ namespace RestrictionTrackerGTK
         }
         if (srlFunctions.TickCount() >= NextGrabTick)
         {
-          if ((mySettings.UpdateType != UpdateTypes.None) && (Math.Abs(DateTime.Now.Subtract(mySettings.LastUpdate).TotalDays) > mySettings.UpdateTime))
+          if ((mySettings.UpdateType != UpdateTypes.None) & (Math.Abs(DateTime.Now.Subtract(mySettings.LastUpdate).TotalDays) > mySettings.UpdateTime))
           {
             CheckForUpdates();
             NextGrabTick = srlFunctions.TickCount() + 10 * 60 * 1000;
@@ -1615,7 +1614,7 @@ namespace RestrictionTrackerGTK
               }
               if (Math.Abs(modFunctions.DateDiff(DateInterval.Minute, modDB.LOG_GetLast(), DateTime.Now)) > 10)
               {
-                if (!string.IsNullOrEmpty(sProvider) && !string.IsNullOrEmpty(sPassword))
+                if (!string.IsNullOrEmpty(sProvider) & !string.IsNullOrEmpty(sPassword))
                 {
                   updateFull = false;
                   NextGrabTick = long.MaxValue;
@@ -1957,6 +1956,9 @@ namespace RestrictionTrackerGTK
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
       mySettings.Save();
       modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
+      if (e.SlowedDetected)
+        imSlowed = true;
+      imFree = e.FreeDetected;
       DisplayUsage(true, true);
       if (localData != null)
       {
@@ -1980,6 +1982,9 @@ namespace RestrictionTrackerGTK
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
       mySettings.Save();
       modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
+      if (e.SlowedDetected)
+        imSlowed = true;
+      imFree = e.FreeDetected;
       DisplayUsage(true, true);
       if (localData != null)
       {
@@ -2003,6 +2008,9 @@ namespace RestrictionTrackerGTK
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY;
       mySettings.Save();
       modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
+      if (e.SlowedDetected)
+        imSlowed = true;
+      imFree = e.FreeDetected;
       DisplayUsage(true, true);
       if (localData != null)
       {
@@ -2026,6 +2034,9 @@ namespace RestrictionTrackerGTK
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
       mySettings.Save();
       modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
+      if (e.SlowedDetected)
+        imSlowed = true;
+      imFree = e.FreeDetected;
       DisplayUsage(true, true);
       if (localData != null)
       {
@@ -2049,6 +2060,9 @@ namespace RestrictionTrackerGTK
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
       mySettings.Save();
       modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
+      if (e.SlowedDetected)
+        imSlowed = true;
+      imFree = e.FreeDetected;
       DisplayUsage(true, true);
       if (localData != null)
       {
@@ -2242,49 +2256,42 @@ namespace RestrictionTrackerGTK
       }
       switch (state)
       {
-        case "RURAL":
-          long rUsed = r_used;
-          long rLim = r_lim;
-          long rRemain = rLim - rUsed;
-          if (rUsed != 0 | rLim > 0 | rRemain != 0)
-          {
-            if (rLim == 150000)
-            {
-              DoChange(ref lblRuralUsedVal, ref rUsed, false);
-            }
-            else
-            {
-              DoChange(ref lblRuralUsedVal, ref rUsed, !(rRemain > 0));
-            }
-            DoChange(ref lblRuralRemainVal, ref rRemain, false);
-            DoChange(ref lblRuralAllowedVal, ref rLim, false);
-          }
-          ResizePanels();
-          if (rUsed == 0 & rLim == 0 & rRemain == 0)
-          {
-            return;
-          }
-          break;
-        case "WB":
-          long wDown = wb_down;
-          long wDLim = wb_dlim;
-          long wUp = wb_up;
-          long wULim = wb_ulim;
-          long wDFree = wb_dlim - wb_down;
-          long wUFree = wb_ulim - wb_up;
+        case "TYPEA":
+          long wDown = typeA_down;
+          long wDLim = typeA_dlim;
+          long wUp = typeA_up;
+          long wULim = typeA_ulim;
+          long wDFree = typeA_dlim - typeA_down;
+          long wUFree = typeA_ulim - typeA_up;
           if (wDown > 0 | wDFree != 0 | wDLim > 0 | wUp > 0 | wUFree != 0 | wULim > 0)
           {
-            DoChange(ref lblDldUsed, ref wDown, (wDown >= wDLim));
-            DoChange(ref lblDldFree, ref wDFree, (wDFree <= 0));
-            DoChange(ref lblDldLimit, ref  wDLim, false);
-            DoChange(ref lblUldUsed, ref wUp, (wUp >= wULim));
-            DoChange(ref lblUldFree, ref wUFree, (wUFree <= 0));
-            DoChange(ref lblUldLimit, ref wULim, false);
+            DoChange(ref lblTypeADldUsedVal, ref wDown, false);
+            DoChange(ref lblTypeADldFreeVal, ref wDFree, (wDFree <= 0));
+            DoChange(ref lblTypeADldLimitVal, ref  wDLim, imSlowed);
+            DoChange(ref lblTypeAUldUsedVal, ref wUp, false);
+            DoChange(ref lblTypeAUldFreeVal, ref wUFree, (wUFree <= 0));
+            DoChange(ref lblTypeAUldLimitVal, ref wULim, imSlowed);
           }
           ResizePanels();
           if (wDown == 0 & wDFree == 0 & wDLim == 0 & wUp == 0 & wUFree == 0 & wULim == 0)
           {
             this.SizeAllocate(new Gdk.Rectangle(Gdk.Point.Zero, mySettings.MainSize));
+            return;
+          }
+          break;
+        case "TYPEB":
+          long lUsed = typeB_used;
+          long lLim = typeB_lim;
+          long lFree = lLim - lUsed;
+          if (lUsed != 0 | lLim > 0 | lFree != 0)
+          {
+            DoChange(ref lblTypeBUsedVal, ref lUsed, false);
+            DoChange(ref lblTypeBFreeVal, ref lFree, (lFree <= 0));
+            DoChange(ref lblTypeBLimitVal, ref lLim, imSlowed);
+          }
+          ResizePanels();
+          if (lUsed == 0 & lLim == 0 & lFree == 0)
+          {
             return;
           }
           break;
@@ -2448,312 +2455,71 @@ namespace RestrictionTrackerGTK
     {
       return modFunctions.FormatPercent(value, mySettings.Accuracy);
     }
-    private void DisplayRResults(long lDown, long lDownLim, long lUp, long lUpLim, string sLastUpdate)
+    private void DisplayTypeAResults(long lDown, long lDownLim, long lUp, long lUpLim, string sLastUpdate)
     {
-      if (lDown != lUp && lDownLim != lUpLim)
-      {
-        DisplayWResults(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
-        return;
-      }
       string sTTT = this.Title;
-      if (lDown >= lDownLim)
+      bool overDown, overUp;
+      overDown = (lDown >= lDownLim);
+      overUp = (lUp >= lUpLim);
+      if (overDown | overUp)
       {
         imSlowed = true;
       }
-      if ((mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE) || (mySettings.AccountType == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE) || (mySettings.AccountType == localRestrictionTracker.SatHostTypes.DishNet_EXEDE))
+      else if ((lDown < (lDownLim * 0.7)) & (lUp < (lUpLim * 0.7)))
       {
-        if (lDown < lDownLim)
-        {
-          imSlowed = false;
-        }
-        if (lDownLim == 150000)
-        {
-          imSlowed = false;
-        }
+        imSlowed = false;
       }
-      else
+      if (!pnlTypeA.Visible)
       {
-        if (lDown < lDownLim * 0.7)
-        {
-          imSlowed = false;
-        }
+        pnlTypeA.Visible = true;
+        pnlDisplays.Add(pnlTypeA);
       }
-      if (pnlWildBlue.Visible)
+      if (pnlTypeB.Visible)
       {
-        pnlWildBlue.Visible = false;
-        pnlDisplays.Remove(pnlWildBlue);
-      }
-      if (pnlExede.Visible)
-      {
-        pnlExede.Visible = false;
-        pnlDisplays.Remove(pnlExede);
-      }
-      if (!pnlRural.Visible)
-      {
-        pnlRural.Visible = true;
-        pnlDisplays.Add(pnlRural);
+        pnlTypeB.Visible = false;
+        pnlDisplays.Remove(pnlTypeB);
       }
       if (pnlNothing.Visible)
       {
         pnlNothing.Visible = false;
         pnlDisplays.Remove(pnlNothing);
       }
-      r_used = lDown;
-      r_lim = lDownLim;
+      typeA_down = lDown;
+      typeA_dlim = lDownLim;
+      typeA_up = lUp;
+      typeA_ulim = lUpLim;
       if (tmrChanges != null)
       {
         tmrChanges.Dispose();
         tmrChanges = null;
       }
-      tmrChanges = new System.Threading.Timer(DisplayChangeInterval, (object) "RURAL", 75, System.Threading.Timeout.Infinite);
-      pctRural.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctRural.Allocation.Size, lDown, lDownLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-      sTTT = "Satellite Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
-      "Last Updated " + sLastUpdate + "\n" +
-      "Using " + MBorGB(lDown) + " of " + MBorGB(lDownLim) + " (" + AccuratePercent((double) lDown / lDownLim) + ")";
-      if (lDownLim > lDown)
+      tmrChanges = new System.Threading.Timer(DisplayChangeInterval, (object) "TYPEA", 75, System.Threading.Timeout.Infinite);
+      if (overDown)
+        lblTypeADldFreeVal.TooltipText = "You are over your Download limit!";
+      else
+        lblTypeADldFreeVal.TooltipText = null;
+      if (overUp)
+        lblTypeAUldFreeVal.TooltipText = "You are over your Upload limit!";
+      else
+        lblTypeAUldFreeVal.TooltipText = null;
+      if (imSlowed)
       {
-        sTTT += "\n" + MBorGB(lDownLim - lDown) + " Free";
-      }
-      else if (lDownLim < lDown)
-      {
-        sTTT += "\n" + MBorGB(lDown - lDownLim) + " Over";
-      }
-      if (trayRes < 8)
-        trayRes = 8;
-      int u = (int) Math.Round(((double) lDown / lDownLim) * trayRes);
-      if (u > trayRes)
-        u = trayRes;
-      sIconBefore = "graph_r_" + u;
-      bIconStop = true;
-      SetTrayText(sTTT);
-      if (mySettings.Overuse > 0)
-      {
-        if (lastBalloon > 0 && srlFunctions.TickCount() - lastBalloon < mySettings.Overtime * 60 * 1000)
-        {
-          return;
-        }
-        int timeCheck = -mySettings.Overtime;
-        if (timeCheck <= -15)
-        {
-          DataBase.DataRow[] lItems = Array.FindAll(modDB.usageDB.ToArray(), (DataBase.DataRow satRow) => satRow.DATETIME.CompareTo(DateTime.Now.AddMinutes(timeCheck)) >= 0 & satRow.DATETIME.CompareTo(DateTime.Now) <= 0);
-          for (int I = lItems.Length - 2; I >= 0; I += -1)
-          {
-            if (lDown - lItems[I].DOWNLOAD >= mySettings.Overuse)
-            {
-              long ChangeSize = Math.Abs(lDown - lItems[I].DOWNLOAD);
-              ulong ChangeTime = (ulong) Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
-              modFunctions.MakeNotifier(ref taskNotifier, false);
-              if (taskNotifier != null)
-              {
-                taskNotifierEvent(true);
-                taskNotifier.Show("Excessive Usage Detected", modFunctions.ProductName + " has logged a usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
-              }
-              lastBalloon = srlFunctions.TickCount();
-              break;
-            }
-          }
-        }
-      }
-    }
-    private void DisplayDResults(long lDown, long lDownLim, long lUp, long lUpLim, string sLastUpdate)
-    {
-      string sTTT = this.Title;
-      if (lDown >= lDownLim)
-      {
-        imSlowed = true;
-      }
-      if ((mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE) || (mySettings.AccountType == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE) || (mySettings.AccountType == localRestrictionTracker.SatHostTypes.DishNet_EXEDE))
-      {
-        if (lDown < lDownLim)
-        {
-          imSlowed = false;
-        }
+        lblTypeADldLimitVal.TooltipText = "Your connection has been restricted!";
+        lblTypeAUldLimitVal.TooltipText = "Your connection has been restricted!";
       }
       else
       {
-        if (lDown < lDownLim * 0.7)
-        {
-          imSlowed = false;
-        }
+        lblTypeADldLimitVal.TooltipText = null;
+        lblTypeAUldLimitVal.TooltipText = null;
       }
-      if (!pnlWildBlue.Visible)
-      {
-        pnlWildBlue.Visible = true;
-        pnlDisplays.Add(pnlWildBlue);
-      }
-      if (pnlExede.Visible)
-      {
-        pnlExede.Visible = false;
-        pnlDisplays.Remove(pnlExede);
-      }
-      if (pnlRural.Visible)
-      {
-        pnlRural.Visible = false;
-        pnlDisplays.Remove(pnlRural);
-      }
-      if (pnlNothing.Visible)
-      {
-        pnlNothing.Visible = false;
-        pnlDisplays.Remove(pnlNothing);
-      }
-
-      wb_down = lDown;
-      wb_dlim = lDownLim;
-      wb_up = lUp;
-      wb_ulim = lUpLim;
-      if (tmrChanges != null)
-      {
-        tmrChanges.Dispose();
-        tmrChanges = null;
-      }
-      tmrChanges = new System.Threading.Timer(DisplayChangeInterval, (object) "WB", 75, System.Threading.Timeout.Infinite);
-      pctDld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(pctDld.Allocation.Size, lDown, lDownLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-      pctUld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(pctUld.Allocation.Size, lUp, lUpLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-      lblDld.Text = "Anytime (" + AccuratePercent((double) lDown / lDownLim) + ")";
-      lblUld.Text = "Off-Peak (" + AccuratePercent((double) lUp / lUpLim) + ")";
-      SetFontSize(ref lblDld, GetFontSize());
-      SetFontSize(ref lblUld, GetFontSize());
-      pctDld.TooltipText = "Graph representing your Anytime usage.";
-      pctUld.TooltipText = "Graph representing your Off-Peak usage (used between 2 AM and 8 AM).";
-      string atFree, opFree;
-      if (lDownLim > lDown)
-      {
-        atFree = ", " + MBorGB(lDownLim - lDown) + " Free";
-      }
-      else if (lDownLim < lDown)
-      {
-        atFree = ", " + MBorGB(lDown - lDownLim) + " Over";
-      }
-      else
-      {
-        atFree = "";
-      }
-      if (lUpLim > lUp)
-      {
-        opFree = ", " + MBorGB(lUpLim - lUp) + " Free";
-      }
-      else if (lUpLim < lUp)
-      {
-        opFree = ", " + MBorGB(lUp - lUpLim) + " Over";
-      }
-      else
-      {
-        opFree = "";
-      }
-      sTTT = "Satellite Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
-      "Last Updated " + sLastUpdate + "\n" +
-      "Anytime: " + MBorGB(lDown) + " (" + AccuratePercent((double) lDown / lDownLim) + ")" + atFree + "\n" +
-      "Off-Peak: " + MBorGB(lUp) + " (" + AccuratePercent((double) lUp / lUpLim) + ")" + opFree;
-      if (trayRes < 8)
-        trayRes = 8;
-      int d = (int) Math.Round(((double) lDown / lDownLim) * trayRes);
-      int u = (int) Math.Round(((double) lUp / lUpLim) * trayRes);
-      sIconBefore = "graph_wb_" + d + "x" + u;
-      bIconStop = true;
-      SetTrayText(sTTT);
-      if (mySettings.Overuse > 0)
-      {
-        if (lastBalloon > 0 && srlFunctions.TickCount() - lastBalloon < mySettings.Overtime * 60 * 1000)
-        {
-          return;
-        }
-        int timeCheck = -mySettings.Overtime;
-        if (timeCheck <= -15)
-        {
-          DataBase.DataRow[] lItems = Array.FindAll(modDB.usageDB.ToArray(), (DataBase.DataRow satRow) => satRow.DATETIME.CompareTo(DateTime.Now.AddMinutes(timeCheck)) >= 0 & satRow.DATETIME.CompareTo(DateTime.Now) <= 0);
-          for (int I = lItems.Length - 2; I >= 0; I += -1)
-          {
-            if (lDown - lItems[I].DOWNLOAD >= mySettings.Overuse)
-            {
-              long ChangeSize = Math.Abs(lDown - lItems[I].DOWNLOAD);
-              ulong ChangeTime = (ulong) Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
-              modFunctions.MakeNotifier(ref taskNotifier, false);
-              if (taskNotifier != null)
-              {
-                taskNotifierEvent(true);
-                taskNotifier.Show("Excessive Usage Detected", modFunctions.ProductName + " has logged a usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
-              }
-              lastBalloon = srlFunctions.TickCount();
-              break;
-            }
-            else if (lUp - lItems[I].UPLOAD >= mySettings.Overuse)
-            {
-              long ChangeSize = Math.Abs(lDown - lItems[I].DOWNLOAD);
-              ulong ChangeTime = (ulong) Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
-              modFunctions.MakeNotifier(ref taskNotifier, false);
-              if (taskNotifier != null)
-              {
-                taskNotifierEvent(true);
-                taskNotifier.Show("Excessive Off-Peak Usage Detected", modFunctions.ProductName + " has logged an Off-Peak usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
-              }
-              lastBalloon = srlFunctions.TickCount();
-              break;
-            }
-          }
-        }
-      }
-    }
-    private void DisplayWResults(long lDown, long lDownLim, long lUp, long lUpLim, string sLastUpdate)
-    {
-      string sTTT = this.Title;
-      if ((lDown >= lDownLim) | (lUp >= lUpLim))
-      {
-        imSlowed = true;
-      }
-
-      if ((mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE) || (mySettings.AccountType == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE) || (mySettings.AccountType == localRestrictionTracker.SatHostTypes.DishNet_EXEDE))
-      {
-        if ((lDown < lDownLim) & (lUp < lUpLim))
-        {
-          imSlowed = false;
-        }
-      }
-      else
-      {
-        if ((lDown < lDownLim * 0.7) & (lUp < lUpLim * 0.7))
-        {
-          imSlowed = false;
-        }
-      }
-      if (!pnlWildBlue.Visible)
-      {
-        pnlWildBlue.Visible = true;
-        pnlDisplays.Add(pnlWildBlue);
-      }
-      if (pnlExede.Visible)
-      {
-        pnlExede.Visible = false;
-        pnlDisplays.Remove(pnlExede);
-      }
-      if (pnlRural.Visible)
-      {
-        pnlRural.Visible = false;
-        pnlDisplays.Remove(pnlRural);
-      }
-      if (pnlNothing.Visible)
-      {
-        pnlNothing.Visible = false;
-        pnlDisplays.Remove(pnlNothing);
-      }
-
-      wb_down = lDown;
-      wb_dlim = lDownLim;
-      wb_up = lUp;
-      wb_ulim = lUpLim;
-      if (tmrChanges != null)
-      {
-        tmrChanges.Dispose();
-        tmrChanges = null;
-      }
-      tmrChanges = new System.Threading.Timer(DisplayChangeInterval, (object) "WB", 75, System.Threading.Timeout.Infinite);
-      pctDld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(pctDld.Allocation.Size, lDown, lDownLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-      pctUld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(pctUld.Allocation.Size, lUp, lUpLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-      lblDld.Text = "Download (" + AccuratePercent((double) lDown / lDownLim) + ")";
-      lblUld.Text = "Upload (" + AccuratePercent((double) lUp / lUpLim) + ")";
-      SetFontSize(ref lblDld, GetFontSize());
-      SetFontSize(ref lblUld, GetFontSize());
-      pctDld.TooltipText = "Graph representing your download usage.";
-      pctUld.TooltipText = "Graph representing your upload usage.";
+      pctTypeADld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(pctTypeADld.Allocation.Size, lDown, lDownLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
+      pctTypeAUld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(pctTypeAUld.Allocation.Size, lUp, lUpLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
+      lblTypeADld.Text = "Download (" + AccuratePercent((double) lDown / lDownLim) + ")";
+      lblTypeAUld.Text = "Upload (" + AccuratePercent((double) lUp / lUpLim) + ")";
+      SetFontSize(ref lblTypeADld, GetFontSize());
+      SetFontSize(ref lblTypeAUld, GetFontSize());
+      pctTypeADld.TooltipText = "Graph representing your download usage.";
+      pctTypeAUld.TooltipText = "Graph representing your upload usage.";
       string dFree, uFree;
       if (lDownLim > lDown)
       {
@@ -2787,7 +2553,7 @@ namespace RestrictionTrackerGTK
         trayRes = 8;
       int d = (int) Math.Round(((double) lDown / lDownLim) * trayRes);
       int u = (int) Math.Round(((double) lUp / lUpLim) * trayRes);
-      sIconBefore = "graph_wb_" + d + "x" + u;
+      sIconBefore = "graph_typea_" + d + "x" + u;
       bIconStop = true;
       SetTrayText(sTTT);
       if (mySettings.Overuse > 0)
@@ -2832,6 +2598,271 @@ namespace RestrictionTrackerGTK
         }
       }
     }
+    private void DisplayTypeA2Results(long lDown, long lDownLim, long lUp, long lUpLim, string sLastUpdate)
+    {
+      string sTTT = this.Title;
+      if (lDown >= lDownLim)
+      {
+        imSlowed = true;
+      }
+      if ((mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE) | (mySettings.AccountType == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE) | (mySettings.AccountType == localRestrictionTracker.SatHostTypes.DishNet_EXEDE))
+      {
+        if (lDown < lDownLim)
+        {
+          imSlowed = false;
+        }
+      }
+      else
+      {
+        if (lDown < lDownLim * 0.7)
+        {
+          imSlowed = false;
+        }
+      }
+      if (!pnlTypeA.Visible)
+      {
+        pnlTypeA.Visible = true;
+        pnlDisplays.Add(pnlTypeA);
+      }
+      if (pnlTypeB.Visible)
+      {
+        pnlTypeB.Visible = false;
+        pnlDisplays.Remove(pnlTypeB);
+      }
+      if (pnlNothing.Visible)
+      {
+        pnlNothing.Visible = false;
+        pnlDisplays.Remove(pnlNothing);
+      }
+
+      typeA_down = lDown;
+      typeA_dlim = lDownLim;
+      typeA_up = lUp;
+      typeA_ulim = lUpLim;
+      if (tmrChanges != null)
+      {
+        tmrChanges.Dispose();
+        tmrChanges = null;
+      }
+      tmrChanges = new System.Threading.Timer(DisplayChangeInterval, (object) "TYPEA", 75, System.Threading.Timeout.Infinite);
+      if (imSlowed)
+      {
+        lblTypeADldFreeVal.TooltipText = "You are over your Anytime limit!";
+        lblTypeADldLimitVal.TooltipText = "Your Anytime connection has been restricted!";
+      }
+      else
+      {
+        lblTypeADldFreeVal.TooltipText = null;
+        lblTypeADldLimitVal.TooltipText = null;
+      }
+      if (lUp >= lUpLim)
+      {
+        lblTypeAUldFreeVal.TooltipText = "You are over your Off-Peak limit!";
+        lblTypeAUldLimitVal.TooltipText = "Your Off-Peak connection has been restricted!";
+      }
+      else
+      {
+        lblTypeAUldFreeVal.TooltipText = null;
+        lblTypeAUldLimitVal.TooltipText = null;
+      }
+      pctTypeADld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(pctTypeADld.Allocation.Size, lDown, lDownLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
+      pctTypeAUld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(pctTypeAUld.Allocation.Size, lUp, lUpLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
+      lblTypeADld.Text = "Anytime (" + AccuratePercent((double) lDown / lDownLim) + ")";
+      lblTypeAUld.Text = "Off-Peak (" + AccuratePercent((double) lUp / lUpLim) + ")";
+      SetFontSize(ref lblTypeADld, GetFontSize());
+      SetFontSize(ref lblTypeAUld, GetFontSize());
+      pctTypeADld.TooltipText = "Graph representing your Anytime usage.";
+      pctTypeAUld.TooltipText = "Graph representing your Off-Peak usage (used between 2 AM and 8 AM).";
+      string atFree, opFree;
+      if (lDownLim > lDown)
+      {
+        atFree = ", " + MBorGB(lDownLim - lDown) + " Free";
+      }
+      else if (lDownLim < lDown)
+      {
+        atFree = ", " + MBorGB(lDown - lDownLim) + " Over";
+      }
+      else
+      {
+        atFree = "";
+      }
+      if (lUpLim > lUp)
+      {
+        opFree = ", " + MBorGB(lUpLim - lUp) + " Free";
+      }
+      else if (lUpLim < lUp)
+      {
+        opFree = ", " + MBorGB(lUp - lUpLim) + " Over";
+      }
+      else
+      {
+        opFree = "";
+      }
+      sTTT = "Satellite Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
+      "Last Updated " + sLastUpdate + "\n" +
+      "Anytime: " + MBorGB(lDown) + " (" + AccuratePercent((double) lDown / lDownLim) + ")" + atFree + "\n" +
+      "Off-Peak: " + MBorGB(lUp) + " (" + AccuratePercent((double) lUp / lUpLim) + ")" + opFree;
+      if (trayRes < 8)
+        trayRes = 8;
+      int d = (int) Math.Round(((double) lDown / lDownLim) * trayRes);
+      int u = (int) Math.Round(((double) lUp / lUpLim) * trayRes);
+      sIconBefore = "graph_typea_" + d + "x" + u;
+      bIconStop = true;
+      SetTrayText(sTTT);
+      if (mySettings.Overuse > 0)
+      {
+        if (lastBalloon > 0 && srlFunctions.TickCount() - lastBalloon < mySettings.Overtime * 60 * 1000)
+        {
+          return;
+        }
+        int timeCheck = -mySettings.Overtime;
+        if (timeCheck <= -15)
+        {
+          DataBase.DataRow[] lItems = Array.FindAll(modDB.usageDB.ToArray(), (DataBase.DataRow satRow) => satRow.DATETIME.CompareTo(DateTime.Now.AddMinutes(timeCheck)) >= 0 & satRow.DATETIME.CompareTo(DateTime.Now) <= 0);
+          for (int I = lItems.Length - 2; I >= 0; I += -1)
+          {
+            if (lDown - lItems[I].DOWNLOAD >= mySettings.Overuse)
+            {
+              long ChangeSize = Math.Abs(lDown - lItems[I].DOWNLOAD);
+              ulong ChangeTime = (ulong) Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
+              modFunctions.MakeNotifier(ref taskNotifier, false);
+              if (taskNotifier != null)
+              {
+                taskNotifierEvent(true);
+                taskNotifier.Show("Excessive Usage Detected", modFunctions.ProductName + " has logged a usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
+              }
+              lastBalloon = srlFunctions.TickCount();
+              break;
+            }
+            else if (lUp - lItems[I].UPLOAD >= mySettings.Overuse)
+            {
+              long ChangeSize = Math.Abs(lDown - lItems[I].DOWNLOAD);
+              ulong ChangeTime = (ulong) Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
+              modFunctions.MakeNotifier(ref taskNotifier, false);
+              if (taskNotifier != null)
+              {
+                taskNotifierEvent(true);
+                taskNotifier.Show("Excessive Off-Peak Usage Detected", modFunctions.ProductName + " has logged an Off-Peak usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
+              }
+              lastBalloon = srlFunctions.TickCount();
+              break;
+            }
+          }
+        }
+      }
+    }
+    private void DisplayTypeBResults(long lDown, long lDownLim, long lUp, long lUpLim, string sLastUpdate)
+    {
+      if (lDown != lUp & lDownLim != lUpLim)
+      {
+        DisplayTypeAResults(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
+        return;
+      }
+      string sTTT = this.Title;
+      if (lDown >= lDownLim)
+      {
+        imSlowed = true;
+      }
+      if ((mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE) | (mySettings.AccountType == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE) | (mySettings.AccountType == localRestrictionTracker.SatHostTypes.DishNet_EXEDE))
+      {
+        if (lDown < lDownLim)
+        {
+          imSlowed = false;
+        }
+        if (lDownLim == 150000)
+        {
+          imSlowed = false;
+        }
+      }
+      else
+      {
+        if (lDown < lDownLim * 0.7)
+        {
+          imSlowed = false;
+        }
+      }
+      if (pnlTypeA.Visible)
+      {
+        pnlTypeA.Visible = false;
+        pnlDisplays.Remove(pnlTypeA);
+      }
+      if (!pnlTypeB.Visible)
+      {
+        pnlTypeB.Visible = true;
+        pnlDisplays.Add(pnlTypeB);
+      }
+      if (pnlNothing.Visible)
+      {
+        pnlNothing.Visible = false;
+        pnlDisplays.Remove(pnlNothing);
+      }
+      typeB_used = lDown;
+      typeB_lim = lDownLim;
+      if (tmrChanges != null)
+      {
+        tmrChanges.Dispose();
+        tmrChanges = null;
+      }
+      tmrChanges = new System.Threading.Timer(DisplayChangeInterval, (object) "TYPEB", 75, System.Threading.Timeout.Infinite);
+      if (imSlowed)
+      {
+        lblTypeBFreeVal.TooltipText = "You are over your usage limit!";
+        lblTypeBLimitVal.TooltipText = "Your connection has been restricted!";
+      }
+      else
+      {
+        lblTypeBFreeVal.TooltipText = null;
+        lblTypeBLimitVal.TooltipText = null;
+      }
+      pctTypeB.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctTypeB.Allocation.Size, lDown, lDownLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
+      sTTT = "Satellite Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
+      "Last Updated " + sLastUpdate + "\n" +
+      "Using " + MBorGB(lDown) + " of " + MBorGB(lDownLim) + " (" + AccuratePercent((double) lDown / lDownLim) + ")";
+      if (lDownLim > lDown)
+      {
+        sTTT += "\n" + MBorGB(lDownLim - lDown) + " Free";
+      }
+      else if (lDownLim < lDown)
+      {
+        sTTT += "\n" + MBorGB(lDown - lDownLim) + " Over";
+      }
+      if (trayRes < 8)
+        trayRes = 8;
+      int u = (int) Math.Round(((double) lDown / lDownLim) * trayRes);
+      if (u > trayRes)
+        u = trayRes;
+      sIconBefore = "graph_typeb_" + u;
+      bIconStop = true;
+      SetTrayText(sTTT);
+      if (mySettings.Overuse > 0)
+      {
+        if (lastBalloon > 0 && srlFunctions.TickCount() - lastBalloon < mySettings.Overtime * 60 * 1000)
+        {
+          return;
+        }
+        int timeCheck = -mySettings.Overtime;
+        if (timeCheck <= -15)
+        {
+          DataBase.DataRow[] lItems = Array.FindAll(modDB.usageDB.ToArray(), (DataBase.DataRow satRow) => satRow.DATETIME.CompareTo(DateTime.Now.AddMinutes(timeCheck)) >= 0 & satRow.DATETIME.CompareTo(DateTime.Now) <= 0);
+          for (int I = lItems.Length - 2; I >= 0; I += -1)
+          {
+            if (lDown - lItems[I].DOWNLOAD >= mySettings.Overuse)
+            {
+              long ChangeSize = Math.Abs(lDown - lItems[I].DOWNLOAD);
+              ulong ChangeTime = (ulong) Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
+              modFunctions.MakeNotifier(ref taskNotifier, false);
+              if (taskNotifier != null)
+              {
+                taskNotifierEvent(true);
+                taskNotifier.Show("Excessive Usage Detected", modFunctions.ProductName + " has logged a usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
+              }
+              lastBalloon = srlFunctions.TickCount();
+              break;
+            }
+          }
+        }
+      }
+    }
     private void DisplayResults(long lDown, long lDownLim, long lUp, long lUpLim)
     {
       if ((lDownLim > 0) | (lUpLim > 0))
@@ -2843,36 +2874,27 @@ namespace RestrictionTrackerGTK
         {
           case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
           case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
-            DisplayRResults(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
+            DisplayTypeBResults(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
             break;
           case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
-            DisplayDResults(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
-            break;
-          case localRestrictionTracker.SatHostTypes.WildBlue_LEGACY:
-          case localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
-            DisplayWResults(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
+            DisplayTypeA2Results(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
             break;
           default:
-            DisplayWResults(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
+            DisplayTypeAResults(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
             break;
         }
       }
       else
       {
-        if (pnlWildBlue.Visible)
+        if (pnlTypeA.Visible)
         {
-          pnlWildBlue.Visible = false;
-          pnlDisplays.Remove(pnlWildBlue);
+          pnlTypeA.Visible = false;
+          pnlDisplays.Remove(pnlTypeA);
         }
-        if (pnlExede.Visible)
+        if (pnlTypeB.Visible)
         {
-          pnlExede.Visible = false;
-          pnlDisplays.Remove(pnlExede);
-        }
-        if (pnlRural.Visible)
-        {
-          pnlRural.Visible = false;
-          pnlDisplays.Remove(pnlRural);
+          pnlTypeB.Visible = false;
+          pnlDisplays.Remove(pnlTypeB);
         }
         if (!pnlNothing.Visible)
         {
@@ -3260,7 +3282,7 @@ namespace RestrictionTrackerGTK
     {
       if (tmrIcon == 0)
         return false;
-      if (iIconItem == 0 && bIconStop)
+      if (iIconItem == 0 & bIconStop)
       {
         if (tmrIcon != 0)
         {
@@ -3347,7 +3369,7 @@ namespace RestrictionTrackerGTK
     }
     private void ShowTrayIcon()
     {
-      if (TrayState && TraySupported)
+      if (TrayState & TraySupported)
       {
         if (mTraySupport == TraySupport.AppIndicator)
         {
@@ -3387,7 +3409,7 @@ namespace RestrictionTrackerGTK
     private void SetTrayIcon(string resource)
     {
       trayResource = resource;
-      if (TrayState && TraySupported)
+      if (TrayState & TraySupported)
       {
         if (mTraySupport == TraySupport.AppIndicator)
         {
@@ -3440,7 +3462,7 @@ namespace RestrictionTrackerGTK
       sFailTray = "";
     }
     #region "Graphs"
-    private Gdk.Pixbuf CreateTrayIcon(long lDown, long lDownLim, long lUp, long lUpLim)
+    private Gdk.Pixbuf CreateTypeATrayIcon(long lDown, long lDownLim, long lUp, long lUpLim)
     {
       if (trayRes < 8)
         trayRes = 8;
@@ -3482,7 +3504,7 @@ namespace RestrictionTrackerGTK
       g.Dispose();
       return modFunctions.ImageToPixbuf(imgTray);
     }
-    private Gdk.Pixbuf CreateRTrayIcon(long lUsed, long lLim)
+    private Gdk.Pixbuf CreateTypeBTrayIcon(long lUsed, long lLim)
     {
       if (trayRes < 8)
         trayRes = 8;
@@ -3564,7 +3586,7 @@ namespace RestrictionTrackerGTK
       clsUpdate.CheckEventArgs e = (clsUpdate.CheckEventArgs) ea;
       mySettings.LastUpdate = DateTime.Now;
       mySettings.Save();
-      if (e.Error == null && !e.Cancelled)
+      if (e.Error == null & !e.Cancelled)
       {
         if (mySettings.UpdateType == UpdateTypes.Ask)
         {
@@ -3955,7 +3977,7 @@ namespace RestrictionTrackerGTK
       SetStatusTextEventArgs e = (SetStatusTextEventArgs) ea;
       if (e.Status == "1/1/1970 12:00 AM")
       {
-        if (e.Alert || e.Details.StartsWith("Next update in "))
+        if (e.Alert | e.Details.StartsWith("Next update in "))
         {
           sDisp_LT = sDISPLAY_LT_NONE;
         }

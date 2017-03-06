@@ -26,7 +26,7 @@ namespace MacInterop
         lock (lockObj)
         {
           quit -= value;
-          if (quit == null && quitHandlerRef != IntPtr.Zero)
+          if (quit == null & quitHandlerRef != IntPtr.Zero)
           {
             Carbon.RemoveEventHandler(quitHandlerRef);
             quitHandlerRef = IntPtr.Zero;
@@ -62,7 +62,7 @@ namespace MacInterop
         lock (lockObj)
         {
           prefs -= value;
-          if (prefs == null && prefsHandlerRef != IntPtr.Zero)
+          if (prefs == null & prefsHandlerRef != IntPtr.Zero)
           {
             Carbon.RemoveEventHandler(prefsHandlerRef);
             prefsHandlerRef = IntPtr.Zero;
@@ -98,7 +98,7 @@ namespace MacInterop
         lock (lockObj)
         {
           reopen -= value;
-          if (reopen == null && reopenHandlerRef != IntPtr.Zero)
+          if (reopen == null & reopenHandlerRef != IntPtr.Zero)
           {
             Carbon.RemoveEventHandler(reopenHandlerRef);
             reopenHandlerRef = IntPtr.Zero;

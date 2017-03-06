@@ -77,7 +77,7 @@ namespace RestrictionTrackerGTK
       mySettings = new AppSettings();
       string sAccount = mySettings.Account;
       string sUsername, sProvider;
-      if (!String.IsNullOrEmpty(sAccount) && (sAccount.Contains("@") && sAccount.Contains(".")))
+      if (!String.IsNullOrEmpty(sAccount) && (sAccount.Contains("@") & sAccount.Contains(".")))
       {
         sUsername = sAccount.Substring(0, sAccount.LastIndexOf("@"));
         sProvider = sAccount.Substring(sAccount.LastIndexOf("@") + 1);
@@ -145,7 +145,7 @@ namespace RestrictionTrackerGTK
         txtKey5.Text = "";
       }
       modFunctions.PrepareLink(lblPurchaseKey);
-      if (txtKey1.Text.Length < 6 || txtKey2.Text.Length < 4 || txtKey3.Text.Length < 4 || txtKey4.Text.Length < 4 || txtKey5.Text.Length < 6)
+      if (txtKey1.Text.Length < 6 | txtKey2.Text.Length < 4 | txtKey3.Text.Length < 4 | txtKey4.Text.Length < 4 | txtKey5.Text.Length < 6)
       {
         bRemoteAcct = false;
         pctKeyState.Pixbuf = null;
@@ -660,7 +660,7 @@ namespace RestrictionTrackerGTK
       }
       lblPurchaseKey.Markup = LINK_PURCHASE;
       lblPurchaseKey.TooltipText = LINK_PURCHASE_TT;
-      if (txtKey1.Text.Length < 6 || txtKey2.Text.Length < 4 || txtKey3.Text.Length < 4 || txtKey4.Text.Length < 4 || txtKey5.Text.Length < 6)
+      if (txtKey1.Text.Length < 6 | txtKey2.Text.Length < 4 | txtKey3.Text.Length < 4 | txtKey4.Text.Length < 4 | txtKey5.Text.Length < 6)
       {
         cmdSave.Sensitive = SettingsChanged();
       }
@@ -681,7 +681,7 @@ namespace RestrictionTrackerGTK
     protected void txtProductKey_KeyPressEvent(object o, Gtk.KeyPressEventArgs e)
     {
       Gtk.Entry txtSender = (Gtk.Entry) o;
-      if ((e.Event.Key == Gdk.Key.v) && ((e.Event.State & Gdk.ModifierType.ControlMask) == Gdk.ModifierType.ControlMask))
+      if ((e.Event.Key == Gdk.Key.v) & ((e.Event.State & Gdk.ModifierType.ControlMask) == Gdk.ModifierType.ControlMask))
       {
         Gtk.Clipboard cb = Gtk.Clipboard.Get(Gdk.Selection.Clipboard);
 
@@ -711,7 +711,7 @@ namespace RestrictionTrackerGTK
         }
         e.RetVal = true;
       }
-      else if ((e.Event.Key == Gdk.Key.Delete) || ((e.Event.Key == Gdk.Key.x) & ((e.Event.State | Gdk.ModifierType.ControlMask) == Gdk.ModifierType.ControlMask)) || ((e.Event.Key == Gdk.Key.c) & ((e.Event.State | Gdk.ModifierType.ControlMask) == Gdk.ModifierType.ControlMask)) || (e.Event.Key == Gdk.Key.End) || (e.Event.Key == Gdk.Key.Home) || (e.Event.Key == Gdk.Key.leftarrow) || (e.Event.Key == Gdk.Key.rightarrow) || (e.Event.Key == Gdk.Key.Tab) || (e.Event.Key == Gdk.Key.Shift_L) || (e.Event.Key == Gdk.Key.Shift_R) || (e.Event.Key == Gdk.Key.Alt_L) || (e.Event.Key == Gdk.Key.Alt_R) || (e.Event.Key == Gdk.Key.Control_L) || (e.Event.Key == Gdk.Key.Control_R))
+      else if ((e.Event.Key == Gdk.Key.Delete) | ((e.Event.Key == Gdk.Key.x) & ((e.Event.State | Gdk.ModifierType.ControlMask) == Gdk.ModifierType.ControlMask)) | ((e.Event.Key == Gdk.Key.c) & ((e.Event.State | Gdk.ModifierType.ControlMask) == Gdk.ModifierType.ControlMask)) | (e.Event.Key == Gdk.Key.End) | (e.Event.Key == Gdk.Key.Home) | (e.Event.Key == Gdk.Key.leftarrow) | (e.Event.Key == Gdk.Key.rightarrow) | (e.Event.Key == Gdk.Key.Tab) | (e.Event.Key == Gdk.Key.Shift_L) | (e.Event.Key == Gdk.Key.Shift_R) | (e.Event.Key == Gdk.Key.Alt_L) | (e.Event.Key == Gdk.Key.Alt_R) | (e.Event.Key == Gdk.Key.Control_L) | (e.Event.Key == Gdk.Key.Control_R))
       {
         e.RetVal = false;
       }
@@ -719,7 +719,7 @@ namespace RestrictionTrackerGTK
       {
         int start, end;
         txtSender.GetSelectionBounds(out start, out end);
-        if ((String.IsNullOrEmpty(txtSender.Text)) && (Math.Abs(end - start) == 0))
+        if ((String.IsNullOrEmpty(txtSender.Text)) & (Math.Abs(end - start) == 0))
         {
           if (txtSender == txtKey1)
           {
@@ -760,7 +760,7 @@ namespace RestrictionTrackerGTK
       {
         int start, end;
         txtSender.GetSelectionBounds(out start, out end);
-        if ((txtSender.Text.Length == txtSender.MaxLength) && (Math.Abs(end - start) == 0))
+        if ((txtSender.Text.Length == txtSender.MaxLength) & (Math.Abs(end - start) == 0))
         {
           if (txtSender == txtKey1)
           {
@@ -810,7 +810,7 @@ namespace RestrictionTrackerGTK
       }
       lblPurchaseKey.Markup = LINK_PURCHASE;
       lblPurchaseKey.TooltipText = LINK_PURCHASE_TT;
-      if ((txtKey1.Text.Length < 6) || (txtKey2.Text.Length < 4) || (txtKey3.Text.Length < 4) || (txtKey4.Text.Length < 4) || (txtKey5.Text.Length < 6))
+      if ((txtKey1.Text.Length < 6) | (txtKey2.Text.Length < 4) | (txtKey3.Text.Length < 4) | (txtKey4.Text.Length < 4) | (txtKey5.Text.Length < 6))
       {
         bRemoteAcct = false;
         pctKeyState.Pixbuf = null;
@@ -1251,7 +1251,7 @@ namespace RestrictionTrackerGTK
     object waitingForEndOf;
     protected void SetNetTestImage(Gdk.Pixbuf Image, bool End, object Token, object tag)
     {
-      if ((End) && (((int) Token) != ((int) waitingForEndOf)))
+      if ((End) & (((int) Token) != ((int) waitingForEndOf)))
         return;
       pctAdvancedNetTestIcon.Pixbuf = Image;
       icoNetTest = (Gdk.Pixbuf) tag;
@@ -1301,7 +1301,7 @@ namespace RestrictionTrackerGTK
     #region "Remote Service Results"
     protected void evnKeyState_ButtonPressEvent(object sender, Gtk.ButtonPressEventArgs e)
     {
-      if (txtKey1.Text.Length == 6 && txtKey2.Text.Length == 4 && txtKey3.Text.Length == 4 && txtKey4.Text.Length == 4 && txtKey5.Text.Length == 6)
+      if (txtKey1.Text.Length == 6 & txtKey2.Text.Length == 4 & txtKey3.Text.Length == 4 & txtKey4.Text.Length == 4 & txtKey5.Text.Length == 6)
         KeyCheck();
     }
     bool CheckState;
@@ -1432,10 +1432,10 @@ namespace RestrictionTrackerGTK
           return;
         }
       }
-      if (cmbProvider.Entry.Text.ToLower().Contains("excede") ||
-          cmbProvider.Entry.Text.ToLower().Contains("force") ||
-          cmbProvider.Entry.Text.ToLower().Contains("mysso") ||
-          cmbProvider.Entry.Text.ToLower().Contains("myexede") ||
+      if (cmbProvider.Entry.Text.ToLower().Contains("excede") |
+          cmbProvider.Entry.Text.ToLower().Contains("force") |
+          cmbProvider.Entry.Text.ToLower().Contains("mysso") |
+          cmbProvider.Entry.Text.ToLower().Contains("myexede") |
           cmbProvider.Entry.Text.ToLower().Contains("my.exede"))
         cmbProvider.Entry.Text = "exede.net";
       if (string.Compare(mySettings.Account, txtAccount.Text + "@" + cmbProvider.Entry.Text, true) != 0)
@@ -1730,7 +1730,7 @@ namespace RestrictionTrackerGTK
           txtProxyAddress.GrabFocus();
           return;
         }
-        if (String.IsNullOrEmpty(txtProxyUser.Text) && String.IsNullOrEmpty(txtProxyPassword.Text) && String.IsNullOrEmpty(txtProxyDomain.Text))
+        if (String.IsNullOrEmpty(txtProxyUser.Text) & String.IsNullOrEmpty(txtProxyPassword.Text) & String.IsNullOrEmpty(txtProxyDomain.Text))
         {
           mySettings.Proxy = new System.Net.WebProxy(txtProxyAddress.Text, txtProxyPort.ValueAsInt);
         }
@@ -1756,7 +1756,7 @@ namespace RestrictionTrackerGTK
           txtProxyAddress.GrabFocus();
           return;
         }
-        if (String.IsNullOrEmpty(txtProxyUser.Text) && String.IsNullOrEmpty(txtProxyPassword.Text) && String.IsNullOrEmpty(txtProxyDomain.Text))
+        if (String.IsNullOrEmpty(txtProxyUser.Text) & String.IsNullOrEmpty(txtProxyPassword.Text) & String.IsNullOrEmpty(txtProxyDomain.Text))
         {
           mySettings.Proxy = new System.Net.WebProxy(txtProxyAddress.Text);
         }
@@ -1898,11 +1898,11 @@ namespace RestrictionTrackerGTK
       switch (mySettings.TrayIconStyle)
       {
         case TrayStyles.Always:
-          if (!chkTrayIcon.Active || chkTrayMin.Active)
+          if (!chkTrayIcon.Active | chkTrayMin.Active)
             return true;
           break;
         case TrayStyles.Minimized:
-          if (!chkTrayIcon.Active || !chkTrayMin.Active)
+          if (!chkTrayIcon.Active | !chkTrayMin.Active)
             return true;
           break;
         case TrayStyles.Never:
@@ -2005,7 +2005,7 @@ namespace RestrictionTrackerGTK
         }
         else
         {
-          if (string.IsNullOrEmpty(txtProxyUser.Text) && string.IsNullOrEmpty(txtProxyPassword.Text) && string.IsNullOrEmpty(txtProxyDomain.Text))
+          if (string.IsNullOrEmpty(txtProxyUser.Text) & string.IsNullOrEmpty(txtProxyPassword.Text) & string.IsNullOrEmpty(txtProxyDomain.Text))
             return true;
           else
           {

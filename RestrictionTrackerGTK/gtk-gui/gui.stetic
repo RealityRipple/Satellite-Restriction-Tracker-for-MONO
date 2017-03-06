@@ -9,7 +9,7 @@
     <widget-library name="appindicator-sharp" />
     <widget-library name="../bin/Debug/RestrictionTracker.exe" internal="true" />
   </import>
-  <widget class="Gtk.Window" id="RestrictionTrackerGTK.frmMain" design-size="455 454">
+  <widget class="Gtk.Window" id="RestrictionTrackerGTK.frmMain" design-size="455 245">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Satellite Restriction Tracker</property>
     <property name="Icon">resource:RestrictionTrackerGTK.Resources.norm.ico</property>
@@ -145,15 +145,15 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="Gtk.HBox" id="pnlWildBlue">
+                      <widget class="Gtk.HBox" id="pnlTypeA">
                         <property name="MemberName" />
                         <property name="Homogeneous">True</property>
                         <child>
-                          <widget class="Gtk.Frame" id="gbDld">
+                          <widget class="Gtk.Frame" id="gbTypeADld">
                             <property name="MemberName" />
                             <property name="ShadowType">Out</property>
                             <child>
-                              <widget class="Gtk.Alignment" id="algnDld">
+                              <widget class="Gtk.Alignment" id="algnTypeADld">
                                 <property name="MemberName" />
                                 <property name="Xalign">0</property>
                                 <property name="Yalign">0</property>
@@ -162,7 +162,7 @@
                                 <property name="RightPadding">3</property>
                                 <property name="BottomPadding">3</property>
                                 <child>
-                                  <widget class="Gtk.HBox" id="pnlDld">
+                                  <widget class="Gtk.HBox" id="pnlTypeADld">
                                     <property name="MemberName" />
                                     <property name="Spacing">6</property>
                                     <child>
@@ -175,7 +175,7 @@
                                             <property name="MemberName" />
                                             <property name="Spacing">6</property>
                                             <child>
-                                              <widget class="Gtk.Label" id="lblDUsed">
+                                              <widget class="Gtk.Label" id="lblTypeADldUsed">
                                                 <property name="MemberName" />
                                                 <property name="LabelProp" translatable="yes">Used:</property>
                                               </widget>
@@ -187,7 +187,7 @@
                                               </packing>
                                             </child>
                                             <child>
-                                              <widget class="Gtk.Label" id="lblDldUsed">
+                                              <widget class="Gtk.Label" id="lblTypeADldUsedVal">
                                                 <property name="MemberName" />
                                                 <property name="LabelProp" translatable="yes"> -- </property>
                                               </widget>
@@ -212,7 +212,7 @@
                                             <property name="MemberName" />
                                             <property name="Spacing">6</property>
                                             <child>
-                                              <widget class="Gtk.Label" id="lblDFree">
+                                              <widget class="Gtk.Label" id="lblTypeADldFree">
                                                 <property name="MemberName" />
                                                 <property name="LabelProp" translatable="yes">Free:</property>
                                               </widget>
@@ -224,7 +224,7 @@
                                               </packing>
                                             </child>
                                             <child>
-                                              <widget class="Gtk.Label" id="lblDldFree">
+                                              <widget class="Gtk.Label" id="lblTypeADldFreeVal">
                                                 <property name="MemberName" />
                                                 <property name="LabelProp" translatable="yes"> -- </property>
                                               </widget>
@@ -249,7 +249,7 @@
                                             <property name="MemberName" />
                                             <property name="Spacing">6</property>
                                             <child>
-                                              <widget class="Gtk.Label" id="lblDLimit">
+                                              <widget class="Gtk.Label" id="lblTypeADldLimit">
                                                 <property name="MemberName" />
                                                 <property name="LabelProp" translatable="yes">Limit:</property>
                                               </widget>
@@ -261,7 +261,7 @@
                                               </packing>
                                             </child>
                                             <child>
-                                              <widget class="Gtk.Label" id="lblDldLimit">
+                                              <widget class="Gtk.Label" id="lblTypeADldLimitVal">
                                                 <property name="MemberName" />
                                                 <property name="LabelProp" translatable="yes"> -- </property>
                                               </widget>
@@ -290,10 +290,10 @@
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="Gtk.EventBox" id="evnDld">
+                                      <widget class="Gtk.EventBox" id="evnTypeADld">
                                         <property name="MemberName" />
                                         <child>
-                                          <widget class="Gtk.Image" id="pctDld">
+                                          <widget class="Gtk.Image" id="pctTypeADld">
                                             <property name="MemberName" />
                                             <property name="Tooltip" translatable="yes">Graph representing your download usage.</property>
                                           </widget>
@@ -309,7 +309,7 @@
                               </widget>
                             </child>
                             <child>
-                              <widget class="Gtk.Label" id="lblDld">
+                              <widget class="Gtk.Label" id="lblTypeADld">
                                 <property name="MemberName" />
                                 <property name="Xalign">0</property>
                                 <property name="LabelProp" translatable="yes">Download (X%)</property>
@@ -327,11 +327,11 @@
                           </packing>
                         </child>
                         <child>
-                          <widget class="Gtk.Frame" id="gbUld">
+                          <widget class="Gtk.Frame" id="gbTypeAUld">
                             <property name="MemberName" />
                             <property name="ShadowType">Out</property>
                             <child>
-                              <widget class="Gtk.Alignment" id="algnUld">
+                              <widget class="Gtk.Alignment" id="algnTypeAUld">
                                 <property name="MemberName" />
                                 <property name="Xalign">0</property>
                                 <property name="Yalign">0</property>
@@ -340,7 +340,7 @@
                                 <property name="RightPadding">3</property>
                                 <property name="BottomPadding">3</property>
                                 <child>
-                                  <widget class="Gtk.HBox" id="pnlUld">
+                                  <widget class="Gtk.HBox" id="pnlTypeAUld">
                                     <property name="MemberName" />
                                     <property name="Spacing">6</property>
                                     <child>
@@ -353,7 +353,7 @@
                                             <property name="MemberName" />
                                             <property name="Spacing">6</property>
                                             <child>
-                                              <widget class="Gtk.Label" id="lblUUsed">
+                                              <widget class="Gtk.Label" id="lblTypeAUldUsed">
                                                 <property name="MemberName" />
                                                 <property name="LabelProp" translatable="yes">Used:</property>
                                               </widget>
@@ -365,7 +365,7 @@
                                               </packing>
                                             </child>
                                             <child>
-                                              <widget class="Gtk.Label" id="lblUldUsed">
+                                              <widget class="Gtk.Label" id="lblTypeAUldUsedVal">
                                                 <property name="MemberName" />
                                                 <property name="LabelProp" translatable="yes"> -- </property>
                                               </widget>
@@ -390,7 +390,7 @@
                                             <property name="MemberName" />
                                             <property name="Spacing">6</property>
                                             <child>
-                                              <widget class="Gtk.Label" id="lblUFree">
+                                              <widget class="Gtk.Label" id="lblTypeAUldFree">
                                                 <property name="MemberName" />
                                                 <property name="LabelProp" translatable="yes">Free:</property>
                                               </widget>
@@ -402,7 +402,7 @@
                                               </packing>
                                             </child>
                                             <child>
-                                              <widget class="Gtk.Label" id="lblUldFree">
+                                              <widget class="Gtk.Label" id="lblTypeAUldFreeVal">
                                                 <property name="MemberName" />
                                                 <property name="LabelProp" translatable="yes"> -- </property>
                                               </widget>
@@ -427,7 +427,7 @@
                                             <property name="MemberName" />
                                             <property name="Spacing">6</property>
                                             <child>
-                                              <widget class="Gtk.Label" id="lblULimit">
+                                              <widget class="Gtk.Label" id="lblTypeAUldLimit">
                                                 <property name="MemberName" />
                                                 <property name="LabelProp" translatable="yes">Limit:</property>
                                               </widget>
@@ -439,7 +439,7 @@
                                               </packing>
                                             </child>
                                             <child>
-                                              <widget class="Gtk.Label" id="lblUldLimit">
+                                              <widget class="Gtk.Label" id="lblTypeAUldLimitVal">
                                                 <property name="MemberName" />
                                                 <property name="LabelProp" translatable="yes"> -- </property>
                                               </widget>
@@ -468,10 +468,10 @@
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="Gtk.EventBox" id="evnUld">
+                                      <widget class="Gtk.EventBox" id="evnTypeAUld">
                                         <property name="MemberName" />
                                         <child>
-                                          <widget class="Gtk.Image" id="pctUld">
+                                          <widget class="Gtk.Image" id="pctTypeAUld">
                                             <property name="MemberName" />
                                             <property name="Tooltip" translatable="yes">Graph representing your upload usage.</property>
                                           </widget>
@@ -487,7 +487,7 @@
                               </widget>
                             </child>
                             <child>
-                              <widget class="Gtk.Label" id="lblUld">
+                              <widget class="Gtk.Label" id="lblTypeAUld">
                                 <property name="MemberName" />
                                 <property name="Xalign">0</property>
                                 <property name="LabelProp" translatable="yes">Upload (X%)</property>
@@ -511,230 +511,7 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="Gtk.HBox" id="pnlExede">
-                        <property name="MemberName" />
-                        <property name="Spacing">6</property>
-                        <child>
-                          <widget class="Gtk.VBox" id="pnlExedeNumbers">
-                            <property name="MemberName" />
-                            <property name="Homogeneous">True</property>
-                            <property name="Spacing">6</property>
-                            <child>
-                              <widget class="Gtk.HBox" id="pnlExedeDown">
-                                <property name="MemberName" />
-                                <property name="Spacing">6</property>
-                                <child>
-                                  <widget class="Gtk.Label" id="lblExedeDown">
-                                    <property name="MemberName" />
-                                    <property name="LabelProp" translatable="yes">Download:</property>
-                                  </widget>
-                                  <packing>
-                                    <property name="Position">0</property>
-                                    <property name="AutoSize">True</property>
-                                    <property name="Expand">False</property>
-                                    <property name="Fill">False</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <widget class="Gtk.Label" id="lblExedeDownVal">
-                                    <property name="MemberName" />
-                                    <property name="LabelProp" translatable="yes"> -- </property>
-                                  </widget>
-                                  <packing>
-                                    <property name="PackType">End</property>
-                                    <property name="Position">1</property>
-                                    <property name="AutoSize">True</property>
-                                    <property name="Expand">False</property>
-                                    <property name="Fill">False</property>
-                                  </packing>
-                                </child>
-                              </widget>
-                              <packing>
-                                <property name="Position">0</property>
-                                <property name="AutoSize">True</property>
-                                <property name="Expand">False</property>
-                                <property name="Fill">False</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="Gtk.HBox" id="pnlExedeUp">
-                                <property name="MemberName" />
-                                <property name="Spacing">6</property>
-                                <child>
-                                  <widget class="Gtk.Label" id="lblExedeUp">
-                                    <property name="MemberName" />
-                                    <property name="LabelProp" translatable="yes">Upload:</property>
-                                  </widget>
-                                  <packing>
-                                    <property name="Position">0</property>
-                                    <property name="AutoSize">True</property>
-                                    <property name="Expand">False</property>
-                                    <property name="Fill">False</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <widget class="Gtk.Label" id="lblExedeUpVal">
-                                    <property name="MemberName" />
-                                    <property name="LabelProp" translatable="yes"> -- </property>
-                                  </widget>
-                                  <packing>
-                                    <property name="PackType">End</property>
-                                    <property name="Position">1</property>
-                                    <property name="AutoSize">True</property>
-                                    <property name="Expand">False</property>
-                                    <property name="Fill">False</property>
-                                  </packing>
-                                </child>
-                              </widget>
-                              <packing>
-                                <property name="Position">1</property>
-                                <property name="AutoSize">True</property>
-                                <property name="Expand">False</property>
-                                <property name="Fill">False</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="Gtk.HBox" id="pnlExedeUsed">
-                                <property name="MemberName" />
-                                <property name="Spacing">6</property>
-                                <child>
-                                  <widget class="Gtk.Label" id="lblExedeTotal">
-                                    <property name="MemberName" />
-                                    <property name="LabelProp" translatable="yes">Used:</property>
-                                  </widget>
-                                  <packing>
-                                    <property name="Position">0</property>
-                                    <property name="AutoSize">True</property>
-                                    <property name="Expand">False</property>
-                                    <property name="Fill">False</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <widget class="Gtk.Label" id="lblExedeTotalVal">
-                                    <property name="MemberName" />
-                                    <property name="LabelProp" translatable="yes"> -- </property>
-                                  </widget>
-                                  <packing>
-                                    <property name="PackType">End</property>
-                                    <property name="Position">1</property>
-                                    <property name="AutoSize">True</property>
-                                    <property name="Expand">False</property>
-                                    <property name="Fill">False</property>
-                                  </packing>
-                                </child>
-                              </widget>
-                              <packing>
-                                <property name="Position">2</property>
-                                <property name="AutoSize">True</property>
-                                <property name="Expand">False</property>
-                                <property name="Fill">False</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="Gtk.HBox" id="pnlExedeFree">
-                                <property name="MemberName" />
-                                <property name="Spacing">6</property>
-                                <child>
-                                  <widget class="Gtk.Label" id="lblExedeRemain">
-                                    <property name="MemberName" />
-                                    <property name="LabelProp" translatable="yes">Free:</property>
-                                  </widget>
-                                  <packing>
-                                    <property name="Position">0</property>
-                                    <property name="AutoSize">True</property>
-                                    <property name="Expand">False</property>
-                                    <property name="Fill">False</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <widget class="Gtk.Label" id="lblExedeRemainVal">
-                                    <property name="MemberName" />
-                                    <property name="LabelProp" translatable="yes"> -- </property>
-                                  </widget>
-                                  <packing>
-                                    <property name="PackType">End</property>
-                                    <property name="Position">1</property>
-                                    <property name="AutoSize">True</property>
-                                    <property name="Expand">False</property>
-                                    <property name="Fill">False</property>
-                                  </packing>
-                                </child>
-                              </widget>
-                              <packing>
-                                <property name="Position">3</property>
-                                <property name="AutoSize">True</property>
-                                <property name="Expand">False</property>
-                                <property name="Fill">False</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="Gtk.HBox" id="pnlExedeTotal">
-                                <property name="MemberName" />
-                                <property name="Spacing">6</property>
-                                <child>
-                                  <widget class="Gtk.Label" id="lblExedeAllowed">
-                                    <property name="MemberName" />
-                                    <property name="LabelProp" translatable="yes">Limit:</property>
-                                  </widget>
-                                  <packing>
-                                    <property name="Position">0</property>
-                                    <property name="AutoSize">True</property>
-                                    <property name="Expand">False</property>
-                                    <property name="Fill">False</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <widget class="Gtk.Label" id="lblExedeAllowedVal">
-                                    <property name="MemberName" />
-                                    <property name="LabelProp" translatable="yes"> -- </property>
-                                  </widget>
-                                  <packing>
-                                    <property name="PackType">End</property>
-                                    <property name="Position">1</property>
-                                    <property name="AutoSize">True</property>
-                                    <property name="Expand">False</property>
-                                    <property name="Fill">False</property>
-                                  </packing>
-                                </child>
-                              </widget>
-                              <packing>
-                                <property name="Position">4</property>
-                                <property name="AutoSize">True</property>
-                                <property name="Expand">False</property>
-                                <property name="Fill">False</property>
-                              </packing>
-                            </child>
-                          </widget>
-                          <packing>
-                            <property name="Position">0</property>
-                            <property name="AutoSize">False</property>
-                            <property name="Expand">False</property>
-                            <property name="Fill">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="Gtk.EventBox" id="evnExede">
-                            <property name="MemberName" />
-                            <child>
-                              <widget class="Gtk.Image" id="pctExede">
-                                <property name="MemberName" />
-                                <property name="Tooltip" translatable="yes">Graph representing your bandwidth usage.</property>
-                              </widget>
-                            </child>
-                          </widget>
-                          <packing>
-                            <property name="Position">1</property>
-                            <property name="AutoSize">False</property>
-                          </packing>
-                        </child>
-                      </widget>
-                      <packing>
-                        <property name="Position">2</property>
-                        <property name="AutoSize">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="Gtk.HBox" id="pnlRural">
+                      <widget class="Gtk.HBox" id="pnlTypeB">
                         <property name="MemberName" />
                         <property name="Spacing">6</property>
                         <child>
@@ -747,7 +524,7 @@
                                 <property name="MemberName" />
                                 <property name="Spacing">6</property>
                                 <child>
-                                  <widget class="Gtk.Label" id="lblRuralUsed">
+                                  <widget class="Gtk.Label" id="lblTypeBUsed">
                                     <property name="MemberName" />
                                     <property name="LabelProp" translatable="yes">Used:</property>
                                   </widget>
@@ -759,7 +536,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="Gtk.Label" id="lblRuralUsedVal">
+                                  <widget class="Gtk.Label" id="lblTypeBUsedVal">
                                     <property name="MemberName" />
                                     <property name="LabelProp" translatable="yes"> -- </property>
                                   </widget>
@@ -784,7 +561,7 @@
                                 <property name="MemberName" />
                                 <property name="Spacing">6</property>
                                 <child>
-                                  <widget class="Gtk.Label" id="lblRuralRemain">
+                                  <widget class="Gtk.Label" id="lblTypeBFree">
                                     <property name="MemberName" />
                                     <property name="LabelProp" translatable="yes">Free:</property>
                                   </widget>
@@ -796,7 +573,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="Gtk.Label" id="lblRuralRemainVal">
+                                  <widget class="Gtk.Label" id="lblTypeBFreeVal">
                                     <property name="MemberName" />
                                     <property name="LabelProp" translatable="yes"> -- </property>
                                   </widget>
@@ -821,7 +598,7 @@
                                 <property name="MemberName" />
                                 <property name="Spacing">6</property>
                                 <child>
-                                  <widget class="Gtk.Label" id="lblRuralAllowed">
+                                  <widget class="Gtk.Label" id="lblTypeBLimit">
                                     <property name="MemberName" />
                                     <property name="LabelProp" translatable="yes">Limit:</property>
                                   </widget>
@@ -833,7 +610,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="Gtk.Label" id="lblRuralAllowedVal">
+                                  <widget class="Gtk.Label" id="lblTypeBLimitVal">
                                     <property name="MemberName" />
                                     <property name="LabelProp" translatable="yes"> -- </property>
                                   </widget>
@@ -862,10 +639,10 @@
                           </packing>
                         </child>
                         <child>
-                          <widget class="Gtk.EventBox" id="evnRural">
+                          <widget class="Gtk.EventBox" id="evnTypeB">
                             <property name="MemberName" />
                             <child>
-                              <widget class="Gtk.Image" id="pctRural">
+                              <widget class="Gtk.Image" id="pctTypeB">
                                 <property name="MemberName" />
                                 <property name="Tooltip" translatable="yes">Graph representing your bandwidth usage.</property>
                               </widget>
@@ -878,7 +655,7 @@
                         </child>
                       </widget>
                       <packing>
-                        <property name="Position">3</property>
+                        <property name="Position">2</property>
                         <property name="AutoSize">False</property>
                       </packing>
                     </child>

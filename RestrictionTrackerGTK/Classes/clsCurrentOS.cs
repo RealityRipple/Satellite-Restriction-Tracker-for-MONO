@@ -20,7 +20,7 @@ namespace RestrictionTrackerGTK
     {
       get
       {
-        if ((Environment.OSVersion.Version.Major == 5 && Environment.OSVersion.Version.Minor >= 1) || Environment.OSVersion.Version.Major >= 6)
+        if ((Environment.OSVersion.Version.Major == 5 & Environment.OSVersion.Version.Minor >= 1) | Environment.OSVersion.Version.Major >= 6)
         {
           using (System.Diagnostics.Process p = System.Diagnostics.Process.GetCurrentProcess())
           {
