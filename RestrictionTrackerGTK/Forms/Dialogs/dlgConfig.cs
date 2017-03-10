@@ -312,6 +312,10 @@ namespace RestrictionTrackerGTK
       System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) myProtocol;
       */
       useTLSProxy = true;
+      string clrVer = RestrictionLibrary.srlFunctions.GetCLRCleanVersion();
+      Version clr = new Version(clrVer.Substring(5));
+      if (clr.Major > 4 || (clr.Major == 4 & clr.Minor >= 8))
+        useTLSProxy = false;
       if (useTLSProxy)
       {
         chkTLSProxy.Visible = true;
