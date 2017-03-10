@@ -1030,8 +1030,8 @@ namespace RestrictionTrackerGTK
         ShowProgress("Exporting DataBase...", "Saving File...");
         if (chkExportRange.Active)
         {
-          System.DateTime dFrom = System.DateTime.Parse(dtwFrom.Date.Date + " 00:00:00 AM");
-          System.DateTime dTo = System.DateTime.Parse(dtwTo.Date.Date + " 11:59:59 PM");
+          System.DateTime dFrom = System.DateTime.Parse(dtwFrom.Date.Date.ToShortDateString() + " 00:00:00 AM");
+          System.DateTime dTo = System.DateTime.Parse(dtwTo.Date.Date.ToShortDateString() + " 11:59:59 PM");
           DataBase newDB = new DataBase();
           newDB.ProgressState += usageDB_ProgressState;
           foreach (DataBase.DataRow satRow in modDB.usageDB)
