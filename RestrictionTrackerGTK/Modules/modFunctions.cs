@@ -247,47 +247,6 @@ namespace RestrictionTrackerGTK
     {
       return new string[] { "exede.net", "wildblue.net", "dish.net", "dishmail.net", "kitcarson.net", "plateauwb.net", "wbaccess.net", "novecnet.com", "northlc.com", "oecblue.net", "seidata.com", "oecblue.com", "hcecwildblue.com", "trueband.net", "trueband.com", "fhrd.net", "scpwildblue.com", "oeccwildblue.com", "bessi.net", "mlecwb.net", "erec.net", "winntelwb.coop", "coopsone.com", "kiamichiwb.org", "kmwb.net", "directv.net" };
     }
-    //    public static localRestrictionTracker.SatHostTypes StringToHostType(string st)
-    //    {
-    //      switch (st.ToUpper())
-    //      {
-    //        case "WBL":
-    //        case "WILDBLUE":
-    //          return localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
-    //        case "WBX":
-    //        case "EXEDE":
-    //        case "WBV":
-    //          return localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
-    //        case "RPL":
-    //          return localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY;
-    //        case "RPX":
-    //        case "RURALPORTAL":
-    //          return localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
-    //        case "DNX":
-    //        case "DISHNET":
-    //          return localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
-    //        default:
-    //          return localRestrictionTracker.SatHostTypes.Other;
-    //      }
-    //    }
-    //    public static string HostTypeToString(localRestrictionTracker.SatHostTypes ht)
-    //    {
-    //      switch (ht)
-    //      {
-    //        case  localRestrictionTracker.SatHostTypes.WildBlue_LEGACY:
-    //          return "WBL";
-    //        case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
-    //          return "WBX";
-    //        case localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
-    //          return "RPL";
-    //        case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
-    //          return "RPX";
-    //        case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
-    //          return "DNX";
-    //        default:
-    //          return "O";
-    //      }
-    //    }
     public static string ConvertTime(UInt64 lngMS, bool Abbreviated = false, bool Trimmed = true)
     {
       UInt64 lngSeconds = lngMS / 1000;
@@ -884,7 +843,7 @@ namespace RestrictionTrackerGTK
       long lMax = 0;
       if (Down == 0)
       {
-        long yVMax = 0;
+        long yVMax = -1;
         for (int i = 0; i < Data.Length; i++)
         {
           if (yVMax < Data[i].DOWNLOAD)
@@ -892,6 +851,8 @@ namespace RestrictionTrackerGTK
           if (yVMax < Data[i].DOWNLIM)
             yVMax = Data[i].DOWNLIM;
         }
+        if (yVMax == -1)
+          yVMax = 0;
         yMax = yVMax;
         if (yMax % 1000 != 0)
           yMax = (int) (((double) yMax / 1000) * 1000);
@@ -899,8 +860,8 @@ namespace RestrictionTrackerGTK
       }
       else
       {
-        long yDMax = 0;
-        long yUMax = 0;
+        long yDMax = -1;
+        long yUMax = -1;
         for (int i = 0; i < Data.Length; i++)
         {
           if (yDMax < Data[i].DOWNLOAD)
@@ -912,6 +873,10 @@ namespace RestrictionTrackerGTK
           if (yUMax < Data[i].UPLIM)
             yUMax = Data[i].UPLIM;
         }
+        if (yDMax == -1)
+          yDMax = 0;
+        if (yUMax == -1)
+          yUMax = 0;
         if (yDMax > yUMax)
           yMax = yDMax;
         else
@@ -1231,17 +1196,17 @@ namespace RestrictionTrackerGTK
       Point[] lMaxPoints = new Point[lMaxGraphTime + 1];
       Point[] lPoints = new Point[lMaxGraphTime + 4];
       byte[] lTypes = new byte[lMaxGraphTime + 4];
-      long lastVal = 0;
+      long lastVal = -1;
       for (long I = 0; I <= lMaxGraphTime; I++)
       {
         long lVal = -1;
-        long lHigh = 0;
+        long lHigh = -1;
         DateTime dFind = DateAdd(dGraphInterval, I * lGraphInterval, lStart);
         for (int J = 0; J <= Data.Length - 1; J++)
         {
           if (Math.Abs(DateDiff(dGraphInterval, Data[J].DATETIME, dFind)) <= lGraphInterval)
           {
-            long jLim = 0;
+            long jLim = -1;
             if (Down == 255)
               jLim = Data[J].UPLIM;
             else
@@ -1250,7 +1215,7 @@ namespace RestrictionTrackerGTK
               lHigh = jLim;
           }
         }
-        if (lHigh > 0)
+        if (lHigh > -1)
         {
           lVal = lHigh;
         }
@@ -1258,16 +1223,16 @@ namespace RestrictionTrackerGTK
         {
           if (I == lMaxGraphTime)
           {
-            if (lastVal > 0)
+            if (lastVal > -1)
               lVal = lastVal;
             else
               lVal = 0;
           }
           else
           {
-            long nextHVal = 0;
+            long nextHVal = -1;
             long K = I;
-            while (nextHVal == 0)
+            while (nextHVal == -1)
             {
               K++;
               if (K > lMaxGraphTime)
@@ -1277,7 +1242,7 @@ namespace RestrictionTrackerGTK
               {
                 if (Math.Abs(DateDiff(dGraphInterval, Data[J].DATETIME, dFind)) <= lGraphInterval)
                 {
-                  long jLim = 0;
+                  long jLim = -1;
                   if (Down == 255)
                     jLim = Data[J].UPLIM;
                   else
@@ -1287,7 +1252,7 @@ namespace RestrictionTrackerGTK
                 }
               }
             }
-            if (nextHVal > 0)
+            if (nextHVal > -1)
             {
               if (lastVal < nextHVal)
                 lVal = nextHVal;
@@ -1314,24 +1279,24 @@ namespace RestrictionTrackerGTK
             }
           }
         }
-        if (lVal > 0)
+        if (lVal > -1)
           lastVal = lVal;
       }
-      lastVal = 0;
+      lastVal = -1;
       for (long I = 0; I <= lMaxGraphTime; I++)
       {
         long lVal = -1;
         long lLow = long.MaxValue;
-        long lHigh = 0;
+        long lHigh = -1;
         long mLow = long.MaxValue;
-        long mHigh = 0;
+        long mHigh = -1;
         DateTime dFind = DateAdd(dGraphInterval, I * lGraphInterval, lStart);
         for (int J = 0; J < Data.Length; J++)
         {
           if (Math.Abs(DateDiff(dGraphInterval, Data[J].DATETIME, dFind)) <= lGraphInterval)
           {
-            long jVal = 0;
-            long jMax = 0;
+            long jVal = -1;
+            long jMax = -1;
             if (Down == 255)
             {
               jVal = Data[J].UPLOAD;
@@ -1352,25 +1317,27 @@ namespace RestrictionTrackerGTK
               mHigh = jMax;
           }
         }
+        if (mHigh == -1)
+          mHigh = 0;
         long aMax = (long) Math.Floor((mLow + mHigh) / 2.0);
         if (lHigh > (Math.Floor(aMax / 10.0) * 9))
         {
-          if (lHigh > 0)
+          if (lHigh > -1)
             lVal = lHigh;
           else
           {
             if (I == lMaxGraphTime)
             {
-              if (lastVal > 0)
+              if (lastVal > -1)
                 lVal = lastVal;
               else
                 lVal = 0;
             }
             else
             {
-              long nextHVal = 0;
+              long nextHVal = -1;
               long K = I;
-              while (nextHVal == 0)
+              while (nextHVal == -1)
               {
                 K++;
                 if (K > lMaxGraphTime)
@@ -1380,7 +1347,7 @@ namespace RestrictionTrackerGTK
                 {
                   if (Math.Abs(DateDiff(dGraphInterval, Data[J].DATETIME, dFind)) <= lGraphInterval)
                   {
-                    long jVal = 0;
+                    long jVal = -1;
                     if (Down == 255)
                       jVal = Data[J].UPLOAD;
                     else
@@ -1390,7 +1357,7 @@ namespace RestrictionTrackerGTK
                   }
                 }
               }
-              if (nextHVal > 0)
+              if (nextHVal > -1)
               {
                 if (lastVal < nextHVal)
                   lVal = nextHVal;
@@ -1412,7 +1379,7 @@ namespace RestrictionTrackerGTK
           {
             if (I == lMaxGraphTime)
             {
-              if (lastVal > 0)
+              if (lastVal > -1)
                 lVal = lastVal;
               else
                 lVal = 0;
@@ -1431,7 +1398,7 @@ namespace RestrictionTrackerGTK
                 {
                   if (Math.Abs(DateDiff(dGraphInterval, Data[J].DATETIME, dFind)) <= lGraphInterval)
                   {
-                    long jVal = 0;
+                    long jVal = -1;
                     if (Down == 255)
                       jVal = Data[J].UPLOAD;
                     else
@@ -1455,9 +1422,9 @@ namespace RestrictionTrackerGTK
         }
         else
         {
-          if ((lHigh > 0) & (lLow < long.MaxValue))
+          if ((lHigh > -1) & (lLow < long.MaxValue))
             lVal = (long) Math.Round((lLow + lHigh) / 2.0);
-          else if (lHigh > 0)
+          else if (lHigh > -1)
             lVal = lHigh;
           else if (lLow < long.MaxValue)
             lVal = lLow;
@@ -1465,7 +1432,7 @@ namespace RestrictionTrackerGTK
           {
             if (I == lMaxGraphTime)
             {
-              if (lastVal > 0)
+              if (lastVal > -1)
                 lVal = lastVal;
               else
                 lVal = 0;
@@ -1484,7 +1451,7 @@ namespace RestrictionTrackerGTK
                 {
                   if (Math.Abs(DateDiff(dGraphInterval, Data[J].DATETIME, dFind)) <= lGraphInterval)
                   {
-                    long jVal = 0;
+                    long jVal = -1;
                     if (Down == 255)
                       jVal = Data[J].UPLOAD;
                     else
@@ -1494,9 +1461,9 @@ namespace RestrictionTrackerGTK
                   }
                 }
               }
-              long nextHVal = 0;
+              long nextHVal = -1;
               K = I;
-              while (nextHVal == 0)
+              while (nextHVal == -1)
               {
                 K++;
                 if (K > lMaxGraphTime)
@@ -1506,7 +1473,7 @@ namespace RestrictionTrackerGTK
                 {
                   if (Math.Abs(DateDiff(dGraphInterval, Data[J].DATETIME, dFind)) <= lGraphInterval)
                   {
-                    long jVal = 0;
+                    long jVal = -1;
                     if (Down == 255)
                       jVal = Data[J].UPLOAD;
                     else
@@ -1516,14 +1483,14 @@ namespace RestrictionTrackerGTK
                   }
                 }
               }
-              if ((nextLVal < long.MaxValue) & (nextHVal > 0))
+              if ((nextLVal < long.MaxValue) & (nextHVal > -1))
                 lVal = (long) Math.Round((nextLVal + nextHVal) / 2.0);
               else
                 lVal = lastVal;
             }
           }
         }
-        if (lVal > 0)
+        if (lVal > -1)
           lastVal = lVal;
         if (I > 0)
           lPoints[I].X = (int) (lYWidth + (I * dGraphCompInter) + 1);
@@ -2353,10 +2320,6 @@ namespace RestrictionTrackerGTK
       ret = ret.Replace("-", "");
       return ret.Length == 0;
     }
-    //    public static long TickCount()
-    //    {
-    //      return (long) ((System.Diagnostics.Stopwatch.GetTimestamp() / (double) System.Diagnostics.Stopwatch.Frequency) * 1000);
-    //    }
     public static string ProductVersion
     {
       get
