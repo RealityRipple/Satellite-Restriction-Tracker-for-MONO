@@ -239,7 +239,7 @@ namespace RestrictionTrackerGTK
       {
         Message = msg;
         Throbber = throb;
-        if (String.IsNullOrEmpty(tt))
+        if (string.IsNullOrEmpty(tt))
           ToolTip = msg;
         else
           ToolTip = tt;

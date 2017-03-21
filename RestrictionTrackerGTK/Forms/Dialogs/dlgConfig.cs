@@ -16,11 +16,20 @@ namespace RestrictionTrackerGTK
   {
     private RestrictionLibrary.remoteRestrictionTracker remoteTest;
     private bool bSaved, bAccount, bLoaded, bHardChange, bRemoteAcct;
+    private bool bKeyPasting = false;
     private AppSettings mySettings;
     private uint pChecker;
     private uint pIcoWait;
     private Gdk.Pixbuf icoNetTest;
     private string checkKey;
+    private Gtk.Menu mnuKey;
+    private Gtk.MenuItem mnuKeyCut;
+    private Gtk.MenuItem mnuKeyCopy;
+    private Gtk.MenuItem mnuKeyPaste;
+    private Gtk.SeparatorMenuItem mnuKeySpacer;
+    private Gtk.MenuItem mnuKeyDelete;
+    private Gtk.MenuItem mnuKeyClear;
+    private Gtk.Entry txtMenuKeyItem;
     private const string LINK_PURCHASE = "<a href=\"http://srt.realityripple.com/c_signup.php\">Purchase a Remote Usage Service Subscription</a>";
     private const string LINK_PURCHASE_TT = "If you do not have a Product Key for the Remote Usage Service, you can purchase one online for as little as $15.00 a year.";
     private const string LINK_PANEL = "Visit the Remote Usage Service User Panel Page";
@@ -77,7 +86,7 @@ namespace RestrictionTrackerGTK
       mySettings = new AppSettings();
       string sAccount = mySettings.Account;
       string sUsername, sProvider;
-      if (!String.IsNullOrEmpty(sAccount) && (sAccount.Contains("@") & sAccount.Contains(".")))
+      if (!string.IsNullOrEmpty(sAccount) && (sAccount.Contains("@") & sAccount.Contains(".")))
       {
         sUsername = sAccount.Substring(0, sAccount.LastIndexOf("@"));
         sProvider = sAccount.Substring(sAccount.LastIndexOf("@") + 1);
@@ -112,9 +121,31 @@ namespace RestrictionTrackerGTK
         case RestrictionLibrary.localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
           optAccountTypeRPX.Active = true;
           break;
+        default:
+          optAccountTypeNONE.Active = true;
+          break;
       }
       lblAccountType.MnemonicWidget = chkAccountTypeAuto;
       chkAccountTypeAuto.Active = !mySettings.AccountTypeForced;
+      mnuKey = new Menu();
+      mnuKeyCut = new MenuItem("C_ut");
+      mnuKeyCopy = new MenuItem("_Copy");
+      mnuKeyPaste = new MenuItem("_Paste");
+      mnuKeySpacer = new SeparatorMenuItem();
+      mnuKeyDelete = new MenuItem("_Delete");
+      mnuKeyClear = new MenuItem("C_lear");
+      mnuKey.Append(mnuKeyCut);
+      mnuKey.Append(mnuKeyCopy);
+      mnuKey.Append(mnuKeyPaste);
+      mnuKey.Append(mnuKeySpacer);
+      mnuKey.Append(mnuKeyDelete);
+      mnuKey.Append(mnuKeyClear);
+      mnuKey.ShowAll();
+      mnuKeyCut.Activated += mnuKeyCut_Click;
+      mnuKeyCopy.Activated += mnuKeyCopy_Click;
+      mnuKeyPaste.Activated += mnuKeyPaste_Click;
+      mnuKeyDelete.Activated += mnuKeyDelete_Click;
+      mnuKeyClear.Activated += mnuKeyClear_Click;
       string sKey = mySettings.RemoteKey;
       if (sKey.Contains("-"))
       {
@@ -253,7 +284,7 @@ namespace RestrictionTrackerGTK
           System.Net.NetworkCredential mCreds = wProxy.Credentials.GetCredential(null, "");
           txtProxyUser.Text = mCreds.UserName;
           txtProxyPassword.Text = mCreds.Password;
-          if (String.IsNullOrEmpty(mCreds.Domain))
+          if (string.IsNullOrEmpty(mCreds.Domain))
           {
             txtProxyDomain.Text = "";
           }
@@ -326,6 +357,7 @@ namespace RestrictionTrackerGTK
         chkTLSProxy.Active = false;
         chkTLSProxy.Visible = false;
       }
+      RunNetworkProtocolTest();
       if (string.IsNullOrEmpty(mySettings.NetTestURL))
       {
         optNetTestNone.Active = true;
@@ -463,22 +495,27 @@ namespace RestrictionTrackerGTK
       txtKey1.Changed += txtProductKey_Changed;
       txtKey1.KeyPressEvent += txtProductKey_KeyPressEvent;
       txtKey1.TextInserted += txtProductKey_InsertText;
+      txtKey1.ButtonPressEvent += txtProductKey_Clicked;
       txtKey2.AddEvents((int) Gdk.EventType.KeyPress);
       txtKey2.Changed += txtProductKey_Changed;
       txtKey2.KeyPressEvent += txtProductKey_KeyPressEvent;
       txtKey2.TextInserted += txtProductKey_InsertText;
+      txtKey2.ButtonPressEvent += txtProductKey_Clicked;
       txtKey3.AddEvents((int) Gdk.EventType.KeyPress);
       txtKey3.Changed += txtProductKey_Changed;
       txtKey3.KeyPressEvent += txtProductKey_KeyPressEvent;
       txtKey3.TextInserted += txtProductKey_InsertText;
+      txtKey3.ButtonPressEvent += txtProductKey_Clicked;
       txtKey4.AddEvents((int) Gdk.EventType.KeyPress);
       txtKey4.Changed += txtProductKey_Changed;
       txtKey4.KeyPressEvent += txtProductKey_KeyPressEvent;
       txtKey4.TextInserted += txtProductKey_InsertText;
+      txtKey4.ButtonPressEvent += txtProductKey_Clicked;
       txtKey5.AddEvents((int) Gdk.EventType.KeyPress);
       txtKey5.Changed += txtProductKey_Changed;
       txtKey5.KeyPressEvent += txtProductKey_KeyPressEvent;
       txtKey5.TextInserted += txtProductKey_InsertText;
+      txtKey5.ButtonPressEvent += txtProductKey_Clicked;
       evnKeyState.ButtonPressEvent += evnKeyState_ButtonPressEvent;
       //
       // Preferences
@@ -513,11 +550,11 @@ namespace RestrictionTrackerGTK
       txtProxyPassword.Changed += ValuesChanged;
       txtProxyDomain.Changed += ValuesChanged;
       //
-      chkTLSProxy.Toggled += ValuesChanged;
-      chkNetworkProtocolSSL3.Toggled += ValuesChanged;
-      chkNetworkProtocolTLS10.Toggled += ValuesChanged;
-      chkNetworkProtocolTLS11.Toggled += ValuesChanged;
-      chkNetworkProtocolTLS12.Toggled += ValuesChanged;
+      chkTLSProxy.Clicked += chkTLSProxy_Clicked;
+      chkNetworkProtocolSSL3.Clicked += ValuesChanged;
+      chkNetworkProtocolTLS10.Clicked += ValuesChanged;
+      chkNetworkProtocolTLS11.Clicked += ValuesChanged;
+      chkNetworkProtocolTLS12.Clicked += ValuesChanged;
       //
       cmbUpdateAutomation.Changed += cmbUpdateAutomation_Changed;
       chkUpdateBETA.Clicked += ValuesChanged;
@@ -568,26 +605,146 @@ namespace RestrictionTrackerGTK
 
       return false;
     }
+    private void RunNetworkProtocolTest()
+    {
+      if (bRemoteAcct)
+      {
+        chkTLSProxy.Active = false;
+        chkTLSProxy.Sensitive = false;
+        chkTLSProxy.TooltipText = "The TLS Proxy is disabled when using the Remote Usage Service.";
+        chkNetworkProtocolSSL3.Active = false;
+        chkNetworkProtocolSSL3.Sensitive = false;
+        chkNetworkProtocolSSL3.TooltipText = "SSL 3.0 is disabled when using the Remote Usage Service.";
+        chkNetworkProtocolTLS10.Active = false;
+        chkNetworkProtocolTLS10.Sensitive = false;
+        chkNetworkProtocolTLS10.TooltipText = "TLS 1.0 is disabled when using the Remote Usage Service.";
+        chkNetworkProtocolTLS11.Active = false;
+        chkNetworkProtocolTLS11.Sensitive = false;
+        chkNetworkProtocolTLS11.TooltipText = "TLS 1.1 is disabled when using the Remote Usage Service.";
+        chkNetworkProtocolTLS12.Active = false;
+        chkNetworkProtocolTLS12.Sensitive = false;
+        chkNetworkProtocolTLS12.TooltipText = "TLS 1.2 is disabled when using the Remote Usage Service.";
+        return;
+      }
+      chkTLSProxy.Sensitive = true;
+      chkTLSProxy.TooltipText = "If your version of the MONO Framework does not support the Security Protocol required for your provider, you can use this Proxy to connect through the RealityRipple.com server.";
+      if (chkTLSProxy.Active)
+      {
+        chkNetworkProtocolSSL3.Sensitive = true;
+        chkNetworkProtocolSSL3.TooltipText = "Check this box to allow use of the older SSL 3.0 protocol, which is vulnerable to attacks.";
+        chkNetworkProtocolTLS10.Sensitive = true;
+        chkNetworkProtocolTLS10.TooltipText = "Check this box to allow use of the older TLS 1.0 protocol, which may be vulnerable to attacks.";
+        chkNetworkProtocolTLS11.Sensitive = true;
+        chkNetworkProtocolTLS11.TooltipText = "Check this box to allow use of the newer, safer TLS 1.1 protocol.";
+        chkNetworkProtocolTLS12.Sensitive = true;
+        chkNetworkProtocolTLS12.TooltipText = "Check this box to allow use of the latest TLS 1.2 protocol.";
+        return;
+      }
+      bool canSSL3 = true;
+      bool canTLS10 = true;
+      bool canTLS11 = true;
+      bool canTLS12 = true;
+      SecurityProtocolTypeEx myProtocol = (SecurityProtocolTypeEx) System.Net.ServicePointManager.SecurityProtocol;
+      try
+      {
+        System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Ssl3;
+      }
+      catch (Exception)
+      {
+        canSSL3 = false;
+      }
+      try
+      {
+        System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls10;
+      }
+      catch (Exception)
+      {
+        canTLS10 = false;
+      }
+      try
+      {
+        System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls11;
+      }
+      catch (Exception)
+      {
+        canTLS11 = false;
+      }
+      try
+      {
+        System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls12;
+      }
+      catch (Exception)
+      {
+        canTLS12 = false;
+      }
+      string clrVer = RestrictionLibrary.srlFunctions.GetCLRCleanVersion();
+      Version clr = new Version(clrVer.Substring(5));
+      if (clr.Major < 4 || (clr.Major == 4 & clr.Minor < 8))
+      {
+        canTLS11 = false;
+        canTLS12 = false;
+      }
+      System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) myProtocol;
+      if (canSSL3)
+      {
+        chkNetworkProtocolSSL3.Sensitive = true;
+        chkNetworkProtocolSSL3.TooltipText = "Check this box to allow use of the older SSL 3.0 protocol, which is vulnerable to attacks.";
+      }
+      else
+      {
+        chkNetworkProtocolSSL3.Active = false;
+        chkNetworkProtocolSSL3.Sensitive = false;
+        chkNetworkProtocolSSL3.TooltipText = "Your version of the MONO Framework does not allow SSL 3.0 connections. Probably for the best, as this protocol is vulnerable to attacks.";
+      }
+      if (canTLS10)
+      {
+        chkNetworkProtocolTLS10.Sensitive = true;
+        chkNetworkProtocolTLS10.TooltipText = "Check this box to allow use of the older TLS 1.0 protocol, which may be vulnerable to attacks.";
+      }
+      else
+      {
+        chkNetworkProtocolTLS10.Active = false;
+        chkNetworkProtocolTLS10.Sensitive = false;
+        chkNetworkProtocolTLS10.TooltipText = "Your version of the MONO Framework does not allow TLS 1.0 connections. Probably for the best, as this protocol is vulnerable to attacks.";
+      }
+      if (canTLS11)
+      {
+        chkNetworkProtocolTLS11.Sensitive = true;
+        chkNetworkProtocolTLS11.TooltipText = "Check this box to allow use of the newer, safer TLS 1.1 protocol.";
+      }
+      else
+      {
+        chkNetworkProtocolTLS11.Active = false;
+        chkNetworkProtocolTLS11.Sensitive = false;
+        chkNetworkProtocolTLS11.TooltipText = "Your version of the MONO Framework does not allow TLS 1.1 connections. Please update to MONO 4.8 or newer.";
+      }
+      if (canTLS12)
+      {
+        chkNetworkProtocolTLS12.Sensitive = true;
+        chkNetworkProtocolTLS12.TooltipText = "Check this box to allow use of the latest TLS 1.2 protocol.";
+      }
+      else
+      {
+        chkNetworkProtocolTLS12.Active = false;
+        chkNetworkProtocolTLS12.Sensitive = false;
+        chkNetworkProtocolTLS12.TooltipText = "Your version of the MONO Framework does not allow TLS 1.2 connections. Please update to MONO 4.8 or newer.";
+      }
+    }
     protected void dlgConfig_Response(object o, Gtk.ResponseArgs args)
     {
       this.Response -= dlgConfig_Response;
-      if (bSaved)
-      {
-        if (bAccount)
-        {
-          this.Respond(Gtk.ResponseType.Yes);
-        }
-        else
-        {
-          this.Respond(Gtk.ResponseType.Ok);
-        }
-      }
-      else if (cmdSave.Sensitive)
+      if (cmdSave.Sensitive)
       {
         Gtk.ResponseType saveRet = modFunctions.ShowMessageBoxYNC(this, "Some settings have been changed but not saved.\n\nDo you want to save the changes to your configuration?", "Save Configuration?", Gtk.DialogFlags.Modal);
         if (saveRet == Gtk.ResponseType.Yes)
         {
           cmdSave.Click();
+          if (cmdSave.Sensitive)
+          {
+            this.Respond(Gtk.ResponseType.None);
+            this.Response += dlgConfig_Response;
+            return;
+          }
           if (bAccount)
             this.Respond(Gtk.ResponseType.Yes);
           else
@@ -601,6 +758,17 @@ namespace RestrictionTrackerGTK
         {
           this.Respond(Gtk.ResponseType.None);
           this.Response += dlgConfig_Response;
+        }
+      }
+      else if (bSaved)
+      {
+        if (bAccount)
+        {
+          this.Respond(Gtk.ResponseType.Yes);
+        }
+        else
+        {
+          this.Respond(Gtk.ResponseType.Ok);
         }
       }
       else
@@ -689,7 +857,7 @@ namespace RestrictionTrackerGTK
       {
         Gtk.Clipboard cb = Gtk.Clipboard.Get(Gdk.Selection.Clipboard);
 
-        if (!String.IsNullOrEmpty(cb.WaitForText()))
+        if (!string.IsNullOrEmpty(cb.WaitForText()))
         {
           string sKey = cb.WaitForText();
           if (sKey.Contains("-"))
@@ -715,7 +883,12 @@ namespace RestrictionTrackerGTK
         }
         e.RetVal = true;
       }
-      else if ((e.Event.Key == Gdk.Key.Delete) | ((e.Event.Key == Gdk.Key.x) & ((e.Event.State | Gdk.ModifierType.ControlMask) == Gdk.ModifierType.ControlMask)) | ((e.Event.Key == Gdk.Key.c) & ((e.Event.State | Gdk.ModifierType.ControlMask) == Gdk.ModifierType.ControlMask)) | (e.Event.Key == Gdk.Key.End) | (e.Event.Key == Gdk.Key.Home) | (e.Event.Key == Gdk.Key.leftarrow) | (e.Event.Key == Gdk.Key.rightarrow) | (e.Event.Key == Gdk.Key.Tab) | (e.Event.Key == Gdk.Key.Shift_L) | (e.Event.Key == Gdk.Key.Shift_R) | (e.Event.Key == Gdk.Key.Alt_L) | (e.Event.Key == Gdk.Key.Alt_R) | (e.Event.Key == Gdk.Key.Control_L) | (e.Event.Key == Gdk.Key.Control_R))
+      else if ((e.Event.Key == Gdk.Key.a) & ((e.Event.State & Gdk.ModifierType.ControlMask) == Gdk.ModifierType.ControlMask))
+      {
+        txtSender.SelectRegion(0, txtSender.Text.Length);
+        e.RetVal = true;
+      }
+      else if ((e.Event.Key == Gdk.Key.Delete) | ((e.Event.Key == Gdk.Key.x) & ((e.Event.State & Gdk.ModifierType.ControlMask) == Gdk.ModifierType.ControlMask)) | ((e.Event.Key == Gdk.Key.c) & ((e.Event.State & Gdk.ModifierType.ControlMask) == Gdk.ModifierType.ControlMask)) | (e.Event.Key == Gdk.Key.End) | (e.Event.Key == Gdk.Key.Home) | (e.Event.Key == Gdk.Key.leftarrow) | (e.Event.Key == Gdk.Key.rightarrow) | (e.Event.Key == Gdk.Key.Tab) | (e.Event.Key == Gdk.Key.Shift_L) | (e.Event.Key == Gdk.Key.Shift_R) | (e.Event.Key == Gdk.Key.Alt_L) | (e.Event.Key == Gdk.Key.Alt_R) | (e.Event.Key == Gdk.Key.Control_L) | (e.Event.Key == Gdk.Key.Control_R))
       {
         e.RetVal = false;
       }
@@ -723,7 +896,7 @@ namespace RestrictionTrackerGTK
       {
         int start, end;
         txtSender.GetSelectionBounds(out start, out end);
-        if ((String.IsNullOrEmpty(txtSender.Text)) & (Math.Abs(end - start) == 0))
+        if ((string.IsNullOrEmpty(txtSender.Text)) & (Math.Abs(end - start) == 0))
         {
           if (txtSender == txtKey1)
           {
@@ -800,6 +973,10 @@ namespace RestrictionTrackerGTK
       {
         return;
       }
+      if (bKeyPasting)
+      {
+        return;
+      }
       if (pChecker != 0)
       {
         bRemoteAcct = CheckState;
@@ -826,6 +1003,43 @@ namespace RestrictionTrackerGTK
       else
       {
         KeyCheck();
+      }
+    }
+    [GLib.ConnectBefore]
+    protected void txtProductKey_Clicked(object o, ButtonPressEventArgs e)
+    {
+      if (e.Event.Button == 3)
+      {
+        txtMenuKeyItem = (Entry) o;
+        Gtk.Clipboard cb = Gtk.Clipboard.Get(Gdk.Selection.Clipboard);
+        if (string.IsNullOrEmpty(txtKey1.Text) | string.IsNullOrEmpty(txtKey2.Text) | string.IsNullOrEmpty(txtKey3.Text) | string.IsNullOrEmpty(txtKey4.Text) | string.IsNullOrEmpty(txtKey5.Text))
+        {
+          int selStart, selEnd;
+          txtMenuKeyItem.GetSelectionBounds(out selStart, out selEnd);
+          if ((!string.IsNullOrEmpty(txtMenuKeyItem.Text)) && (selStart != selEnd))
+          {
+            mnuKeyCut.Sensitive = true;
+            mnuKeyCopy.Sensitive = true;
+          }
+          else
+          {
+            mnuKeyCut.Sensitive = false;
+            mnuKeyCopy.Sensitive = false;
+          }
+        }
+        else
+        {
+          mnuKeyCut.Sensitive = true;
+          mnuKeyCopy.Sensitive = true;
+        }
+
+        //mnuKeyCut.Sensitive = !(string.IsNullOrEmpty(txtKey1.Text) & string.IsNullOrEmpty(txtKey2.Text) | string.IsNullOrEmpty(txtKey3.Text) | string.IsNullOrEmpty(txtKey4.Text) | string.IsNullOrEmpty(txtKey5.Text));
+        //mnuKeyCopy.Sensitive = !(string.IsNullOrEmpty(txtKey1.Text) | string.IsNullOrEmpty(txtKey2.Text) | string.IsNullOrEmpty(txtKey3.Text) | string.IsNullOrEmpty(txtKey4.Text) | string.IsNullOrEmpty(txtKey5.Text));
+        mnuKeyPaste.Sensitive = !(string.IsNullOrEmpty(cb.WaitForText()));
+        mnuKeyDelete.Sensitive = !(string.IsNullOrEmpty(txtMenuKeyItem.Text));
+        mnuKeyClear.Sensitive = !(string.IsNullOrEmpty(txtKey1.Text) & string.IsNullOrEmpty(txtKey2.Text) & string.IsNullOrEmpty(txtKey3.Text) & string.IsNullOrEmpty(txtKey4.Text) & string.IsNullOrEmpty(txtKey5.Text));
+        mnuKey.Popup();
+        e.RetVal = true;
       }
     }
     protected void cmdPassDisplay_Toggled(object sender, EventArgs e)
@@ -913,6 +1127,14 @@ namespace RestrictionTrackerGTK
       }
       if (bLoaded)
       {
+        cmdSave.Sensitive = SettingsChanged();
+      }
+    }
+    protected void chkTLSProxy_Clicked(object sender, EventArgs e)
+    {
+      if (bLoaded)
+      {
+        RunNetworkProtocolTest();
         cmdSave.Sensitive = SettingsChanged();
       }
     }
@@ -1033,7 +1255,7 @@ namespace RestrictionTrackerGTK
             GLib.Source.Remove(pIcoWait);
             pIcoWait = 0;
           }
-          if (!String.IsNullOrEmpty(txtNetTestCustom.Text))
+          if (!string.IsNullOrEmpty(txtNetTestCustom.Text))
           {
             int token = MakeAToken(txtNetTestCustom.Text);
             if (CurrentOS.IsMac)
@@ -1073,6 +1295,94 @@ namespace RestrictionTrackerGTK
         cmdSave.Sensitive = SettingsChanged();
       }
     }
+    #region "Context Menu"
+    protected void mnuKeyPaste_Click(object sender, EventArgs e)
+    {
+      Gtk.Clipboard cb = Gtk.Clipboard.Get(Gdk.Selection.Clipboard);
+      string cbText = cb.WaitForText();
+      if (!(string.IsNullOrEmpty(cbText)))
+      {
+        string sKey = cbText.Trim();
+        if (sKey.Contains("-"))
+        {
+          string[] sKeys = sKey.Split('-');
+          if (sKeys.Length == 5)
+          {
+            bKeyPasting = true;
+            txtKey1.Text = sKeys[0];
+            txtKey2.Text = sKeys[1];
+            txtKey3.Text = sKeys[2];
+            txtKey4.Text = sKeys[3];
+            txtKey5.Text = sKeys[4];
+            bKeyPasting = false;
+            txtProductKey_Changed(sender, e);
+          }
+          else
+          {
+            if (sKey.Length > txtMenuKeyItem.MaxLength)
+              sKey = sKey.Substring(0, txtMenuKeyItem.MaxLength);
+            txtMenuKeyItem.Text = sKey;
+          }
+        }
+        else
+        {
+          if (sKey.Length > txtMenuKeyItem.MaxLength)
+            sKey = sKey.Substring(0, txtMenuKeyItem.MaxLength);
+          txtMenuKeyItem.Text = sKey;  
+        }
+      }
+      txtMenuKeyItem = null;
+    }
+    protected void mnuKeyCut_Click(object sender, EventArgs e)
+    {
+      if (!(string.IsNullOrEmpty(txtKey1.Text) & string.IsNullOrEmpty(txtKey2.Text) & string.IsNullOrEmpty(txtKey3.Text) & string.IsNullOrEmpty(txtKey4.Text) & string.IsNullOrEmpty(txtKey5.Text)))
+      {
+        if (txtKey1.Text.Length == txtKey1.MaxLength & txtKey2.Text.Length == txtKey2.MaxLength & txtKey3.Text.Length == txtKey3.MaxLength & txtKey4.Text.Length == txtKey4.MaxLength & txtKey5.Text.Length == txtKey5.MaxLength)
+        {
+          string sKey = txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text;
+          Gtk.Clipboard cb = Gtk.Clipboard.Get(Gdk.Selection.Clipboard);
+          cb.Text = sKey;
+          txtKey1.Text = "";
+          txtKey2.Text = "";
+          txtKey3.Text = "";
+          txtKey4.Text = "";
+          txtKey5.Text = "";
+          return;
+        }
+      }
+      txtMenuKeyItem.CutClipboard();
+      txtMenuKeyItem = null;
+    }
+    protected void mnuKeyCopy_Click(object sender, EventArgs e)
+    {
+      if (!(string.IsNullOrEmpty(txtKey1.Text) & string.IsNullOrEmpty(txtKey2.Text) & string.IsNullOrEmpty(txtKey3.Text) & string.IsNullOrEmpty(txtKey4.Text) & string.IsNullOrEmpty(txtKey5.Text)))
+      {
+        if (txtKey1.Text.Length == txtKey1.MaxLength & txtKey2.Text.Length == txtKey2.MaxLength & txtKey3.Text.Length == txtKey3.MaxLength & txtKey4.Text.Length == txtKey4.MaxLength & txtKey5.Text.Length == txtKey5.MaxLength)
+        {
+          string sKey = txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text;
+          Gtk.Clipboard cb = Gtk.Clipboard.Get(Gdk.Selection.Clipboard);
+          cb.Text = sKey;
+          return;
+        }
+      }
+      txtMenuKeyItem.CopyClipboard();
+      txtMenuKeyItem = null;
+    }
+    protected void mnuKeyDelete_Click(object sender, EventArgs e)
+    {
+      txtMenuKeyItem.Text = "";
+      txtMenuKeyItem = null;
+    }
+    protected void mnuKeyClear_Click(object sender, EventArgs e)
+    {
+      txtKey1.Text = "";
+      txtKey2.Text = "";
+      txtKey3.Text = "";
+      txtKey4.Text = "";
+      txtKey5.Text = "";
+      txtMenuKeyItem = null;
+    }
+    #endregion
     #region "Remote Service"
     protected void remoteTest_Failure(object sender, RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs e)
     {
@@ -1175,7 +1485,7 @@ namespace RestrictionTrackerGTK
       {
         if (sHostList.Contains("\n"))
         {
-          String[] HostList = sHostList.Split('\n');
+          string[] HostList = sHostList.Split('\n');
           bLoaded = false;
           ClearHostList();
           for (int i = 0; i < HostList.Length; i++)
@@ -1380,19 +1690,19 @@ namespace RestrictionTrackerGTK
     }
     protected void cmdSave_Click(object sender, EventArgs e)
     {
-      if (String.IsNullOrEmpty(txtAccount.Text))
+      if (string.IsNullOrEmpty(txtAccount.Text))
       {
         modFunctions.ShowMessageBox(this, "Please enter your ViaSat account Username before saving the configuration.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
         txtAccount.GrabFocus();
         return;
       }
-      if (String.IsNullOrEmpty(txtPassword.Text))
+      if (string.IsNullOrEmpty(txtPassword.Text))
       {
         modFunctions.ShowMessageBox(this, "Please enter your ViaSat account Password before saving the configuration.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
         txtPassword.GrabFocus();
         return;
       }
-      if (String.IsNullOrEmpty(cmbProvider.Entry.Text))
+      if (string.IsNullOrEmpty(cmbProvider.Entry.Text))
       {
         modFunctions.ShowMessageBox(this, "Please enter your ViaSat Provider address or select one from the list before saving the configuration.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
         cmbProvider.GrabFocus();
@@ -1421,9 +1731,9 @@ namespace RestrictionTrackerGTK
         {
           lblNetworkProtocolDescription.GrabFocus();
         }
-
+        return;
       }
-      if (String.IsNullOrEmpty(txtHistoryDir.CurrentFolder))
+      if (string.IsNullOrEmpty(txtHistoryDir.CurrentFolder))
       {
         txtHistoryDir.SetCurrentFolder(modFunctions.MySaveDir(true));
       }
@@ -1482,7 +1792,7 @@ namespace RestrictionTrackerGTK
         mySettings.TrayIconStyle = TrayStyles.Never;
       mySettings.TrayIconOnClose = chkTrayClose.Active;
       mySettings.AutoHide = chkAutoHide.Active;
-      if (String.IsNullOrEmpty(mySettings.HistoryDir))
+      if (string.IsNullOrEmpty(mySettings.HistoryDir))
       {
         mySettings.HistoryDir = modFunctions.MySaveDir(true);
       }
@@ -1550,7 +1860,7 @@ namespace RestrictionTrackerGTK
               }
               if (sOverWrites.Count > 0)
               {
-                if (modFunctions.ShowMessageBox(this, "Files exist in the new Data Directory:\n" + String.Join("\n", sOverWrites.ToArray()) + "\n\nOverwrite them?", "Overwrite Files?", Gtk.DialogFlags.Modal, Gtk.MessageType.Question, Gtk.ButtonsType.YesNo) == Gtk.ResponseType.Yes)
+                if (modFunctions.ShowMessageBox(this, "Files exist in the new Data Directory:\n" + string.Join("\n", sOverWrites.ToArray()) + "\n\nOverwrite them?", "Overwrite Files?", Gtk.DialogFlags.Modal, Gtk.MessageType.Question, Gtk.ButtonsType.YesNo) == Gtk.ResponseType.Yes)
                 {
                   foreach (string sFile in sOldFiles)
                   {
@@ -1728,19 +2038,19 @@ namespace RestrictionTrackerGTK
       }
       else if (cmbProxyType.Active == 2)
       {
-        if (String.IsNullOrEmpty(txtProxyAddress.Text))
+        if (string.IsNullOrEmpty(txtProxyAddress.Text))
         {
           modFunctions.ShowMessageBox(this, "Please enter a Proxy address or choose a different option.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
           txtProxyAddress.GrabFocus();
           return;
         }
-        if (String.IsNullOrEmpty(txtProxyUser.Text) & String.IsNullOrEmpty(txtProxyPassword.Text) & String.IsNullOrEmpty(txtProxyDomain.Text))
+        if (string.IsNullOrEmpty(txtProxyUser.Text) & string.IsNullOrEmpty(txtProxyPassword.Text) & string.IsNullOrEmpty(txtProxyDomain.Text))
         {
           mySettings.Proxy = new System.Net.WebProxy(txtProxyAddress.Text, txtProxyPort.ValueAsInt);
         }
         else
         {
-          if (String.IsNullOrEmpty(txtProxyDomain.Text))
+          if (string.IsNullOrEmpty(txtProxyDomain.Text))
           {
             mySettings.Proxy = new System.Net.WebProxy(txtProxyAddress.Text, txtProxyPort.ValueAsInt);
             mySettings.Proxy.Credentials = new System.Net.NetworkCredential(txtProxyUser.Text, txtProxyPassword.Text);
@@ -1754,19 +2064,19 @@ namespace RestrictionTrackerGTK
       }
       else if (cmbProxyType.Active == 3)
       {
-        if (String.IsNullOrEmpty(txtProxyAddress.Text))
+        if (string.IsNullOrEmpty(txtProxyAddress.Text))
         {
           modFunctions.ShowMessageBox(this, "Please enter a Proxy address or choose a different option.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
           txtProxyAddress.GrabFocus();
           return;
         }
-        if (String.IsNullOrEmpty(txtProxyUser.Text) & String.IsNullOrEmpty(txtProxyPassword.Text) & String.IsNullOrEmpty(txtProxyDomain.Text))
+        if (string.IsNullOrEmpty(txtProxyUser.Text) & string.IsNullOrEmpty(txtProxyPassword.Text) & string.IsNullOrEmpty(txtProxyDomain.Text))
         {
           mySettings.Proxy = new System.Net.WebProxy(txtProxyAddress.Text);
         }
         else
         {
-          if (String.IsNullOrEmpty(txtProxyDomain.Text))
+          if (string.IsNullOrEmpty(txtProxyDomain.Text))
           {
             mySettings.Proxy = new System.Net.WebProxy(txtProxyAddress.Text, false, null, new System.Net.NetworkCredential(txtProxyUser.Text, txtProxyPassword.Text));
           }
@@ -1849,7 +2159,7 @@ namespace RestrictionTrackerGTK
         return true;
       if (cmbProvider.Entry != null)
       {
-        if (String.Compare(mySettings.Account, txtAccount.Text + "@" + cmbProvider.Entry.Text, true) != 0)
+        if (string.Compare(mySettings.Account, txtAccount.Text + "@" + cmbProvider.Entry.Text, true) != 0)
           return true;
       }
       if (mySettings.PassCrypt != RestrictionLibrary.StoredPassword.EncryptApp(txtPassword.Text))
@@ -1988,7 +2298,7 @@ namespace RestrictionTrackerGTK
         Uri addr = ((System.Net.WebProxy) mySettings.Proxy).Address;
         if (cmbProxyType.Active == 2)
         {
-          if (String.Compare(txtProxyAddress.Text, addr.Host) != 0)
+          if (string.Compare(txtProxyAddress.Text, addr.Host) != 0)
             return true;
           if ((int) txtProxyPort.Value - addr.Port != 0)
             return true;
@@ -2048,7 +2358,7 @@ namespace RestrictionTrackerGTK
       }
       if (optNetTestNone.Active)
       {
-        if (!String.IsNullOrEmpty(mySettings.NetTestURL))
+        if (!string.IsNullOrEmpty(mySettings.NetTestURL))
           return true;
       }
       else if (optNetTestTestMyNet.Active)
@@ -2082,6 +2392,7 @@ namespace RestrictionTrackerGTK
       {
         txtInterval.Value = txtInterval.Adjustment.Lower;
       }
+      RunNetworkProtocolTest();
     }
   }
 }

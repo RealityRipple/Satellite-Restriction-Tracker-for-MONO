@@ -451,7 +451,7 @@ namespace RestrictionTrackerGTK
     public static string DisplayVersion(string sVersion)
     {
       string ApplicationVersion = sVersion;
-      while (!String.IsNullOrEmpty(ApplicationVersion) && ApplicationVersion.Length > 3 && ApplicationVersion.EndsWith(".0"))
+      while (!string.IsNullOrEmpty(ApplicationVersion) && ApplicationVersion.Length > 3 && ApplicationVersion.EndsWith(".0"))
       {
         ApplicationVersion = ApplicationVersion.Substring(0, ApplicationVersion.Length - 2);
       }
@@ -2351,7 +2351,7 @@ namespace RestrictionTrackerGTK
     public static Gtk.ResponseType ShowMessageBox(Gtk.Window parent, string text, string title, Gtk.DialogFlags flags, Gtk.MessageType icon, Gtk.ButtonsType buttons)
     {
       Gtk.MessageDialog dlg = new Gtk.MessageDialog(parent, flags, icon, buttons, text);
-      if (String.IsNullOrEmpty(title))
+      if (string.IsNullOrEmpty(title))
       {
         dlg.Title = modFunctions.ProductName;
       }
@@ -2369,7 +2369,7 @@ namespace RestrictionTrackerGTK
       dlg.AddButton(Gtk.Stock.Yes, Gtk.ResponseType.Yes);
       dlg.AddButton(Gtk.Stock.No, Gtk.ResponseType.No);
       dlg.AddButton(Gtk.Stock.Cancel, Gtk.ResponseType.Cancel);
-      if (String.IsNullOrEmpty(title))
+      if (string.IsNullOrEmpty(title))
       {
         dlg.Title = modFunctions.ProductName;
       }
@@ -2392,7 +2392,7 @@ namespace RestrictionTrackerGTK
           string screenPath = Path.Combine(AppData, "srt_alert_clip.png");
           if (File.Exists(screenPath))
             File.Delete(screenPath);
-          System.Diagnostics.ProcessStartInfo cap = new System.Diagnostics.ProcessStartInfo("/usr/sbin/screencapture", String.Format("-R{0},{1},{2},{3} \"{4}\"", rectIn.X, rectIn.Y, rectIn.Width, rectIn.Height, screenPath));
+          System.Diagnostics.ProcessStartInfo cap = new System.Diagnostics.ProcessStartInfo("/usr/sbin/screencapture", string.Format("-R{0},{1},{2},{3} \"{4}\"", rectIn.X, rectIn.Y, rectIn.Width, rectIn.Height, screenPath));
           cap.UseShellExecute = true;
           System.Diagnostics.Process.Start(cap);
           if (!File.Exists(screenPath))
@@ -2647,26 +2647,18 @@ namespace RestrictionTrackerGTK
       {
         try
         {
-          string sIcon;
-          if (File.Exists("/usr/lib/restrictiontracker/RestrictionTracker-32.png"))
-            sIcon = "Icon=/usr/lib/restrictiontracker/RestrictionTracker-32.png\n";
-          else if (File.Exists("/usr/lib/restrictiontracker/RestrictionTracker-256.png"))
-            sIcon = "Icon=/usr/lib/restrictiontracker/RestrictionTracker-256.png\n";
-          else
-            sIcon = "";
           string sLink = "[Desktop Entry]\n" +
                          "Name=" + ProductName + "\n" +
                          "GenericName=Bandwidth Monitor\n" +
                          "Comment=Monitor and record your ViaSat Satellite network usage\n" +
-                         sIcon +
+                         "Icon=restrictiontracker" +
                          "Encoding=UTF-8\n" +
                          "Type=Application\n" +
                          "Version=" + DisplayVersion(ProductVersion) + "\n" +
-                         "Exec=mono /usr/lib/restrictiontracker/RestrictionTracker.exe\n" +
+                         "Exec=bash /usr/bin/restrictiontracker\n" +
                          "Categories=Network;System;Monitor\n" +
                          "StartupNotify=true\n" +
-                         "Terminal=0\n" +
-                         "TerminalOptions=";
+                         "Terminal=false";
           File.WriteAllText(Path.Combine(LinStartup, LinShortcut), sLink, System.Text.Encoding.GetEncoding(28591));
         }
         catch (Exception)

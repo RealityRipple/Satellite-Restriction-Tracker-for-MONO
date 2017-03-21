@@ -142,13 +142,13 @@ namespace RestrictionTrackerGTK
           if (sSum.Length > 80)
             sSum = sSum.Substring(0, 77) + "...";
           sErrRep += "%2526summary=" + DoubleEncode(sSum);
-          if (!String.IsNullOrEmpty(ex.StackTrace))
+          if (!string.IsNullOrEmpty(ex.StackTrace))
           {
             sDesc += "\n" + ex.StackTrace.Substring(0, ex.StackTrace.IndexOf("\n"));
           }
           else
           {
-            if (!String.IsNullOrEmpty(ex.Source))
+            if (!string.IsNullOrEmpty(ex.Source))
             {
               sDesc += "\n @ " + ex.Source;
               if (ex.TargetSite != null)
@@ -242,7 +242,7 @@ namespace RestrictionTrackerGTK
       pnlError.Attach(scrError, 1, 2, 1, 2, AttachOptions.Shrink | AttachOptions.Fill | AttachOptions.Expand, AttachOptions.Shrink | AttachOptions.Fill | AttachOptions.Expand, 0, 0);
 
       txtError.Buffer.Text = "Error: " + e.Message;
-      if (!String.IsNullOrEmpty(e.StackTrace))
+      if (!string.IsNullOrEmpty(e.StackTrace))
       {
         if (e.StackTrace.Contains("\n"))
           txtError.Buffer.Text += "\n" + e.StackTrace.Substring(0, e.StackTrace.IndexOf("\n"));
@@ -251,7 +251,7 @@ namespace RestrictionTrackerGTK
       }
       else
       {
-        if (!String.IsNullOrEmpty(e.Source))
+        if (!string.IsNullOrEmpty(e.Source))
         {
           txtError.Buffer.Text += "\n @ " + e.Source;
           if (e.TargetSite != null)

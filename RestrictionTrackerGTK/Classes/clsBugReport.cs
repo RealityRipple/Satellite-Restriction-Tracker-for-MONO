@@ -11,7 +11,7 @@ namespace MantisBugTracker
       System.Collections.Specialized.NameValueCollection pD1 = new System.Collections.Specialized.NameValueCollection();
       pD1.Add("ref", "bug_report_page.php");
       pD1.Add("project_id", Project_ID.ToString().Trim());
-      pD1.Add("make_default", String.Empty);
+      pD1.Add("make_default", string.Empty);
       WebClientEx httpToken = new WebClientEx();
       cJar = new System.Net.CookieContainer();
       httpToken.KeepAlive = false;
@@ -57,7 +57,7 @@ namespace MantisBugTracker
       {
         pData.Add("view_state", "50");
       }
-      pData.Add("report_stay", String.Empty);
+      pData.Add("report_stay", string.Empty);
       string sRet;
       WebClientEx httpReport = new WebClientEx();
       httpReport.KeepAlive = false;
@@ -101,7 +101,7 @@ namespace MantisBugTracker
       string sDesc = e.ToString();
       string MyOS = CurrentOS.Name;
       string MyOSVer = Environment.OSVersion.VersionString;
-      return ReportBug(sTok, 2, Mantis_Category.General, Mantis_Reproducibility.Have_Not_Tried, Mantis_Severity.Minor, Mantis_Priority.Normal, sPlat, MyOS, MyOSVer, sSum, sDesc, String.Empty, String.Empty, true);
+      return ReportBug(sTok, 2, Mantis_Category.General, Mantis_Reproducibility.Have_Not_Tried, Mantis_Severity.Minor, Mantis_Priority.Normal, sPlat, MyOS, MyOSVer, sSum, sDesc, string.Empty, string.Empty, true);
     }
   }
 }

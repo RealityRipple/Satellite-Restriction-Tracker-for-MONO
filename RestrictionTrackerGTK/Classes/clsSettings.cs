@@ -669,7 +669,7 @@ namespace RestrictionTrackerGTK
           sProtocol += Enum.GetName(typeof(SecurityProtocolTypeEx), protocolTest).ToUpper() + ", ";
         }
       }
-      if (!String.IsNullOrEmpty(sProtocol) && sProtocol.EndsWith(", "))
+      if (!string.IsNullOrEmpty(sProtocol) && sProtocol.EndsWith(", "))
       {
         sProtocol = sProtocol.Substring(0, sProtocol.Length - 2);
       }
@@ -1353,7 +1353,7 @@ namespace RestrictionTrackerGTK
               return new WebProxy(pIP, pPort);
             }
           }
-          else if (String.Compare(pType.ToLower(), "url") == 0)
+          else if (string.Compare(pType.ToLower(), "url") == 0)
           {
             string pURL = myProxySettings[1];
             if (myProxySettings.Length > 2)
@@ -1390,11 +1390,11 @@ namespace RestrictionTrackerGTK
         }
         else
         {
-          if (String.Compare(m_ProxySetting.ToLower(), "none") == 0)
+          if (string.Compare(m_ProxySetting.ToLower(), "none") == 0)
           {
             return null;
           }
-          else if (String.Compare(m_ProxySetting.ToLower(), "system") == 0)
+          else if (string.Compare(m_ProxySetting.ToLower(), "system") == 0)
           {
             return WebRequest.DefaultWebProxy;
           }

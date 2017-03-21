@@ -111,7 +111,7 @@ namespace RestrictionTrackerGTK
  
           Name += " " + (Is32bit ? "32bit" : "64bit");
         }
-        else if (!String.IsNullOrEmpty(UnixName))
+        else if (!string.IsNullOrEmpty(UnixName))
         {
           IsUnix = true;
         }
@@ -132,7 +132,7 @@ namespace RestrictionTrackerGTK
         System.Diagnostics.Process p = new System.Diagnostics.Process();
         p.StartInfo.UseShellExecute = false;
         p.StartInfo.RedirectStandardOutput = true;
-        if (!String.IsNullOrEmpty(args))
+        if (!string.IsNullOrEmpty(args))
         {
           p.StartInfo.Arguments = " " + args;
         }

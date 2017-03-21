@@ -1212,11 +1212,11 @@ namespace RestrictionTrackerGTK
     private uint tmrPulse;
     public void ShowProgress(string Title, string Subtitle)
     {
-      if (!String.IsNullOrEmpty(Title))
+      if (!string.IsNullOrEmpty(Title))
       {
         sbHistoryStatus.Push(0, Title);
       }
-      if (!String.IsNullOrEmpty(Subtitle))
+      if (!string.IsNullOrEmpty(Subtitle))
       {
         lblHistoryStatus.Text = Subtitle;
       }
@@ -1253,7 +1253,7 @@ namespace RestrictionTrackerGTK
         }
         tmrPulse = GLib.Timeout.Add(150, tmrPulse_Tick);
       }
-      if (!String.IsNullOrEmpty(Subtitle))
+      if (!string.IsNullOrEmpty(Subtitle))
       {
         lblHistoryStatus.Text = Subtitle;
       }

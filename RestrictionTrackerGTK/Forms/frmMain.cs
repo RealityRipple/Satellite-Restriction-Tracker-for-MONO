@@ -54,12 +54,12 @@ namespace RestrictionTrackerGTK
     }
     private TraySupport mTraySupport = TraySupport.Off;
     private int trayRes = 16;
-    private String _IconFolder = "";
-    private String IconFolder
+    private string _IconFolder = "";
+    private string IconFolder
     {
       get
       {
-        if (String.IsNullOrEmpty(_IconFolder))
+        if (string.IsNullOrEmpty(_IconFolder))
         {
           _IconFolder = System.IO.Path.Combine(modFunctions.AppData, "trayIcons") + System.IO.Path.DirectorySeparatorChar.ToString();
         }
@@ -233,7 +233,7 @@ namespace RestrictionTrackerGTK
             c_callback.Invoke(localRestrictionTracker.SatHostTypes.DishNet_EXEDE);
           }
         }
-        else if (Provider.ToLower() == "exede.com" | Provider.ToLower() == "exede.net")
+        else if (Provider.ToLower() == "exede.com" | Provider.ToLower() == "exede.net" | Provider.ToLower() == "satelliteinternetco.com")
         {
           if (c_callback == null)
           {
@@ -742,7 +742,7 @@ namespace RestrictionTrackerGTK
       if (myState != LoadStates.Loaded)
       {
         InitAccount();
-        if (!String.IsNullOrEmpty(sAccount))
+        if (!string.IsNullOrEmpty(sAccount))
         {
           if (mySettings.AutoHide)
             HideToTray();
@@ -1430,7 +1430,7 @@ namespace RestrictionTrackerGTK
         remoteData = null;
       }
       InitAccount();
-      if (!String.IsNullOrEmpty(sAccount))
+      if (!string.IsNullOrEmpty(sAccount))
       {
         EnableProgressIcon();
         SetStatusText("Reloading", "Reloading History...", false);
@@ -1523,11 +1523,11 @@ namespace RestrictionTrackerGTK
     private void InitAccount()
     {
       sAccount = mySettings.Account;
-      if (!String.IsNullOrEmpty(mySettings.PassCrypt))
+      if (!string.IsNullOrEmpty(mySettings.PassCrypt))
       {
         sPassword = StoredPassword.DecryptApp(mySettings.PassCrypt);
       }
-      if (!String.IsNullOrEmpty(sAccount))
+      if (!string.IsNullOrEmpty(sAccount))
       {
         if (sAccount.Contains("@") & sAccount.Contains("."))
         {
@@ -1600,9 +1600,9 @@ namespace RestrictionTrackerGTK
           }
           else
           {
-            if (!String.IsNullOrEmpty(sAccount))
+            if (!string.IsNullOrEmpty(sAccount))
             {
-              if (String.IsNullOrEmpty(sProvider))
+              if (string.IsNullOrEmpty(sProvider))
               {
                 sProvider = sAccount.Substring(sAccount.LastIndexOf("@") + 1).ToLower();
                 SetStatusText("Reloading", "Reloading History...", false);
@@ -1639,14 +1639,14 @@ namespace RestrictionTrackerGTK
     }
     private void Main_GetUsage(object o, EventArgs e)
     {
-      if (String.IsNullOrEmpty(sAccount) | String.IsNullOrEmpty(sPassword) | !sAccount.Contains("@"))
+      if (string.IsNullOrEmpty(sAccount) | string.IsNullOrEmpty(sPassword) | !sAccount.Contains("@"))
       {
         if (((Gtk.Label) mnuRestore.Child).Text == "Restore")
         {
           ShowFromTray();
         }
         cmdConfig.GrabFocus();
-        modFunctions.ShowMessageBox(null, "Please enter your account details in the configuration window.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Warning, Gtk.ButtonsType.Ok);
+        modFunctions.ShowMessageBox(null, "You haven't entered your account details.\nPlease enter your account details in the Config window by clicking Configuration.", "Account Details Required", Gtk.DialogFlags.Modal, Gtk.MessageType.Warning, Gtk.ButtonsType.Ok);
       }
       else
       {
@@ -1693,7 +1693,7 @@ namespace RestrictionTrackerGTK
     }
     private bool KeyCheck(string TestKey)
     {
-      if (String.IsNullOrEmpty(TestKey.Trim()))
+      if (string.IsNullOrEmpty(TestKey.Trim()))
       {
         return false;
       }
@@ -1880,25 +1880,48 @@ namespace RestrictionTrackerGTK
       {
         case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.LoginIssue:
           SetStatusText(modDB.LOG_GetLast().ToString("g"), e.Message, true);
-          break;
+          if (!string.IsNullOrEmpty(e.Fail))
+          {
+            FailFile(e.Fail, true);
+          }
+          DisplayUsage(false, false);
+          return;
         case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.ConnectionTimeout:
           SetStatusText(modDB.LOG_GetLast().ToString("g"), "Connection Timed Out!", true);
           DisplayUsage(false, false);
           break;
-        case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.LoginFailure:
-          if (e.Message == "TLS ERROR")
+        case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.TLSTooOld:
+          if (mySettings.TLSProxy)
           {
-            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Security Protocol not supported by MONO at this time. Please use the TLS Proxy feature for now.", true);
-          }
-          else if (e.Message.StartsWith("POSSIBLE TLS ERROR - "))
-          {
-            string sMessage = e.Message.Substring(21);
-            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Security Protocol not supported by MONO at this time. Please use the TLS Proxy feature for now.\n" + sMessage, true);
+            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Please enable TLS 1.1 or 1.2 under Security Protocol in the Network tab of the Config window to connect.", true);
+            DisplayUsage(false, false);
           }
           else
           {
-            SetStatusText(modDB.LOG_GetLast().ToString("g"), e.Message, true);
+            string clrVer = RestrictionLibrary.srlFunctions.GetCLRCleanVersion();
+            Version clr = new Version(clrVer.Substring(5));
+            if (clr.Major < 4 || (clr.Major == 4 & clr.Minor < 8))
+            {
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Security Protocol requires MONO 4.8 or newer. If you can't install MONO 4.8, please use the TLS Proxy feature for now.", true);
+              DisplayUsage(false, false);
+            }
+            else
+            {
+              if (e.Message == "VER")
+              {
+                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Please enable TLS 1.1 or 1.2 under Security Protocol in the Network tab of the Config window to connect.", true);
+                DisplayUsage(false, false);
+              }
+              else if (e.Message == "PROXY")
+              {
+                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Even though TLS 1.1 or 1.2 was enabled, the server still didn't like the request. Please let me know you got this message. You can use the TLS Proxy feature under Security Protocol in the Network tab of the Config window to bypass this problem for now.", true);
+                DisplayUsage(false, false);
+              }
+            }
           }
+          break;
+        case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.LoginFailure:
+          SetStatusText(modDB.LOG_GetLast().ToString("g"), e.Message, true);
           if (!string.IsNullOrEmpty(e.Fail))
           {
             FailFile(e.Fail);
@@ -1915,12 +1938,14 @@ namespace RestrictionTrackerGTK
           DisplayUsage(false, false);
           break;
         case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.UnknownAccountDetails:
+          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Please enter your account details in the Config window.", true);
+          DisplayUsage(false, false);
           if ((this.GdkWindow.State & Gdk.WindowState.Iconified) == Gdk.WindowState.Iconified)
           {
             ShowFromTray();
           }
           cmdConfig.GrabFocus();
-          modFunctions.ShowMessageBox(null, "Please enter your account details in the configuration window.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Warning, Gtk.ButtonsType.Ok);
+          modFunctions.ShowMessageBox(null, "You haven't entered your account details.\nPlease enter your account details in the Config window by clicking Configuration.", "Account Details Required", Gtk.DialogFlags.Modal, Gtk.MessageType.Warning, Gtk.ButtonsType.Ok);
           break;
         case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.UnknownAccountType:
           if (mySettings.AccountTypeForced)
@@ -2244,7 +2269,7 @@ namespace RestrictionTrackerGTK
     }
     private void Main_DisplayChangeInterval(object o, EventArgs a)
     {
-      string state = (String) o;
+      string state = (string) o;
       if (tmrChanges != null)
       {
         tmrChanges.Dispose();
@@ -2928,7 +2953,7 @@ namespace RestrictionTrackerGTK
           return;
       }
       InitAccount();
-      if ((!String.IsNullOrEmpty(sAccount)) & (!String.IsNullOrEmpty(sProvider)) & (!String.IsNullOrEmpty(sPassword)))
+      if ((!string.IsNullOrEmpty(sAccount)) & (!string.IsNullOrEmpty(sProvider)) & (!string.IsNullOrEmpty(sPassword)))
       {
         EnableProgressIcon();
         SetNextLoginTime();
@@ -2969,7 +2994,7 @@ namespace RestrictionTrackerGTK
           ShowFromTray();
         }
         cmdConfig.GrabFocus();
-        modFunctions.ShowMessageBox(null, "Please enter your account details in the configuration window.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Warning, Gtk.ButtonsType.Ok);
+        modFunctions.ShowMessageBox(null, "You haven't entered your account details.\nPlease enter your account details in the Config window by clicking Configuration.", "Account Details Required", Gtk.DialogFlags.Modal, Gtk.MessageType.Warning, Gtk.ButtonsType.Ok);
       }
     }
     public void cmdHistory_Click(object sender, EventArgs e)
@@ -3193,7 +3218,7 @@ namespace RestrictionTrackerGTK
     private System.Threading.Timer tmrPulse;
     public void ShowProgress(string sTitle, string sSubtitle, bool withProgress)
     {
-      if (!String.IsNullOrEmpty(sTitle))
+      if (!string.IsNullOrEmpty(sTitle))
       {
         if (sTitle.Contains("\n"))
         {
@@ -3208,7 +3233,7 @@ namespace RestrictionTrackerGTK
         lStatus.Yalign = 0.25f;
         sbMainStatus.HeightRequest = (int) Math.Ceiling((GetFontSize() / 1024d) * 2.5d);
       }
-      if (!String.IsNullOrEmpty(sSubtitle))
+      if (!string.IsNullOrEmpty(sSubtitle))
       {
         if (sSubtitle.Contains("\n"))
         {
@@ -3251,7 +3276,7 @@ namespace RestrictionTrackerGTK
         }
         tmrPulse = new System.Threading.Timer(tmrPulse_Tick, null, 0, 150);
       }
-      if (!String.IsNullOrEmpty(Subtitle))
+      if (!string.IsNullOrEmpty(Subtitle))
       {
         lblMainStatus.Text = Subtitle;
       }
@@ -3901,7 +3926,7 @@ namespace RestrictionTrackerGTK
     }
     private long StrToVal(string str, int vMult)
     {
-      if (String.IsNullOrEmpty(str))
+      if (string.IsNullOrEmpty(str))
       {
         return (0);
       }
@@ -3954,6 +3979,22 @@ namespace RestrictionTrackerGTK
         }
       }
     }
+    private void FailFile(string sFail, bool bJustFeedback)
+    {
+      if (clsUpdate.QuickCheckVersion() == ResultType.NoUpdate)
+      {
+        sFailTray = sFail;
+        modFunctions.MakeNotifier(ref taskNotifier, true);
+        if (taskNotifier != null)
+        {
+          taskNotifierEvent(true);
+          if (bJustFeedback)
+            taskNotifier.Show("Page Data Feedback Request", modFunctions.CompanyName + " has requested that information from your connection be sent back to the servers for further analysis.\nClick this alert if you'd like to help out.", 200, 1 * 60 * 1000, 100);
+          else
+            taskNotifier.Show("Error Reading Page Data", modFunctions.ProductName + " encountered data it does not understand.\nClick this alert to report the problem to " + modFunctions.CompanyName + ".", 200, 3 * 60 * 1000, 100);
+        }
+      }
+    }
     #endregion
     private class SetStatusTextEventArgs : EventArgs
     {
@@ -3990,7 +4031,7 @@ namespace RestrictionTrackerGTK
       {
         sDisp_LT = e.Status;
       }
-      if (String.IsNullOrEmpty(e.Details))
+      if (string.IsNullOrEmpty(e.Details))
       {
         bAlert = 2;
         sDisp_TT_E = null;
