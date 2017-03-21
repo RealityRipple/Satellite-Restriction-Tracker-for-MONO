@@ -2647,19 +2647,17 @@ namespace RestrictionTrackerGTK
       {
         try
         {
+          string execPath = "bash /usr/bin/restrictiontracker";
+          if (File.Exists("/usr/bin/gtk-launch"))
+            execPath = "gtk-launch restriction-tracker.desktop";
           string sLink = "[Desktop Entry]\n" +
                          "Name=" + ProductName + "\n" +
-                         "GenericName=Bandwidth Monitor\n" +
-                         "Comment=Monitor and record your ViaSat Satellite network usage\n" +
-                         "Icon=restrictiontracker" +
+                         "Icon=restrictiontracker\n" +
                          "Encoding=UTF-8\n" +
                          "Type=Application\n" +
-                         "Version=" + DisplayVersion(ProductVersion) + "\n" +
-                         "Exec=bash /usr/bin/restrictiontracker\n" +
-                         "Categories=Network;System;Monitor\n" +
-                         "StartupNotify=true\n" +
-                         "Terminal=false";
+                         "Exec=" + execPath;
           File.WriteAllText(Path.Combine(LinStartup, LinShortcut), sLink, System.Text.Encoding.GetEncoding(28591));
+          System.Diagnostics.Process.Start("chmod", "+x \"" + Path.Combine(LinStartup, LinShortcut) + "\"");
         }
         catch (Exception)
         {
