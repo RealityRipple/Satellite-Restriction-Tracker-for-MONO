@@ -6,17 +6,14 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.Security.Policy;
 using RestrictionTrackerGTK;
-using System.Diagnostics;
-using System.Reflection;
-
-
 namespace RestrictionTrackerGTK
 {
   public partial class frmMain :
     Gtk.Window
   {
     private localRestrictionTracker.SatHostTypes myPanel;
-    public static object trayIcon;
+    public static StatusIcon trayIcon;
+    public static AppIndicator.ApplicationIndicator appIcon;
     private bool mTrayState = false;
     public bool TrayState
     {
@@ -526,17 +523,18 @@ namespace RestrictionTrackerGTK
       this.Resize(mySettings.MainSize.Width, mySettings.MainSize.Height);
       Main_SizeChanged(null, null);
 
+      mTraySupport = TraySupport.Off;
       trayIcon = new StatusIcon();
-      ((StatusIcon) trayIcon).SizeChanged += trayIcon_SizeChanged;
+      trayIcon.SizeChanged += trayIcon_SizeChanged;
       tmrShow = GLib.Timeout.Add(2000, trayIcon_NoGo);
     }
     private void trayIcon_SizeChanged(object sender, SizeChangedArgs e)
     {
-      if (((StatusIcon) trayIcon).Embedded)
+      if (mTraySupport == TraySupport.Off)
       {
-        if (e.Size > 7)
+        if (trayIcon.Embedded)
         {
-          if (mTraySupport == TraySupport.Off)
+          if (e.Size > 7)
           {
             mTraySupport = TraySupport.Standard;
             trayRes = e.Size;
@@ -545,14 +543,55 @@ namespace RestrictionTrackerGTK
             {
               GLib.Source.Remove(tmrShow);
               tmrShow = 0;
-              ((StatusIcon) trayIcon).Activate += OnTrayIconActivate;
-              ((StatusIcon) trayIcon).PopupMenu += OnTrayIconPopup;
+              trayIcon.Activate += OnTrayIconActivate;
+              trayIcon.PopupMenu += OnTrayIconPopup;
               SetTrayText(modFunctions.ProductName);
               firstRestore = false;
               StartupCleanup();
             }
           }
-          else
+        }
+      }
+      else if (mTraySupport == TraySupport.AppIndicator)
+      {
+        appIcon.Status = AppIndicator.Status.Passive;
+        appIcon.Dispose();
+        appIcon = null;
+        if (trayIcon.Embedded)
+        {
+          if (e.Size > 7)
+          {
+            mTraySupport = TraySupport.Standard;
+            trayRes = e.Size;
+            MakeIconListing();
+            if (tmrShow != 0)
+            {
+              GLib.Source.Remove(tmrShow);
+              tmrShow = 0;
+            }
+            trayIcon.Activate += OnTrayIconActivate;
+            trayIcon.PopupMenu += OnTrayIconPopup;
+            SetTrayText(modFunctions.ProductName);
+            if (mySettings.TrayIconStyle == TrayStyles.Always)
+              mTrayState = true;
+            else if (mySettings.TrayIconStyle == TrayStyles.Minimized)
+            {
+              if ((this.GdkWindow.State & Gdk.WindowState.Iconified) == Gdk.WindowState.Iconified)
+                mTrayState = true;
+              else
+                mTrayState = false;
+            }
+            else
+              mTrayState = false;
+            SetTrayIcon(trayResource);
+          }
+        }
+      }
+      else if (mTraySupport == TraySupport.Standard)
+      {
+        if (trayIcon.Embedded)
+        {
+          if (e.Size > 7)
           {
             trayRes = e.Size;
             MakeIconListing();
@@ -566,15 +605,15 @@ namespace RestrictionTrackerGTK
       {
         GLib.Source.Remove(tmrShow);
         tmrShow = 0;
-        if (((StatusIcon) trayIcon).Embedded)
+        if (trayIcon.Embedded)
         {
           mTraySupport = TraySupport.Standard;
-          trayRes = ((StatusIcon) trayIcon).Size;
+          trayRes = trayIcon.Size;
           if (trayRes < 8)
             trayRes = 8;
           MakeIconListing();
-          ((StatusIcon) trayIcon).Activate += OnTrayIconActivate;
-          ((StatusIcon) trayIcon).PopupMenu += OnTrayIconPopup;
+          trayIcon.Activate += OnTrayIconActivate;
+          trayIcon.PopupMenu += OnTrayIconPopup;
           SetTrayText(modFunctions.ProductName);
           firstRestore = false;
         }
@@ -584,9 +623,9 @@ namespace RestrictionTrackerGTK
           MakeIconListing();
           try
           {
-            trayIcon = new AppIndicator.ApplicationIndicator("restriction-tracker", "norm", AppIndicator.Category.Communications, IconFolder);
+            appIcon = new AppIndicator.ApplicationIndicator("restriction-tracker", "norm", AppIndicator.Category.Communications, IconFolder);
             mTraySupport = TraySupport.AppIndicator;
-            ((AppIndicator.ApplicationIndicator) trayIcon).Menu = mnuTray;
+            appIcon.Menu = mnuTray;
             SetTrayText(modFunctions.ProductName);
             firstRestore = false;
           }
@@ -611,22 +650,30 @@ namespace RestrictionTrackerGTK
         if (System.IO.Path.GetExtension(sFile).ToLower() == ".png")
           File.Delete(sFile);
       }
-      ResizeIcon("norm.ico").Save(System.IO.Path.Combine(IconFolder, "norm.png"), System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("free.ico").Save(System.IO.Path.Combine(IconFolder, "free.png"), System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("restricted.ico").Save(System.IO.Path.Combine(IconFolder, "restricted.png"), System.Drawing.Imaging.ImageFormat.Png);
-      ResizePng("error.png").Save(System.IO.Path.Combine(IconFolder, "error.png"), System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("throbsprite.0.ico").Save(System.IO.Path.Combine(IconFolder, "throb_0.png"), System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("throbsprite.1.ico").Save(System.IO.Path.Combine(IconFolder, "throb_1.png"), System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("throbsprite.2.ico").Save(System.IO.Path.Combine(IconFolder, "throb_2.png"), System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("throbsprite.3.ico").Save(System.IO.Path.Combine(IconFolder, "throb_3.png"), System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("throbsprite.4.ico").Save(System.IO.Path.Combine(IconFolder, "throb_4.png"), System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("throbsprite.5.ico").Save(System.IO.Path.Combine(IconFolder, "throb_5.png"), System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("throbsprite.6.ico").Save(System.IO.Path.Combine(IconFolder, "throb_6.png"), System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("throbsprite.7.ico").Save(System.IO.Path.Combine(IconFolder, "throb_7.png"), System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("throbsprite.8.ico").Save(System.IO.Path.Combine(IconFolder, "throb_8.png"), System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("throbsprite.9.ico").Save(System.IO.Path.Combine(IconFolder, "throb_9.png"), System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("throbsprite.10.ico").Save(System.IO.Path.Combine(IconFolder, "throb_10.png"), System.Drawing.Imaging.ImageFormat.Png);
-      ResizeIcon("throbsprite.11.ico").Save(System.IO.Path.Combine(IconFolder, "throb_11.png"), System.Drawing.Imaging.ImageFormat.Png);
+      string[][] icoNames = new string[][] { new string[] { "norm.ico", "norm.png" }, new string[] { "free.ico", "free.png" }, new string[] { "restricted.ico", "restricted.png" }, new string[] { "error.png", "error.png" } , new string[] { "throbsprite.0.ico", "throb_0.png" }, new string[] { "throbsprite.1.ico", "throb_1.png" }, new string[] { "throbsprite.2.ico", "throb_2.png" }, new string[] { "throbsprite.3.ico", "throb_3.png" }, new string[] { "throbsprite.4.ico", "throb_4.png" }, new string[] { "throbsprite.5.ico", "throb_5.png" }, new string[] { "throbsprite.6.ico", "throb_6.png" }, new string[] { "throbsprite.7.ico", "throb_7.png" }, new string[] { "throbsprite.8.ico", "throb_8.png" }, new string[] { "throbsprite.9.ico", "throb_9.png" }, new string[] { "throbsprite.10.ico", "throb_10.png" }, new string[] { "throbsprite.11.ico", "throb_11.png" } };
+      foreach (string[] ico in icoNames)
+      {
+        if (System.IO.Path.GetExtension(ico[0]).ToLower() == ".ico")
+          ResizeIcon(ico[0]).Save(System.IO.Path.Combine(IconFolder, ico[1]), System.Drawing.Imaging.ImageFormat.Png);
+        else if (System.IO.Path.GetExtension(ico[0]).ToLower() == ".png")
+          ResizePng(ico[0]).Save(System.IO.Path.Combine(IconFolder, ico[1]), System.Drawing.Imaging.ImageFormat.Png);
+      }
+      long iStart = RestrictionLibrary.srlFunctions.TickCount();
+      do
+      {
+        Gtk.Main.Iteration();
+        Gtk.Main.IterationDo(false);
+        System.Threading.Thread.Sleep(0);
+        Gtk.Main.Iteration();
+        bool stillMissing = false;
+        foreach (string[] ico in icoNames)
+        {
+          if (!System.IO.File.Exists(System.IO.Path.Combine(IconFolder, ico[1])))
+            stillMissing = true;
+        }
+        if (!stillMissing)
+          break;
+      } while (iStart + 1000 > RestrictionLibrary.srlFunctions.TickCount());
       MakeCustomIconListing();
     }
     private System.Drawing.Bitmap ResizeIcon(string resource)
@@ -665,6 +712,7 @@ namespace RestrictionTrackerGTK
         trayRes = 8;
       bool doBoth = true;
       bool doTypeA = false;
+      List<string> icoNames = new List<string>();
       if (mySettings != null)
       {
         if (mySettings.AccountType != localRestrictionTracker.SatHostTypes.Other)
@@ -689,11 +737,13 @@ namespace RestrictionTrackerGTK
             using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(down, trayRes, up, trayRes))
             {
               pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_" + down + "x" + up + ".png"), "png");
+              icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_" + down + "x" + up + ".png"));
             }
           }
           using (Gdk.Pixbuf pIco = CreateTypeBTrayIcon(up, trayRes))
           {
             pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typeb_" + up + ".png"), "png");
+            icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typeb_" + up + ".png"));
           }
         }
       }
@@ -706,6 +756,7 @@ namespace RestrictionTrackerGTK
             using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(down, trayRes, up, trayRes))
             {
               pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_" + down + "x" + up + ".png"), "png");
+              icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_" + down + "x" + up + ".png"));
             }
           }
         }
@@ -717,9 +768,26 @@ namespace RestrictionTrackerGTK
           using (Gdk.Pixbuf pIco = CreateTypeBTrayIcon(up, trayRes))
           {
             pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typeb_" + up + ".png"), "png");
+            icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typeb_" + up + ".png"));
           }
         }
       }
+      long iStart = RestrictionLibrary.srlFunctions.TickCount();
+      do
+      {
+        Gtk.Main.Iteration();
+        Gtk.Main.IterationDo(false);
+        System.Threading.Thread.Sleep(0);
+        Gtk.Main.Iteration();
+        bool stillMissing = false;
+        foreach (string ico in icoNames)
+        {
+          if (!System.IO.File.Exists(System.IO.Path.Combine(IconFolder, ico)))
+            stillMissing = true;
+        }
+        if (!stillMissing)
+          break;
+      } while (iStart + 1000 > RestrictionLibrary.srlFunctions.TickCount());
     }
     private void StartupCleanup()
     {
@@ -3400,7 +3468,7 @@ namespace RestrictionTrackerGTK
         {
           try
           {
-            ((AppIndicator.ApplicationIndicator) trayIcon).Status = AppIndicator.Status.Active;
+            appIcon.Status = AppIndicator.Status.Active;
           }
           catch (Exception)
           {
@@ -3408,7 +3476,7 @@ namespace RestrictionTrackerGTK
           }
         }
         if (mTraySupport == TraySupport.Standard)
-          ((StatusIcon) trayIcon).Visible = true;
+          trayIcon.Visible = true;
         SetTrayIcon(trayResource);
       }
     }
@@ -3420,7 +3488,7 @@ namespace RestrictionTrackerGTK
         {
           try
           {
-            ((AppIndicator.ApplicationIndicator) trayIcon).Status = AppIndicator.Status.Passive;
+            appIcon.Status = AppIndicator.Status.Passive;
           }
           catch (Exception)
           {
@@ -3428,7 +3496,7 @@ namespace RestrictionTrackerGTK
           }
         }
         if (mTraySupport == TraySupport.Standard)
-          ((StatusIcon) trayIcon).Visible = false;
+          trayIcon.Visible = false;
       }
     }
     private void SetTrayIcon(string resource)
@@ -3440,7 +3508,7 @@ namespace RestrictionTrackerGTK
         {
           try
           {
-            ((AppIndicator.ApplicationIndicator) trayIcon).IconName = resource;
+            appIcon.IconName = resource;
           }
           catch (Exception)
           {
@@ -3448,7 +3516,7 @@ namespace RestrictionTrackerGTK
           }
         }
         if (mTraySupport == TraySupport.Standard)
-          ((StatusIcon) trayIcon).File = System.IO.Path.Combine(IconFolder, resource + ".png");
+          trayIcon.File = System.IO.Path.Combine(IconFolder, resource + ".png");
       }
     }
     private void SetTrayText(string tooltip)
@@ -3459,7 +3527,7 @@ namespace RestrictionTrackerGTK
         {
           try
           {
-            ((AppIndicator.ApplicationIndicator) trayIcon).Title = tooltip;
+            appIcon.Title = tooltip;
           }
           catch (Exception)
           {
@@ -3468,8 +3536,8 @@ namespace RestrictionTrackerGTK
         }
         if (mTraySupport == TraySupport.Standard)
         {
-          ((StatusIcon) trayIcon).Tooltip = tooltip;
-          ((StatusIcon) trayIcon).Blinking = false;
+          trayIcon.Tooltip = tooltip;
+          trayIcon.Blinking = false;
         }
       }
     }
