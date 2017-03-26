@@ -217,7 +217,7 @@ namespace RestrictionTrackerGTK
       private delegate void BeginTestInvoker(string Provider);
       private void BeginTest(string Provider)
       {
-        if (Provider.ToLower() == "dish.com" | Provider.ToLower() == "dish.net")
+        if (Provider.ToLower() == "mydish.com" | Provider.ToLower() == "dish.com" | Provider.ToLower() == "dish.net")
         {
           if (c_callback == null)
           {
@@ -227,7 +227,7 @@ namespace RestrictionTrackerGTK
           }
           if (c_callback != null)
           {
-            c_callback.Invoke(localRestrictionTracker.SatHostTypes.DishNet_EXEDE);
+            c_callback.Invoke(localRestrictionTracker.SatHostTypes.Dish_EXEDE);
           }
         }
         else if (Provider.ToLower() == "exede.com" | Provider.ToLower() == "exede.net" | Provider.ToLower() == "satelliteinternetco.com")
@@ -389,8 +389,8 @@ namespace RestrictionTrackerGTK
       }
       else
       {
-        if (e.HostGroup == DetermineType.SatHostGroup.DishNet)
-          mySettings.AccountType = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
+        if (e.HostGroup == DetermineType.SatHostGroup.Dish)
+          mySettings.AccountType = localRestrictionTracker.SatHostTypes.Dish_EXEDE;
         else if (e.HostGroup == DetermineType.SatHostGroup.WildBlue)
           mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
         else if (e.HostGroup == DetermineType.SatHostGroup.RuralPortal)
@@ -1095,7 +1095,7 @@ namespace RestrictionTrackerGTK
       if (trayRes < 8)
         trayRes = 8;
       string trayIcoVal = "";
-      if (myPanel == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY | myPanel == localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY | myPanel == localRestrictionTracker.SatHostTypes.DishNet_EXEDE)
+      if (myPanel == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY | myPanel == localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY | myPanel == localRestrictionTracker.SatHostTypes.Dish_EXEDE)
       {
         if (lblTypeADldUsedVal.Text == " -- ")
         {
@@ -1753,7 +1753,7 @@ namespace RestrictionTrackerGTK
             localData.Dispose();
             localData = null;
           }
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Restarting Connection in 5 seconds...", false);
+          SetStatusText(modDB.LOG_GetLast().ToString("g"), "", false);
           DisplayUsage(false, false);
           NextGrabTick = srlFunctions.TickCount() + 5000;
         }
@@ -1888,9 +1888,6 @@ namespace RestrictionTrackerGTK
           {
             case localRestrictionTracker.ConnectionSubStates.ReadLogin:
               SetStatusText(modDB.LOG_GetLast().ToString("g"), "Reading Login Page...", false);
-              break;
-            case localRestrictionTracker.ConnectionSubStates.AuthPrepare:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparinng Authentication...", false);
               break;
             case localRestrictionTracker.ConnectionSubStates.Authenticate:
               SetStatusText(modDB.LOG_GetLast().ToString("g"), "Authenticating...", false);
@@ -2045,8 +2042,8 @@ namespace RestrictionTrackerGTK
       SetStatusText(e.Update.ToString("g"), "Saving History...", false);
       NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       modDB.LOG_Add(e.Update, e.AnyTime, e.AnyTimeLimit, e.OffPeak, e.OffPeakLimit, true);
-      myPanel = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
-      mySettings.AccountType = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
+      myPanel = localRestrictionTracker.SatHostTypes.Dish_EXEDE;
+      mySettings.AccountType = localRestrictionTracker.SatHostTypes.Dish_EXEDE;
       mySettings.Save();
       modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
       if (e.SlowedDetected)
@@ -2698,7 +2695,7 @@ namespace RestrictionTrackerGTK
       {
         imSlowed = true;
       }
-      if ((mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE) | (mySettings.AccountType == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE) | (mySettings.AccountType == localRestrictionTracker.SatHostTypes.DishNet_EXEDE))
+      if ((mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE) | (mySettings.AccountType == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE) | (mySettings.AccountType == localRestrictionTracker.SatHostTypes.Dish_EXEDE))
       {
         if (lDown < lDownLim)
         {
@@ -2856,7 +2853,7 @@ namespace RestrictionTrackerGTK
       {
         imSlowed = true;
       }
-      if ((mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE) | (mySettings.AccountType == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE) | (mySettings.AccountType == localRestrictionTracker.SatHostTypes.DishNet_EXEDE))
+      if ((mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE) | (mySettings.AccountType == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE) | (mySettings.AccountType == localRestrictionTracker.SatHostTypes.Dish_EXEDE))
       {
         if (lDown < lDownLim)
         {
@@ -2969,7 +2966,7 @@ namespace RestrictionTrackerGTK
           case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
             DisplayTypeBResults(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
             break;
-          case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
+          case localRestrictionTracker.SatHostTypes.Dish_EXEDE:
             DisplayTypeA2Results(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
             break;
           default:

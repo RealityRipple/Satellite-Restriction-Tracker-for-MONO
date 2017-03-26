@@ -1930,7 +1930,7 @@ You can choose a domain from the dropdown or enter your own to add it to the lis
                             <property name="MemberName" />
                             <property name="Tooltip" translatable="yes">Exede package through Dish.</property>
                             <property name="CanFocus">True</property>
-                            <property name="Label" translatable="yes">DishNet</property>
+                            <property name="Label" translatable="yes">Dish</property>
                             <property name="DrawIndicator">True</property>
                             <property name="HasLabel">True</property>
                             <property name="UseUnderline">True</property>

@@ -94,7 +94,7 @@ namespace RestrictionTrackerGTK
           DisplayAs = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
           SetTextBGAlignments(true);
           break;
-        case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
+        case localRestrictionTracker.SatHostTypes.Dish_EXEDE:
           lblMainTitle.Text = "Main Window Current Usage Graphs";
           lblMainDownTitle.Text = "Anytime Colors";
           lblMainUpTitle.Text = "Off-Peak Colors";
@@ -109,7 +109,7 @@ namespace RestrictionTrackerGTK
           grpHistoryUp.Visible = true;
           lblHistoryUpMax.Visible = true;
           cmdHistoryUpMax.Visible = true;
-          DisplayAs = localRestrictionTracker.SatHostTypes.DishNet_EXEDE;
+          DisplayAs = localRestrictionTracker.SatHostTypes.Dish_EXEDE;
           SetTextBGAlignments(true);
           break;
         case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
@@ -393,7 +393,7 @@ namespace RestrictionTrackerGTK
       {
         pctMain.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctMain.Allocation.Size, lDown, lDownLim, mySettings.Accuracy, mda, mdb, mdc, mt, mbg));
       }
-      else if (DisplayAs == localRestrictionTracker.SatHostTypes.DishNet_EXEDE)
+      else if (DisplayAs == localRestrictionTracker.SatHostTypes.Dish_EXEDE)
       {
         Rectangle FakeMRect = new Rectangle(0, 0, iWidth - 1, iHeight * 2);
         Image FakeD = modFunctions.DisplayProgress(modFunctions.DrawingSizeToGdkSize(FakeMRect.Size), lDown, lDownLim, mySettings.Accuracy, mda, mdb, mdc, mt, mbg);
@@ -446,7 +446,7 @@ namespace RestrictionTrackerGTK
         modFunctions.CreateTrayIcon_Right(ref g, lDown, lDownLim, tda, tdb, tdc, 16);
         pctTray.Pixbuf = modFunctions.ImageToPixbuf(imgTray);
       }
-      else if (DisplayAs == localRestrictionTracker.SatHostTypes.DishNet_EXEDE)
+      else if (DisplayAs == localRestrictionTracker.SatHostTypes.Dish_EXEDE)
       {
         if (lDown >= lDownLim)
         {
@@ -510,7 +510,7 @@ namespace RestrictionTrackerGTK
         g.DrawImage(FakeR, new Rectangle(0, 0, dRect.Width, dRect.Height), FakeHRect, GraphicsUnit.Pixel);
         pctHistory.Pixbuf = modFunctions.ImageToPixbuf(fakeI);
       }
-      else if (DisplayAs == localRestrictionTracker.SatHostTypes.DishNet_EXEDE)
+      else if (DisplayAs == localRestrictionTracker.SatHostTypes.Dish_EXEDE)
       {
         Image FakeD = modFunctions.DrawLineGraph(FakeData.ToArray(), true, FakeHRect.Size, hdl, hda, hdb, hdc, ht, hbg, hdm, hgl, hgd);
         Image FakeU = modFunctions.DrawLineGraph(FakeData.ToArray(), false, FakeHRect.Size, hul, hua, hub, huc, ht, hbg, hum, hgl, hgd);
@@ -1113,7 +1113,7 @@ namespace RestrictionTrackerGTK
             default:
               return Color.Transparent;
           }
-        case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
+        case localRestrictionTracker.SatHostTypes.Dish_EXEDE:
           switch (Element)
           {
             case "cmdMainDownA":
@@ -1225,7 +1225,7 @@ namespace RestrictionTrackerGTK
           FakeData.Add(dRow);
         }
       }
-      else if (DisplayAs == localRestrictionTracker.SatHostTypes.DishNet_EXEDE)
+      else if (DisplayAs == localRestrictionTracker.SatHostTypes.Dish_EXEDE)
       {
         for (int I = 1; I <= 90; I++)
         {

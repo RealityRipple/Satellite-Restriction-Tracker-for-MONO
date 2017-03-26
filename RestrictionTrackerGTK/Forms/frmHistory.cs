@@ -92,7 +92,7 @@ namespace RestrictionTrackerGTK
 
       switch (useStyle)
       {
-        case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
+        case localRestrictionTracker.SatHostTypes.Dish_EXEDE:
         case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
         case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
           ((Gtk.Label) cmd30Days.Child).LabelProp = "T_his Period";
@@ -298,7 +298,7 @@ namespace RestrictionTrackerGTK
               bool bDisplayed = false;
               switch (useStyle)
               {
-                case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
+                case localRestrictionTracker.SatHostTypes.Dish_EXEDE:
 
                   evnUld.Visible = true;
                   pnlGraph.Homogeneous = true;
@@ -500,7 +500,7 @@ namespace RestrictionTrackerGTK
           bool SameLim = true;
           switch (useStyle)
           {
-            case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
+            case localRestrictionTracker.SatHostTypes.Dish_EXEDE:
               if (lItems != null)
               {
                 long dnDLim = 0;

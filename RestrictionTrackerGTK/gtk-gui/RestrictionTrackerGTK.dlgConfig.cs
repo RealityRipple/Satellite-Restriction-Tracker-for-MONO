@@ -643,10 +643,11 @@ namespace RestrictionTrackerGTK
 			this.pnlAccountTypes.RowSpacing = ((uint)(6));
 			this.pnlAccountTypes.ColumnSpacing = ((uint)(6));
 			// Container child pnlAccountTypes.Gtk.Table+TableChild
-			this.optAccountTypeDNX = new global::Gtk.RadioButton (global::Mono.Unix.Catalog.GetString ("DishNet"));
+			this.optAccountTypeDNX = new global::Gtk.RadioButton (global::Mono.Unix.Catalog.GetString ("Dish"));
 			this.optAccountTypeDNX.TooltipMarkup = "Exede package through Dish.";
 			this.optAccountTypeDNX.CanFocus = true;
 			this.optAccountTypeDNX.Name = "optAccountTypeDNX";
+			this.optAccountTypeDNX.Active = true;
 			this.optAccountTypeDNX.DrawIndicator = true;
 			this.optAccountTypeDNX.UseUnderline = true;
 			this.optAccountTypeDNX.Group = new global::GLib.SList (global::System.IntPtr.Zero);
@@ -2155,6 +2156,7 @@ namespace RestrictionTrackerGTK
 			this.optHistoryCustom.TooltipMarkup = "Save History Data to a custom directory.";
 			this.optHistoryCustom.CanFocus = true;
 			this.optHistoryCustom.Name = "optHistoryCustom";
+			this.optHistoryCustom.Active = true;
 			this.optHistoryCustom.DrawIndicator = true;
 			this.optHistoryCustom.UseUnderline = true;
 			this.optHistoryCustom.Group = new global::GLib.SList (global::System.IntPtr.Zero);
@@ -2236,6 +2238,7 @@ namespace RestrictionTrackerGTK
 			this.optNetTestCustom.TooltipMarkup = "Show a link to a custom website on the Main window.";
 			this.optNetTestCustom.CanFocus = true;
 			this.optNetTestCustom.Name = "optNetTestCustom";
+			this.optNetTestCustom.Active = true;
 			this.optNetTestCustom.DrawIndicator = true;
 			this.optNetTestCustom.UseUnderline = true;
 			this.optNetTestCustom.Group = new global::GLib.SList (global::System.IntPtr.Zero);

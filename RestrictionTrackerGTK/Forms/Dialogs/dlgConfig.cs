@@ -112,7 +112,7 @@ namespace RestrictionTrackerGTK
         case RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
           optAccountTypeWBX.Active = true;
           break;
-        case RestrictionLibrary.localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
+        case RestrictionLibrary.localRestrictionTracker.SatHostTypes.Dish_EXEDE:
           optAccountTypeDNX.Active = true;
           break;
         case RestrictionLibrary.localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
@@ -1752,6 +1752,9 @@ namespace RestrictionTrackerGTK
           cmbProvider.Entry.Text.ToLower().Contains("myexede") |
           cmbProvider.Entry.Text.ToLower().Contains("my.exede"))
         cmbProvider.Entry.Text = "exede.net";
+      if (cmbProvider.Entry.Text.ToLower() == "dish.net" |
+          cmbProvider.Entry.Text.ToLower() == "dish.com")
+        cmbProvider.Entry.Text = "mydish.com";
       if (string.Compare(mySettings.Account, txtAccount.Text + "@" + cmbProvider.Entry.Text, true) != 0)
       {
         mySettings.Account = txtAccount.Text + "@" + cmbProvider.Entry.Text;
@@ -2178,7 +2181,7 @@ namespace RestrictionTrackerGTK
             if (!optAccountTypeWBX.Active)
               return true;
             break;
-          case RestrictionLibrary.localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
+          case RestrictionLibrary.localRestrictionTracker.SatHostTypes.Dish_EXEDE:
             if (!optAccountTypeDNX.Active)
               return true;
             break;

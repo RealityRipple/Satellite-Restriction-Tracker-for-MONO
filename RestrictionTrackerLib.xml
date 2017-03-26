@@ -6,9 +6,9 @@ RestrictionTrackerLib
 </name>
 </assembly>
 <members>
-<member name="F:RestrictionLibrary.DetermineType.SatHostGroup.DishNet">
+<member name="F:RestrictionLibrary.DetermineType.SatHostGroup.Dish">
 	<summary>
- Provider uses DishNet login system (Unique to dish.com or dish.net).
+ Provider uses Dish login system (Unique to mydish.com).
  </summary>
 </member><member name="F:RestrictionLibrary.DetermineType.SatHostGroup.RuralPortal">
 	<summary>
@@ -80,9 +80,9 @@ RestrictionTrackerLib
 	<summary>
  RuralPortal Exede type meter with <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs">Type B</see> usage, including only Used and Limit values, reading through an address of DOMAIN.ruralportal.net.
  </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.DishNet_EXEDE">
+</member><member name="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.Dish_EXEDE">
 	<summary>
- Exede through Dish Network type meter with <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs">Type A2</see> uage, including AnyTime, AnyTime Limit, Off-Peak, and Off-Peak Limit values, reading through dish.com or dish.net.
+ Exede through Dish Network type meter with <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs">Type A2</see> uage, including AnyTime, AnyTime Limit, Off-Peak, and Off-Peak Limit values, reading through mydish.com.
  </summary>
 </member><member name="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.Other">
 	<summary>
@@ -122,11 +122,7 @@ RestrictionTrackerLib
  </summary>
 </member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.ReadLogin">
 	<summary>
- The login page is being read. Exede and DishNet use this step.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.AuthPrepare">
-	<summary>
- Authentication is being prepared. It's also known as the First Bookend. Only Exede uses this step.
+ The login page is being read. Only Exede uses this step.
  </summary>
 </member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.Authenticate">
 	<summary>
@@ -134,15 +130,15 @@ RestrictionTrackerLib
  </summary>
 </member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.AuthenticateRetry">
 	<summary>
- Authentication has to be sent a second time. Exede, RuralPortal, and DishNet use this step.
+ Authentication has to be sent a second time. Exede and RuralPortal use this step.
  </summary>
 </member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.Verify">
 	<summary>
- The login is being verified. This is also known as the Last Bookend. Only Exede uses this step.
+ The login is being verified. Only Dish uses this step.
  </summary>
 </member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.LoadHome">
 	<summary>
- The home page is being loaded. This is also known as the Dashboard. Exede and DishNet use this step.
+ The home page is being loaded. This is also known as the Dashboard. Exede and Dish use this step.
  </summary>
 </member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.LoadAJAX">
 	<summary>
@@ -158,7 +154,7 @@ RestrictionTrackerLib
  </summary>
 </member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.LoadTableRetry">
 	<summary>
- The usage meter is being loaded again. Sometimes it needs to be this way. Only DishNet uses this step.
+ The usage meter is being loaded again. Sometimes it needs to be this way. Only Dish uses this step.
  </summary>
 </member><member name="T:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates">
 	<summary>
@@ -358,7 +354,7 @@ RestrictionTrackerLib
 	<param name="e"><see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs"/> data regarding the result.</param>
 </member><member name="E:RestrictionLibrary.localRestrictionTracker.ConnectionDNXResult">
 	<summary>
- Triggered when the server returns data for a <see cref="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.DishNet_EXEDE"/> account.
+ Triggered when the server returns data for a <see cref="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.Dish_EXEDE"/> account.
  </summary>
 	<param name="sender">Instance of the <see cref="T:RestrictionLibrary.localRestrictionTracker"/> class.</param>
 	<param name="e"><see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs"/> data regarding the result.</param>
@@ -430,7 +426,7 @@ RestrictionTrackerLib
 	<param name="OnlyLogin">If set to <c>True</c>, this connection will abort after verifying that the Username and Password are valid, without returning data. This value is <c>False</c> by default.</param>
 </member><member name="T:RestrictionLibrary.localRestrictionTracker">
 	<summary>
- Accesses WildBlue, Exede, RuralPortal, and DishNet usage pages and handles all communication internally.
+ Accesses WildBlue, Exede, RuralPortal, and Dish usage pages and handles all communication internally.
  </summary>
 </member><member name="F:RestrictionLibrary.DataBase.DataRow.DATETIME">
 	<summary>
@@ -1132,7 +1128,7 @@ RestrictionTrackerLib
 		<para>WildBlue_EXEDE: "WBX"</para>
 		<para>RuralPortal_LEGACY: "RPL"</para>
 		<para>RuralPortal_EXEDE: "RPX"</para>
-		<para>DishNet_EXEDE: "DNX"</para>
+		<para>Dish_EXEDE: "DNX"</para>
 		<para>Other Values: "O"</para>
 		<para>See Also: <seealso cref="M:RestrictionLibrary.srlFunctions.StringToHostType(System.String)"/></para>
 	</remarks>
@@ -1148,7 +1144,7 @@ RestrictionTrackerLib
 		<para>"WBX", "WBV", "Exede": WildBlue_EXEDE</para>
 		<para>"RPL", "RuralPortal": RuralPortal_LEGACY</para>
 		<para>"RPX": RuralPortal_EXEDE</para>
-		<para>"DNX", "DishNet": DishNet_EXEDE</para>
+		<para>"DNX", "Dish", "DishNet": Dish_EXEDE</para>
 		<para>Other Values: Other</para>
 		<para>See Also: <seealso cref="M:RestrictionLibrary.srlFunctions.HostTypeToString(RestrictionLibrary.localRestrictionTracker.SatHostTypes)"/></para>
 	</remarks>

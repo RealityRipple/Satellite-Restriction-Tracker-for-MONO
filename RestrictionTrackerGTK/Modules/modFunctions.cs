@@ -245,7 +245,7 @@ namespace RestrictionTrackerGTK
     }
     public static string[] HostList()
     {
-      return new string[] { "exede.net", "wildblue.net", "dish.net", "dishmail.net", "kitcarson.net", "plateauwb.net", "wbaccess.net", "novecnet.com", "northlc.com", "oecblue.net", "seidata.com", "oecblue.com", "hcecwildblue.com", "trueband.net", "trueband.com", "fhrd.net", "scpwildblue.com", "oeccwildblue.com", "bessi.net", "mlecwb.net", "erec.net", "winntelwb.coop", "coopsone.com", "kiamichiwb.org", "kmwb.net", "directv.net" };
+      return new string[] { "exede.net", "exede.com", "wildblue.net", "mydish.com", "dishmail.net", "directv.net", "satelliteinternetco.com", "kitcarson.net", "plateauwb.net", "wbaccess.net", "novecnet.com", "northlc.com", "oecblue.net", "seidata.com", "oecblue.com", "hcecwildblue.com", "trueband.net", "trueband.com", "fhrd.net", "scpwildblue.com", "oeccwildblue.com", "bessi.net", "mlecwb.net", "erec.net", "winntelwb.coop", "coopsone.com", "kiamichiwb.org", "kmwb.net", "bcremc.net", "t3cnet.com", "cotcwb.net", "nesloncable.com" };
     }
     public static string ConvertTime(UInt64 lngMS, bool Abbreviated = false, bool Trimmed = true)
     {
@@ -2118,7 +2118,7 @@ namespace RestrictionTrackerGTK
           outColors.HistoryDarkGrid = Color.DarkGray;
           break;
 
-        case localRestrictionTracker.SatHostTypes.DishNet_EXEDE:
+        case localRestrictionTracker.SatHostTypes.Dish_EXEDE:
           outColors.MainDownA = Color.DarkBlue;
           outColors.MainDownB = Color.Blue;
           outColors.MainDownC = Color.Aqua;
