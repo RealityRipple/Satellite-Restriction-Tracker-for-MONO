@@ -229,7 +229,7 @@ Global
 		$32.inheritsScope = text/plain
 		$32.scope = text/plain
 		description = Satellite Restriction Tracker
-		version = 1.4.1
+		version = 1.4.11
 		StartupItem = RestrictionTrackerGTK\RestrictionTrackerGTK.csproj
 	EndGlobalSection
 EndGlobal
