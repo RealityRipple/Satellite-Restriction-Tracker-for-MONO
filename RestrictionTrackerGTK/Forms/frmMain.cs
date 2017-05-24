@@ -788,6 +788,7 @@ namespace RestrictionTrackerGTK
         if (!stillMissing)
           break;
       } while (iStart + 1000 > RestrictionLibrary.srlFunctions.TickCount());
+      ResizePanels();
     }
     private void StartupCleanup()
     {
