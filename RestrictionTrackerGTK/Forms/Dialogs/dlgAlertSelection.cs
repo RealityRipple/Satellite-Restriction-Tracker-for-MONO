@@ -86,7 +86,7 @@ namespace RestrictionTrackerGTK
       }
       lstStyles.TooltipMarkup = "Select the Alert Window Style you want to use.\n<b>Drag and Drop:</b> Add an Alert Style from a Tarball or GZipped TAR (*.tar, *.tar.gz, *.tgz).\n<b>Delete:</b> Remove an Alert Style from the list.";
       modFunctions.PrepareLink(lblMore);
-      lblMore.Markup = "<a href=\"http://srt.realityripple.com/Alert_Styles\">Get More Styles</a>";
+      lblMore.Markup = "<a href=\"http://srt.realityripple.com/Alert-Styles\">Get More Styles</a>";
       lblMore.TooltipText = "Download new Alert Window Styles from RealityRipple.com.";
       Changed = false;
       cmdSave.Sensitive = false;
