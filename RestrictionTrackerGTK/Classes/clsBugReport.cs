@@ -32,7 +32,7 @@ namespace MantisBugTracker
         return null;
       }
     }
-    private static string ReportBug(string Token, int Project_ID, Mantis_Category Category, Mantis_Reproducibility Reproducable, Mantis_Severity Severity, Mantis_Priority Priority, string Platform, string OS, string OS_Build, string Summary, string Description, string Steps, string Info, bool Public)
+    private static string ReportBug(string Token, int Project_ID, Mantis_Category Category, Mantis_Reproducibility Reproducable, Mantis_Severity Severity, Mantis_Priority Priority, string Platform, string OS, string OS_Build, string Product_Version, string Summary, string Description, string Steps, string Info, bool Public)
     {
       System.Collections.Specialized.NameValueCollection pData = new System.Collections.Specialized.NameValueCollection();
       pData.Add("bug_report_token", Token);
@@ -45,6 +45,7 @@ namespace MantisBugTracker
       pData.Add("platform", Platform);
       pData.Add("os", OS);
       pData.Add("os_build", OS_Build);
+      pData.Add("product_version", Product_Version);
       pData.Add("summary", Summary);
       pData.Add("description", Description);
       pData.Add("steps_to_reproduce", Steps);
@@ -93,7 +94,7 @@ namespace MantisBugTracker
         else
           sPlat = "x86";
       }
-      string sSum = "[v" + modFunctions.ProductVersion + "] " + e.Message;
+      string sSum = e.Message;
       if (sSum.Length > 80)
       {
         sSum = sSum.Substring(0, 77) + "...";
@@ -101,7 +102,11 @@ namespace MantisBugTracker
       string sDesc = e.ToString();
       string MyOS = CurrentOS.Name;
       string MyOSVer = Environment.OSVersion.VersionString;
-      return ReportBug(sTok, 2, Mantis_Category.General, Mantis_Reproducibility.Have_Not_Tried, Mantis_Severity.Minor, Mantis_Priority.Normal, sPlat, MyOS, MyOSVer, sSum, sDesc, string.Empty, string.Empty, true);
+      string sVer = modFunctions.ProductVersion;
+      int iParts = (sVer.Split('.')).Length;
+      if (iParts > 3)
+        sVer = sVer.Substring(0, sVer.LastIndexOf('.'));
+      return ReportBug(sTok, 2, Mantis_Category.General, Mantis_Reproducibility.Have_Not_Tried, Mantis_Severity.Minor, Mantis_Priority.Normal, sPlat, MyOS, MyOSVer, sVer, sSum, sDesc, string.Empty, string.Empty, true);
     }
   }
 }
