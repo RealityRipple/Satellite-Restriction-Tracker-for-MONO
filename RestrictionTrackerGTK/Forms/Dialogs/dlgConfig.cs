@@ -1565,6 +1565,8 @@ namespace RestrictionTrackerGTK
     object waitingForEndOf;
     protected void SetNetTestImage(Gdk.Pixbuf Image, bool End, object Token, object tag)
     {
+      if (waitingForEndOf == null)
+        waitingForEndOf = (object) 0;
       if ((End) & (((int) Token) != ((int) waitingForEndOf)))
         return;
       pctAdvancedNetTestIcon.Pixbuf = Image;
