@@ -58,503 +58,509 @@ namespace RestrictionTrackerGTK
     }
     public AppSettings()
     {
+      Load();
+    }
+    private void Load()
+    {
       Loaded = false;
-      BackupCheckup();
-      if (File.Exists(ConfigFile))
+      if (!File.Exists(ConfigFile))
       {
-        XmlDocument m_xmld = new XmlDocument();
+        Reset();
+        Loaded = true;
+        return;
+      }
+      XmlDocument m_xmld = new XmlDocument();
+      try
+      {
         m_xmld.Load(ConfigFile);
-        if (m_xmld.HasChildNodes)
+      }
+      catch (Exception)
+      {
+        if (File.Exists(ConfigFileBackup))
         {
-          if (m_xmld.ChildNodes.Count > 1)
+          File.Delete(ConfigFile);
+          File.Move(ConfigFileBackup, ConfigFile);
+          Load();
+          if (Loaded)
+            return;
+        }
+        Reset();
+        Loaded = true;
+        return;
+      }
+      if (!m_xmld.HasChildNodes)
+      {
+        Reset();
+        Loaded = true;
+        return;
+      }
+      if (m_xmld.ChildNodes.Count < 2)
+      {
+        Reset();
+        Loaded = true;
+        return;
+      }
+      XmlNode xConfig = m_xmld.ChildNodes[1];
+      if (!xConfig.HasChildNodes)
+      {
+        Reset();
+        Loaded = true;
+        return;
+      }
+      XmlNode xUserSettings = xConfig.ChildNodes[0];
+      if (!xUserSettings.HasChildNodes)
+      {
+        Reset();
+        Loaded = true;
+        return;
+      }
+      XmlNode xMySettings = xUserSettings.ChildNodes[0];
+      if (!xMySettings.HasChildNodes)
+      {
+        Reset();
+        Loaded = true;
+        return;
+      }
+      XmlNodeList xNodeList = xMySettings.ChildNodes;
+      Reset();
+      foreach (XmlNode m_node in xNodeList)
+      {
+        string xName = m_node.Attributes[0].InnerText;
+        string xValue = m_node.FirstChild.InnerText;
+        if (xName.CompareTo("Account") == 0)
+        {
+          m_Account = xValue;
+          if (m_node.Attributes.Count > 1)
           {
-            XmlNode xConfig = m_xmld.ChildNodes[1];
-            if (xConfig.HasChildNodes)
+            m_AccountType = localRestrictionTracker.SatHostTypes.Other;
+            m_AccountTypeF = false;
+            foreach (XmlAttribute m_attrib in m_node.Attributes)
             {
-              XmlNode xUserSettings = xConfig.ChildNodes[0];
-              if (xUserSettings.HasChildNodes)
-              {
-                XmlNode xMySettings = xUserSettings.ChildNodes[0];
-                if (xMySettings.HasChildNodes)
-                {
-                  XmlNodeList xNodeList = xMySettings.ChildNodes;
-                  Reset();
-                  foreach (XmlNode m_node in xNodeList)
-                  {
-                    string xName = m_node.Attributes[0].InnerText;
-                    string xValue = m_node.FirstChild.InnerText;
-                    if (xName.CompareTo("Account") == 0)
-                    {
-                      m_Account = xValue;
-                      if (m_node.Attributes.Count > 1)
-                      {
-                        m_AccountType = localRestrictionTracker.SatHostTypes.Other;
-                        m_AccountTypeF = false;
-                        foreach (XmlAttribute m_attrib in m_node.Attributes)
-                        {
-                          if (m_attrib.Name.CompareTo("type") == 0)
-                            m_AccountType = srlFunctions.StringToHostType(m_attrib.InnerText);
-                          else if (m_attrib.Name.CompareTo("forceType") == 0)
-                            m_AccountTypeF = (m_attrib.InnerText == "True");
-                        }
-                      }
-                      else
-                      {
-                        m_AccountType = localRestrictionTracker.SatHostTypes.Other;
-                        m_AccountTypeF = false;
-                      }
-                    }
-                    else if (xName.CompareTo("StartWait") == 0)
-                    {
-                      if (!int.TryParse(xValue, out m_StartWait))
-                      {
-                        m_StartWait = 5;
-                      }
-                    }
-                    else if (xName.CompareTo("Interval") == 0)
-                    {
-                      if (!int.TryParse(xValue, out m_Interval))
-                      {
-                        m_Interval = 15;
-                      }
-                    }
-                    else if (xName.CompareTo("Gr") == 0)
-                    {
-                      m_Gr = xValue;
-                    }
-                    else if (xName.CompareTo("LastUpdate") == 0)
-                    {
-                      m_LastUpdate = DateTime.FromBinary(long.Parse(xValue));
-                    }
-                    else if (xName.CompareTo("LastSyncTime") == 0)
-                    {
-                      m_LastSyncTime = DateTime.FromBinary(long.Parse(xValue));
-                    }
-                    else if (xName.CompareTo("Accuracy") == 0)
-                    {
-                      if (!int.TryParse(xValue, out m_Accuracy))
-                      {
-                        m_Accuracy = 0;
-                      }
-                    }
-                    else if (xName.CompareTo("Ago") == 0)
-                    {
-                      if (!uint.TryParse(xValue, out m_Ago))
-                      {
-                        m_Ago = 30;
-                      }
-                    }
-                    else if (xName.CompareTo("HistoryDir") == 0)
-                    {
-                      m_HistoryDir = xValue;
-                    }
-                    else if (xName.CompareTo("UpdateBETA") == 0)
-                    {
-                      m_UpdateBETA = (xValue.CompareTo("True") == 0);
-                    }
-                    else if (xName.CompareTo("BetaCheck") == 0)
-                    {
-                      m_UpdateBETA = (xValue.CompareTo("True") == 0);
-                    }
-                    else if (xName.CompareTo("UpdateType") == 0)
-                    {
-                      switch (xValue)
-                      {
-                        case "BETA":
-                          m_UpdateBETA = true;
-                          m_UpdateType = UpdateTypes.Ask;
-                          break;
-                        case "Auto":
-                          m_UpdateType = UpdateTypes.Auto;
-                          break;
-                        case "None":
-                          m_UpdateType = UpdateTypes.None;
-                          break;
-                        default:
-                          m_UpdateType = UpdateTypes.Ask;
-                          break;
-                      }
-                    }
-                    else if (xName.CompareTo("UpdateTime") == 0)
-                    {
-                      if (!byte.TryParse(xValue, out m_UpdateTime))
-                      {
-                        m_UpdateTime = 15;
-                      }
-                    }
-                    else if (xName.CompareTo("ScaleScreen") == 0)
-                    {
-                      m_ScaleScreen = (xValue.CompareTo("True") == 0);
-                    }
-                    else if (xName.CompareTo("MainSize") == 0)
-                    {
-                      char[] comma = { ',' };
-                      string[] sSizes = xValue.Split(comma, 2);
-                      int iWidth = 450;
-                      if (!int.TryParse(sSizes[0], out iWidth))
-                      {
-                        iWidth = 450;
-                      }
-                      int iHeight = 200;
-                      if (!int.TryParse(sSizes[1], out iHeight))
-                      {
-                        iHeight = 200;
-                      }
-                      m_MainSize = new Gdk.Size(iWidth, iHeight);
-                    }
-                    else if (xName.CompareTo("RemoteKey") == 0)
-                    {
-                      m_RemoteKey = xValue;
-                    }
-                    else if (xName.CompareTo("PassCrypt") == 0)
-                    {
-                      m_PassCrypt = xValue;
-                    }
-                    else if (xName.CompareTo("Timeout") == 0)
-                    {
-                      if (!int.TryParse(xValue, out m_Timeout))
-                      {
-                        m_Timeout = 120;
-                      }
-                    }
-                    else if (xName.CompareTo("Overuse") == 0)
-                    {
-                      if (!int.TryParse(xValue, out m_Overuse))
-                      {
-                        m_Overuse = 0;
-                      }
-                    }
-                    else if (xName.CompareTo("Overtime") == 0)
-                    {
-                      if (!int.TryParse(xValue, out m_Overtime))
-                      {
-                        m_Overtime = 60;
-                      }
-                    }
-                    else if (xName.CompareTo("AlertStyle") == 0)
-                    {
-                      m_AlertStyle = xValue;
-                    }
-                    else if (xName.CompareTo("TrayIcon") == 0)
-                    {
-                      switch (xValue)
-                      {
-                        case "Never":
-                          m_TrayIcon = TrayStyles.Never;
-                          break;
-                        case "Minimized":
-                          m_TrayIcon = TrayStyles.Minimized;
-                          break;
-                        default:
-                          m_TrayIcon = TrayStyles.Always;
-                          break;
-                      }
-                    }
-                    else if (xName.CompareTo("TrayClose") == 0)
-                    {
-                      m_TrayClose = (xValue.CompareTo("True") == 0);
-                    }
-                    else if (xName.CompareTo("AutoHide") == 0)
-                    {
-                      m_AutoHide = (xValue.CompareTo("True") == 0);
-                    }
-                    else if (xName.CompareTo("TLSProxy") == 0)
-                    {
-                      m_TLSProxy = (xValue.CompareTo("True") == 0);
-                    }
-                    else if (xName.CompareTo("Proxy") == 0)
-                    {
-                      m_ProxySetting = xValue;
-                    }
-                    else if (xName.CompareTo("Protocol") == 0)
-                    {
-                      m_Protocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.None;
-                      if (xValue.Contains("SSL"))
-                      {
-                        m_Protocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Ssl3;
-                      }
-                      if (xValue.Contains("TLS10"))
-                      {
-                        m_Protocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls10;
-                      }
-                      if (xValue.Contains("TLS11"))
-                      {
-                        m_Protocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls11;
-                      }
-                      if (xValue.Contains("TLS12"))
-                      {
-                        m_Protocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls12;
-                      }
-                      if (xValue.Contains("TLS") & !xValue.Contains("TLS1"))
-                      {
-                        m_Protocol |= (System.Net.SecurityProtocolType) (SecurityProtocolTypeEx.Tls11 | SecurityProtocolTypeEx.Tls12);
-                      }
-                    }
-                    else if (xName.CompareTo("NetTestURL") == 0)
-                    {
-                      m_NetTest = xValue;
-                    }
-                  }
-                  Loaded = true;
-                }
-                else
-                {
-                  Reset();
-                  return;
-                }
-              }
-              else
-              {
-                Reset();
-                return;
-              }
-
-              Colors = new AppColors();
-              if (xConfig.ChildNodes.Count > 1)
-              {
-                XmlNode xColorSettings = xConfig.ChildNodes[1];
-                if (xColorSettings.HasChildNodes)
-                {
-                  foreach (XmlNode m_graph in xColorSettings.ChildNodes)
-                  {
-                    string graphName = m_graph.Attributes[0].InnerText;
-                    if (m_graph.HasChildNodes)
-                    {
-                      foreach (XmlNode m_node in m_graph.ChildNodes)
-                      {
-                        string nodeName = m_node.Attributes[0].InnerText;
-                        if (nodeName.CompareTo("Download") == 0)
-                        {
-                          //Download Section
-                          if (m_node.HasChildNodes)
-                          {
-                            foreach (XmlNode xSetting in m_node.ChildNodes)
-                            {
-                              string xName = xSetting.Attributes[0].InnerText;
-                              string xValue = xSetting.FirstChild.InnerText;
-                              if (xName.CompareTo("Line") == 0)
-                              {
-                                if (graphName.CompareTo("History") == 0)
-                                {
-                                  Colors.HistoryDownLine = StrToColor(xValue);
-                                }
-                              }
-                              else if (xName.CompareTo("Start") == 0)
-                              {
-                                if (graphName.CompareTo("Main") == 0)
-                                {
-                                  Colors.MainDownA = StrToColor(xValue);
-                                }
-                                else if (graphName.CompareTo("Tray") == 0)
-                                {
-                                  Colors.TrayDownA = StrToColor(xValue);
-                                }
-                                else if (graphName.CompareTo("History") == 0)
-                                {
-                                  Colors.HistoryDownA = StrToColor(xValue);
-                                }
-                              }
-                              else if (xName.CompareTo("Mid") == 0)
-                              {
-                                if (graphName.CompareTo("Main") == 0)
-                                {
-                                  Colors.MainDownB = StrToColor(xValue);
-                                }
-                                else if (graphName.CompareTo("Tray") == 0)
-                                {
-                                  Colors.TrayDownB = StrToColor(xValue);
-                                }
-                                else if (graphName.CompareTo("History") == 0)
-                                {
-                                  Colors.HistoryDownB = StrToColor(xValue);
-                                }
-                              }
-                              else if (xName.CompareTo("End") == 0)
-                              {
-                                if (graphName.CompareTo("Main") == 0)
-                                {
-                                  Colors.MainDownC = StrToColor(xValue);
-                                }
-                                else if (graphName.CompareTo("Tray") == 0)
-                                {
-                                  Colors.TrayDownC = StrToColor(xValue);
-                                }
-                                else if (graphName.CompareTo("History") == 0)
-                                {
-                                  Colors.HistoryDownC = StrToColor(xValue);
-                                }
-                              }
-                              else if (xName.CompareTo("Maximum") == 0)
-                              {
-                                if (graphName.CompareTo("History") == 0)
-                                {
-                                  Colors.HistoryDownMax = StrToColor(xValue);
-                                }
-                              }
-                            }
-                          }
-                        }
-                        else if (nodeName.CompareTo("Upload") == 0)
-                        {
-                          //Upload Section
-                          if (m_node.HasChildNodes)
-                          {
-                            foreach (XmlNode xSetting in m_node.ChildNodes)
-                            {
-                              string xName = xSetting.Attributes[0].InnerText;
-                              string xValue = xSetting.FirstChild.InnerText;
-                              if (xName.CompareTo("Line") == 0)
-                              {
-                                if (graphName.CompareTo("History") == 0)
-                                {
-                                  Colors.HistoryUpLine = StrToColor(xValue);
-                                }
-                              }
-                              else if (xName.CompareTo("Start") == 0)
-                              {
-                                if (graphName.CompareTo("Main") == 0)
-                                {
-                                  Colors.MainUpA = StrToColor(xValue);
-                                }
-                                else if (graphName.CompareTo("Tray") == 0)
-                                {
-                                  Colors.TrayUpA = StrToColor(xValue);
-                                }
-                                else if (graphName.CompareTo("History") == 0)
-                                {
-                                  Colors.HistoryUpA = StrToColor(xValue);
-                                }
-                              }
-                              else if (xName.CompareTo("Mid") == 0)
-                              {
-                                if (graphName.CompareTo("Main") == 0)
-                                {
-                                  Colors.MainUpB = StrToColor(xValue);
-                                }
-                                else if (graphName.CompareTo("Tray") == 0)
-                                {
-                                  Colors.TrayUpB = StrToColor(xValue);
-                                }
-                                else if (graphName.CompareTo("History") == 0)
-                                {
-                                  Colors.HistoryUpB = StrToColor(xValue);
-                                }
-                              }
-                              else if (xName.CompareTo("End") == 0)
-                              {
-                                if (graphName.CompareTo("Main") == 0)
-                                {
-                                  Colors.MainUpC = StrToColor(xValue);
-                                }
-                                else if (graphName.CompareTo("Tray") == 0)
-                                {
-                                  Colors.TrayUpC = StrToColor(xValue);
-                                }
-                                else if (graphName.CompareTo("History") == 0)
-                                {
-                                  Colors.HistoryUpC = StrToColor(xValue);
-                                }
-                              }
-                              else if (xName.CompareTo("Maximum") == 0)
-                              {
-                                if (graphName.CompareTo("History") == 0)
-                                {
-                                  Colors.HistoryUpMax = StrToColor(xValue);
-                                }
-                              }
-                            }
-                          }
-                        }
-                        else if (nodeName.CompareTo("Text") == 0)
-                        {
-                          //Text setting
-                          string nodeVal = m_node.FirstChild.InnerText;
-                          if (graphName.CompareTo("Main") == 0)
-                          {
-                            Colors.MainText = StrToColor(nodeVal);
-                          }
-                          else if (graphName.CompareTo("History") == 0)
-                          {
-                            Colors.HistoryText = StrToColor(nodeVal);
-                          }
-                        }
-                        else if (nodeName.CompareTo("Background") == 0)
-                        {
-                          //Background setting
-                          string nodeVal = m_node.FirstChild.InnerText;
-                          if (graphName.CompareTo("Main") == 0)
-                          {
-                            Colors.MainBackground = StrToColor(nodeVal);
-                          }
-                          else if (graphName.CompareTo("History") == 0)
-                          {
-                            Colors.HistoryBackground = StrToColor(nodeVal);
-                          }
-                        }
-                        else if (nodeName.CompareTo("Grid") == 0)
-                        {
-                          //Grid Section
-                          if (m_node.HasChildNodes)
-                          {
-                            foreach (XmlNode xSetting in m_node.ChildNodes)
-                            {
-                              string xName = xSetting.Attributes[0].InnerText;
-                              string xValue = xSetting.FirstChild.InnerText;
-                              if (xName.CompareTo("Light") == 0)
-                              {
-                                if (graphName.CompareTo("History") == 0)
-                                {
-                                  Colors.HistoryLightGrid = StrToColor(xValue);
-                                }
-                              }
-                              else if (xName.CompareTo("Dark") == 0)
-                              {
-                                if (graphName.CompareTo("History") == 0)
-                                {
-                                  Colors.HistoryDarkGrid = StrToColor(xValue);
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-                else
-                {
-                  ResetColors();
-                  return;
-                }
-              }
-              else
-              {
-                ResetColors();
-                return;
-              }
-            }
-            else
-            {
-              Reset();
-              return;
+              if (m_attrib.Name.CompareTo("type") == 0)
+                m_AccountType = srlFunctions.StringToHostType(m_attrib.InnerText);
+              else if (m_attrib.Name.CompareTo("forceType") == 0)
+                m_AccountTypeF = (m_attrib.InnerText == "True");
             }
           }
           else
           {
-            Reset();
-            return;
+            m_AccountType = localRestrictionTracker.SatHostTypes.Other;
+            m_AccountTypeF = false;
           }
         }
-        else
+        else if (xName.CompareTo("StartWait") == 0)
         {
-          Reset();
-          return;
+          if (!int.TryParse(xValue, out m_StartWait))
+          {
+            m_StartWait = 5;
+          }
         }
+        else if (xName.CompareTo("Interval") == 0)
+        {
+          if (!int.TryParse(xValue, out m_Interval))
+          {
+            m_Interval = 15;
+          }
+        }
+        else if (xName.CompareTo("Gr") == 0)
+        {
+          m_Gr = xValue;
+        }
+        else if (xName.CompareTo("LastUpdate") == 0)
+        {
+          m_LastUpdate = DateTime.FromBinary(long.Parse(xValue));
+        }
+        else if (xName.CompareTo("LastSyncTime") == 0)
+        {
+          m_LastSyncTime = DateTime.FromBinary(long.Parse(xValue));
+        }
+        else if (xName.CompareTo("Accuracy") == 0)
+        {
+          if (!int.TryParse(xValue, out m_Accuracy))
+          {
+            m_Accuracy = 0;
+          }
+        }
+        else if (xName.CompareTo("Ago") == 0)
+        {
+          if (!uint.TryParse(xValue, out m_Ago))
+          {
+            m_Ago = 30;
+          }
+        }
+        else if (xName.CompareTo("HistoryDir") == 0)
+        {
+          m_HistoryDir = xValue;
+        }
+        else if (xName.CompareTo("UpdateBETA") == 0)
+        {
+          m_UpdateBETA = (xValue.CompareTo("True") == 0);
+        }
+        else if (xName.CompareTo("BetaCheck") == 0)
+        {
+          m_UpdateBETA = (xValue.CompareTo("True") == 0);
+        }
+        else if (xName.CompareTo("UpdateType") == 0)
+        {
+          switch (xValue)
+          {
+            case "BETA":
+              m_UpdateBETA = true;
+              m_UpdateType = UpdateTypes.Ask;
+              break;
+            case "Auto":
+              m_UpdateType = UpdateTypes.Auto;
+              break;
+            case "None":
+              m_UpdateType = UpdateTypes.None;
+              break;
+            default:
+              m_UpdateType = UpdateTypes.Ask;
+              break;
+          }
+        }
+        else if (xName.CompareTo("UpdateTime") == 0)
+        {
+          if (!byte.TryParse(xValue, out m_UpdateTime))
+          {
+            m_UpdateTime = 15;
+          }
+        }
+        else if (xName.CompareTo("ScaleScreen") == 0)
+        {
+          m_ScaleScreen = (xValue.CompareTo("True") == 0);
+        }
+        else if (xName.CompareTo("MainSize") == 0)
+        {
+          char[] comma = { ',' };
+          string[] sSizes = xValue.Split(comma, 2);
+          int iWidth = 450;
+          if (!int.TryParse(sSizes[0], out iWidth))
+          {
+            iWidth = 450;
+          }
+          int iHeight = 200;
+          if (!int.TryParse(sSizes[1], out iHeight))
+          {
+            iHeight = 200;
+          }
+          m_MainSize = new Gdk.Size(iWidth, iHeight);
+        }
+        else if (xName.CompareTo("RemoteKey") == 0)
+        {
+          m_RemoteKey = xValue;
+        }
+        else if (xName.CompareTo("PassCrypt") == 0)
+        {
+          m_PassCrypt = xValue;
+        }
+        else if (xName.CompareTo("Timeout") == 0)
+        {
+          if (!int.TryParse(xValue, out m_Timeout))
+          {
+            m_Timeout = 120;
+          }
+        }
+        else if (xName.CompareTo("Overuse") == 0)
+        {
+          if (!int.TryParse(xValue, out m_Overuse))
+          {
+            m_Overuse = 0;
+          }
+        }
+        else if (xName.CompareTo("Overtime") == 0)
+        {
+          if (!int.TryParse(xValue, out m_Overtime))
+          {
+            m_Overtime = 60;
+          }
+        }
+        else if (xName.CompareTo("AlertStyle") == 0)
+        {
+          m_AlertStyle = xValue;
+        }
+        else if (xName.CompareTo("TrayIcon") == 0)
+        {
+          switch (xValue)
+          {
+            case "Never":
+              m_TrayIcon = TrayStyles.Never;
+              break;
+            case "Minimized":
+              m_TrayIcon = TrayStyles.Minimized;
+              break;
+            default:
+              m_TrayIcon = TrayStyles.Always;
+              break;
+          }
+        }
+        else if (xName.CompareTo("TrayClose") == 0)
+        {
+          m_TrayClose = (xValue.CompareTo("True") == 0);
+        }
+        else if (xName.CompareTo("AutoHide") == 0)
+        {
+          m_AutoHide = (xValue.CompareTo("True") == 0);
+        }
+        else if (xName.CompareTo("TLSProxy") == 0)
+        {
+          m_TLSProxy = (xValue.CompareTo("True") == 0);
+        }
+        else if (xName.CompareTo("Proxy") == 0)
+        {
+          m_ProxySetting = xValue;
+        }
+        else if (xName.CompareTo("Protocol") == 0)
+        {
+          m_Protocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.None;
+          if (xValue.Contains("SSL"))
+          {
+            m_Protocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Ssl3;
+          }
+          if (xValue.Contains("TLS10"))
+          {
+            m_Protocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls10;
+          }
+          if (xValue.Contains("TLS11"))
+          {
+            m_Protocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls11;
+          }
+          if (xValue.Contains("TLS12"))
+          {
+            m_Protocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls12;
+          }
+          if (xValue.Contains("TLS") & !xValue.Contains("TLS1"))
+          {
+            m_Protocol |= (System.Net.SecurityProtocolType) (SecurityProtocolTypeEx.Tls11 | SecurityProtocolTypeEx.Tls12);
+          }
+        }
+        else if (xName.CompareTo("NetTestURL") == 0)
+        {
+          m_NetTest = xValue;
+        }
+      }
+      Colors = new AppColors();
+      if (xConfig.ChildNodes.Count < 2)
+      {
+        ResetColors();
       }
       else
       {
-        Reset();
+        XmlNode xColorSettings = xConfig.ChildNodes[1];
+        if (!xColorSettings.HasChildNodes)
+        {
+          ResetColors();
+        }
+        else
+        {
+          foreach (XmlNode m_graph in xColorSettings.ChildNodes)
+          {
+            string graphName = m_graph.Attributes[0].InnerText;
+            if (m_graph.HasChildNodes)
+            {
+              foreach (XmlNode m_node in m_graph.ChildNodes)
+              {
+                string nodeName = m_node.Attributes[0].InnerText;
+                if (nodeName.CompareTo("Download") == 0)
+                {
+                  //Download Section
+                  if (m_node.HasChildNodes)
+                  {
+                    foreach (XmlNode xSetting in m_node.ChildNodes)
+                    {
+                      string xName = xSetting.Attributes[0].InnerText;
+                      string xValue = xSetting.FirstChild.InnerText;
+                      if (xName.CompareTo("Line") == 0)
+                      {
+                        if (graphName.CompareTo("History") == 0)
+                        {
+                          Colors.HistoryDownLine = StrToColor(xValue);
+                        }
+                      }
+                      else if (xName.CompareTo("Start") == 0)
+                      {
+                        if (graphName.CompareTo("Main") == 0)
+                        {
+                          Colors.MainDownA = StrToColor(xValue);
+                        }
+                        else if (graphName.CompareTo("Tray") == 0)
+                        {
+                          Colors.TrayDownA = StrToColor(xValue);
+                        }
+                        else if (graphName.CompareTo("History") == 0)
+                        {
+                          Colors.HistoryDownA = StrToColor(xValue);
+                        }
+                      }
+                      else if (xName.CompareTo("Mid") == 0)
+                      {
+                        if (graphName.CompareTo("Main") == 0)
+                        {
+                          Colors.MainDownB = StrToColor(xValue);
+                        }
+                        else if (graphName.CompareTo("Tray") == 0)
+                        {
+                          Colors.TrayDownB = StrToColor(xValue);
+                        }
+                        else if (graphName.CompareTo("History") == 0)
+                        {
+                          Colors.HistoryDownB = StrToColor(xValue);
+                        }
+                      }
+                      else if (xName.CompareTo("End") == 0)
+                      {
+                        if (graphName.CompareTo("Main") == 0)
+                        {
+                          Colors.MainDownC = StrToColor(xValue);
+                        }
+                        else if (graphName.CompareTo("Tray") == 0)
+                        {
+                          Colors.TrayDownC = StrToColor(xValue);
+                        }
+                        else if (graphName.CompareTo("History") == 0)
+                        {
+                          Colors.HistoryDownC = StrToColor(xValue);
+                        }
+                      }
+                      else if (xName.CompareTo("Maximum") == 0)
+                      {
+                        if (graphName.CompareTo("History") == 0)
+                        {
+                          Colors.HistoryDownMax = StrToColor(xValue);
+                        }
+                      }
+                    }
+                  }
+                }
+                else if (nodeName.CompareTo("Upload") == 0)
+                {
+                  //Upload Section
+                  if (m_node.HasChildNodes)
+                  {
+                    foreach (XmlNode xSetting in m_node.ChildNodes)
+                    {
+                      string xName = xSetting.Attributes[0].InnerText;
+                      string xValue = xSetting.FirstChild.InnerText;
+                      if (xName.CompareTo("Line") == 0)
+                      {
+                        if (graphName.CompareTo("History") == 0)
+                        {
+                          Colors.HistoryUpLine = StrToColor(xValue);
+                        }
+                      }
+                      else if (xName.CompareTo("Start") == 0)
+                      {
+                        if (graphName.CompareTo("Main") == 0)
+                        {
+                          Colors.MainUpA = StrToColor(xValue);
+                        }
+                        else if (graphName.CompareTo("Tray") == 0)
+                        {
+                          Colors.TrayUpA = StrToColor(xValue);
+                        }
+                        else if (graphName.CompareTo("History") == 0)
+                        {
+                          Colors.HistoryUpA = StrToColor(xValue);
+                        }
+                      }
+                      else if (xName.CompareTo("Mid") == 0)
+                      {
+                        if (graphName.CompareTo("Main") == 0)
+                        {
+                          Colors.MainUpB = StrToColor(xValue);
+                        }
+                        else if (graphName.CompareTo("Tray") == 0)
+                        {
+                          Colors.TrayUpB = StrToColor(xValue);
+                        }
+                        else if (graphName.CompareTo("History") == 0)
+                        {
+                          Colors.HistoryUpB = StrToColor(xValue);
+                        }
+                      }
+                      else if (xName.CompareTo("End") == 0)
+                      {
+                        if (graphName.CompareTo("Main") == 0)
+                        {
+                          Colors.MainUpC = StrToColor(xValue);
+                        }
+                        else if (graphName.CompareTo("Tray") == 0)
+                        {
+                          Colors.TrayUpC = StrToColor(xValue);
+                        }
+                        else if (graphName.CompareTo("History") == 0)
+                        {
+                          Colors.HistoryUpC = StrToColor(xValue);
+                        }
+                      }
+                      else if (xName.CompareTo("Maximum") == 0)
+                      {
+                        if (graphName.CompareTo("History") == 0)
+                        {
+                          Colors.HistoryUpMax = StrToColor(xValue);
+                        }
+                      }
+                    }
+                  }
+                }
+                else if (nodeName.CompareTo("Text") == 0)
+                {
+                  //Text setting
+                  string nodeVal = m_node.FirstChild.InnerText;
+                  if (graphName.CompareTo("Main") == 0)
+                  {
+                    Colors.MainText = StrToColor(nodeVal);
+                  }
+                  else if (graphName.CompareTo("History") == 0)
+                  {
+                    Colors.HistoryText = StrToColor(nodeVal);
+                  }
+                }
+                else if (nodeName.CompareTo("Background") == 0)
+                {
+                  //Background setting
+                  string nodeVal = m_node.FirstChild.InnerText;
+                  if (graphName.CompareTo("Main") == 0)
+                  {
+                    Colors.MainBackground = StrToColor(nodeVal);
+                  }
+                  else if (graphName.CompareTo("History") == 0)
+                  {
+                    Colors.HistoryBackground = StrToColor(nodeVal);
+                  }
+                }
+                else if (nodeName.CompareTo("Grid") == 0)
+                {
+                  //Grid Section
+                  if (m_node.HasChildNodes)
+                  {
+                    foreach (XmlNode xSetting in m_node.ChildNodes)
+                    {
+                      string xName = xSetting.Attributes[0].InnerText;
+                      string xValue = xSetting.FirstChild.InnerText;
+                      if (xName.CompareTo("Light") == 0)
+                      {
+                        if (graphName.CompareTo("History") == 0)
+                        {
+                          Colors.HistoryLightGrid = StrToColor(xValue);
+                        }
+                      }
+                      else if (xName.CompareTo("Dark") == 0)
+                      {
+                        if (graphName.CompareTo("History") == 0)
+                        {
+                          Colors.HistoryDarkGrid = StrToColor(xValue);
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
+      Loaded = true;
     }
     private void Reset()
     {
@@ -631,7 +637,7 @@ namespace RestrictionTrackerGTK
       Colors.HistoryLightGrid = Color.Transparent;
       Colors.HistoryDarkGrid = Color.Transparent;
     }
-    public void Save()
+    public bool Save()
     {
       string sBeta = "False";
       if (m_UpdateBETA)
@@ -883,14 +889,11 @@ namespace RestrictionTrackerGTK
                     "    </graph>\n" +
                     "  </colorSettings>\n" +
                     "</configuration>";
-      MakeBackup();
-      using (FileStream ioWriter = new FileStream(ConfigFile, FileMode.Create, FileAccess.Write, FileShare.None))
-      {
-        using (StreamWriter nOut = new StreamWriter(ioWriter))
-        {
-          nOut.Write(sRet);
-        }
-      }
+      string saveRet = SettingsFunctions.SafeSave(ConfigFile, ConfigFileBackup, sRet);
+      if (saveRet == "SAVED")
+        return true;
+      SettingsFunctions.SaveErrDlg(saveRet);
+      return false;
     }
     private string ColorToStr(Color c)
     {
@@ -991,43 +994,6 @@ namespace RestrictionTrackerGTK
       else
       {
         return Color.Transparent;
-      }
-    }
-    public void MakeBackup()
-    {
-      if (File.Exists(ConfigFile))
-      {
-        File.Copy(ConfigFile, ConfigFileBackup, true);
-      }
-    }
-    public void BackupCheckup()
-    {
-      if (File.Exists(ConfigFile))
-      {
-        if (File.Exists(ConfigFileBackup))
-        {
-          try
-          {
-            XmlDocument m_xmld = new XmlDocument();
-            m_xmld.Load(ConfigFile);
-          }
-          catch (Exception)
-          {
-            File.Copy(ConfigFileBackup, ConfigFile, true);
-          }
-          finally
-          {
-            File.Delete(ConfigFileBackup);
-          }
-        }
-      }
-      else
-      {
-        if (File.Exists(ConfigFileBackup))
-        {
-          File.Copy(ConfigFileBackup, ConfigFile, true);
-          File.Delete(ConfigFileBackup);
-        }
       }
     }
     public string Account
@@ -1821,6 +1787,111 @@ namespace RestrictionTrackerGTK
           c_HistoryGridD = value;
         }
       }
+    }
+  }
+  static class SettingsFunctions
+  {
+    public static string SafeSave(string sPath, string sBackup, string sConfig)
+    {
+      if (!File.Exists(sPath))
+      {
+        try
+        {
+          File.WriteAllText(sPath, sConfig, System.Text.Encoding.UTF8);
+        }
+        catch (Exception ex)
+        {
+          return "PERMISSION: was unable to write to settings file \"" + sPath + "\". " + ex.Message;
+        }
+        string firstFileStr = File.ReadAllText(sPath, System.Text.Encoding.UTF8);
+        if (firstFileStr == sConfig)
+          return "SAVED";
+        return "WRITE: could not verify the settings file \"" + sPath + "\".";
+      }
+      string sNew = sPath + ".out";
+      string sOld = sBackup;
+      try
+      {
+        if (File.Exists(sOld))
+          File.Delete(sOld);
+      }
+      catch (Exception ex)
+      {
+        return "WRITE: failed to erase backup file \"" + sOld + "\". " + ex.Message;
+      }
+      try
+      {
+        if (File.Exists(sNew))
+          File.Delete(sNew);
+      }
+      catch (Exception ex)
+      {
+        return "WRITE: failed to erase temp file \"" + sNew + "\". " + ex.Message;
+      }
+      try
+      {
+        File.WriteAllText(sNew, sConfig, System.Text.Encoding.UTF8);
+      }
+      catch (Exception ex)
+      {
+        return "PERMISSION: was unable to write to settings file \"" + sNew + "\". " + ex.Message;
+      }
+      try
+      {
+        File.Replace(sNew, sPath, sOld, true);
+      }
+      catch (Exception ex)
+      {
+        return "PERMISSION: was unable to move new settings file \"" + sNew + "\" to settings location \"" + sPath + "\". " + ex.Message;
+      }
+      string fileStr = File.ReadAllText(sPath, System.Text.Encoding.UTF8);
+      if (fileStr != sConfig)
+      {
+        File.Delete(sPath);
+        File.Move(sOld, sPath);
+        return "WRITE: could not verify the settings file \"" + sPath + "\".";
+      }
+      try
+      {
+        File.Delete(sOld);
+      }
+      catch
+      {
+        //I really don't care
+      }
+      return "SAVED";
+    }
+    public static void SaveErrDlg(string saveRet)
+    {
+      if (!saveRet.Contains(": "))
+        return;
+      string sErrType = saveRet.Substring(0, saveRet.IndexOf(": "));
+      string sErrMsg = saveRet.Substring(saveRet.IndexOf(": ") + 2);
+      string sRealErr = null;
+      if (sErrMsg.Contains(". "))
+      {
+        sRealErr = sErrMsg.Substring(sErrMsg.IndexOf(". ") + 2);
+        sErrMsg = sErrMsg.Substring(0, sErrMsg.IndexOf(". ") + 1);
+      }
+      sErrMsg = modFunctions.ProductName + " " + sErrMsg;
+      string sCaption = "Your settings were not saved.";
+      string sHeader = "Program Settings Error";
+      switch (sErrType)
+      {
+        case "WRITE":
+          sCaption = "Your Program settings were not saved.";
+          break;
+        case "PERMISSION": 
+          sCaption = "Your Program settings could not be saved.";
+          break;
+        default :
+          sCaption = "There was an error saving your Program settings.";
+          break;
+      }
+      if (String.IsNullOrEmpty(sRealErr))
+        modFunctions.ShowMessageBox(null, sCaption + Environment.NewLine + sErrMsg, sHeader, Gtk.DialogFlags.Modal, Gtk.MessageType.Warning, Gtk.ButtonsType.Ok);
+      else
+        modFunctions.ShowMessageBox(null, sCaption + Environment.NewLine + sErrMsg + Environment.NewLine + Environment.NewLine + sRealErr, sHeader, Gtk.DialogFlags.Modal, Gtk.MessageType.Warning, Gtk.ButtonsType.Ok);
     }
   }
 }

@@ -2146,10 +2146,15 @@ namespace RestrictionTrackerGTK
         {
         }
       }
-      mySettings.Save();
-      bHardChange = false;
-      bSaved = true;
-      cmdSave.Sensitive = false;
+      bool saveFail = false;
+      if (!mySettings.Save())
+        saveFail = true;
+      if (!saveFail)
+      {
+        bHardChange = false;
+        bSaved = true;
+        cmdSave.Sensitive = false;
+      }
     }
     protected void cmdClose_Click(object sender, EventArgs e)
     {
