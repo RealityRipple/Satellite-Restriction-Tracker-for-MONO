@@ -899,6 +899,14 @@ RestrictionTrackerLib
 	<summary>
  A <see cref="T:RestrictionLibrary.WebClientCore"/> Upload or Download request failure message containing an <see cref="T:System.Exception"/>.
  </summary>
+</member><member name="F:RestrictionLibrary.WebClientCore.REPLACE_COMMA">
+	<summary>
+ This constant replaces any commas in the values of cookies received, and will be replaced by commas on any cookies being sent.
+ </summary>
+</member><member name="F:RestrictionLibrary.WebClientCore.REPLACE_SEMIC">
+	<summary>
+ This constant replaces any semicolons in the values of cookies received, and will be replaced by semicolons on any cookies being sent.
+ </summary>
 </member><member name="P:RestrictionLibrary.WebClientCore.CookieJar">
 	<summary>
  Acts as the container for a collection of <see cref="T:System.Net.CookieCollection"/> objects for use with an instance of the <see cref="T:RestrictionLibrary.WebClientCore"/> class.
