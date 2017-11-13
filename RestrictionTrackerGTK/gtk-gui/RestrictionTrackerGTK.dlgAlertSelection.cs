@@ -5,25 +5,15 @@ namespace RestrictionTrackerGTK
 	public partial class dlgAlertSelection
 	{
 		private global::Gtk.HBox pnlList;
-		
 		private global::Gtk.VBox pnlListBox;
-		
 		private global::Gtk.HBox pnlListButtons;
-		
 		private global::Gtk.Button cmdAdd;
-		
 		private global::Gtk.Button cmdRemove;
-		
 		private global::Gtk.EventBox evntPreview;
-		
 		private global::Gtk.Image pctPreview;
-		
 		private global::Gtk.Label lblMore;
-		
 		private global::Gtk.VSeparator vsButtons;
-		
 		private global::Gtk.Button cmdSave;
-		
 		private global::Gtk.Button cmdClose;
 
 		protected virtual void Build ()

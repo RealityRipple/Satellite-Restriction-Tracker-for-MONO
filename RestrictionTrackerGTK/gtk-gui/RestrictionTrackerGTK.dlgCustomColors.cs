@@ -5,209 +5,107 @@ namespace RestrictionTrackerGTK
 	public partial class dlgCustomColors
 	{
 		private global::Gtk.Table pnlCustomColors;
-		
 		private global::Gtk.Frame grpHistory;
-		
 		private global::Gtk.Alignment algnHistory;
-		
 		private global::Gtk.Table pnlHistory;
-		
 		private global::Gtk.EventBox evnHistory;
-		
 		private global::Gtk.Image pctHistory;
-		
 		private global::Gtk.Frame grpHistoryDown;
-		
 		private global::Gtk.Alignment algnHistoryDown;
-		
 		private global::Gtk.Table pnlHistoryDown;
-		
 		private global::Gtk.CheckButton chkHistoryDownB;
-		
 		private global::Gtk.ColorButton cmdHistoryDownA;
-		
 		private global::Gtk.ColorButton cmdHistoryDownB;
-		
 		private global::Gtk.ColorButton cmdHistoryDownC;
-		
 		private global::Gtk.ColorButton cmdHistoryDownLine;
-		
 		private global::Gtk.ColorButton cmdHistoryDownMax;
-		
 		private global::Gtk.Label lblHistoryDownA;
-		
 		private global::Gtk.Label lblHistoryDownC;
-		
 		private global::Gtk.Label lblHistoryDownLine;
-		
 		private global::Gtk.Label lblHistoryDownMax;
-		
 		private global::Gtk.Label lblHistoryDownTitle;
-		
 		private global::Gtk.Frame grpHistoryUp;
-		
 		private global::Gtk.Alignment algnHistoryUp;
-		
 		private global::Gtk.Table pnlHistoryUp;
-		
 		private global::Gtk.CheckButton chkHistoryUpB;
-		
 		private global::Gtk.ColorButton cmdHistoryUpA;
-		
 		private global::Gtk.ColorButton cmdHistoryUpB;
-		
 		private global::Gtk.ColorButton cmdHistoryUpC;
-		
 		private global::Gtk.ColorButton cmdHistoryUpLine;
-		
 		private global::Gtk.ColorButton cmdHistoryUpMax;
-		
 		private global::Gtk.Label lblHistoryUpA;
-		
 		private global::Gtk.Label lblHistoryUpC;
-		
 		private global::Gtk.Label lblHistoryUpLine;
-		
 		private global::Gtk.Label lblHistoryUpMax;
-		
 		private global::Gtk.Label lblHistoryUpTitle;
-		
 		private global::Gtk.Table pnlHistoryStyle;
-		
 		private global::Gtk.ColorButton cmdHistoryBG;
-		
 		private global::Gtk.ColorButton cmdHistoryDarkGrid;
-		
 		private global::Gtk.ColorButton cmdHistoryLightGrid;
-		
 		private global::Gtk.ColorButton cmdHistoryText;
-		
 		private global::Gtk.Label lblHistoryBG;
-		
 		private global::Gtk.Label lblHistoryGridD;
-		
 		private global::Gtk.Label lblHistoryGridL;
-		
 		private global::Gtk.Label lblHistoryText;
-		
 		private global::Gtk.Label lblHistoryTitle;
-		
 		private global::Gtk.Frame grpMain;
-		
 		private global::Gtk.Alignment algnMain;
-		
 		private global::Gtk.Table pnlMain;
-		
 		private global::Gtk.EventBox evnMain;
-		
 		private global::Gtk.Image pctMain;
-		
 		private global::Gtk.Frame grpMainDown;
-		
 		private global::Gtk.Alignment algnMainDown;
-		
 		private global::Gtk.Table pnlMainDown;
-		
 		private global::Gtk.CheckButton chkMainDownB;
-		
 		private global::Gtk.ColorButton cmdMainDownA;
-		
 		private global::Gtk.ColorButton cmdMainDownB;
-		
 		private global::Gtk.ColorButton cmdMainDownC;
-		
 		private global::Gtk.Label lblMainDownA;
-		
 		private global::Gtk.Label lblMainDownC;
-		
 		private global::Gtk.Label lblMainDownTitle;
-		
 		private global::Gtk.Frame grpMainUp;
-		
 		private global::Gtk.Alignment algnMainUp;
-		
 		private global::Gtk.Table pnlMainUp;
-		
 		private global::Gtk.CheckButton chkMainUpB;
-		
 		private global::Gtk.ColorButton cmdMainUpA;
-		
 		private global::Gtk.ColorButton cmdMainUpB;
-		
 		private global::Gtk.ColorButton cmdMainUpC;
-		
 		private global::Gtk.Label lblMainUpA;
-		
 		private global::Gtk.Label lblMainUpC;
-		
 		private global::Gtk.Label lblMainUpTitle;
-		
 		private global::Gtk.Table pnlMainStyle;
-		
 		private global::Gtk.ColorButton cmdMainBG;
-		
 		private global::Gtk.ColorButton cmdMainText;
-		
 		private global::Gtk.Label lblMainBG;
-		
 		private global::Gtk.Label lblMainText;
-		
 		private global::Gtk.Label lblMainTitle;
-		
 		private global::Gtk.Frame grpTray;
-		
 		private global::Gtk.Alignment algnTray;
-		
 		private global::Gtk.Table pnlTray;
-		
 		private global::Gtk.EventBox evnTray;
-		
 		private global::Gtk.Image pctTray;
-		
 		private global::Gtk.Frame grpTrayDown;
-		
 		private global::Gtk.Alignment algnTrayDown;
-		
 		private global::Gtk.Table pnlTrayDown;
-		
 		private global::Gtk.CheckButton chkTrayDownB;
-		
 		private global::Gtk.ColorButton cmdTrayDownA;
-		
 		private global::Gtk.ColorButton cmdTrayDownB;
-		
 		private global::Gtk.ColorButton cmdTrayDownC;
-		
 		private global::Gtk.Label lblTrayDownA;
-		
 		private global::Gtk.Label lblTrayDownC;
-		
 		private global::Gtk.Label lblTrayDownTitle;
-		
 		private global::Gtk.Frame grpTrayUp;
-		
 		private global::Gtk.Alignment algnTrayUp;
-		
 		private global::Gtk.Table pnlTrayUp;
-		
 		private global::Gtk.CheckButton chkTrayUpB;
-		
 		private global::Gtk.ColorButton cmdTrayUpA;
-		
 		private global::Gtk.ColorButton cmdTrayUpB;
-		
 		private global::Gtk.ColorButton cmdTrayUpC;
-		
 		private global::Gtk.Label lblTrayUpA;
-		
 		private global::Gtk.Label lblTrayUpC;
-		
 		private global::Gtk.Label lblTrayUpTitle;
-		
 		private global::Gtk.Label lblTrayTitle;
-		
 		private global::Gtk.Button cmdSave;
-		
 		private global::Gtk.Button cmdClose;
 
 		protected virtual void Build ()

@@ -5,319 +5,163 @@ namespace RestrictionTrackerGTK
 	public partial class dlgConfig
 	{
 		private global::Gtk.Notebook tbsConfig;
-		
 		private global::Gtk.Table pnlAccount;
-		
 		private global::Gtk.Label lblAccountKeyTitle;
-		
 		private global::Gtk.Label lblAccountProviderTitle;
-		
 		private global::Gtk.Label lblAccountViaSatTitle;
-		
 		private global::Gtk.Table pnlAccountKey;
-		
 		private global::Gtk.Label lblAccountKeyDescription;
-		
 		private global::Gtk.Label lblKey;
-		
 		private global::Gtk.Label lblPurchaseKey;
-		
 		private global::Gtk.Image pctAccountKeyIcon;
-		
 		private global::Gtk.HBox pnlKey;
-		
 		private global::Gtk.Entry txtKey1;
-		
 		private global::Gtk.Entry txtKey2;
-		
 		private global::Gtk.Entry txtKey3;
-		
 		private global::Gtk.Entry txtKey4;
-		
 		private global::Gtk.Entry txtKey5;
-		
 		private global::Gtk.EventBox evnKeyState;
-		
 		private global::Gtk.Image pctKeyState;
-		
 		private global::Gtk.Table pnlAccountProvider;
-		
 		private global::Gtk.CheckButton chkAccountTypeAuto;
-		
 		private global::Gtk.ComboBoxEntry cmbProvider;
-		
 		private global::Gtk.Label lblAccountProviderDescription;
-		
 		private global::Gtk.Label lblAccountType;
-		
 		private global::Gtk.Label lblProvider;
-		
 		private global::Gtk.Image pctAccountProviderIcon;
-		
 		private global::Gtk.Table pnlAccountTypes;
-		
 		private global::Gtk.RadioButton optAccountTypeDNX;
-		
 		private global::Gtk.RadioButton optAccountTypeNONE;
-		
 		private global::Gtk.RadioButton optAccountTypeRPL;
-		
 		private global::Gtk.RadioButton optAccountTypeRPX;
-		
 		private global::Gtk.RadioButton optAccountTypeWBL;
-		
 		private global::Gtk.RadioButton optAccountTypeWBX;
-		
 		private global::Gtk.Table pnlAccountSpace1;
-		
 		private global::Gtk.Table pnlAccountSpace2;
-		
 		private global::Gtk.Table pnlAccountViaSat;
-		
 		private global::Gtk.Label lblAccount;
-		
 		private global::Gtk.Label lblAccountViaSatDescription;
-		
 		private global::Gtk.Label lblPassword;
-		
 		private global::Gtk.Image pctAccountViaSatIcon;
-		
 		private global::Gtk.HBox pnlPassword;
-		
 		private global::Gtk.Entry txtPassword;
-		
 		private global::Gtk.ToggleButton cmdPassDisplay;
-		
 		private global::Gtk.Entry txtAccount;
-		
 		private global::Gtk.Label lblAccountTitle;
-		
 		private global::Gtk.Table pnlPrefs;
-		
 		private global::Gtk.Label lblPrefAccuracyTitle;
-		
 		private global::Gtk.Label lblPrefAlertTitle;
-		
 		private global::Gtk.Label lblPrefColorTitle;
-		
 		private global::Gtk.Label lblPrefInterfaceTitle;
-		
 		private global::Gtk.Label lblPrefStartTitle;
-		
 		private global::Gtk.Table pnlPrefAccuracy;
-		
 		private global::Gtk.Label lblAccuracy1;
-		
 		private global::Gtk.Label lblAccuracy2;
-		
 		private global::Gtk.Label lblInterval1;
-		
 		private global::Gtk.Label lblInterval2;
-		
 		private global::Gtk.Image pctPrefAccuracyIcon;
-		
 		private global::Gtk.SpinButton txtAccuracy;
-		
 		private global::Gtk.SpinButton txtInterval;
-		
 		private global::Gtk.Table pnlPrefAlert;
-		
 		private global::Gtk.CheckButton chkOverAlert;
-		
 		private global::Gtk.Button cmdAlertStyle;
-		
 		private global::Gtk.Label lblOverSize1;
-		
 		private global::Gtk.Label lblOverSize2;
-		
 		private global::Gtk.Label lblOverTime1;
-		
 		private global::Gtk.Label lblOverTime2;
-		
 		private global::Gtk.Label lblPrefAlertDescription;
-		
 		private global::Gtk.Image pctPrefAlertIcon;
-		
 		private global::Gtk.SpinButton txtOverSize;
-		
 		private global::Gtk.SpinButton txtOverTime;
-		
 		private global::Gtk.Table pnlPrefColor;
-		
 		private global::Gtk.Button cmdColors;
-		
 		private global::Gtk.Label lblPrefColorDescription;
-		
 		private global::Gtk.Image pctPrefColorIcon;
-		
 		private global::Gtk.Table pnlPrefInterface;
-		
 		private global::Gtk.CheckButton chkScaleScreen;
-		
 		private global::Gtk.CheckButton chkTrayClose;
-		
 		private global::Gtk.CheckButton chkTrayIcon;
-		
 		private global::Gtk.CheckButton chkTrayMin;
-		
 		private global::Gtk.Image pctPrefInterfaceIcon;
-		
 		private global::Gtk.Table pnlPrefSpace1;
-		
 		private global::Gtk.Table pnlPrefSpace2;
-		
 		private global::Gtk.Table pnlPrefSpace3;
-		
 		private global::Gtk.Table pnlPrefSpace4;
-		
 		private global::Gtk.Table pnlPrefStart;
-		
 		private global::Gtk.CheckButton chkAutoHide;
-		
 		private global::Gtk.CheckButton chkStartup;
-		
 		private global::Gtk.Label lblStartWait1;
-		
 		private global::Gtk.Label lblStartWait2;
-		
 		private global::Gtk.Image pctPrefStartIcon;
-		
 		private global::Gtk.SpinButton txtStartWait;
-		
 		private global::Gtk.Label lblPreferencesTitle;
-		
 		private global::Gtk.Table pnlNetwork;
-		
 		private global::Gtk.Label lblNetworkProtocolTitle;
-		
 		private global::Gtk.Label lblNetworkProxyTitle;
-		
 		private global::Gtk.Label lblNetworkTimeoutTitle;
-		
 		private global::Gtk.Label lblNetworkUpdateTitle;
-		
 		private global::Gtk.Table pnlNetSpace1;
-		
 		private global::Gtk.Table pnlNetSpace2;
-		
 		private global::Gtk.Table pnlNetSpace3;
-		
 		private global::Gtk.Table pnlNetworkProtocol;
-		
 		private global::Gtk.CheckButton chkNetworkProtocolSSL3;
-		
 		private global::Gtk.CheckButton chkNetworkProtocolTLS10;
-		
 		private global::Gtk.CheckButton chkNetworkProtocolTLS11;
-		
 		private global::Gtk.CheckButton chkNetworkProtocolTLS12;
 		private global::Gtk.CheckButton chkNetworkSecurityEnforce;
 		private global::Gtk.CheckButton chkTLSProxy;
-		
 		private global::Gtk.Label lblNetworkProtocolDescription;
-		
 		private global::Gtk.Image pctNetworkProtocolIcon;
-		
 		private global::Gtk.Table pnlNetworkProxy;
-		
 		private global::Gtk.Label lblNetworkProxyDescription;
-		
 		private global::Gtk.Image pctNetworkProxyIcon;
-		
 		private global::Gtk.Table pnlProxy;
-		
 		private global::Gtk.ComboBox cmbProxyType;
-		
 		private global::Gtk.Label lblProxyAddr;
-		
 		private global::Gtk.Label lblProxyDomain;
-		
 		private global::Gtk.Label lblProxyPassword;
-		
 		private global::Gtk.Label lblProxyPort;
-		
 		private global::Gtk.Label lblProxyType;
-		
 		private global::Gtk.Label lblProxyUser;
-		
 		private global::Gtk.Entry txtProxyAddress;
-		
 		private global::Gtk.Entry txtProxyDomain;
-		
 		private global::Gtk.Entry txtProxyPassword;
-		
 		private global::Gtk.SpinButton txtProxyPort;
-		
 		private global::Gtk.Entry txtProxyUser;
-		
 		private global::Gtk.Table pnlNetworkTimeout;
-		
 		private global::Gtk.Label lblNetworkTimeoutDescription;
-		
 		private global::Gtk.Label lblTimeout1;
-		
 		private global::Gtk.Label lblTimeout2;
-		
 		private global::Gtk.Image pctNetworkTimeoutIcon;
-		
 		private global::Gtk.SpinButton txtTimeout;
-		
 		private global::Gtk.Table pnlNetworkUpdate;
-		
 		private global::Gtk.CheckButton chkUpdateBETA;
-		
 		private global::Gtk.ComboBox cmbUpdateAutomation;
-		
 		private global::Gtk.ComboBox cmbUpdateInterval;
-		
 		private global::Gtk.Label lblUpdateInterval;
-		
 		private global::Gtk.Image pctNetworkUpdateIcon;
-		
 		private global::Gtk.Label lblNetworkTitle;
-		
 		private global::Gtk.Table pnlAdvanced;
-		
 		private global::Gtk.Label lblAdvancedDataTitle;
-		
 		private global::Gtk.Label lblAdvancedNetTestTitle;
-		
 		private global::Gtk.Table pnlAdvancedData;
-		
 		private global::Gtk.Button cmdHistoryDirOpen;
-		
 		private global::Gtk.Label lblAdvancedDataDescription;
-		
 		private global::Gtk.RadioButton optHistoryCustom;
-		
 		private global::Gtk.RadioButton optHistoryLocalConfig;
-		
 		private global::Gtk.Image pctAdvancedDataIcon;
-		
 		private global::Gtk.FileChooserButton txtHistoryDir;
-		
 		private global::Gtk.Table pnlAdvancedNetTest;
-		
 		private global::Gtk.Label lblAdvancedNetTestDescription;
-		
 		private global::Gtk.RadioButton optNetTestCustom;
-		
 		private global::Gtk.RadioButton optNetTestNone;
-		
 		private global::Gtk.RadioButton optNetTestSpeedTest;
-		
 		private global::Gtk.RadioButton optNetTestTestMyNet;
-		
 		private global::Gtk.Image pctAdvancedNetTestIcon;
-		
 		private global::Gtk.Entry txtNetTestCustom;
-		
 		private global::Gtk.Table pnlAdvancedSpace1;
-		
 		private global::Gtk.Label lblAdvancedTitle;
-		
 		private global::Gtk.Button cmdSave;
-		
 		private global::Gtk.Button cmdClose;
 
 		protected virtual void Build ()

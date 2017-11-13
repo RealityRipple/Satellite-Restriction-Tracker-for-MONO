@@ -5,23 +5,14 @@ namespace RestrictionTrackerGTK
 	public partial class dlgUpdate
 	{
 		private global::Gtk.VBox pnlUpdate;
-		
 		private global::Gtk.Label lblTitle;
-		
 		private global::Gtk.Label lblNewVer;
-		
 		private global::Gtk.Label lblBETA;
-		
 		private global::Gtk.CheckButton chkStopBETA;
-		
 		private global::Gtk.ScrolledWindow scrInfo;
-		
 		private global::Gtk.TextView txtInfo;
-		
 		private global::Gtk.Button cmdDownload;
-		
 		private global::Gtk.Button cmdCancel;
-		
 		private global::Gtk.Button cmdChanges;
 
 		protected virtual void Build ()

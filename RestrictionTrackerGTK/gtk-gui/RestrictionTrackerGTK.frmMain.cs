@@ -5,129 +5,67 @@ namespace RestrictionTrackerGTK
 	public partial class frmMain
 	{
 		private global::Gtk.VBox pnlDetails;
-		
 		private global::Gtk.HBox pnlButtons;
-		
 		private global::Gtk.Button cmdRefresh;
-		
 		private global::Gtk.Button cmdHistory;
-		
 		private global::Gtk.Button cmdConfig;
-		
 		private global::Gtk.Button cmdAbout;
-		
 		private global::Gtk.Frame gbUsage;
-		
 		private global::Gtk.Alignment algnUsage;
-		
 		private global::Gtk.VBox pnlDisplays;
-		
 		private global::Gtk.VBox pnlNothing;
-		
 		private global::Gtk.Label lblNothing;
-		
 		private global::Gtk.Label lblRRS;
-		
 		private global::Gtk.HBox pnlTypeA;
-		
 		private global::Gtk.Frame gbTypeADld;
-		
 		private global::Gtk.Alignment algnTypeADld;
-		
 		private global::Gtk.HBox pnlTypeADld;
-		
 		private global::Gtk.VBox pnlDldText;
-		
 		private global::Gtk.HBox pnlDldTextUsed;
-		
 		private global::Gtk.Label lblTypeADldUsed;
-		
 		private global::Gtk.Label lblTypeADldUsedVal;
-		
 		private global::Gtk.HBox pnlDldTextFree;
-		
 		private global::Gtk.Label lblTypeADldFree;
-		
 		private global::Gtk.Label lblTypeADldFreeVal;
-		
 		private global::Gtk.HBox pnlDldTextLimit;
-		
 		private global::Gtk.Label lblTypeADldLimit;
-		
 		private global::Gtk.Label lblTypeADldLimitVal;
-		
 		private global::Gtk.EventBox evnTypeADld;
-		
 		private global::Gtk.Image pctTypeADld;
-		
 		private global::Gtk.Label lblTypeADld;
-		
 		private global::Gtk.Frame gbTypeAUld;
-		
 		private global::Gtk.Alignment algnTypeAUld;
-		
 		private global::Gtk.HBox pnlTypeAUld;
-		
 		private global::Gtk.VBox pnlUldText;
-		
 		private global::Gtk.HBox pnlUldTextUsed;
-		
 		private global::Gtk.Label lblTypeAUldUsed;
-		
 		private global::Gtk.Label lblTypeAUldUsedVal;
-		
 		private global::Gtk.HBox pnlUldTextFree;
-		
 		private global::Gtk.Label lblTypeAUldFree;
-		
 		private global::Gtk.Label lblTypeAUldFreeVal;
-		
 		private global::Gtk.HBox pnlUldTextLimit;
-		
 		private global::Gtk.Label lblTypeAUldLimit;
-		
 		private global::Gtk.Label lblTypeAUldLimitVal;
-		
 		private global::Gtk.EventBox evnTypeAUld;
-		
 		private global::Gtk.Image pctTypeAUld;
-		
 		private global::Gtk.Label lblTypeAUld;
-		
 		private global::Gtk.HBox pnlTypeB;
-		
 		private global::Gtk.VBox pnlRuralNumbers;
-		
 		private global::Gtk.HBox pnlRuralUsed;
-		
 		private global::Gtk.Label lblTypeBUsed;
-		
 		private global::Gtk.Label lblTypeBUsedVal;
-		
 		private global::Gtk.HBox pnlRuralFree;
-		
 		private global::Gtk.Label lblTypeBFree;
-		
 		private global::Gtk.Label lblTypeBFreeVal;
-		
 		private global::Gtk.HBox pnlRuralTotal;
-		
 		private global::Gtk.Label lblTypeBLimit;
-		
 		private global::Gtk.Label lblTypeBLimitVal;
-		
 		private global::Gtk.EventBox evnTypeB;
-		
 		private global::Gtk.Image pctTypeB;
-		
 		private global::Gtk.Label lblStatus;
-		
 		private global::Gtk.Statusbar sbMainStatus;
-		
 		private global::Gtk.ProgressBar pbMainStatus;
-		
 		private global::Gtk.Button cmdNetTest;
-		
 		private global::Gtk.Label lblMainStatus;
 
 		protected virtual void Build ()
@@ -648,27 +586,38 @@ namespace RestrictionTrackerGTK
 			this.cmdNetTest.Name = "cmdNetTest";
 			this.cmdNetTest.UseUnderline = true;
 			this.cmdNetTest.Relief = ((global::Gtk.ReliefStyle)(2));
-			global::Gtk.Image w57 = new global::Gtk.Image ();
-			this.cmdNetTest.Image = w57;
+			// Container child cmdNetTest.Gtk.Container+ContainerChild
+			global::Gtk.Alignment w57 = new global::Gtk.Alignment (0.5F, 0.5F, 0F, 0F);
+			// Container child GtkAlignment.Gtk.Container+ContainerChild
+			global::Gtk.HBox w58 = new global::Gtk.HBox ();
+			w58.Spacing = 2;
+			// Container child GtkHBox.Gtk.Container+ContainerChild
+			global::Gtk.Image w59 = new global::Gtk.Image ();
+			w58.Add (w59);
+			// Container child GtkHBox.Gtk.Container+ContainerChild
+			global::Gtk.Label w61 = new global::Gtk.Label ();
+			w58.Add (w61);
+			w57.Add (w58);
+			this.cmdNetTest.Add (w57);
 			this.sbMainStatus.Add (this.cmdNetTest);
-			global::Gtk.Box.BoxChild w58 = ((global::Gtk.Box.BoxChild)(this.sbMainStatus [this.cmdNetTest]));
-			w58.Position = 2;
-			w58.Expand = false;
-			w58.Fill = false;
+			global::Gtk.Box.BoxChild w65 = ((global::Gtk.Box.BoxChild)(this.sbMainStatus [this.cmdNetTest]));
+			w65.Position = 2;
+			w65.Expand = false;
+			w65.Fill = false;
 			// Container child sbMainStatus.Gtk.Box+BoxChild
 			this.lblMainStatus = new global::Gtk.Label ();
 			this.lblMainStatus.Name = "lblMainStatus";
 			this.lblMainStatus.SingleLineMode = true;
 			this.sbMainStatus.Add (this.lblMainStatus);
-			global::Gtk.Box.BoxChild w59 = ((global::Gtk.Box.BoxChild)(this.sbMainStatus [this.lblMainStatus]));
-			w59.Position = 3;
-			w59.Expand = false;
-			w59.Fill = false;
+			global::Gtk.Box.BoxChild w66 = ((global::Gtk.Box.BoxChild)(this.sbMainStatus [this.lblMainStatus]));
+			w66.Position = 3;
+			w66.Expand = false;
+			w66.Fill = false;
 			this.pnlDetails.Add (this.sbMainStatus);
-			global::Gtk.Box.BoxChild w60 = ((global::Gtk.Box.BoxChild)(this.pnlDetails [this.sbMainStatus]));
-			w60.Position = 2;
-			w60.Expand = false;
-			w60.Fill = false;
+			global::Gtk.Box.BoxChild w67 = ((global::Gtk.Box.BoxChild)(this.pnlDetails [this.sbMainStatus]));
+			w67.Position = 2;
+			w67.Expand = false;
+			w67.Fill = false;
 			this.Add (this.pnlDetails);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
