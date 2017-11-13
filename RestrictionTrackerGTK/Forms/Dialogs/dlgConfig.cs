@@ -301,10 +301,10 @@ namespace RestrictionTrackerGTK
         }
       }
       cmbProxyType_Changed(null, null);
-      chkNetworkProtocolSSL3.Active = ((((SecurityProtocolTypeEx) mySettings.Protocol) & SecurityProtocolTypeEx.Ssl3) == SecurityProtocolTypeEx.Ssl3);
-      chkNetworkProtocolTLS10.Active = ((((SecurityProtocolTypeEx) mySettings.Protocol) & SecurityProtocolTypeEx.Tls10) == SecurityProtocolTypeEx.Tls10);
-      chkNetworkProtocolTLS11.Active = ((((SecurityProtocolTypeEx) mySettings.Protocol) & SecurityProtocolTypeEx.Tls11) == SecurityProtocolTypeEx.Tls11);
-      chkNetworkProtocolTLS12.Active = ((((SecurityProtocolTypeEx) mySettings.Protocol) & SecurityProtocolTypeEx.Tls12) == SecurityProtocolTypeEx.Tls12);
+      chkNetworkProtocolSSL3.Active = ((((SecurityProtocolTypeEx) mySettings.SecurityProtocol) & SecurityProtocolTypeEx.Ssl3) == SecurityProtocolTypeEx.Ssl3);
+      chkNetworkProtocolTLS10.Active = ((((SecurityProtocolTypeEx) mySettings.SecurityProtocol) & SecurityProtocolTypeEx.Tls10) == SecurityProtocolTypeEx.Tls10);
+      chkNetworkProtocolTLS11.Active = ((((SecurityProtocolTypeEx) mySettings.SecurityProtocol) & SecurityProtocolTypeEx.Tls11) == SecurityProtocolTypeEx.Tls11);
+      chkNetworkProtocolTLS12.Active = ((((SecurityProtocolTypeEx) mySettings.SecurityProtocol) & SecurityProtocolTypeEx.Tls12) == SecurityProtocolTypeEx.Tls12);
       bool useTLSProxy = false;
       /*
       SecurityProtocolTypeEx myProtocol = (SecurityProtocolTypeEx) System.Net.ServicePointManager.SecurityProtocol;
@@ -357,6 +357,7 @@ namespace RestrictionTrackerGTK
         chkTLSProxy.Active = false;
         chkTLSProxy.Visible = false;
       }
+      chkNetworkSecurityEnforce.Active = mySettings.SecurityEnforced;
       RunNetworkProtocolTest();
       if (string.IsNullOrEmpty(mySettings.NetTestURL))
       {
@@ -551,6 +552,7 @@ namespace RestrictionTrackerGTK
       txtProxyDomain.Changed += ValuesChanged;
       //
       chkTLSProxy.Clicked += chkTLSProxy_Clicked;
+      chkNetworkSecurityEnforce.Clicked += chkNetworkSecurityEnforce_Clicked;
       chkNetworkProtocolSSL3.Clicked += ValuesChanged;
       chkNetworkProtocolTLS10.Clicked += ValuesChanged;
       chkNetworkProtocolTLS11.Clicked += ValuesChanged;
@@ -609,6 +611,9 @@ namespace RestrictionTrackerGTK
     {
       if (bRemoteAcct)
       {
+        chkNetworkSecurityEnforce.Active = false;
+        chkNetworkSecurityEnforce.Sensitive = false;
+        chkNetworkSecurityEnforce.TooltipText = "The Remote Usage Service uses its own security and verification methods.";
         chkTLSProxy.Active = false;
         chkTLSProxy.Sensitive = false;
         chkTLSProxy.TooltipText = "The TLS Proxy is disabled when using the Remote Usage Service.";
@@ -626,6 +631,8 @@ namespace RestrictionTrackerGTK
         chkNetworkProtocolTLS12.TooltipText = "TLS 1.2 is disabled when using the Remote Usage Service.";
         return;
       }
+      chkNetworkSecurityEnforce.Sensitive = true;
+      chkNetworkSecurityEnforce.TooltipText = "Enforce network certificate validation. If the server's certificate is not valid, your connection may fail.\nTurning this feature off may potentially expose your computer or transmitted information to third parties.";
       chkTLSProxy.Sensitive = true;
       chkTLSProxy.TooltipText = "If your version of the MONO Framework does not support the Security Protocol required for your provider, you can use this Proxy to connect through the RealityRipple.com server.";
       if (chkTLSProxy.Active)
@@ -1127,6 +1134,14 @@ namespace RestrictionTrackerGTK
       }
       if (bLoaded)
       {
+        cmdSave.Sensitive = SettingsChanged();
+      }
+    }
+    protected void chkNetworkSecurityEnforce_Clicked(object sender, EventArgs e)
+    {
+      if (bLoaded)
+      {
+        RunNetworkProtocolTest();
         cmdSave.Sensitive = SettingsChanged();
       }
     }
@@ -1749,13 +1764,13 @@ namespace RestrictionTrackerGTK
         }
       }
       if (cmbProvider.Entry.Text.ToLower().Contains("excede") |
-          cmbProvider.Entry.Text.ToLower().Contains("force") |
-          cmbProvider.Entry.Text.ToLower().Contains("mysso") |
-          cmbProvider.Entry.Text.ToLower().Contains("myexede") |
-          cmbProvider.Entry.Text.ToLower().Contains("my.exede"))
+        cmbProvider.Entry.Text.ToLower().Contains("force") |
+        cmbProvider.Entry.Text.ToLower().Contains("mysso") |
+        cmbProvider.Entry.Text.ToLower().Contains("myexede") |
+        cmbProvider.Entry.Text.ToLower().Contains("my.exede"))
         cmbProvider.Entry.Text = "exede.net";
       if (cmbProvider.Entry.Text.ToLower() == "dish.net" |
-          cmbProvider.Entry.Text.ToLower() == "dish.com")
+        cmbProvider.Entry.Text.ToLower() == "dish.com")
         cmbProvider.Entry.Text = "mydish.com";
       if (string.Compare(mySettings.Account, txtAccount.Text + "@" + cmbProvider.Entry.Text, true) != 0)
       {
@@ -2092,23 +2107,24 @@ namespace RestrictionTrackerGTK
         }
       }
       mySettings.TLSProxy = chkTLSProxy.Active;
-      mySettings.Protocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.None;
+      mySettings.SecurityProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.None;
       if (chkNetworkProtocolSSL3.Active)
       {
-        mySettings.Protocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Ssl3;
+        mySettings.SecurityProtocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Ssl3;
       }
       if (chkNetworkProtocolTLS10.Active)
       {
-        mySettings.Protocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls10;
+        mySettings.SecurityProtocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls10;
       }
       if (chkNetworkProtocolTLS11.Active)
       {
-        mySettings.Protocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls11;
+        mySettings.SecurityProtocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls11;
       }
       if (chkNetworkProtocolTLS12.Active)
       {
-        mySettings.Protocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls12;
+        mySettings.SecurityProtocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls12;
       }
+      mySettings.SecurityEnforced = chkNetworkSecurityEnforce.Active;
       string sNetTestIco = System.IO.Path.Combine(modFunctions.AppDataPath, "netTest.png");
       try
       {
@@ -2350,19 +2366,23 @@ namespace RestrictionTrackerGTK
       {
         return true;
       }
-      if ((((SecurityProtocolTypeEx) mySettings.Protocol & SecurityProtocolTypeEx.Ssl3) == SecurityProtocolTypeEx.Ssl3) == !chkNetworkProtocolSSL3.Active)
+      if ((((SecurityProtocolTypeEx) mySettings.SecurityProtocol & SecurityProtocolTypeEx.Ssl3) == SecurityProtocolTypeEx.Ssl3) == !chkNetworkProtocolSSL3.Active)
       {
         return true;
       }
-      if ((((SecurityProtocolTypeEx) mySettings.Protocol & SecurityProtocolTypeEx.Tls10) == SecurityProtocolTypeEx.Tls10) == !chkNetworkProtocolTLS10.Active)
+      if ((((SecurityProtocolTypeEx) mySettings.SecurityProtocol & SecurityProtocolTypeEx.Tls10) == SecurityProtocolTypeEx.Tls10) == !chkNetworkProtocolTLS10.Active)
       {
         return true;
       }
-      if ((((SecurityProtocolTypeEx) mySettings.Protocol & SecurityProtocolTypeEx.Tls11) == SecurityProtocolTypeEx.Tls11) == !chkNetworkProtocolTLS11.Active)
+      if ((((SecurityProtocolTypeEx) mySettings.SecurityProtocol & SecurityProtocolTypeEx.Tls11) == SecurityProtocolTypeEx.Tls11) == !chkNetworkProtocolTLS11.Active)
       {
         return true;
       }
-      if ((((SecurityProtocolTypeEx) mySettings.Protocol & SecurityProtocolTypeEx.Tls12) == SecurityProtocolTypeEx.Tls12) == !chkNetworkProtocolTLS12.Active)
+      if ((((SecurityProtocolTypeEx) mySettings.SecurityProtocol & SecurityProtocolTypeEx.Tls12) == SecurityProtocolTypeEx.Tls12) == !chkNetworkProtocolTLS12.Active)
+      {
+        return true;
+      }
+      if (mySettings.SecurityEnforced == !chkNetworkSecurityEnforce.Active)
       {
         return true;
       }

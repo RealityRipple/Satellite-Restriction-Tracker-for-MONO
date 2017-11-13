@@ -1295,7 +1295,7 @@ namespace RestrictionTrackerGTK
         SecurityProtocolTypeEx useProtocol = SecurityProtocolTypeEx.None;
         foreach (SecurityProtocolTypeEx protocolTest in Enum.GetValues(typeof(SecurityProtocolTypeEx)))
         {
-          if (((SecurityProtocolTypeEx) mySettings.Protocol & protocolTest) == protocolTest)
+          if (((SecurityProtocolTypeEx) mySettings.SecurityProtocol & protocolTest) == protocolTest)
           {
             try
             {
@@ -1325,7 +1325,7 @@ namespace RestrictionTrackerGTK
             try
             {
               System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) useProtocol;
-              mySettings.Protocol = (System.Net.SecurityProtocolType) useProtocol;
+              mySettings.SecurityProtocol = (System.Net.SecurityProtocolType) useProtocol;
               mySettings.Save(); 
             }
             catch (Exception)

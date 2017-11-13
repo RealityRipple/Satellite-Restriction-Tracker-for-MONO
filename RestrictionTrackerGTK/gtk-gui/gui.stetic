@@ -6,7 +6,7 @@
   </configuration>
   <import>
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <widget-library name="appindicator-sharp" />
+    <widget-library name="../../appindicator-sharp.dll" />
     <widget-library name="../bin/Debug/RestrictionTracker.exe" internal="true" />
   </import>
   <widget class="Gtk.Window" id="RestrictionTrackerGTK.frmMain" design-size="455 245">
@@ -3763,6 +3763,33 @@ and the Tray Icon.</property>
                       </packing>
                     </child>
                     <child>
+                      <widget class="Gtk.CheckButton" id="chkNetworkSecurityEnforce">
+                        <property name="MemberName" />
+                        <property name="Tooltip" translatable="yes">Enforce network certificate validation. If the server's certificate is not valid, your connection may fail.
+Turning this feature off may potentially expose your computer or transmitted information to third parties.</property>
+                        <property name="CanFocus">True</property>
+                        <property name="Label" translatable="yes">Enforce</property>
+                        <property name="DrawIndicator">True</property>
+                        <property name="HasLabel">True</property>
+                        <property name="UseUnderline">True</property>
+                      </widget>
+                      <packing>
+                        <property name="TopAttach">1</property>
+                        <property name="BottomAttach">2</property>
+                        <property name="LeftAttach">1</property>
+                        <property name="RightAttach">2</property>
+                        <property name="AutoSize">True</property>
+                        <property name="XOptions">Fill</property>
+                        <property name="YOptions">Fill</property>
+                        <property name="XExpand">False</property>
+                        <property name="XFill">True</property>
+                        <property name="XShrink">False</property>
+                        <property name="YExpand">False</property>
+                        <property name="YFill">True</property>
+                        <property name="YShrink">False</property>
+                      </packing>
+                    </child>
+                    <child>
                       <widget class="Gtk.CheckButton" id="chkTLSProxy">
                         <property name="MemberName" />
                         <property name="Tooltip" translatable="yes">If your version of the MONO Framework does not support the Security Protocol required for your provider, you can use this Proxy to connect through the RealityRipple.com server.</property>
@@ -3773,7 +3800,7 @@ and the Tray Icon.</property>
                         <property name="UseUnderline">True</property>
                       </widget>
                       <packing>
-                        <property name="TopAttach">1</property>
+                        <property name="TopAttach">2</property>
                         <property name="BottomAttach">3</property>
                         <property name="LeftAttach">1</property>
                         <property name="RightAttach">2</property>

@@ -39,7 +39,8 @@ namespace RestrictionTrackerGTK
     private bool m_TLSProxy;
     private string m_ProxySetting;
     private string m_NetTest;
-    private SecurityProtocolType m_Protocol;
+    private SecurityProtocolType m_SecurProtocol;
+    private bool m_SecurEnforced;
     public bool Loaded;
     public AppColors Colors;
     private string ConfigFile
@@ -312,27 +313,31 @@ namespace RestrictionTrackerGTK
         }
         else if (xName.CompareTo("Protocol") == 0)
         {
-          m_Protocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.None;
+          m_SecurProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.None;
           if (xValue.Contains("SSL"))
           {
-            m_Protocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Ssl3;
+            m_SecurProtocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Ssl3;
           }
           if (xValue.Contains("TLS10"))
           {
-            m_Protocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls10;
+            m_SecurProtocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls10;
           }
           if (xValue.Contains("TLS11"))
           {
-            m_Protocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls11;
+            m_SecurProtocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls11;
           }
           if (xValue.Contains("TLS12"))
           {
-            m_Protocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls12;
+            m_SecurProtocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls12;
           }
           if (xValue.Contains("TLS") & !xValue.Contains("TLS1"))
           {
-            m_Protocol |= (System.Net.SecurityProtocolType) (SecurityProtocolTypeEx.Tls11 | SecurityProtocolTypeEx.Tls12);
+            m_SecurProtocol |= (System.Net.SecurityProtocolType) (SecurityProtocolTypeEx.Tls11 | SecurityProtocolTypeEx.Tls12);
           }
+        }
+        else if (xName.CompareTo("EnforcedSecurity") == 0)
+        {
+          m_SecurEnforced = (xValue.CompareTo("True") == 0);
         }
         else if (xName.CompareTo("NetTestURL") == 0)
         {
@@ -591,7 +596,8 @@ namespace RestrictionTrackerGTK
       m_AutoHide = true;
       m_TLSProxy = false;
       m_ProxySetting = "System";
-      m_Protocol = (System.Net.SecurityProtocolType) (SecurityProtocolTypeEx.Tls11 | SecurityProtocolTypeEx.Tls12);
+      m_SecurProtocol = (System.Net.SecurityProtocolType) (SecurityProtocolTypeEx.Tls11 | SecurityProtocolTypeEx.Tls12);
+      m_SecurEnforced = false;
       m_NetTest = null;
       Colors = new AppColors();
       ResetColors();
@@ -670,7 +676,7 @@ namespace RestrictionTrackerGTK
       string sProtocol = "";
       foreach (SecurityProtocolTypeEx protocolTest in Enum.GetValues(typeof(SecurityProtocolTypeEx)))
       {
-        if ((((SecurityProtocolTypeEx) m_Protocol) & protocolTest) == protocolTest)
+        if ((((SecurityProtocolTypeEx) m_SecurProtocol) & protocolTest) == protocolTest)
         {
           sProtocol += Enum.GetName(typeof(SecurityProtocolTypeEx), protocolTest).ToUpper() + ", ";
         }
@@ -679,6 +685,9 @@ namespace RestrictionTrackerGTK
       {
         sProtocol = sProtocol.Substring(0, sProtocol.Length - 2);
       }
+      string sSecurEnforced = "False";
+      if (m_SecurEnforced)
+        sSecurEnforced = "True";
       string sAccountType = "Other";
       sAccountType = srlFunctions.HostTypeToString(m_AccountType);
       string sTrayIcon = "Always";
@@ -776,6 +785,9 @@ namespace RestrictionTrackerGTK
                     "      </setting>\n" +
                     "      <setting name=\"Protocol\">\n" +
                     "        <value>" + sProtocol + "</value>\n" +
+                    "      </setting>\n" +
+                    "      <setting name=\"EnforcedSecurity\">\n" +
+                    "        <value>" + sSecurEnforced + "</value>\n" +
                     "      </setting>\n" +
                     "      <setting name=\"NetTestURL\">\n" +
                     "        <value>" + m_NetTest + "</value>\n" +
@@ -1407,7 +1419,7 @@ namespace RestrictionTrackerGTK
             if (value.Credentials != null)
             {
               NetworkCredential mCreds = value.Credentials.GetCredential(null, string.Empty);
-              if (string.IsNullOrEmpty(mCreds.Domain))
+              if (String.IsNullOrEmpty(mCreds.Domain))
               {
                 m_ProxySetting = "URL:" + wValue.Address.ToString() + ":" + ":" + mCreds.UserName + ":" + mCreds.Password;
               }
@@ -1424,15 +1436,26 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-    public SecurityProtocolType Protocol
+    public SecurityProtocolType SecurityProtocol
     {
       get
       {
-        return m_Protocol;
+        return m_SecurProtocol;
       }
       set
       {
-        m_Protocol = value;
+        m_SecurProtocol = value;
+      }
+    }
+    public bool SecurityEnforced
+    {
+      get
+      {
+        return m_SecurEnforced;
+      }
+      set
+      {
+        m_SecurEnforced = value;
       }
     }
     public string NetTestURL
