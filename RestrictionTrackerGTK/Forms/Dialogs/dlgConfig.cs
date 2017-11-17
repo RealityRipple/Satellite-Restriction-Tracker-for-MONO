@@ -631,12 +631,12 @@ namespace RestrictionTrackerGTK
         chkNetworkProtocolTLS12.TooltipText = "TLS 1.2 is disabled when using the Remote Usage Service.";
         return;
       }
-      chkNetworkSecurityEnforce.Sensitive = true;
-      chkNetworkSecurityEnforce.TooltipText = "Enforce network certificate validation. If the server's certificate is not valid, your connection may fail.\nTurning this feature off may potentially expose your computer or transmitted information to third parties.";
       chkTLSProxy.Sensitive = true;
       chkTLSProxy.TooltipText = "If your version of the MONO Framework does not support the Security Protocol required for your provider, you can use this Proxy to connect through the RealityRipple.com server.";
       if (chkTLSProxy.Active)
       {
+        chkNetworkSecurityEnforce.Sensitive = false;
+        chkNetworkSecurityEnforce.TooltipText = "The server's certificate will be validated by the TLS Proxy.";
         chkNetworkProtocolSSL3.Sensitive = true;
         chkNetworkProtocolSSL3.TooltipText = "Check this box to allow use of the older SSL 3.0 protocol, which is vulnerable to attacks.";
         chkNetworkProtocolTLS10.Sensitive = true;
@@ -647,6 +647,8 @@ namespace RestrictionTrackerGTK
         chkNetworkProtocolTLS12.TooltipText = "Check this box to allow use of the latest TLS 1.2 protocol.";
         return;
       }
+      chkNetworkSecurityEnforce.Sensitive = !chkTLSProxy.Active;
+      chkNetworkSecurityEnforce.TooltipText = "Enforce network certificate validation. If the server's certificate is not valid, your connection may fail.\nTurning this feature off may potentially expose your computer or transmitted information to third parties.";
       bool canSSL3 = true;
       bool canTLS10 = true;
       bool canTLS11 = true;
