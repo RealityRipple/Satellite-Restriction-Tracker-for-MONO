@@ -4,8 +4,6 @@ using Gtk;
 using MacInterop;
 using MantisBugTracker;
 using RestrictionLibrary;
-
-
 namespace RestrictionTrackerGTK
 {
   class MainClass
@@ -91,6 +89,53 @@ namespace RestrictionTrackerGTK
           fMain.cmdConfig_Click(new object(), new EventArgs());
         };
         appGroup.AddMenuItem(mnuConfig, "Preferences...");
+
+        MenuBar srtMenu = new MenuBar();
+        Menu helpMenu = new Menu();
+        MenuItem helpMenuItem = new MenuItem("Help");
+
+        MenuItem mnuFAQ = new MenuItem("Frequently Asked Questions");
+        mnuFAQ.Activated += delegate(object sender, EventArgs e)
+        {
+          System.Diagnostics.Process.Start("http://srt.realityripple.com/faq.php");
+        };
+        helpMenu.Append(mnuFAQ);
+        mnuFAQ.Show();
+
+        MenuItem mnuChanges = new MenuItem("What's New in " + modFunctions.ProductName + " v" + modFunctions.ProductVersion);
+        mnuChanges.Activated += delegate(object sender, EventArgs e)
+        {
+          System.Diagnostics.Process.Start("http://srt.realityripple.com/For-MONO/changes.php");
+        };
+        helpMenu.Append(mnuChanges);
+        mnuChanges.Show();
+
+        MenuItem mnuHelpSpace1 = new MenuItem("-");
+        helpMenu.Append(mnuHelpSpace1);
+        mnuHelpSpace1.Show();
+
+        MenuItem mnuWebsite = new MenuItem("Visit the " + modFunctions.ProductName + " Home Page");
+        mnuWebsite.Activated += delegate(object sender, EventArgs e)
+        {
+          System.Diagnostics.Process.Start("http://srt.realityripple.com/For-MONO/mac.php");
+        };
+        helpMenu.Append(mnuWebsite);
+        mnuWebsite.Show();
+
+        MenuItem mnuBug = new MenuItem("Report a Bug");
+        mnuBug.Activated += delegate(object sender, EventArgs e)
+        {
+          System.Diagnostics.Process.Start("http://bugs.realityripple.com/bug_report_page.php?project_id=2");
+        };
+        helpMenu.Append(mnuBug);
+        mnuBug.Show();
+
+        helpMenuItem.Submenu = helpMenu;
+        helpMenu.Show();
+        srtMenu.Append(helpMenuItem);
+        helpMenuItem.Show();
+        IgeMacMenu.MenuBar = srtMenu;
+        srtMenu.Show();
       }
       fMain.Show();
       Application.Run();
