@@ -913,6 +913,12 @@ RestrictionTrackerLib
  </summary>
 	<value>A new CookieJar to use in place of the default empty Jar. This is useful for sharing and storing sessions and cookies across multiple <see cref="T:RestrictionLibrary.WebClientCore"/> instances.</value>
 	<returns>The current CookieJar for this <see cref="T:RestrictionLibrary.WebClientCore"/>.</returns>
+</member><member name="P:RestrictionLibrary.WebClientCore.SendCookieJar">
+	<summary>
+ The way cookies are sent can be modified using this property.
+ </summary>
+	<value>Cookies will be sent by text if this value is <c>False</c>, and by both text and cookie jar if <c>True</c>.</value>
+	<returns>See the value entry for details on the return values.</returns>
 </member><member name="P:RestrictionLibrary.WebClientCore.ResponseURI">
 	<summary>
  The <see cref="T:System.Uri"/> of the last <see cref="M:RestrictionLibrary.WebClientCore.GetWebResponse(System.Net.WebRequest)"/> event after any redirection.
@@ -1125,6 +1131,12 @@ RestrictionTrackerLib
  </summary>
 	<param name="dataPath">The folder where socket errors will be loaded from.</param>
 	<remarks>See Also: <seealso cref="M:RestrictionLibrary.srlFunctions.ReportSocketError(System.Exception,System.String)"/></remarks>
+</member><member name="M:RestrictionLibrary.srlFunctions.TruncateURL(System.String)">
+	<summary>
+ Clip down the length of a URL to arround 125 characters.
+ </summary>
+	<param name="url">The address you'd like to cut down.</param>
+	<returns>A smaller version of the address.</returns>
 </member><member name="M:RestrictionLibrary.srlFunctions.HostTypeToString(RestrictionLibrary.localRestrictionTracker.SatHostTypes)">
 	<summary>
  Converts a <see cref="T:RestrictionLibrary.localRestrictionTracker.SatHostTypes"/> value to a simple string.
