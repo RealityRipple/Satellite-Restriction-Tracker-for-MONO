@@ -2637,9 +2637,9 @@ namespace RestrictionTrackerGTK
         uFree = "";
       }
       sTTT = "Satellite Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
-      "Last Updated " + sLastUpdate + "\n" +
-      "Download: " + MBorGB(lDown) + " (" + AccuratePercent((double) lDown / lDownLim) + ")" + dFree + "\n" +
-      "Upload: " + MBorGB(lUp) + " (" + AccuratePercent((double) lUp / lUpLim) + ")" + uFree;
+        "Last Updated " + sLastUpdate + "\n" +
+        "Download: " + MBorGB(lDown) + " (" + AccuratePercent((double) lDown / lDownLim) + ")" + dFree + "\n" +
+        "Upload: " + MBorGB(lUp) + " (" + AccuratePercent((double) lUp / lUpLim) + ")" + uFree;
       if (trayRes < 8)
         trayRes = 8;
       int d = (int) Math.Round(((double) lDown / lDownLim) * trayRes);
@@ -2790,9 +2790,9 @@ namespace RestrictionTrackerGTK
         opFree = "";
       }
       sTTT = "Satellite Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
-      "Last Updated " + sLastUpdate + "\n" +
-      "Anytime: " + MBorGB(lDown) + " (" + AccuratePercent((double) lDown / lDownLim) + ")" + atFree + "\n" +
-      "Off-Peak: " + MBorGB(lUp) + " (" + AccuratePercent((double) lUp / lUpLim) + ")" + opFree;
+        "Last Updated " + sLastUpdate + "\n" +
+        "Anytime: " + MBorGB(lDown) + " (" + AccuratePercent((double) lDown / lDownLim) + ")" + atFree + "\n" +
+        "Off-Peak: " + MBorGB(lUp) + " (" + AccuratePercent((double) lUp / lUpLim) + ")" + opFree;
       if (trayRes < 8)
         trayRes = 8;
       int d = (int) Math.Round(((double) lDown / lDownLim) * trayRes);
@@ -2907,8 +2907,8 @@ namespace RestrictionTrackerGTK
       }
       pctTypeB.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctTypeB.Allocation.Size, lDown, lDownLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
       sTTT = "Satellite Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
-      "Last Updated " + sLastUpdate + "\n" +
-      "Using " + MBorGB(lDown) + " of " + MBorGB(lDownLim) + " (" + AccuratePercent((double) lDown / lDownLim) + ")";
+        "Last Updated " + sLastUpdate + "\n" +
+        "Using " + MBorGB(lDown) + " of " + MBorGB(lDownLim) + " (" + AccuratePercent((double) lDown / lDownLim) + ")";
       if (lDownLim > lDown)
       {
         sTTT += "\n" + MBorGB(lDownLim - lDown) + " Free";
@@ -3203,7 +3203,6 @@ namespace RestrictionTrackerGTK
       MainClass.fAbout.Show();
       MainClass.fAbout.Present();
     }
-
     #endregion
     #region "Menus"
     #region "Tray"
@@ -3277,7 +3276,6 @@ namespace RestrictionTrackerGTK
       MainClass.fCustomColors.Destroy();
       MainClass.fCustomColors = null;
     }
-
     #endregion
     #endregion
     #region "StatusBar"
@@ -4011,6 +4009,8 @@ namespace RestrictionTrackerGTK
       result = result.Trim();
     }
     #region "Failure Reports"
+    private int previousFail = 0;
+    private string previousFailS = null;
     public void FailResponse(string Ret)
     {
       ResolveEventArgs ea = new ResolveEventArgs(Ret);
@@ -4036,6 +4036,16 @@ namespace RestrictionTrackerGTK
     {
       if (clsUpdate.QuickCheckVersion() == ResultType.NoUpdate)
       {
+        if (previousFailS == sFail && previousFail == DateTime.Now.DayOfYear)
+          return;
+        if (previousFailS == sFail && previousFail > 0)
+        {
+          int nextDay = previousFail + 1;
+          if (nextDay == 366)
+            nextDay = 1;
+          if (DateTime.Now.DayOfYear == nextDay && DateTime.Now.Hour < 9)
+            return;
+        }
         sFailTray = sFail;
         modFunctions.MakeNotifier(ref taskNotifier, true);
         if (taskNotifier != null)
@@ -4043,12 +4053,24 @@ namespace RestrictionTrackerGTK
           taskNotifierEvent(true);
           taskNotifier.Show("Error Reading Page Data", modFunctions.ProductName + " encountered data it does not understand.\nClick this alert to report the problem to " + modFunctions.CompanyName + ".", 200, 3 * 60 * 1000, 100);
         }
+        previousFail = DateTime.Now.DayOfYear;
+        previousFailS = sFail;
       }
     }
     private void FailFile(string sFail, bool bJustFeedback)
     {
       if (clsUpdate.QuickCheckVersion() == ResultType.NoUpdate)
       {
+        if (previousFailS == sFail && previousFail == DateTime.Now.DayOfYear)
+          return;
+        if (previousFailS == sFail && previousFail > 0)
+        {
+          int nextDay = previousFail + 1;
+          if (nextDay == 366)
+            nextDay = 1;
+          if (DateTime.Now.DayOfYear == nextDay && DateTime.Now.Hour < 9)
+            return;
+        }
         sFailTray = sFail;
         modFunctions.MakeNotifier(ref taskNotifier, true);
         if (taskNotifier != null)
@@ -4059,6 +4081,8 @@ namespace RestrictionTrackerGTK
           else
             taskNotifier.Show("Error Reading Page Data", modFunctions.ProductName + " encountered data it does not understand.\nClick this alert to report the problem to " + modFunctions.CompanyName + ".", 200, 3 * 60 * 1000, 100);
         }
+        previousFail = DateTime.Now.DayOfYear;
+        previousFailS = sFail;
       }
     }
     #endregion
