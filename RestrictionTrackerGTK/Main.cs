@@ -20,6 +20,7 @@ namespace RestrictionTrackerGTK
       if (!modFunctions.RunningLock())
         return;
       GLib.ExceptionManager.UnhandledException += unhandledException;
+      System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(1033);
       if (CurrentOS.IsMac)
       {
         try
