@@ -5,6 +5,7 @@ namespace MantisBugTracker
 {
   internal class MantisReporter
   {
+    public const int ProjectID = 2;
     private static System.Net.CookieContainer cJar;
     private static string GetToken(int Project_ID)
     {
@@ -79,7 +80,7 @@ namespace MantisBugTracker
     }
     static internal string ReportIssue(Exception e)
     {
-      string sTok = GetToken(2);
+      string sTok = GetToken(ProjectID);
       if (string.IsNullOrEmpty(sTok))
       {
         return "No token was supplied by the server.";
@@ -106,7 +107,7 @@ namespace MantisBugTracker
       int iParts = (sVer.Split('.')).Length;
       if (iParts > 3)
         sVer = sVer.Substring(0, sVer.LastIndexOf('.'));
-      return ReportBug(sTok, 2, Mantis_Category.General, Mantis_Reproducibility.Have_Not_Tried, Mantis_Severity.Minor, Mantis_Priority.Normal, sPlat, MyOS, MyOSVer, sVer, sSum, sDesc, string.Empty, string.Empty, true);
+      return ReportBug(sTok, ProjectID, Mantis_Category.General, Mantis_Reproducibility.Have_Not_Tried, Mantis_Severity.Minor, Mantis_Priority.Normal, sPlat, MyOS, MyOSVer, sVer, sSum, sDesc, string.Empty, string.Empty, true);
     }
   }
 }
