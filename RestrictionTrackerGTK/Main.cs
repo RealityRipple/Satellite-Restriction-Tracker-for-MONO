@@ -183,6 +183,7 @@ namespace RestrictionTrackerGTK
           }
           sErrRep += "%2526os=" + DoubleEncode(CurrentOS.Name);
           sErrRep += "%2526os_build=" + DoubleEncode(Environment.OSVersion.VersionString);
+          sErrRep += "%2526product_version=" + DoubleEncode(modFunctions.ProductVersion);
           string sDesc = ex.Message;
           string sSum = sDesc;
           if (sSum.Length > 80)
@@ -206,7 +207,6 @@ namespace RestrictionTrackerGTK
                 sDesc += "\n @ " + ex.TargetSite.Name;
             }
           }
-          sDesc += "\nVersion " + modFunctions.ProductVersion;
           sErrRep += "%2526description=" + DoubleEncode(sDesc);
           if (modFunctions.ShowMessageBox(null, sRet + "\n\nWould you like to report the error manually?", modFunctions.ProductName + " Error Report Failed!", (DialogFlags) 0, MessageType.Error, ButtonsType.YesNo) == ResponseType.Yes)
           {
