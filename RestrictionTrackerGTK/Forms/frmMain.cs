@@ -185,6 +185,7 @@ namespace RestrictionTrackerGTK
     private bool imFree = false;
     private bool FullCheck = true;
     private long NextGrabTick;
+    private int GrabAttempt;
     private bool ClosingTime;
     private string sFailTray;
     private byte bAlert;
@@ -406,6 +407,7 @@ namespace RestrictionTrackerGTK
           localData.Dispose();
           localData = null;
         }
+        GrabAttempt = 0;
         localData = new localRestrictionTracker(modFunctions.AppData);
         localDataEvent(true);
       }
@@ -449,6 +451,7 @@ namespace RestrictionTrackerGTK
           localData.Dispose();
           localData = null;
         }
+        GrabAttempt = 0;
         localData = new localRestrictionTracker(modFunctions.AppData);
         localDataEvent(true);
       }
@@ -1736,6 +1739,7 @@ namespace RestrictionTrackerGTK
               localData.Dispose();
               localData = null;
             }
+            GrabAttempt = 0;
             localData = new localRestrictionTracker(modFunctions.AppData);
             localDataEvent(true);
           }
@@ -1945,6 +1949,7 @@ namespace RestrictionTrackerGTK
       switch (e.Type)
       {
         case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.LoginIssue:
+          GrabAttempt = 0;
           SetStatusText(modDB.LOG_GetLast().ToString("g"), e.Message, true);
           if (!string.IsNullOrEmpty(e.Fail))
           {
@@ -1953,10 +1958,26 @@ namespace RestrictionTrackerGTK
           DisplayUsage(false, false);
           return;
         case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.ConnectionTimeout:
+          if (GrabAttempt < mySettings.Retries)
+          {
+            GrabAttempt++;
+            string sMessage = "Connection Timed Out! Retry " + GrabAttempt + " of " + mySettings.Retries + "...";
+            SetStatusText(modDB.LOG_GetLast().ToString("g"), sMessage, true);
+            if (localData != null)
+            {
+              localDataEvent(false);
+              localData.Dispose();
+              localData = null;
+            }
+            localData = new localRestrictionTracker(modFunctions.AppData);
+            localDataEvent(true);
+            return;
+          }
           SetStatusText(modDB.LOG_GetLast().ToString("g"), "Connection Timed Out!", true);
           DisplayUsage(false, false);
           break;
         case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.TLSTooOld:
+          GrabAttempt = 0;
           if (mySettings.TLSProxy)
           {
             SetStatusText(modDB.LOG_GetLast().ToString("g"), "Please enable TLS 1.1 or 1.2 under Security Protocol in the Network tab of the Config window to connect.", true);
@@ -1987,14 +2008,30 @@ namespace RestrictionTrackerGTK
           }
           break;
         case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.LoginFailure:
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), e.Message, true);
           if (!string.IsNullOrEmpty(e.Fail))
           {
             FailFile(e.Fail);
           }
+          if (e.Message.EndsWith("Please try again.") && GrabAttempt < mySettings.Retries)
+          {
+            GrabAttempt++;
+            string sMessage = e.Message.Substring(0, e.Message.IndexOf("Please try again.")) + "Retry " + GrabAttempt + " of " + mySettings.Retries + "...";
+            SetStatusText(modDB.LOG_GetLast().ToString("g"), sMessage, true);
+            if (localData != null)
+            {
+              localDataEvent(false);
+              localData.Dispose();
+              localData = null;
+            }
+            localData = new localRestrictionTracker(modFunctions.AppData);
+            localDataEvent(true);
+            return;
+          }
+          SetStatusText(modDB.LOG_GetLast().ToString("g"), e.Message, true);
           DisplayUsage(false, true);
           break;
         case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.FatalLoginFailure:
+          GrabAttempt = 0;
           mySettings.AccountType = localRestrictionTracker.SatHostTypes.Other;
           SetStatusText(modDB.LOG_GetLast().ToString("g"), e.Message, true);
           if (!string.IsNullOrEmpty(e.Fail))
@@ -2004,6 +2041,7 @@ namespace RestrictionTrackerGTK
           DisplayUsage(false, false);
           break;
         case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.UnknownAccountDetails:
+          GrabAttempt = 0;
           SetStatusText(modDB.LOG_GetLast().ToString("g"), "Please enter your account details in the Config window.", true);
           DisplayUsage(false, false);
           if ((this.GdkWindow.State & Gdk.WindowState.Iconified) == Gdk.WindowState.Iconified)
@@ -2014,6 +2052,7 @@ namespace RestrictionTrackerGTK
           modFunctions.ShowMessageBox(null, "You haven't entered your account details.\nPlease enter your account details in the Config window by clicking Configuration.", "Account Details Required", Gtk.DialogFlags.Modal, Gtk.MessageType.Warning, Gtk.ButtonsType.Ok);
           break;
         case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.UnknownAccountType:
+          GrabAttempt = 0;
           if (mySettings.AccountTypeForced)
           {
             SetStatusText(modDB.LOG_GetLast().ToString("g"), "Unknown Account Type.", true);
@@ -2040,6 +2079,7 @@ namespace RestrictionTrackerGTK
     private void Main_LocalDataConnectionDNXResult(object o, EventArgs ea)
     {
       localRestrictionTracker.TYPEA2ResultEventArgs e = (localRestrictionTracker.TYPEA2ResultEventArgs) ea;
+      GrabAttempt = 0;
       SetStatusText(e.Update.ToString("g"), "Saving History...", false);
       NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       modDB.LOG_Add(e.Update, e.AnyTime, e.AnyTimeLimit, e.OffPeak, e.OffPeakLimit, true);
@@ -2066,6 +2106,7 @@ namespace RestrictionTrackerGTK
     private void Main_LocalDataConnectionRPXResult(object o, EventArgs ea)
     {
       localRestrictionTracker.TYPEBResultEventArgs e = (localRestrictionTracker.TYPEBResultEventArgs) ea;
+      GrabAttempt = 0;
       SetStatusText(e.Update.ToString("g"), "Saving History...", false);
       NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       modDB.LOG_Add(e.Update, e.Used, e.Limit, e.Used, e.Limit, true);
@@ -2092,6 +2133,7 @@ namespace RestrictionTrackerGTK
     private void Main_LocalDataConnectionRPLResult(object o, EventArgs ea)
     {
       localRestrictionTracker.TYPEAResultEventArgs e = (localRestrictionTracker.TYPEAResultEventArgs) ea;
+      GrabAttempt = 0;
       SetStatusText(e.Update.ToString("g"), "Saving History...", false);
       NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       modDB.LOG_Add(e.Update, e.Download, e.DownloadLimit, e.Upload, e.UploadLimit, true);
@@ -2118,6 +2160,7 @@ namespace RestrictionTrackerGTK
     private void Main_LocalDataConnectionWBLResult(object o, EventArgs ea)
     {
       localRestrictionTracker.TYPEAResultEventArgs e = (localRestrictionTracker.TYPEAResultEventArgs) ea;
+      GrabAttempt = 0;
       SetStatusText(e.Update.ToString("g"), "Saving History...", false);
       NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       modDB.LOG_Add(e.Update, e.Download, e.DownloadLimit, e.Upload, e.UploadLimit, true);
@@ -2144,6 +2187,7 @@ namespace RestrictionTrackerGTK
     private void Main_LocalDataConnectionWBXResult(object o, EventArgs ea)
     {
       localRestrictionTracker.TYPEBResultEventArgs e = (localRestrictionTracker.TYPEBResultEventArgs) ea;
+      GrabAttempt = 0;
       SetStatusText(e.Update.ToString("g"), "Saving History...", false);
       NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       modDB.LOG_Add(e.Update, e.Used, e.Limit, e.Used, e.Limit, true);
