@@ -656,7 +656,7 @@ namespace RestrictionTrackerGTK
       if (chkTLSProxy.Active)
       {
         chkNetworkSecurityEnforce.Sensitive = false;
-        chkNetworkSecurityEnforce.TooltipText = "The server's certificate will be validated by the TLS Proxy.";
+        chkNetworkSecurityEnforce.TooltipText = "The server's certificate will be validated at the discretion of the TLS Proxy.";
         chkNetworkProtocolSSL3.Sensitive = true;
         chkNetworkProtocolSSL3.TooltipText = "Check this box to allow use of the older SSL 3.0 protocol, which is vulnerable to attacks.";
         chkNetworkProtocolTLS10.Sensitive = true;
