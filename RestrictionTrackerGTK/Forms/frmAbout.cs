@@ -96,6 +96,7 @@ namespace RestrictionTrackerGTK
         updateChecker.Dispose();
         updateChecker = null;
       }
+      SetButtonUpdate("Check for _Updates", "Check for a new version of Satellite Restriction Tracker.");
     }
     #endregion
     #region "Buttons"
