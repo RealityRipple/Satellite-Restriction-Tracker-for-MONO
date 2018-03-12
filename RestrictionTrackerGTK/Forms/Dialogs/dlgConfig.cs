@@ -71,6 +71,7 @@ namespace RestrictionTrackerGTK
       txtOverSize.Alignment = 1;
       txtOverTime.Alignment = 1;
       txtTimeout.Alignment = 1;
+      txtRetries.Alignment = 1;
       txtProxyPort.Alignment = 1;
       string sLocalPath = modFunctions.LocalAppData;
       if (sLocalPath.StartsWith(Environment.GetFolderPath(Environment.SpecialFolder.Personal)))
@@ -246,6 +247,16 @@ namespace RestrictionTrackerGTK
       }
       txtTimeout.Value = (int) mySettings.Timeout;
       txtTimeout.Adjustment.PageIncrement = 15;
+      if (mySettings.Retries > (int) txtRetries.Adjustment.Upper)
+      {
+        mySettings.Retries = (int) txtRetries.Adjustment.Upper;
+      }
+      if (mySettings.Retries < (int) txtRetries.Adjustment.Lower)
+      {
+        mySettings.Retries = (int) txtRetries.Adjustment.Lower;
+      }
+      txtRetries.Value = (int) mySettings.Retries;
+      txtRetries.Adjustment.PageIncrement = 1;
       if (mySettings.Proxy == null)
       {
         cmbProxyType.Active = 0;
@@ -543,6 +554,7 @@ namespace RestrictionTrackerGTK
       // Network
       //
       txtTimeout.Changed += ValuesChanged;
+      txtRetries.Changed += ValuesChanged;
       //
       cmbProxyType.Changed += cmbProxyType_Changed;
       txtProxyAddress.Changed += ValuesChanged;
@@ -629,8 +641,16 @@ namespace RestrictionTrackerGTK
         chkNetworkProtocolTLS12.Active = false;
         chkNetworkProtocolTLS12.Sensitive = false;
         chkNetworkProtocolTLS12.TooltipText = "TLS 1.2 is disabled when using the Remote Usage Service.";
+        lblRetries1.Sensitive = false;
+        txtRetries.Sensitive = false;
+        lblRetries2.Sensitive = false;
+        txtRetries.TooltipText = "Automatic Retry is not implemented for the Remote Usage Service at this time.";
         return;
       }
+      lblRetries1.Sensitive = true;
+      txtRetries.Sensitive = true;
+      lblRetries2.Sensitive = true;
+      txtRetries.TooltipText = "Number of times to retry a connection that times out or fails before giving up.\nIf you run into errrors that say \"Please try again\", you can increase this number to improve the chances of a good connection.";
       chkTLSProxy.Sensitive = true;
       chkTLSProxy.TooltipText = "If your version of the MONO Framework does not support the Security Protocol required for your provider, you can use this Proxy to connect through the RealityRipple.com server.";
       if (chkTLSProxy.Active)
@@ -1802,6 +1822,7 @@ namespace RestrictionTrackerGTK
       mySettings.Interval = txtInterval.ValueAsInt;
       mySettings.Accuracy = txtAccuracy.ValueAsInt;
       mySettings.Timeout = txtTimeout.ValueAsInt;
+      mySettings.Retries = txtRetries.ValueAsInt;
       mySettings.ScaleScreen = chkScaleScreen.Active;
       if (chkTrayIcon.Active)
       {
@@ -2232,6 +2253,8 @@ namespace RestrictionTrackerGTK
       if ((int) mySettings.Accuracy - txtAccuracy.Value != 0)
         return true;
       if ((int) mySettings.Timeout - txtTimeout.Value != 0)
+        return true;
+      if ((int) mySettings.Retries - txtRetries.Value != 0)
         return true;
       if (chkStartup.Active ^ File.Exists(modFunctions.StartupPath))
         return true;

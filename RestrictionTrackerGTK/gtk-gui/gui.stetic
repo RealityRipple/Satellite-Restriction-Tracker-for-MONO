@@ -1419,7 +1419,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Dialog" id="RestrictionTrackerGTK.dlgConfig" design-size="387 535">
+  <widget class="Gtk.Dialog" id="RestrictionTrackerGTK.dlgConfig" design-size="376 517">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Satellite Restriction Tracker Configuration</property>
     <property name="Icon">resource:RestrictionTrackerGTK.Resources.norm.ico</property>
@@ -4251,9 +4251,12 @@ URL</property>
                   <widget class="Gtk.Table" id="pnlNetworkTimeout">
                     <property name="MemberName" />
                     <property name="NRows">2</property>
-                    <property name="NColumns">5</property>
+                    <property name="NColumns">9</property>
                     <property name="RowSpacing">2</property>
                     <property name="ColumnSpacing">2</property>
+                    <child>
+                      <placeholder />
+                    </child>
                     <child>
                       <placeholder />
                     </child>
@@ -4266,7 +4269,50 @@ URL</property>
                       </widget>
                       <packing>
                         <property name="LeftAttach">1</property>
-                        <property name="RightAttach">5</property>
+                        <property name="RightAttach">9</property>
+                        <property name="AutoSize">True</property>
+                        <property name="XOptions">Fill</property>
+                        <property name="YOptions">Fill</property>
+                        <property name="XExpand">False</property>
+                        <property name="XFill">True</property>
+                        <property name="XShrink">False</property>
+                        <property name="YExpand">False</property>
+                        <property name="YFill">True</property>
+                        <property name="YShrink">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="Gtk.Label" id="lblRetries1">
+                        <property name="MemberName" />
+                        <property name="LabelProp" translatable="yes">_Retry:</property>
+                        <property name="UseUnderline">True</property>
+                      </widget>
+                      <packing>
+                        <property name="TopAttach">1</property>
+                        <property name="BottomAttach">2</property>
+                        <property name="LeftAttach">5</property>
+                        <property name="RightAttach">6</property>
+                        <property name="AutoSize">True</property>
+                        <property name="XOptions">Fill</property>
+                        <property name="YOptions">Fill</property>
+                        <property name="XExpand">False</property>
+                        <property name="XFill">True</property>
+                        <property name="XShrink">False</property>
+                        <property name="YExpand">False</property>
+                        <property name="YFill">True</property>
+                        <property name="YShrink">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="Gtk.Label" id="lblRetries2">
+                        <property name="MemberName" />
+                        <property name="LabelProp" translatable="yes">times</property>
+                      </widget>
+                      <packing>
+                        <property name="TopAttach">1</property>
+                        <property name="BottomAttach">2</property>
+                        <property name="LeftAttach">7</property>
+                        <property name="RightAttach">8</property>
                         <property name="AutoSize">True</property>
                         <property name="XOptions">Fill</property>
                         <property name="YOptions">Fill</property>
@@ -4336,6 +4382,35 @@ URL</property>
                       </widget>
                       <packing>
                         <property name="BottomAttach">2</property>
+                        <property name="AutoSize">True</property>
+                        <property name="XOptions">Fill</property>
+                        <property name="YOptions">Fill</property>
+                        <property name="XExpand">False</property>
+                        <property name="XFill">True</property>
+                        <property name="XShrink">False</property>
+                        <property name="YExpand">False</property>
+                        <property name="YFill">True</property>
+                        <property name="YShrink">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="Gtk.SpinButton" id="txtRetries">
+                        <property name="MemberName" />
+                        <property name="Tooltip" translatable="yes">Number of times to retry a connection that times out or fails before giving up.
+If you run into errors that say "Please try again", you can increase this number to improve the chances of a good connection.</property>
+                        <property name="CanFocus">True</property>
+                        <property name="Upper">9</property>
+                        <property name="PageIncrement">1</property>
+                        <property name="StepIncrement">1</property>
+                        <property name="ClimbRate">1</property>
+                        <property name="Numeric">True</property>
+                        <property name="Value">2</property>
+                      </widget>
+                      <packing>
+                        <property name="TopAttach">1</property>
+                        <property name="BottomAttach">2</property>
+                        <property name="LeftAttach">6</property>
+                        <property name="RightAttach">7</property>
                         <property name="AutoSize">True</property>
                         <property name="XOptions">Fill</property>
                         <property name="YOptions">Fill</property>
