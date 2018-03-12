@@ -2435,6 +2435,7 @@ namespace RestrictionTrackerGTK
     }
     private void DoCheck()
     {
+      /*
       if (bRemoteAcct)
       {
         txtInterval.Adjustment.Lower = 30;
@@ -2443,6 +2444,7 @@ namespace RestrictionTrackerGTK
       {
         txtInterval.Adjustment.Lower = 15;
       }
+      */
       if (txtInterval.Value < txtInterval.Adjustment.Lower)
       {
         txtInterval.Value = txtInterval.Adjustment.Lower;
