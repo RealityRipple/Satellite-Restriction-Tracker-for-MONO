@@ -366,18 +366,22 @@ namespace RestrictionTrackerGTK
       Color hgl = modFunctions.GdkColorToDrawingColor(cmdHistoryLightGrid.Color);
       Color hgd = modFunctions.GdkColorToDrawingColor(cmdHistoryDarkGrid.Color);
 
-      int iWidth = pctMain.Allocation.Size.Width; 
-      int iHeight = pctMain.Allocation.Size.Height;
+      int iWidth = pctMain.WidthRequest;
+      if (iWidth > pctMain.Allocation.Width)
+        iWidth = pctMain.Allocation.Width;
+      int iHeight = pctMain.HeightRequest;
+      if (iHeight > pctMain.Allocation.Height)
+        iHeight = pctMain.Allocation.Height;
       int iHalfW = (int) Math.Floor(iWidth / 2d);
       int iHalfH = (int) Math.Floor(iHeight / 2d);
      
       Graphics g;
       if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY)
       {
-        Rectangle FakeMRect = new Rectangle(0, 0, iWidth - 1, iHeight * 2);
+        Rectangle FakeMRect = new Rectangle(0, 0, iWidth - 1, iHeight * 2); 
         Image FakeD = modFunctions.DisplayProgress(modFunctions.DrawingSizeToGdkSize(FakeMRect.Size), lDown, lDownLim, mySettings.Accuracy, mda, mdb, mdc, mt, mbg);
         Image FakeU = modFunctions.DisplayProgress(modFunctions.DrawingSizeToGdkSize(FakeMRect.Size), lUp, lUpLim, mySettings.Accuracy, mua, mub, muc, mt, mbg);
-        Bitmap fakeI = new Bitmap(pctHistory.Allocation.Width, pctHistory.Allocation.Height);
+        Bitmap fakeI = new Bitmap(iWidth, iHeight);
         g = Graphics.FromImage(fakeI);
         g.Clear(Color.Black);
         g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
@@ -395,10 +399,10 @@ namespace RestrictionTrackerGTK
       }
       else if (DisplayAs == localRestrictionTracker.SatHostTypes.Dish_EXEDE)
       {
-        Rectangle FakeMRect = new Rectangle(0, 0, iWidth - 1, iHeight * 2);
+        Rectangle FakeMRect = new Rectangle(0, 0, (iWidth - 1), (iHeight * 2));
         Image FakeD = modFunctions.DisplayProgress(modFunctions.DrawingSizeToGdkSize(FakeMRect.Size), lDown, lDownLim, mySettings.Accuracy, mda, mdb, mdc, mt, mbg);
         Image FakeU = modFunctions.DisplayProgress(modFunctions.DrawingSizeToGdkSize(FakeMRect.Size), lUp, lUpLim, mySettings.Accuracy, mua, mub, muc, mt, mbg);
-        Bitmap fakeI = new Bitmap(pctHistory.Allocation.Width, pctHistory.Allocation.Height);
+        Bitmap fakeI = new Bitmap(iWidth, iHeight);
         g = Graphics.FromImage(fakeI);
         g.Clear(Color.Black);
         g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
@@ -468,6 +472,15 @@ namespace RestrictionTrackerGTK
       {
         pctTray.SetFromStock(Gtk.Stock.DialogError, Gtk.IconSize.Dialog);
       }
+
+      iWidth = pctHistory.WidthRequest;
+      if (iWidth > pctHistory.Allocation.Width)
+        iWidth = pctHistory.Allocation.Width;
+      iHeight = pctHistory.HeightRequest;
+      if (iHeight > pctHistory.Allocation.Height)
+        iHeight = pctHistory.Allocation.Height;
+      iHalfW = (int) Math.Floor(iWidth / 2d);
+      iHalfH = (int) Math.Floor(iHeight / 2d);
       if (FakeData == null || FakeData.Count == 0)
       {
         MakeFakeData();
@@ -519,7 +532,7 @@ namespace RestrictionTrackerGTK
       {
         Image FakeD = modFunctions.DrawLineGraph(FakeData.ToArray(), true, FakeHRect.Size, hdl, hda, hdb, hdc, ht, hbg, hdm, hgl, hgd);
         Image FakeU = modFunctions.DrawLineGraph(FakeData.ToArray(), false, FakeHRect.Size, hul, hua, hub, huc, ht, hbg, hum, hgl, hgd);
-        Bitmap fakeI = new Bitmap(pctHistory.Allocation.Width, pctHistory.Allocation.Height);
+        Bitmap fakeI = new Bitmap(iWidth, iHeight);
         g = Graphics.FromImage(fakeI);
 
         g.Clear(Color.Black);
@@ -1264,8 +1277,13 @@ namespace RestrictionTrackerGTK
     {
       if (Horizontal)
       {
-        //Size preSize = new Size(75, 75);
-
+        Size preSize = new Size(75, 75);
+        pctMain.WidthRequest = preSize.Width;
+        pctMain.HeightRequest = preSize.Height;
+        pctTray.WidthRequest = preSize.Width;
+        pctTray.HeightRequest = preSize.Height;
+        pctHistory.WidthRequest = preSize.Width;
+        pctHistory.HeightRequest = preSize.Height;
       }
       else
       {
