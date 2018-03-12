@@ -302,7 +302,7 @@ namespace RestrictionTrackerGTK
     private void RedrawImages()
     {
       if (pctMain.Allocation.Width == 1 & pctMain.Allocation.Height == 1 &
-          pctHistory.Allocation.Width == 1 & pctHistory.Allocation.Height == 1)
+        pctHistory.Allocation.Width == 1 & pctHistory.Allocation.Height == 1)
         return;
       Color mda = modFunctions.GdkColorToDrawingColor(cmdMainDownA.Color);
       Color mdb = modFunctions.GdkColorToDrawingColor(cmdMainDownB.Color);
@@ -423,13 +423,17 @@ namespace RestrictionTrackerGTK
         if (lDown >= lDownLim | lUp >= lUpLim)
         {
           g.DrawIconUnstretched(new System.Drawing.Icon(GetType(), "Resources.tray_16.restricted.ico"), new Rectangle(0, 0, 16, 16));
+          if (lDown < lDownLim)
+            modFunctions.CreateTrayIcon_Left(ref g, lDown, lDownLim, tda, tdb, tdc, 16);
+          if (lUp < lUpLim)
+            modFunctions.CreateTrayIcon_Right(ref g, lUp, lUpLim, tua, tub, tuc, 16);
         }
         else
         {
           g.DrawIconUnstretched(new System.Drawing.Icon(GetType(), "Resources.tray_16.norm.ico"), new Rectangle(0, 0, 16, 16));
+          modFunctions.CreateTrayIcon_Left(ref g, lDown, lDownLim, tda, tdb, tdc, 16);
+          modFunctions.CreateTrayIcon_Right(ref g, lUp, lUpLim, tua, tub, tuc, 16);
         }
-        modFunctions.CreateTrayIcon_Left(ref g, lDown, lDownLim, tda, tdb, tdc, 16);
-        modFunctions.CreateTrayIcon_Right(ref g, lUp, lUpLim, tua, tub, tuc, 16);
         pctTray.Pixbuf = modFunctions.ImageToPixbuf(imgTray);
       }
       else if (DisplayAs == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE)
@@ -441,9 +445,9 @@ namespace RestrictionTrackerGTK
         else
         {
           g.DrawIconUnstretched(new System.Drawing.Icon(GetType(), "Resources.tray_16.norm.ico"), new Rectangle(0, 0, 16, 16));
+          modFunctions.CreateTrayIcon_Left(ref g, lDown, lDownLim, tda, tdb, tdc, 16);
+          modFunctions.CreateTrayIcon_Right(ref g, lDown, lDownLim, tda, tdb, tdc, 16);
         }
-        modFunctions.CreateTrayIcon_Left(ref g, lDown, lDownLim, tda, tdb, tdc, 16);
-        modFunctions.CreateTrayIcon_Right(ref g, lDown, lDownLim, tda, tdb, tdc, 16);
         pctTray.Pixbuf = modFunctions.ImageToPixbuf(imgTray);
       }
       else if (DisplayAs == localRestrictionTracker.SatHostTypes.Dish_EXEDE)
@@ -455,9 +459,9 @@ namespace RestrictionTrackerGTK
         else
         {
           g.DrawIconUnstretched(new System.Drawing.Icon(GetType(), "Resources.tray_16.norm.ico"), new Rectangle(0, 0, 16, 16));
+          modFunctions.CreateTrayIcon_Left(ref g, lDown, lDownLim, tda, tdb, tdc, 16);
+          modFunctions.CreateTrayIcon_Right(ref g, lDown, lDownLim, tda, tdb, tdc, 16);
         }
-        modFunctions.CreateTrayIcon_Left(ref g, lDown, lDownLim, tda, tdb, tdc, 16);
-        modFunctions.CreateTrayIcon_Right(ref g, lDown, lDownLim, tda, tdb, tdc, 16);
         pctTray.Pixbuf = modFunctions.ImageToPixbuf(imgTray);
       }
       else
@@ -473,15 +477,16 @@ namespace RestrictionTrackerGTK
       {
         Image FakeD = modFunctions.DrawLineGraph(FakeData.ToArray(), true, FakeHRect.Size, hdl, hda, hdb, hdc, ht, hbg, hdm, hgl, hgd);
         Image FakeU = modFunctions.DrawLineGraph(FakeData.ToArray(), false, FakeHRect.Size, hul, hua, hub, huc, ht, hbg, hum, hgl, hgd);
-        Bitmap fakeI = new Bitmap(pctHistory.Allocation.Width, pctHistory.Allocation.Height);
+        Bitmap fakeI = new Bitmap(iWidth, iHeight);
         g = Graphics.FromImage(fakeI);
         
         g.Clear(Color.Black);
         g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
         g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
         g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-        Rectangle dRect = new Rectangle(0, (int) (iHalfH * 0.1d), iWidth, (int) (iHalfH * 0.85d));
-        Rectangle uRect = new Rectangle(0, (int) (iHalfH + (iHalfH * 0.05d)), iWidth, (int) (iHalfH * 0.85d));
+        int iHistH = (int) (iHalfH * 0.85d);
+        Rectangle dRect = new Rectangle(0, (int) ((double) iHalfH * 0.1d), iWidth, iHistH);
+        Rectangle uRect = new Rectangle(0, (int) ((double) iHalfH + ((double) iHalfH * 0.05d)), iWidth, iHistH);
         g.DrawImage(FakeD, dRect, FakeHRect, GraphicsUnit.Pixel);
         g.DrawImage(FakeU, uRect, FakeHRect, GraphicsUnit.Pixel);
 

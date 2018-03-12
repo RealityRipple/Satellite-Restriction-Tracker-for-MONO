@@ -737,17 +737,53 @@ namespace RestrictionTrackerGTK
         {
           for (long down = 0; down <= trayRes; down++)
           {
-            using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(down, trayRes, up, trayRes))
+            using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(down, trayRes, up, trayRes, false, false))
             {
               pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_" + down + "x" + up + ".png"), "png");
               icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_" + down + "x" + up + ".png"));
             }
           }
-          using (Gdk.Pixbuf pIco = CreateTypeBTrayIcon(up, trayRes))
+          using (Gdk.Pixbuf pIco = CreateTypeBTrayIcon(up, trayRes, false, false))
           {
             pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typeb_" + up + ".png"), "png");
             icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typeb_" + up + ".png"));
           }
+        }
+        using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(0, trayRes, 0, trayRes, false, true))
+        {
+          pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_free.png"), "png");
+          icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_free.png"));
+        }
+        using (Gdk.Pixbuf pIco = CreateTypeBTrayIcon(0, trayRes, false, true))
+        {
+          pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typeb_free.png"), "png");
+          icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typeb_free.png"));
+        }
+        for (long down = 0; down <= trayRes; down++)
+        {
+          using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(down, trayRes, 0, trayRes, true, false))
+          {
+            pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_" + down + "xslow.png"), "png");
+            icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_" + down + "xslow.png"));
+          }
+        }
+        for (long up = 0; up <= trayRes; up++)
+        {
+          using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(0, trayRes,up, trayRes,true,false))
+          {
+            pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_slowx" + up + ".png"), "png");
+            icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_slowx" + up + ".png"));
+          }
+        }
+        using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(0, trayRes, 0, trayRes, true, false))
+        {
+          pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_slowxslow.png"), "png");
+          icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_slowxslow.png"));
+        }
+        using (Gdk.Pixbuf pIco = CreateTypeBTrayIcon(0, trayRes, true, false))
+        {
+          pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typeb_slow.png"), "png");
+          icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typeb_slow.png"));
         }
       }
       else if (doTypeA)
@@ -756,23 +792,59 @@ namespace RestrictionTrackerGTK
         {
           for (long down = 0; down <= trayRes; down++)
           {
-            using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(down, trayRes, up, trayRes))
+            using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(down, trayRes, up, trayRes, false, false))
             {
               pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_" + down + "x" + up + ".png"), "png");
               icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_" + down + "x" + up + ".png"));
             }
           }
         }
+        using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(0, trayRes, 0, trayRes, false, true))
+        {
+          pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_free.png"), "png");
+          icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_free.png"));
+        }
+        for (long down = 0; down <= trayRes; down++)
+        {
+          using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(down, trayRes, 0, trayRes, true, false))
+          {
+            pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_" + down + "xslow.png"), "png");
+            icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_" + down + "xslow.png"));
+          }
+        }
+        for (long up = 0; up <= trayRes; up++)
+        {
+          using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(0, trayRes,up, trayRes,true,false))
+          {
+            pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_slowx" + up + ".png"), "png");
+            icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_slowx" + up + ".png"));
+          }
+        }
+        using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(0, trayRes, 0, trayRes, true, false))
+        {
+          pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_slowxslow.png"), "png");
+          icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_slowxslow.png"));
+        }
       }
       else
       {
         for (long up = 0; up <= trayRes; up++)
         {
-          using (Gdk.Pixbuf pIco = CreateTypeBTrayIcon(up, trayRes))
+          using (Gdk.Pixbuf pIco = CreateTypeBTrayIcon(up, trayRes, false, false))
           {
             pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typeb_" + up + ".png"), "png");
             icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typeb_" + up + ".png"));
           }
+        }
+        using (Gdk.Pixbuf pIco = CreateTypeBTrayIcon(0, trayRes, false, true))
+        {
+          pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typeb_free.png"), "png");
+          icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typeb_free.png"));
+        }
+        using (Gdk.Pixbuf pIco = CreateTypeBTrayIcon(0, trayRes, true, false))
+        {
+          pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typeb_slow.png"), "png");
+          icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typeb_slow.png"));
         }
       }
       long iStart = RestrictionLibrary.srlFunctions.TickCount();
@@ -1111,9 +1183,38 @@ namespace RestrictionTrackerGTK
         {
           pctTypeADld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(evnTypeADld.Allocation.Size, typeA_down, typeA_dlim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
           pctTypeAUld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(evnTypeADld.Allocation.Size, typeA_up, typeA_ulim, mySettings.Accuracy, mySettings.Colors.MainUpA, mySettings.Colors.MainUpB, mySettings.Colors.MainUpC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-          int d = (int) Math.Round(((double) typeA_down / typeA_dlim) * trayRes);
-          int u = (int) Math.Round(((double) typeA_up / typeA_ulim) * trayRes);
-          trayIcoVal = "graph_typea_" + d + "x" + u;
+          if (imFree)
+          {
+            trayIcoVal = "graph_typea_free";
+          }
+          else
+          {
+            int d = (int) Math.Round(((double) typeA_down / typeA_dlim) * trayRes);
+            int u = (int) Math.Round(((double) typeA_up / typeA_ulim) * trayRes);
+            if (imSlowed)
+            {
+              if (d == trayRes && u == trayRes)
+              {
+                trayIcoVal = "graph_typea_slowxslow";
+              }
+              else if (u == trayRes)
+              {
+                trayIcoVal = "graph_typea_" + d + "xslow";
+              }
+              else if (d == trayRes)
+              {
+                trayIcoVal = "graph_typea_slowx" + u;
+              }
+              else
+              {
+                trayIcoVal = "graph_typea_" + d + "x" + u;
+              }
+            }
+            else
+            {
+              trayIcoVal = "graph_typea_" + d + "x" + u;
+            }
+          }
         }
       }
       else if (myPanel == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE | myPanel == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
@@ -1126,10 +1227,21 @@ namespace RestrictionTrackerGTK
         else
         {
           pctTypeB.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctTypeB.Allocation.Size, typeB_used, typeB_lim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-          int u = (int) Math.Round(((double) typeB_used / typeB_lim) * trayRes);
-          if (u > trayRes)
-            u = trayRes;
-          trayIcoVal = "graph_typeb_" + u;
+          if (imFree)
+          {
+            trayIcoVal = "graph_typeb_free";
+          }
+          else if (imSlowed)
+          {
+            trayIcoVal = "graph_typeb_slow";
+          }
+          else
+          {
+            int u = (int) Math.Round(((double) typeB_used / typeB_lim) * trayRes);
+            if (u > trayRes)
+              u = trayRes;
+            trayIcoVal = "graph_typeb_" + u;
+          }
         }
       }
       else if (myPanel == localRestrictionTracker.SatHostTypes.Other)
@@ -2684,11 +2796,40 @@ namespace RestrictionTrackerGTK
         "Last Updated " + sLastUpdate + "\n" +
         "Download: " + MBorGB(lDown) + " (" + AccuratePercent((double) lDown / lDownLim) + ")" + dFree + "\n" +
         "Upload: " + MBorGB(lUp) + " (" + AccuratePercent((double) lUp / lUpLim) + ")" + uFree;
-      if (trayRes < 8)
-        trayRes = 8;
-      int d = (int) Math.Round(((double) lDown / lDownLim) * trayRes);
-      int u = (int) Math.Round(((double) lUp / lUpLim) * trayRes);
-      sIconBefore = "graph_typea_" + d + "x" + u;
+      if (imFree)
+      {
+        sIconBefore = "graph_typea_free";
+      }
+      else
+      {
+        if (trayRes < 8)
+          trayRes = 8;
+        int d = (int) Math.Round(((double) lDown / lDownLim) * trayRes);
+        int u = (int) Math.Round(((double) lUp / lUpLim) * trayRes);
+        if (imSlowed)
+        {
+          if (d == trayRes && u == trayRes)
+          {
+            sIconBefore = "graph_typea_slowxslow";
+          }
+          else if (u == trayRes)
+          {
+            sIconBefore = "graph_typea_" + d + "xslow";
+          }
+          else if (d == trayRes)
+          {
+            sIconBefore = "graph_typea_slowx" + u;
+          }
+          else
+          {
+            sIconBefore = "graph_typea_" + d + "x" + u;
+          }
+        }
+        else
+        {
+          sIconBefore = "graph_typea_" + d + "x" + u;
+        }
+      }
       bIconStop = true;
       SetTrayText(sTTT);
       if (mySettings.Overuse > 0)
@@ -2837,11 +2978,40 @@ namespace RestrictionTrackerGTK
         "Last Updated " + sLastUpdate + "\n" +
         "Anytime: " + MBorGB(lDown) + " (" + AccuratePercent((double) lDown / lDownLim) + ")" + atFree + "\n" +
         "Off-Peak: " + MBorGB(lUp) + " (" + AccuratePercent((double) lUp / lUpLim) + ")" + opFree;
-      if (trayRes < 8)
-        trayRes = 8;
-      int d = (int) Math.Round(((double) lDown / lDownLim) * trayRes);
-      int u = (int) Math.Round(((double) lUp / lUpLim) * trayRes);
-      sIconBefore = "graph_typea_" + d + "x" + u;
+      if (imFree)
+      {
+        sIconBefore = "graph_typea_free";
+      }
+      else
+      {
+        if (trayRes < 8)
+          trayRes = 8;
+        int d = (int) Math.Round(((double) lDown / lDownLim) * trayRes);
+        int u = (int) Math.Round(((double) lUp / lUpLim) * trayRes);
+        if (imSlowed)
+        {
+          if (d == trayRes && u == trayRes)
+          {
+            sIconBefore = "graph_typea_slowxslow";
+          }
+          else if (u == trayRes)
+          {
+            sIconBefore = "graph_typea_" + d + "xslow";
+          }
+          else if (d == trayRes)
+          {
+            sIconBefore = "graph_typea_slowx" + u;
+          }
+          else
+          {
+            sIconBefore = "graph_typea_" + d + "x" + u;
+          }
+        }
+        else
+        {
+          sIconBefore = "graph_typea_" + d + "x" + u;
+        }
+      }
       bIconStop = true;
       SetTrayText(sTTT);
       if (mySettings.Overuse > 0)
@@ -2961,12 +3131,23 @@ namespace RestrictionTrackerGTK
       {
         sTTT += "\n" + MBorGB(lDown - lDownLim) + " Over";
       }
-      if (trayRes < 8)
-        trayRes = 8;
-      int u = (int) Math.Round(((double) lDown / lDownLim) * trayRes);
-      if (u > trayRes)
-        u = trayRes;
-      sIconBefore = "graph_typeb_" + u;
+      if (imFree)
+      {
+        sIconBefore = "graph_typeb_free";
+      }
+      else if (imSlowed)
+      {
+        sIconBefore = "graph_typeb_slow";
+      }
+      else
+      {
+        if (trayRes < 8)
+          trayRes = 8;
+        int u = (int) Math.Round(((double) lDown / lDownLim) * trayRes);
+        if (u > trayRes)
+          u = trayRes;
+        sIconBefore = "graph_typeb_" + u;
+      }
       bIconStop = true;
       SetTrayText(sTTT);
       if (mySettings.Overuse > 0)
@@ -3595,7 +3776,7 @@ namespace RestrictionTrackerGTK
       sFailTray = "";
     }
     #region "Graphs"
-    private Gdk.Pixbuf CreateTypeATrayIcon(long lDown, long lDownLim, long lUp, long lUpLim)
+    private Gdk.Pixbuf CreateTypeATrayIcon(long lDown, long lDownLim, long lUp, long lUpLim, bool bSlow, bool bFree)
     {
       if (trayRes < 8)
         trayRes = 8;
@@ -3603,7 +3784,7 @@ namespace RestrictionTrackerGTK
       Graphics g = Graphics.FromImage(imgTray);
 
       g.Clear(Color.Transparent);
-      if (imSlowed)
+      if (bSlow)
       {
         string restricted = "Resources.tray_16.restricted.ico";
         if (trayRes > 16)
@@ -3611,10 +3792,12 @@ namespace RestrictionTrackerGTK
           restricted = "Resources.tray_32.restricted.ico";
         }
         g.DrawIcon(new System.Drawing.Icon(GetType(), restricted), new Rectangle(0, 0, trayRes, trayRes));
-        modFunctions.CreateTrayIcon_Left(ref g, lDown, lDownLim, mySettings.Colors.TrayDownA, mySettings.Colors.TrayDownB, mySettings.Colors.TrayDownC, trayRes);
-        modFunctions.CreateTrayIcon_Right(ref g, lUp, lUpLim, mySettings.Colors.TrayUpA, mySettings.Colors.TrayUpB, mySettings.Colors.TrayUpC, trayRes);
+        if (lDown < lDownLim)
+          modFunctions.CreateTrayIcon_Left(ref g, lDown, lDownLim, mySettings.Colors.TrayDownA, mySettings.Colors.TrayDownB, mySettings.Colors.TrayDownC, trayRes);
+        if (lUp < lUpLim)
+          modFunctions.CreateTrayIcon_Right(ref g, lUp, lUpLim, mySettings.Colors.TrayUpA, mySettings.Colors.TrayUpB, mySettings.Colors.TrayUpC, trayRes);
       }
-      else if (imFree)
+      else if (bFree)
       {
         string free = "Resources.tray_16.free.ico";
         if (trayRes > 16)
@@ -3637,14 +3820,14 @@ namespace RestrictionTrackerGTK
       g.Dispose();
       return modFunctions.ImageToPixbuf(imgTray);
     }
-    private Gdk.Pixbuf CreateTypeBTrayIcon(long lUsed, long lLim)
+    private Gdk.Pixbuf CreateTypeBTrayIcon(long lUsed, long lLim, bool bSlow, bool bFree)
     {
       if (trayRes < 8)
         trayRes = 8;
       Bitmap imgTray = new Bitmap(trayRes, trayRes);
       Graphics g = Graphics.FromImage(imgTray);
       g.Clear(Color.Transparent);
-      if (imSlowed)
+      if (bSlow)
       {
         string restricted = "Resources.tray_16.restricted.ico";
         if (trayRes > 16)
@@ -3652,10 +3835,12 @@ namespace RestrictionTrackerGTK
           restricted = "Resources.tray_32.restricted.ico";
         }
         g.DrawIcon(new System.Drawing.Icon(GetType(), restricted), new Rectangle(0, 0, trayRes, trayRes));
-        modFunctions.CreateTrayIcon_Left(ref g, lUsed, lLim, mySettings.Colors.TrayDownA, mySettings.Colors.TrayDownB, mySettings.Colors.TrayDownC, trayRes);
-        modFunctions.CreateTrayIcon_Right(ref g, lUsed, lLim, mySettings.Colors.TrayDownA, mySettings.Colors.TrayDownB, mySettings.Colors.TrayDownC, trayRes);
+        if (lUsed < lLim)
+          modFunctions.CreateTrayIcon_Left(ref g, lUsed, lLim, mySettings.Colors.TrayDownA, mySettings.Colors.TrayDownB, mySettings.Colors.TrayDownC, trayRes);
+        if (lUsed < lLim)
+          modFunctions.CreateTrayIcon_Right(ref g, lUsed, lLim, mySettings.Colors.TrayDownA, mySettings.Colors.TrayDownB, mySettings.Colors.TrayDownC, trayRes);
       }
-      else if (imFree)
+      else if (bFree)
       {
         string free = "Resources.tray_16.free.ico";
         if (trayRes > 16)
