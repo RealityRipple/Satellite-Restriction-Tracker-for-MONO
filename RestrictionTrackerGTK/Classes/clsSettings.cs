@@ -42,6 +42,8 @@ namespace RestrictionTrackerGTK
     private string m_NetTest;
     private SecurityProtocolType m_SecurProtocol;
     private bool m_SecurEnforced;
+    private string m_AJAXShort;
+    private string m_AJAXFull;
     public bool Loaded;
     public AppColors Colors;
     private string ConfigFile
@@ -351,6 +353,23 @@ namespace RestrictionTrackerGTK
         {
           m_NetTest = xValue;
         }
+        else if (xName.CompareTo("AJAXOrder") == 0)
+        {
+          XmlNodeList xOrderList = m_node.ChildNodes;
+          foreach (XmlNode m_order in xOrderList)
+          {
+            string oName = m_node.Attributes[0].InnerText;
+            string oValue = m_node.FirstChild.InnerText;
+            if (oName.CompareTo("Short") == 0)
+            {
+              m_AJAXShort = oValue;
+            }
+            else if (oName.CompareTo("Full") == 0)
+            {
+              m_AJAXFull = oValue;
+            }
+          }
+        }
       }
       Colors = new AppColors();
       if (xConfig.ChildNodes.Count < 2)
@@ -608,6 +627,8 @@ namespace RestrictionTrackerGTK
       m_SecurProtocol = (System.Net.SecurityProtocolType) (SecurityProtocolTypeEx.Tls11 | SecurityProtocolTypeEx.Tls12);
       m_SecurEnforced = false;
       m_NetTest = null;
+      m_AJAXShort = null;
+      m_AJAXFull = null;
       Colors = new AppColors();
       ResetColors();
     }
@@ -804,6 +825,14 @@ namespace RestrictionTrackerGTK
         "      <setting name=\"NetTestURL\">\n" +
         "        <value>" + m_NetTest + "</value>\n" +
         "      </setting>\n" +
+        "      <section name=\"AJAXOrder\">\n" +
+        "        <setting name=\"Short\">\n" +
+        "          <value>" + m_AJAXShort + "</value>\n" +
+        "        </setting>\n" +
+        "        <setting name=\"Full\">\n" +
+        "          <value>" + m_AJAXFull + "</value>\n" +
+        "        </setting>\n" +
+        "      </section>\n" +
         "    </RestrictionTracker.My.MySettings>\n" +
         "  </userSettings>\n" +
         "  <colorSettings>\n" +
@@ -1490,6 +1519,28 @@ namespace RestrictionTrackerGTK
       set
       {
         m_NetTest = value;
+      }
+    }
+    public string AJAXOrderFull
+    {
+      get
+      {
+        return m_AJAXFull;
+      }
+      set
+      {
+        m_AJAXFull = value;
+      }
+    }
+    public string AJAXOrderShort
+    {
+      get
+      {
+        return m_AJAXShort;
+      }
+      set
+      {
+        m_AJAXShort = value;
       }
     }
     public class AppColors

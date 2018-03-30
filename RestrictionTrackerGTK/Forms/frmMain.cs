@@ -6,6 +6,9 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.Security.Policy;
 using RestrictionTrackerGTK;
+using System.Configuration;
+using System.Threading;
+using GLib;
 namespace RestrictionTrackerGTK
 {
   public partial class frmMain :
@@ -194,6 +197,7 @@ namespace RestrictionTrackerGTK
     private bool updateFull;
     private long lastBalloon;
     private bool firstRestore;
+    private bool checkedAJAX;
     private Dictionary<string,string> markupList = new Dictionary<string, string>();
     private Gtk.Menu mnuTray;
     private Gtk.MenuItem mnuRestore;
@@ -503,6 +507,7 @@ namespace RestrictionTrackerGTK
       this.SizeAllocated += Form_SizeAllocated;
       this.DeleteEvent += Form_Closed;
 
+      checkedAJAX = false;
       if (mySettings == null)
       {
         ReLoadSettings();
@@ -1378,11 +1383,13 @@ namespace RestrictionTrackerGTK
       }
       if (localData != null)
       {
+        localDataEvent(false);
         localData.Dispose();
         localData = null;
       }
       if (remoteData != null)
       {
+        remoteDataEvent(false);
         remoteData.Dispose();
         remoteData = null;
       }
@@ -1804,9 +1811,18 @@ namespace RestrictionTrackerGTK
                   NextGrabTick = long.MaxValue;
                   PauseActivity = "Preparing Connection";
                   EnableProgressIcon();
-                  SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Connection...", false);
-                  MethodInvoker UsageInvoker = GetUsage;
-                  UsageInvoker.BeginInvoke(null, null);
+                  if (!checkedAJAX && mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
+                  {
+                    SetStatusText(modDB.LOG_GetLast().ToString("g"), "Checking for AJAX List Update...", false);
+                    UpdateAJAXLists AJAXUpdate = new UpdateAJAXLists(sProvider, mySettings.Timeout, mySettings.Proxy, (object) "GetUsage", UpdateAJAXLists_UpdateChecked);
+                    AJAXUpdate.GetType();
+                  }
+                  else
+                  {
+                    SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Connection...", false);
+                    MethodInvoker UsageInvoker = GetUsage;
+                    UsageInvoker.BeginInvoke(null, null);
+                  }
                   return true;
                 }
               }
@@ -2137,6 +2153,21 @@ namespace RestrictionTrackerGTK
             }
             localData = new localRestrictionTracker(modFunctions.AppData);
             localDataEvent(true);
+            return;
+          }
+          if (e.Message == "AJAX failed to yield data table." && GrabAttempt < 1)
+          {
+            GrabAttempt++;
+            if (localData != null)
+            {
+              localDataEvent(false);
+              localData.Dispose();
+              localData = null;
+            }
+            string sMessage = e.Message + " Attempting to Update AJAX Lists...";
+            SetStatusText(modDB.LOG_GetLast().ToString("g"), sMessage, false);
+            UpdateAJAXLists AJAXUpdate = new UpdateAJAXLists(sProvider, mySettings.Timeout, mySettings.Proxy, GrabAttempt, UpdateAJAXLists_ListUpdated);
+            AJAXUpdate.GetType();
             return;
           }
           SetStatusText(modDB.LOG_GetLast().ToString("g"), e.Message, true);
@@ -3274,9 +3305,18 @@ namespace RestrictionTrackerGTK
         {
           updateFull = false;
         }
-        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Reading Usage...", false);
-        MethodInvoker UsageInvoker = GetUsage;
-        UsageInvoker.BeginInvoke(null, null);
+        if (!checkedAJAX && mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
+        {
+          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Checking for AJAX List Update...", false);
+          UpdateAJAXLists AJAXUpdate = new UpdateAJAXLists(sProvider, mySettings.Timeout, mySettings.Proxy, (object) "GetUsage", UpdateAJAXLists_UpdateChecked);
+          AJAXUpdate.GetType();
+        }
+        else
+        {
+          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Reading Usage...", false);
+          MethodInvoker UsageInvoker = GetUsage;
+          UsageInvoker.BeginInvoke(null, null);
+        }
       }
       else
       {
@@ -3919,11 +3959,13 @@ namespace RestrictionTrackerGTK
                 case ResponseType.Yes:
                   if (remoteData != null)
                   {
+                    remoteDataEvent(false);
                     remoteData.Dispose();
                     remoteData = null;
                   }
                   if (localData != null)
                   {
+                    localDataEvent(false);
                     localData.Dispose();
                     localData = null;
                   }
@@ -3941,11 +3983,13 @@ namespace RestrictionTrackerGTK
                 case ResponseType.Ok:
                   if (remoteData != null)
                   {
+                    remoteDataEvent(false);
                     remoteData.Dispose();
                     remoteData = null;
                   }
                   if (localData != null)
                   {
+                    localDataEvent(false);
                     localData.Dispose();
                     localData = null;
                   }
@@ -3988,11 +4032,13 @@ namespace RestrictionTrackerGTK
                   case ResponseType.Yes:
                     if (remoteData != null)
                     {
+                      remoteDataEvent(false);
                       remoteData.Dispose();
                       remoteData = null;
                     }
                     if (localData != null)
                     {
+                      localDataEvent(false);
                       localData.Dispose();
                       localData = null;
                     }
@@ -4010,11 +4056,13 @@ namespace RestrictionTrackerGTK
                   case ResponseType.Ok:
                     if (remoteData != null)
                     {
+                      remoteDataEvent(false);
                       remoteData.Dispose();
                       remoteData = null;
                     }
                     if (localData != null)
                     {
+                      localDataEvent(false);
                       localData.Dispose();
                       localData = null;
                     }
@@ -4067,11 +4115,13 @@ namespace RestrictionTrackerGTK
             case ResultType.NewUpdate:
               if (remoteData != null)
               {
+                remoteDataEvent(false);
                 remoteData.Dispose();
                 remoteData = null;
               }
               if (localData != null)
               {
+                localDataEvent(false);
                 localData.Dispose();
                 localData = null;
               }
@@ -4082,11 +4132,13 @@ namespace RestrictionTrackerGTK
               {
                 if (remoteData != null)
                 {
+                  remoteDataEvent(false);
                   remoteData.Dispose();
                   remoteData = null;
                 }
                 if (localData != null)
                 {
+                  localDataEvent(false);
                   localData.Dispose();
                   localData = null;
                 }
@@ -4210,6 +4262,55 @@ namespace RestrictionTrackerGTK
       if (upTotalSize == 0)
         return true;
       return upCurSize < upTotalSize;
+    }
+    private void UpdateAJAXLists_ListUpdated(object asyncState, string shortList, string fullList)
+    {
+      if (string.IsNullOrEmpty(shortList) || string.IsNullOrEmpty(fullList))
+      {
+        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Unable to Update AJAX Lists.", true);
+        DisplayUsage(false, true);
+        return;
+      }
+      if (mySettings.AJAXOrderShort == shortList && mySettings.AJAXOrderFull == fullList)
+      {
+        SetStatusText(modDB.LOG_GetLast().ToString("g"), "AJAX failed to yield data table. A fix should be available soon.", true);
+        DisplayUsage(false, true);
+        return;
+      }
+      mySettings.AJAXOrderShort = shortList;
+      mySettings.AJAXOrderFull = fullList;
+      mySettings.Save();
+      SetStatusText(modDB.LOG_GetLast().ToString("g"), "Updated AJAX Lists. Reconnecting...", false);
+      if (localData != null)
+      {
+        localDataEvent(false);
+        localData.Dispose();
+        localData = null;
+      }
+      localData = new localRestrictionTracker(modFunctions.AppData);
+    }
+    private void UpdateAJAXLists_UpdateChecked(object asyncState, string shortList, string fullList)
+    {
+      checkedAJAX = true;
+      if (string.IsNullOrEmpty(shortList) || string.IsNullOrEmpty(fullList))
+      {
+        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Unable to Update AJAX Lists. Preparing Connection anyway...", false);
+        DisplayUsage(false, true);
+        return;
+      }
+      else if (mySettings.AJAXOrderShort == shortList && mySettings.AJAXOrderFull == fullList)
+      {
+        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Connection...", false);
+      }
+      else
+      {
+        mySettings.AJAXOrderShort = shortList;
+        mySettings.AJAXOrderFull = fullList;
+        mySettings.Save();
+        SetStatusText(modDB.LOG_GetLast().ToString("g"), "AJAX Lists Updated. Preparing Connection...", false);
+      }
+      MethodInvoker UsageInvoker = GetUsage;
+      UsageInvoker.BeginInvoke(null, null);
     }
     #endregion
     #region "Useful Functions"
