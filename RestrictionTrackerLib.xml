@@ -47,6 +47,22 @@ RestrictionTrackerLib
 	<summary>
  Class for determining the account type for a provider domain name.
  </summary>
+</member><member name="T:RestrictionLibrary.UpdateAJAXLists.UpdateCallback">
+	<summary>
+ Callback subroutine to be triggered when a type has been determined in the <see cref="T:RestrictionLibrary.UpdateAJAXLists"/> class.
+ </summary>
+</member><member name="M:RestrictionLibrary.UpdateAJAXLists.#ctor(System.String,System.Int32,System.Net.IWebProxy,System.Object,RestrictionLibrary.UpdateAJAXLists.UpdateCallback)">
+	<summary>
+ Constructor for <see cref="T:RestrictionLibrary.UpdateAJAXLists"/> class, which also begins the update procedure.
+ </summary>
+	<param name="HostAddress">Host to determine the AJAX Lists of.</param>
+	<param name="iTimeout">Number of milliseconds to wait for a response from the server while testing the connection.</param>
+	<param name="pProxy">Proxy settings for testing the servers.</param>
+	<param name="callback">Callback subroutine to be triggered when the type has been determined.</param>
+</member><member name="T:RestrictionLibrary.UpdateAJAXLists">
+	<summary>
+ Class for grabbing Exede AJAX Lists
+ </summary>
 </member><member name="P:RestrictionLibrary.My.Resources.Resources.ResourceManager">
 	<summary>
   Returns the cached ResourceManager instance used by this class.
