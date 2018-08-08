@@ -1,11 +1,11 @@
-﻿<Properties GitUserInfo="UsingGIT" StartupItem="RestrictionTrackerGTK/RestrictionTrackerGTK.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+﻿<Properties StartupConfiguration="{338E8717-AF65-4C97-908E-27E1CB16C652}|Default" GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/home/andy/Documents/Satellite Restriction Tracker for MONO/RestrictionTrackerGTK/Forms/frmMain.cs" line="1814" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <AuthorInfo Name="Andrew Sachen" Email="webmaster@RealityRipple.com" Copyright="http://srt.realityripple.com" Company="RealityRipple Software" Trademark="Satellite Restriction Tracker by RealityRipple Software." />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.RestrictionTrackerGTK PreferredExecutionTarget="MonoDevelop.Default" />
 </Properties>

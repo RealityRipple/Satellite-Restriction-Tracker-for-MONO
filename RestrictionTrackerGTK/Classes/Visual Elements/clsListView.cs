@@ -7,7 +7,7 @@ namespace RestrictionTrackerGTK
   /// <para>A single column list, text comes from object.ToString()</para>
   /// <para>For multicolumns, see ListView&lt;ClassType&gt;</para>
   /// </summary>
-  public class ListView :
+  public class ListView:
     ListView<object>
   {
     public ListView(string columnTitle) :
@@ -24,7 +24,7 @@ namespace RestrictionTrackerGTK
   /// To get multiple columns, pass that number of parameters to the constructor
   /// and implement RenderCell accordingly.
   /// </summary>
-  public abstract class ListView<T> :
+  public abstract class ListView<T>:
     TreeView
   {
     /// <summary>
@@ -51,14 +51,14 @@ namespace RestrictionTrackerGTK
         TreeViewColumn c = this.AppendColumn(s, new CellRendererText(), this.ColumnCellData);
         columns.Add(c);
       }
-      
+
       this.SelectedItems = new T[0];
       this.Selection.Changed += HandleSelectionChanged;
     }
     private void ColumnCellData(TreeViewColumn column, CellRenderer renderer, TreeModel model, TreeIter iter)
     {
-      T item = (T) model.GetValue(iter, 0);
-      CellRendererText textRender = (CellRendererText) renderer;
+      T item = (T)model.GetValue(iter, 0);
+      CellRendererText textRender = (CellRendererText)renderer;
       int index = columns.IndexOf(column);
       RenderCell(textRender, index, item);
     }
@@ -87,18 +87,18 @@ namespace RestrictionTrackerGTK
     #region Selection and Aktivation triggers
     void HandleSelectionChanged(object sender, EventArgs e)
     {
-      TreeSelection selection = (TreeSelection) sender;
+      TreeSelection selection = (TreeSelection)sender;
       TreePath[] paths = selection.GetSelectedRows();
       T[] items = new T[paths.Length];
       for (int n = 0; n < paths.Length; n++)
       {
         TreeIter iter;
         Model.GetIter(out iter, paths[n]);
-        items[n] = (T) Model.GetValue(iter, 0);
+        items[n] = (T)Model.GetValue(iter, 0);
       }
-      
+
       SelectedItems = items;
-      
+
       var itemEvent = ItemSelected;
       if (itemEvent != null)
       {
@@ -109,14 +109,14 @@ namespace RestrictionTrackerGTK
     {
       TreeIter iter;
       Model.GetIter(out iter, path);
-      T item = (T) Model.GetValue(iter, 0);
-      
+      T item = (T)Model.GetValue(iter, 0);
+
       var e = ItemActivated;
       if (e != null)
       {
         e(item);
       }
-      
+
       base.OnRowActivated(path, column);
     }
     #endregion

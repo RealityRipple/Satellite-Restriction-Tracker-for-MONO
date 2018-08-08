@@ -16,14 +16,14 @@ namespace MacInterop
     public static bool GlobalKeyHandlerEnabled
     {
       set
-      { 
+      {
         ige_mac_menu_set_global_key_handler_enabled(value);
       }
     }
     [DllImport("libigemacintegration.dylib")]
     static extern void ige_mac_menu_set_menu_bar(IntPtr menu_shell);
     public static Gtk.MenuShell MenuBar
-    { 
+    {
       set
       {
         ige_mac_menu_set_menu_bar(value == null ? IntPtr.Zero : value.Handle);
@@ -32,7 +32,7 @@ namespace MacInterop
     [DllImport("libigemacintegration.dylib")]
     static extern void ige_mac_menu_set_quit_menu_item(IntPtr quit_item);
     public static Gtk.MenuItem QuitMenuItem
-    { 
+    {
       set
       {
         ige_mac_menu_set_quit_menu_item(value == null ? IntPtr.Zero : value.Handle);
@@ -43,11 +43,11 @@ namespace MacInterop
     public static IgeMacMenuGroup AddAppMenuGroup()
     {
       IntPtr raw_ret = ige_mac_menu_add_app_menu_group();
-      IgeMacMenuGroup ret = raw_ret == IntPtr.Zero ? null : (IgeMacMenuGroup) GLib.Opaque.GetOpaque(raw_ret, typeof(IgeMacMenuGroup), false);
+      IgeMacMenuGroup ret = raw_ret == IntPtr.Zero ? null : (IgeMacMenuGroup)GLib.Opaque.GetOpaque(raw_ret, typeof(IgeMacMenuGroup), false);
       return ret;
     }
   }
-  public class IgeMacMenuGroup : GLib.Opaque
+  public class IgeMacMenuGroup: GLib.Opaque
   {
     [DllImport("libigemacintegration.dylib")]
     static extern void ige_mac_menu_add_app_menu_item(IntPtr raw, IntPtr menu_item, IntPtr label);

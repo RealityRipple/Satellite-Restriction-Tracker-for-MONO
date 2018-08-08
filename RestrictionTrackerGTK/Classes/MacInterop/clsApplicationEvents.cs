@@ -114,7 +114,7 @@ namespace MacInterop
     }
     #endregion
   }
-  public class ApplicationEventArgs :
+  public class ApplicationEventArgs:
     EventArgs
   {
     public bool Handled { get; set; }
@@ -126,7 +126,7 @@ namespace MacInterop
       }
     }
   }
-  public class ApplicationQuitEventArgs :
+  public class ApplicationQuitEventArgs:
     ApplicationEventArgs
   {
     public bool UserCancelled { get; set; }

@@ -18,7 +18,7 @@ namespace MacInterop
     public static IntPtr InstallEventHandler(IntPtr target, EventDelegate handler, CarbonEventTypeSpec[] types)
     {
       IntPtr handlerRef;
-      CheckReturn(InstallEventHandler(target, handler, (uint) types.Length, types, IntPtr.Zero, out handlerRef));
+      CheckReturn(InstallEventHandler(target, handler, (uint)types.Length, types, IntPtr.Zero, out handlerRef));
       return handlerRef;
     }
     public static IntPtr InstallEventHandler(IntPtr target, EventDelegate handler, CarbonEventTypeSpec type)
@@ -32,12 +32,12 @@ namespace MacInterop
     #endregion
     public static void CheckReturn(EventStatus status)
     {
-      int intStatus = (int) status;
+      int intStatus = (int)status;
       if (intStatus < 0)
         throw new EventStatusException(status);
     }
   }
-  class EventStatusException : SystemException
+  class EventStatusException: SystemException
   {
     public EventStatusException(EventStatus status)
     {

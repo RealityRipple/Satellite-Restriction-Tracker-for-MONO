@@ -65,27 +65,27 @@ namespace RestrictionTrackerGTK
           fMain.ShowFromTray();
           e.Handled = true;
         };
-        ApplicationEvents.Prefs += delegate(object sender, ApplicationEventArgs e)
+        ApplicationEvents.Prefs += delegate (object sender, ApplicationEventArgs e)
         {
           fMain.cmdConfig_Click(new object(), new EventArgs());
           e.Handled = true;
         };
         IgeMacMenuGroup appGroup = IgeMacMenu.AddAppMenuGroup();
         MenuItem mnuAbout = new MenuItem();
-        mnuAbout.Activated += delegate(object sender, EventArgs e)
+        mnuAbout.Activated += delegate (object sender, EventArgs e)
         {
           fMain.cmdAbout_Click(new object(), new EventArgs());
         };
         appGroup.AddMenuItem(mnuAbout, "About " + modFunctions.ProductName);
         appGroup.AddMenuItem(new MenuItem(), "-");
         MenuItem mnuHistory = new MenuItem();
-        mnuHistory.Activated += delegate(object sender, EventArgs e)
+        mnuHistory.Activated += delegate (object sender, EventArgs e)
         {
           fMain.cmdHistory_Click(new object(), new EventArgs());
         };
         appGroup.AddMenuItem(mnuHistory, "Usage History");
         MenuItem mnuConfig = new MenuItem();
-        mnuConfig.Activated += delegate(object sender, EventArgs e)
+        mnuConfig.Activated += delegate (object sender, EventArgs e)
         {
           fMain.cmdConfig_Click(new object(), new EventArgs());
         };
@@ -96,7 +96,7 @@ namespace RestrictionTrackerGTK
         MenuItem helpMenuItem = new MenuItem("Help");
 
         MenuItem mnuFAQ = new MenuItem("Frequently Asked Questions");
-        mnuFAQ.Activated += delegate(object sender, EventArgs e)
+        mnuFAQ.Activated += delegate (object sender, EventArgs e)
         {
           System.Diagnostics.Process.Start("http://srt.realityripple.com/faq.php");
         };
@@ -104,7 +104,7 @@ namespace RestrictionTrackerGTK
         mnuFAQ.Show();
 
         MenuItem mnuChanges = new MenuItem("What's New in " + modFunctions.ProductName + " v" + modFunctions.ProductVersion);
-        mnuChanges.Activated += delegate(object sender, EventArgs e)
+        mnuChanges.Activated += delegate (object sender, EventArgs e)
         {
           System.Diagnostics.Process.Start("http://srt.realityripple.com/For-MONO/changes.php");
         };
@@ -116,7 +116,7 @@ namespace RestrictionTrackerGTK
         mnuHelpSpace1.Show();
 
         MenuItem mnuWebsite = new MenuItem("Visit the " + modFunctions.ProductName + " Home Page");
-        mnuWebsite.Activated += delegate(object sender, EventArgs e)
+        mnuWebsite.Activated += delegate (object sender, EventArgs e)
         {
           System.Diagnostics.Process.Start("http://srt.realityripple.com/For-MONO/mac.php");
         };
@@ -124,7 +124,7 @@ namespace RestrictionTrackerGTK
         mnuWebsite.Show();
 
         MenuItem mnuBug = new MenuItem("Report a Bug");
-        mnuBug.Activated += delegate(object sender, EventArgs e)
+        mnuBug.Activated += delegate (object sender, EventArgs e)
         {
           System.Diagnostics.Process.Start("http://bugs.realityripple.com/bug_report_page.php?project_id=2");
         };
@@ -143,7 +143,7 @@ namespace RestrictionTrackerGTK
     }
     static void unhandledException(GLib.UnhandledExceptionArgs args)
     {
-      Exception ex = (Exception) args.ExceptionObject;
+      Exception ex = (Exception)args.ExceptionObject;
       if (ex.Message == "Exception has been thrown by the target of an invocation.")
         ex = ex.InnerException;
       ResponseType ret = showErrDialog(ex, !args.IsTerminating);
@@ -152,7 +152,7 @@ namespace RestrictionTrackerGTK
         string sRet = MantisReporter.ReportIssue(ex);
         if (sRet == "OK")
         {
-          if (modFunctions.ShowMessageBox(null, "Thank you for reporting the error.\nYou can find details on the Bug Report page.\n\nDo you wish to visit the Bug Report?", modFunctions.ProductName + " Error Report Sent!", (DialogFlags) 0, MessageType.Question, ButtonsType.YesNo) == ResponseType.Yes)
+          if (modFunctions.ShowMessageBox(null, "Thank you for reporting the error.\nYou can find details on the Bug Report page.\n\nDo you wish to visit the Bug Report?", modFunctions.ProductName + " Error Report Sent!", (DialogFlags)0, MessageType.Question, ButtonsType.YesNo) == ResponseType.Yes)
             System.Diagnostics.Process.Start("http://bugs.realityripple.com/set_project.php?project_id=2");
         }
         else
@@ -208,7 +208,7 @@ namespace RestrictionTrackerGTK
             }
           }
           sErrRep += "%2526description=" + DoubleEncode(sDesc);
-          if (modFunctions.ShowMessageBox(null, sRet + "\n\nWould you like to report the error manually?", modFunctions.ProductName + " Error Report Failed!", (DialogFlags) 0, MessageType.Error, ButtonsType.YesNo) == ResponseType.Yes)
+          if (modFunctions.ShowMessageBox(null, sRet + "\n\nWould you like to report the error manually?", modFunctions.ProductName + " Error Report Failed!", (DialogFlags)0, MessageType.Error, ButtonsType.YesNo) == ResponseType.Yes)
           {
             System.Diagnostics.Process.Start(sErrRep);
           }
@@ -225,7 +225,7 @@ namespace RestrictionTrackerGTK
     }
     static void SizeAllocateLabel(object o, SizeAllocatedArgs e)
     {
-      ((Gtk.Widget) o).SetSizeRequest(e.Allocation.Width, -1);
+      ((Gtk.Widget)o).SetSizeRequest(e.Allocation.Width, -1);
     }
     private static Gtk.ResponseType showErrDialog(Exception e, bool canContinue)
     {
@@ -351,7 +351,7 @@ namespace RestrictionTrackerGTK
       pnlErrorDialog.BorderWidth = 2;
       pnlErrorDialog.Add(pnlError);
 
-      Box.BoxChild pnlError_BC = (Box.BoxChild) pnlErrorDialog[pnlError];
+      Box.BoxChild pnlError_BC = (Box.BoxChild)pnlErrorDialog[pnlError];
       pnlError_BC.Position = 0;
 
       Gtk.HButtonBox dlgErrorAction = dlgErr.ActionArea;
@@ -375,8 +375,8 @@ namespace RestrictionTrackerGTK
       Gtk.ResponseType dRet;
       do
       {
-        dRet = (Gtk.ResponseType) dlgErr.Run();
-      } while(dRet == ResponseType.None);
+        dRet = (Gtk.ResponseType)dlgErr.Run();
+      } while (dRet == ResponseType.None);
       dlgErr.Hide();
       dlgErr.Destroy();
       dlgErr = null;

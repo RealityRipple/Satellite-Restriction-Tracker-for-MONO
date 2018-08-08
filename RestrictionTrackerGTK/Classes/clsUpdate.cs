@@ -2,11 +2,11 @@ using System;
 using RestrictionLibrary;
 namespace RestrictionTrackerGTK
 {
-  public class clsUpdate :
+  public class clsUpdate:
     IDisposable
   {
     private const string VersionURL = "http://update.realityripple.com/Satellite_Restriction_Tracker/ver";
-    public class ProgressEventArgs : EventArgs
+    public class ProgressEventArgs: EventArgs
     {
       public long BytesReceived;
       public int ProgressPercentage;
@@ -18,7 +18,7 @@ namespace RestrictionTrackerGTK
         ProgressPercentage = iPercentage;
       }
     }
-    public class CheckEventArgs : System.ComponentModel.AsyncCompletedEventArgs
+    public class CheckEventArgs: System.ComponentModel.AsyncCompletedEventArgs
     {
       public ResultType Result;
       public string Version;
@@ -29,7 +29,7 @@ namespace RestrictionTrackerGTK
         Result = rtResult;
       }
     }
-    public class DownloadEventArgs : System.ComponentModel.AsyncCompletedEventArgs
+    public class DownloadEventArgs: System.ComponentModel.AsyncCompletedEventArgs
     {
       public string Version;
       internal DownloadEventArgs(string sVersion, Exception ex, bool bCancelled, object state) :

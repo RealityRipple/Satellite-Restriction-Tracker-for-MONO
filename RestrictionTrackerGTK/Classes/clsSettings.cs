@@ -323,26 +323,26 @@ namespace RestrictionTrackerGTK
         }
         else if (xName.CompareTo("Protocol") == 0)
         {
-          m_SecurProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.None;
+          m_SecurProtocol = (System.Net.SecurityProtocolType)SecurityProtocolTypeEx.None;
           if (xValue.Contains("SSL"))
           {
-            m_SecurProtocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Ssl3;
+            m_SecurProtocol |= (System.Net.SecurityProtocolType)SecurityProtocolTypeEx.Ssl3;
           }
           if (xValue.Contains("TLS10"))
           {
-            m_SecurProtocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls10;
+            m_SecurProtocol |= (System.Net.SecurityProtocolType)SecurityProtocolTypeEx.Tls10;
           }
           if (xValue.Contains("TLS11"))
           {
-            m_SecurProtocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls11;
+            m_SecurProtocol |= (System.Net.SecurityProtocolType)SecurityProtocolTypeEx.Tls11;
           }
           if (xValue.Contains("TLS12"))
           {
-            m_SecurProtocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls12;
+            m_SecurProtocol |= (System.Net.SecurityProtocolType)SecurityProtocolTypeEx.Tls12;
           }
           if (xValue.Contains("TLS") & !xValue.Contains("TLS1"))
           {
-            m_SecurProtocol |= (System.Net.SecurityProtocolType) (SecurityProtocolTypeEx.Tls11 | SecurityProtocolTypeEx.Tls12);
+            m_SecurProtocol |= (System.Net.SecurityProtocolType)(SecurityProtocolTypeEx.Tls11 | SecurityProtocolTypeEx.Tls12);
           }
         }
         else if (xName.CompareTo("EnforcedSecurity") == 0)
@@ -624,7 +624,7 @@ namespace RestrictionTrackerGTK
       m_AutoHide = true;
       m_TLSProxy = false;
       m_ProxySetting = "System";
-      m_SecurProtocol = (System.Net.SecurityProtocolType) (SecurityProtocolTypeEx.Tls11 | SecurityProtocolTypeEx.Tls12);
+      m_SecurProtocol = (System.Net.SecurityProtocolType)(SecurityProtocolTypeEx.Tls11 | SecurityProtocolTypeEx.Tls12);
       m_SecurEnforced = false;
       m_NetTest = null;
       m_AJAXShort = null;
@@ -706,7 +706,7 @@ namespace RestrictionTrackerGTK
       string sProtocol = "";
       foreach (SecurityProtocolTypeEx protocolTest in Enum.GetValues(typeof(SecurityProtocolTypeEx)))
       {
-        if ((((SecurityProtocolTypeEx) m_SecurProtocol) & protocolTest) == protocolTest)
+        if ((((SecurityProtocolTypeEx)m_SecurProtocol) & protocolTest) == protocolTest)
         {
           sProtocol += Enum.GetName(typeof(SecurityProtocolTypeEx), protocolTest).ToUpper() + ", ";
         }
@@ -1446,7 +1446,7 @@ namespace RestrictionTrackerGTK
         }
         else
         {
-          WebProxy wValue = (WebProxy) value;
+          WebProxy wValue = (WebProxy)value;
           if (modFunctions.IsNumeric(wValue.Address.Host.Replace(".", string.Empty)))
           {
             if (value.Credentials != null)
@@ -1978,10 +1978,10 @@ namespace RestrictionTrackerGTK
         case "WRITE":
           sCaption = "Your Program settings were not saved.";
           break;
-        case "PERMISSION": 
+        case "PERMISSION":
           sCaption = "Your Program settings could not be saved.";
           break;
-        default :
+        default:
           sCaption = "There was an error saving your Program settings.";
           break;
       }

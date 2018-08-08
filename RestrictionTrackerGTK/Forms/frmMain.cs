@@ -11,7 +11,7 @@ using System.Threading;
 using GLib;
 namespace RestrictionTrackerGTK
 {
-  public partial class frmMain :
+  public partial class frmMain:
     Gtk.Window
   {
     private localRestrictionTracker.SatHostTypes myPanel;
@@ -198,7 +198,7 @@ namespace RestrictionTrackerGTK
     private long lastBalloon;
     private bool firstRestore;
     private bool checkedAJAX;
-    private Dictionary<string,string> markupList = new Dictionary<string, string>();
+    private Dictionary<string, string> markupList = new Dictionary<string, string>();
     private Gtk.Menu mnuTray;
     private Gtk.MenuItem mnuRestore;
     private Gtk.MenuItem mnuAbout;
@@ -303,9 +303,9 @@ namespace RestrictionTrackerGTK
             }
             TotalCount += 1;
           }
-          rpP = (float) RPGuess / TotalCount;
-          exP = (float) ExGuess / TotalCount;
-          wbP = (float) WBGuess / TotalCount;
+          rpP = (float)RPGuess / TotalCount;
+          exP = (float)ExGuess / TotalCount;
+          wbP = (float)WBGuess / TotalCount;
         }
       }
       private void OfflineCheck()
@@ -380,7 +380,7 @@ namespace RestrictionTrackerGTK
     }
     private void Main_TypeDetermined(object sender, EventArgs ea)
     {
-      TypeDeterminedEventArgs e = (TypeDeterminedEventArgs) ea;
+      TypeDeterminedEventArgs e = (TypeDeterminedEventArgs)ea;
       NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       if (e.HostGroup == DetermineType.SatHostGroup.Other)
       {
@@ -431,7 +431,7 @@ namespace RestrictionTrackerGTK
     }
     private void Main_TypeDeterminedOffline(object sender, EventArgs ea)
     {
-      TypeDeterminedOfflineEventArgs e = (TypeDeterminedOfflineEventArgs) ea;
+      TypeDeterminedOfflineEventArgs e = (TypeDeterminedOfflineEventArgs)ea;
       NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       if (e.HostType == localRestrictionTracker.SatHostTypes.Other)
       {
@@ -658,7 +658,7 @@ namespace RestrictionTrackerGTK
         if (System.IO.Path.GetExtension(sFile).ToLower() == ".png")
           File.Delete(sFile);
       }
-      string[][] icoNames = new string[][] { new string[] { "norm.ico", "norm.png" }, new string[] { "free.ico", "free.png" }, new string[] { "restricted.ico", "restricted.png" }, new string[] { "error.png", "error.png" } , new string[] { "throbsprite.0.ico", "throb_0.png" }, new string[] { "throbsprite.1.ico", "throb_1.png" }, new string[] { "throbsprite.2.ico", "throb_2.png" }, new string[] { "throbsprite.3.ico", "throb_3.png" }, new string[] { "throbsprite.4.ico", "throb_4.png" }, new string[] { "throbsprite.5.ico", "throb_5.png" }, new string[] { "throbsprite.6.ico", "throb_6.png" }, new string[] { "throbsprite.7.ico", "throb_7.png" }, new string[] { "throbsprite.8.ico", "throb_8.png" }, new string[] { "throbsprite.9.ico", "throb_9.png" }, new string[] { "throbsprite.10.ico", "throb_10.png" }, new string[] { "throbsprite.11.ico", "throb_11.png" } };
+      string[][] icoNames = new string[][] { new string[] { "norm.ico", "norm.png" }, new string[] { "free.ico", "free.png" }, new string[] { "restricted.ico", "restricted.png" }, new string[] { "error.png", "error.png" }, new string[] { "throbsprite.0.ico", "throb_0.png" }, new string[] { "throbsprite.1.ico", "throb_1.png" }, new string[] { "throbsprite.2.ico", "throb_2.png" }, new string[] { "throbsprite.3.ico", "throb_3.png" }, new string[] { "throbsprite.4.ico", "throb_4.png" }, new string[] { "throbsprite.5.ico", "throb_5.png" }, new string[] { "throbsprite.6.ico", "throb_6.png" }, new string[] { "throbsprite.7.ico", "throb_7.png" }, new string[] { "throbsprite.8.ico", "throb_8.png" }, new string[] { "throbsprite.9.ico", "throb_9.png" }, new string[] { "throbsprite.10.ico", "throb_10.png" }, new string[] { "throbsprite.11.ico", "throb_11.png" } };
       foreach (string[] ico in icoNames)
       {
         if (System.IO.Path.GetExtension(ico[0]).ToLower() == ".ico")
@@ -774,7 +774,7 @@ namespace RestrictionTrackerGTK
         }
         for (long up = 0; up <= trayRes; up++)
         {
-          using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(0, trayRes,up, trayRes,true,false))
+          using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(0, trayRes, up, trayRes, true, false))
           {
             pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_slowx" + up + ".png"), "png");
             icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_slowx" + up + ".png"));
@@ -819,7 +819,7 @@ namespace RestrictionTrackerGTK
         }
         for (long up = 0; up <= trayRes; up++)
         {
-          using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(0, trayRes,up, trayRes,true,false))
+          using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(0, trayRes, up, trayRes, true, false))
           {
             pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_slowx" + up + ".png"), "png");
             icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_slowx" + up + ".png"));
@@ -904,7 +904,7 @@ namespace RestrictionTrackerGTK
         else
         {
           firstRestore = true;
-          ((Gtk.Label) mnuRestore.Child).TextWithMnemonic = "_Hide";
+          ((Gtk.Label)mnuRestore.Child).TextWithMnemonic = "_Hide";
           this.SkipTaskbarHint = false;
           if (tmrIcon != 0)
           {
@@ -971,7 +971,7 @@ namespace RestrictionTrackerGTK
         Gdk.Rectangle alloc;
         if (ea != null)
         {
-          Gtk.SizeAllocatedArgs e = (Gtk.SizeAllocatedArgs) ea;
+          Gtk.SizeAllocatedArgs e = (Gtk.SizeAllocatedArgs)ea;
           if (e.Allocation.Equals(lastSize))
           {
             return;
@@ -1003,7 +1003,7 @@ namespace RestrictionTrackerGTK
           {
             if ((alloc.Width / 2) * fRatio > fMin)
             {
-              fontSize = (int) Math.Ceiling((alloc.Width / 2) * fRatio);
+              fontSize = (int)Math.Ceiling((alloc.Width / 2) * fRatio);
             }
             else
             {
@@ -1014,15 +1014,15 @@ namespace RestrictionTrackerGTK
           {
             if (alloc.Height * fRatio > fMin)
             {
-              fontSize = (int) Math.Ceiling(alloc.Height * fRatio);
+              fontSize = (int)Math.Ceiling(alloc.Height * fRatio);
             }
             else
             {
               fontSize = fMin;
             }
           }
-          SetFontSize(ref baseBox, (int) Math.Ceiling(fontSize * 1024f));
-          sbMainStatus.HeightRequest = (int) Math.Ceiling((GetFontSize() / 1024d) * 2.5d);
+          SetFontSize(ref baseBox, (int)Math.Ceiling(fontSize * 1024f));
+          sbMainStatus.HeightRequest = (int)Math.Ceiling((GetFontSize() / 1024d) * 2.5d);
         }
         else
         {
@@ -1032,7 +1032,7 @@ namespace RestrictionTrackerGTK
         if (myPanel == localRestrictionTracker.SatHostTypes.Other)
         {
           SetFontSize(ref lblRRS, GetFontSize());
-          SetFontSize(ref lblNothing, (int) Math.Ceiling(GetFontSize() * 2.5f));
+          SetFontSize(ref lblNothing, (int)Math.Ceiling(GetFontSize() * 2.5f));
         }
         if (myState == LoadStates.Loaded)
         {
@@ -1047,7 +1047,7 @@ namespace RestrictionTrackerGTK
         else if (myPanel != localRestrictionTracker.SatHostTypes.Other)
         {
           SetFontSize(ref lblRRS, GetFontSize());
-          SetFontSize(ref lblNothing, (int) Math.Ceiling(GetFontSize() * 2.5f));
+          SetFontSize(ref lblNothing, (int)Math.Ceiling(GetFontSize() * 2.5f));
         }
       }
     }
@@ -1058,7 +1058,7 @@ namespace RestrictionTrackerGTK
         if (fRatio == 0f | double.IsInfinity(fRatio) | double.IsNaN(fRatio))
         {
           fRatio = (GetMainFontSize() / 1024f) / 250f;
-        } 
+        }
         if (fMin == 0f | double.IsInfinity(fMin) | double.IsNaN(fMin))
         {
           fMin = GetMainFontSize() / 1024f;
@@ -1070,7 +1070,7 @@ namespace RestrictionTrackerGTK
           {
             if ((this.Allocation.Width / 2) / fRatio > fMin)
             {
-              fontSize = (int) Math.Ceiling((this.Allocation.Width / 2) * fRatio);
+              fontSize = (int)Math.Ceiling((this.Allocation.Width / 2) * fRatio);
             }
             else
             {
@@ -1081,14 +1081,14 @@ namespace RestrictionTrackerGTK
           {
             if (this.Allocation.Height * fRatio > fMin)
             {
-              fontSize = (int) Math.Ceiling(this.Allocation.Height * fRatio);
+              fontSize = (int)Math.Ceiling(this.Allocation.Height * fRatio);
             }
             else
             {
               fontSize = fMin;
             }
           }
-          iFontSize = (int) Math.Ceiling(fontSize * 1024f);
+          iFontSize = (int)Math.Ceiling(fontSize * 1024f);
         }
         else
         {
@@ -1099,7 +1099,7 @@ namespace RestrictionTrackerGTK
     }
     private void SetFontSize(ref Label wLabel, int iSize)
     {
-      string ttX = wLabel.TooltipText; 
+      string ttX = wLabel.TooltipText;
       if (markupList.ContainsKey(wLabel.Name + wLabel.Handle.ToString("x")))
       {
         string markup = markupList[wLabel.Name + wLabel.Handle.ToString("x")];
@@ -1136,7 +1136,7 @@ namespace RestrictionTrackerGTK
     private void SetFontSize(ref VBox wPanel, int iSize)
     {
       iFontSize = iSize;
-      Container bItem = (Container) wPanel;
+      Container bItem = (Container)wPanel;
       if (bItem.Children.Length > 0)
       {
         for (int i = 0; i < bItem.Children.Length; i++)
@@ -1149,7 +1149,7 @@ namespace RestrictionTrackerGTK
     {
       if (wItem is Container)
       {
-        Container bItem = (Container) wItem;
+        Container bItem = (Container)wItem;
         if (bItem.Children.Length > 0)
         {
           for (int i = 0; i < bItem.Children.Length; i++)
@@ -1162,7 +1162,7 @@ namespace RestrictionTrackerGTK
       {
         if (wItem.GetType().ToString() == "Gtk.Label")
         {
-          Label wLabel = (Label) wItem;
+          Label wLabel = (Label)wItem;
           SetFontSize(ref wLabel, iSize);
         }
       }
@@ -1194,8 +1194,8 @@ namespace RestrictionTrackerGTK
           }
           else
           {
-            int d = (int) Math.Round(((double) typeA_down / typeA_dlim) * trayRes);
-            int u = (int) Math.Round(((double) typeA_up / typeA_ulim) * trayRes);
+            int d = (int)Math.Round(((double)typeA_down / typeA_dlim) * trayRes);
+            int u = (int)Math.Round(((double)typeA_up / typeA_ulim) * trayRes);
             if (imSlowed)
             {
               if (d == trayRes && u == trayRes)
@@ -1242,7 +1242,7 @@ namespace RestrictionTrackerGTK
           }
           else
           {
-            int u = (int) Math.Round(((double) typeB_used / typeB_lim) * trayRes);
+            int u = (int)Math.Round(((double)typeB_used / typeB_lim) * trayRes);
             if (u > trayRes)
               u = trayRes;
             trayIcoVal = "graph_typeb_" + u;
@@ -1302,14 +1302,14 @@ namespace RestrictionTrackerGTK
           {
             if (mySettings.TrayIconStyle == TrayStyles.Minimized)
               TrayState = true;
-            ((Gtk.Label) mnuRestore.Child).TextWithMnemonic = "_Restore";
+            ((Gtk.Label)mnuRestore.Child).TextWithMnemonic = "_Restore";
             this.SkipTaskbarHint = true;
           }
           else
           {
             if (mySettings.TrayIconStyle == TrayStyles.Minimized)
               TrayState = false;
-            ((Gtk.Label) mnuRestore.Child).TextWithMnemonic = "_Hide";
+            ((Gtk.Label)mnuRestore.Child).TextWithMnemonic = "_Hide";
             this.SkipTaskbarHint = false;
             if (!firstRestore)
             {
@@ -1329,7 +1329,7 @@ namespace RestrictionTrackerGTK
           {
             if (mySettings.TrayIconStyle == TrayStyles.Minimized)
               TrayState = true;
-            ((Gtk.Label) mnuRestore.Child).TextWithMnemonic = "_Restore";
+            ((Gtk.Label)mnuRestore.Child).TextWithMnemonic = "_Restore";
             this.SkipTaskbarHint = true;
           }
         }
@@ -1347,7 +1347,7 @@ namespace RestrictionTrackerGTK
           tmrRestored = GLib.Timeout.Add(100, tmrRestored_Tick);
         }
       }
-      else if ((int) e.Event.ChangedMask == 32767)
+      else if ((int)e.Event.ChangedMask == 32767)
       {
         //this.SizeAllocate(new Gdk.Rectangle(Gdk.Point.Zero, mySettings.MainSize));
       }
@@ -1394,7 +1394,7 @@ namespace RestrictionTrackerGTK
         remoteData = null;
       }
       if (mySettings != null)
-      { 
+      {
         mySettings.Save();
       }
       modDB.LOG_Terminate(false);
@@ -1417,11 +1417,11 @@ namespace RestrictionTrackerGTK
         SecurityProtocolTypeEx useProtocol = SecurityProtocolTypeEx.None;
         foreach (SecurityProtocolTypeEx protocolTest in Enum.GetValues(typeof(SecurityProtocolTypeEx)))
         {
-          if (((SecurityProtocolTypeEx) mySettings.SecurityProtocol & protocolTest) == protocolTest)
+          if (((SecurityProtocolTypeEx)mySettings.SecurityProtocol & protocolTest) == protocolTest)
           {
             try
             {
-              System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) protocolTest;
+              System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType)protocolTest;
               useProtocol |= protocolTest;
             }
             catch (Exception)
@@ -1437,7 +1437,7 @@ namespace RestrictionTrackerGTK
             {
               try
               {
-                System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) protocolTest;
+                System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType)protocolTest;
                 useProtocol |= protocolTest;
               }
               catch (Exception)
@@ -1446,9 +1446,9 @@ namespace RestrictionTrackerGTK
             }
             try
             {
-              System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) useProtocol;
-              mySettings.SecurityProtocol = (System.Net.SecurityProtocolType) useProtocol;
-              mySettings.Save(); 
+              System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType)useProtocol;
+              mySettings.SecurityProtocol = (System.Net.SecurityProtocolType)useProtocol;
+              mySettings.Save();
             }
             catch (Exception)
             {
@@ -1456,14 +1456,14 @@ namespace RestrictionTrackerGTK
           }
           else
           {
-            System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.None;
+            System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType)SecurityProtocolTypeEx.None;
           }
         }
         else
         {
           try
           {
-            System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) useProtocol;
+            System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType)useProtocol;
           }
           catch (Exception)
           {
@@ -1504,11 +1504,11 @@ namespace RestrictionTrackerGTK
         string sNetTestIco = System.IO.Path.Combine(modFunctions.AppDataPath, "netTest.png");
         if (File.Exists(sNetTestIco))
         {
-          ((Gtk.Image) ((Gtk.HBox) ((Gtk.Alignment) cmdNetTest.Child).Child).Children[0]).Pixbuf = new Gdk.Pixbuf(sNetTestIco);
+          ((Gtk.Image)((Gtk.HBox)((Gtk.Alignment)cmdNetTest.Child).Child).Children[0]).Pixbuf = new Gdk.Pixbuf(sNetTestIco);
         }
         else
         {
-          ((Gtk.Image) ((Gtk.HBox) ((Gtk.Alignment) cmdNetTest.Child).Child).Children[0]).PixbufAnimation = new Gdk.PixbufAnimation(null, "RestrictionTrackerGTK.Resources.throbber.gif");
+          ((Gtk.Image)((Gtk.HBox)((Gtk.Alignment)cmdNetTest.Child).Child).Children[0]).PixbufAnimation = new Gdk.PixbufAnimation(null, "RestrictionTrackerGTK.Resources.throbber.gif");
           clsFavicon wsFavicon = new clsFavicon(mySettings.NetTestURL, wsFavicon_DownloadIconCompleted, mySettings.NetTestURL);
           wsFavicon.GetType();
         }
@@ -1519,7 +1519,7 @@ namespace RestrictionTrackerGTK
           sNetTestTitle = sNetTestTitle.Substring(4);
         if (sNetTestTitle.Contains("/"))
           sNetTestTitle = sNetTestTitle.Substring(0, sNetTestTitle.IndexOf("/"));
-        if (sNetTestTitle == "192.168.100.1" | ComparePixbufs(((Gtk.Image) ((Gtk.HBox) ((Gtk.Alignment) cmdNetTest.Child).Child).Children[0]).Pixbuf, Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.modem16.png")))
+        if (sNetTestTitle == "192.168.100.1" | ComparePixbufs(((Gtk.Image)((Gtk.HBox)((Gtk.Alignment)cmdNetTest.Child).Child).Children[0]).Pixbuf, Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.modem16.png")))
           sNetTestTitle = "ViaSat Modem";
         cmdNetTest.TooltipMarkup = "Visit " + sNetTestTitle + ".";
       }
@@ -1582,7 +1582,7 @@ namespace RestrictionTrackerGTK
     }
     void wsFavicon_DownloadIconCompletedAsync(object sender, EventArgs ea)
     {
-      DownloadIconCompletedEventArgs e = (DownloadIconCompletedEventArgs) ea;
+      DownloadIconCompletedEventArgs e = (DownloadIconCompletedEventArgs)ea;
       try
       {
         cmdNetTest.Visible = true;
@@ -1590,17 +1590,17 @@ namespace RestrictionTrackerGTK
         cmdNetTest.HeightRequest = 20;
         if (e.Error != null)
         {
-          ((Gtk.Image) ((Gtk.HBox) ((Gtk.Alignment) cmdNetTest.Child).Child).Children[0]).Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.error.png");
+          ((Gtk.Image)((Gtk.HBox)((Gtk.Alignment)cmdNetTest.Child).Child).Children[0]).Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.error.png");
         }
         else
         {
           e.Icon16.Save(System.IO.Path.Combine(modFunctions.AppDataPath, "netTest.png"), "png");
-          ((Gtk.Image) ((Gtk.HBox) ((Gtk.Alignment) cmdNetTest.Child).Child).Children[0]).Pixbuf = e.Icon16;
+          ((Gtk.Image)((Gtk.HBox)((Gtk.Alignment)cmdNetTest.Child).Child).Children[0]).Pixbuf = e.Icon16;
         }
       }
       catch (Exception)
       {
-        ((Gtk.Image) ((Gtk.HBox) ((Gtk.Alignment) cmdNetTest.Child).Child).Children[0]).Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.error.png");
+        ((Gtk.Image)((Gtk.HBox)((Gtk.Alignment)cmdNetTest.Child).Child).Children[0]).Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.error.png");
       }
     }
     private void ReInit()
@@ -1610,12 +1610,12 @@ namespace RestrictionTrackerGTK
     private void Main_ReInit(object o, EventArgs e)
     {
       if (localData != null)
-      { 
+      {
         localDataEvent(false);
         localData = null;
       }
       if (remoteData != null)
-      { 
+      {
         remoteDataEvent(false);
         remoteData.Dispose();
         remoteData = null;
@@ -1665,11 +1665,11 @@ namespace RestrictionTrackerGTK
     }
     private void SetTag(LoadStates Tag)
     {
-      Gtk.Application.Invoke((object) Tag, null, Main_SetTag);
+      Gtk.Application.Invoke((object)Tag, null, Main_SetTag);
     }
     private void Main_SetTag(object o, EventArgs e)
     {
-      myState = (LoadStates) o;
+      myState = (LoadStates)o;
       if (myState == LoadStates.Loaded)
       {
         if (TraySupported & mySettings.TrayIconStyle == TrayStyles.Never)
@@ -1750,7 +1750,7 @@ namespace RestrictionTrackerGTK
         GLib.Source.Remove(tmrShowConfig);
         tmrShowConfig = 0;
       }
-      if (((Gtk.Label) mnuRestore.Child).Text == "Restore")
+      if (((Gtk.Label)mnuRestore.Child).Text == "Restore")
       {
         ShowFromTray();
       }
@@ -1814,7 +1814,7 @@ namespace RestrictionTrackerGTK
                   if (!checkedAJAX && mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
                   {
                     SetStatusText(modDB.LOG_GetLast().ToString("g"), "Checking for AJAX List Update...", false);
-                    UpdateAJAXLists AJAXUpdate = new UpdateAJAXLists(sProvider, mySettings.Timeout, mySettings.Proxy, (object) "GetUsage", UpdateAJAXLists_UpdateChecked);
+                    UpdateAJAXLists AJAXUpdate = new UpdateAJAXLists(sProvider, mySettings.Timeout, mySettings.Proxy, (object)"GetUsage", UpdateAJAXLists_UpdateChecked);
                     AJAXUpdate.GetType();
                   }
                   else
@@ -1841,7 +1841,7 @@ namespace RestrictionTrackerGTK
     {
       if (string.IsNullOrEmpty(sAccount) | string.IsNullOrEmpty(sPassword) | !sAccount.Contains("@"))
       {
-        if (((Gtk.Label) mnuRestore.Child).Text == "Restore")
+        if (((Gtk.Label)mnuRestore.Child).Text == "Restore")
         {
           ShowFromTray();
         }
@@ -1922,7 +1922,7 @@ namespace RestrictionTrackerGTK
       remoteDataEvent(true);
     }
     private class DisplayUsageEventArgs
-      :EventArgs
+      : EventArgs
     {
       public bool StatusText;
       public bool HardTime;
@@ -1938,7 +1938,7 @@ namespace RestrictionTrackerGTK
     }
     private void Main_DisplayUsage(object o, EventArgs ea)
     {
-      DisplayUsageEventArgs e = (DisplayUsageEventArgs) ea;
+      DisplayUsageEventArgs e = (DisplayUsageEventArgs)ea;
       if (!cmdRefresh.Sensitive)
       {
         cmdRefresh.Sensitive = true;
@@ -1984,7 +1984,7 @@ namespace RestrictionTrackerGTK
         localData = null;
       }
       if (remoteData != null)
-      { 
+      {
         remoteDataEvent(false);
         remoteData.Dispose();
         remoteData = null;
@@ -2002,11 +2002,11 @@ namespace RestrictionTrackerGTK
     #region "Local Usage Events"
     private void localData_ConnectionStatus(object sender, localRestrictionTracker.ConnectionStatusEventArgs e)
     {
-      Gtk.Application.Invoke(sender, (EventArgs) e, Main_LocalDataConnectionStatus);
+      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionStatus);
     }
     private void Main_LocalDataConnectionStatus(object o, EventArgs ea)
     {
-      localRestrictionTracker.ConnectionStatusEventArgs e = (localRestrictionTracker.ConnectionStatusEventArgs) ea;
+      localRestrictionTracker.ConnectionStatusEventArgs e = (localRestrictionTracker.ConnectionStatusEventArgs)ea;
       NextGrabTick = srlFunctions.TickCount() + ((mySettings.Timeout + 15) * 1000);
       switch (e.Status)
       {
@@ -2069,11 +2069,11 @@ namespace RestrictionTrackerGTK
     }
     private void localData_ConnectionFailure(object sender, localRestrictionTracker.ConnectionFailureEventArgs e)
     {
-      Gtk.Application.Invoke(sender, (EventArgs) e, Main_LocalDataConnectionFailure);
+      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionFailure);
     }
     private void Main_LocalDataConnectionFailure(object o, EventArgs ea)
     {
-      localRestrictionTracker.ConnectionFailureEventArgs e = (localRestrictionTracker.ConnectionFailureEventArgs) ea;
+      localRestrictionTracker.ConnectionFailureEventArgs e = (localRestrictionTracker.ConnectionFailureEventArgs)ea;
       switch (e.Type)
       {
         case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.LoginIssue:
@@ -2217,11 +2217,11 @@ namespace RestrictionTrackerGTK
     }
     private void localData_ConnectionDNXResult(object sender, localRestrictionTracker.TYPEA2ResultEventArgs e)
     {
-      Gtk.Application.Invoke(sender, (EventArgs) e, Main_LocalDataConnectionDNXResult);
+      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionDNXResult);
     }
     private void Main_LocalDataConnectionDNXResult(object o, EventArgs ea)
     {
-      localRestrictionTracker.TYPEA2ResultEventArgs e = (localRestrictionTracker.TYPEA2ResultEventArgs) ea;
+      localRestrictionTracker.TYPEA2ResultEventArgs e = (localRestrictionTracker.TYPEA2ResultEventArgs)ea;
       GrabAttempt = 0;
       SetStatusText(e.Update.ToString("g"), "Saving History...", false);
       NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
@@ -2244,11 +2244,11 @@ namespace RestrictionTrackerGTK
     }
     private void localData_ConnectionRPXResult(object sender, localRestrictionTracker.TYPEBResultEventArgs e)
     {
-      Gtk.Application.Invoke(sender, (EventArgs) e, Main_LocalDataConnectionRPXResult);
+      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionRPXResult);
     }
     private void Main_LocalDataConnectionRPXResult(object o, EventArgs ea)
     {
-      localRestrictionTracker.TYPEBResultEventArgs e = (localRestrictionTracker.TYPEBResultEventArgs) ea;
+      localRestrictionTracker.TYPEBResultEventArgs e = (localRestrictionTracker.TYPEBResultEventArgs)ea;
       GrabAttempt = 0;
       SetStatusText(e.Update.ToString("g"), "Saving History...", false);
       NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
@@ -2271,11 +2271,11 @@ namespace RestrictionTrackerGTK
     }
     private void localData_ConnectionRPLResult(object sender, localRestrictionTracker.TYPEAResultEventArgs e)
     {
-      Gtk.Application.Invoke(sender, (EventArgs) e, Main_LocalDataConnectionRPLResult);
+      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionRPLResult);
     }
     private void Main_LocalDataConnectionRPLResult(object o, EventArgs ea)
     {
-      localRestrictionTracker.TYPEAResultEventArgs e = (localRestrictionTracker.TYPEAResultEventArgs) ea;
+      localRestrictionTracker.TYPEAResultEventArgs e = (localRestrictionTracker.TYPEAResultEventArgs)ea;
       GrabAttempt = 0;
       SetStatusText(e.Update.ToString("g"), "Saving History...", false);
       NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
@@ -2298,11 +2298,11 @@ namespace RestrictionTrackerGTK
     }
     private void localData_ConnectionWBLResult(object sender, localRestrictionTracker.TYPEAResultEventArgs e)
     {
-      Gtk.Application.Invoke(sender, (EventArgs) e, Main_LocalDataConnectionWBLResult);
+      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionWBLResult);
     }
     private void Main_LocalDataConnectionWBLResult(object o, EventArgs ea)
     {
-      localRestrictionTracker.TYPEAResultEventArgs e = (localRestrictionTracker.TYPEAResultEventArgs) ea;
+      localRestrictionTracker.TYPEAResultEventArgs e = (localRestrictionTracker.TYPEAResultEventArgs)ea;
       GrabAttempt = 0;
       SetStatusText(e.Update.ToString("g"), "Saving History...", false);
       NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
@@ -2325,11 +2325,11 @@ namespace RestrictionTrackerGTK
     }
     private void localData_ConnectionWBXResult(object sender, localRestrictionTracker.TYPEBResultEventArgs e)
     {
-      Gtk.Application.Invoke(sender, (EventArgs) e, Main_LocalDataConnectionWBXResult);
+      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionWBXResult);
     }
     private void Main_LocalDataConnectionWBXResult(object o, EventArgs ea)
     {
-      localRestrictionTracker.TYPEBResultEventArgs e = (localRestrictionTracker.TYPEBResultEventArgs) ea;
+      localRestrictionTracker.TYPEBResultEventArgs e = (localRestrictionTracker.TYPEBResultEventArgs)ea;
       GrabAttempt = 0;
       SetStatusText(e.Update.ToString("g"), "Saving History...", false);
       NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
@@ -2376,11 +2376,11 @@ namespace RestrictionTrackerGTK
     #region "Remote Usage Events"
     private void remoteData_Failure(object sender, remoteRestrictionTracker.FailureEventArgs e)
     {
-      Gtk.Application.Invoke(sender, (EventArgs) e, Main_RemoteDataFailure);
+      Gtk.Application.Invoke(sender, (EventArgs)e, Main_RemoteDataFailure);
     }
     private void Main_RemoteDataFailure(object o, EventArgs ea)
     {
-      remoteRestrictionTracker.FailureEventArgs e = (remoteRestrictionTracker.FailureEventArgs) ea;
+      remoteRestrictionTracker.FailureEventArgs e = (remoteRestrictionTracker.FailureEventArgs)ea;
       string sErr = "There was an error verifying your Product Key.";
       switch (e.Type)
       {
@@ -2419,7 +2419,7 @@ namespace RestrictionTrackerGTK
           break;
       }
       if (remoteData != null)
-      { 
+      {
         remoteDataEvent(false);
         remoteData.Dispose();
         remoteData = null;
@@ -2429,7 +2429,7 @@ namespace RestrictionTrackerGTK
     }
     private void remoteData_OKKey(object sender, System.EventArgs e)
     {
-      Gtk.Application.Invoke(sender, (EventArgs) e, Main_RemoteDataOKKey);
+      Gtk.Application.Invoke(sender, (EventArgs)e, Main_RemoteDataOKKey);
     }
     private void Main_RemoteDataOKKey(object o, EventArgs e)
     {
@@ -2438,11 +2438,11 @@ namespace RestrictionTrackerGTK
     }
     private void remoteData_Success(object sender, remoteRestrictionTracker.SuccessEventArgs e)
     {
-      Gtk.Application.Invoke(sender, (EventArgs) e, Main_RemoteDataSuccess);
+      Gtk.Application.Invoke(sender, (EventArgs)e, Main_RemoteDataSuccess);
     }
     private void Main_RemoteDataSuccess(object o, EventArgs ea)
     {
-      remoteRestrictionTracker.SuccessEventArgs e = (remoteRestrictionTracker.SuccessEventArgs) ea;
+      remoteRestrictionTracker.SuccessEventArgs e = (remoteRestrictionTracker.SuccessEventArgs)ea;
       string LastTime = modDB.LOG_GetLast().ToString("g");
       NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       if (FullCheck)
@@ -2455,7 +2455,7 @@ namespace RestrictionTrackerGTK
       }
       if (e != null)
       {
-        mySettings.AccountType = (localRestrictionTracker.SatHostTypes) e.Provider;
+        mySettings.AccountType = (localRestrictionTracker.SatHostTypes)e.Provider;
         modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
         mySettings.Save();
         int iPercent = 0;
@@ -2466,9 +2466,9 @@ namespace RestrictionTrackerGTK
           remoteRestrictionTracker.SuccessEventArgs.Result Row = e.Results[I];
           if (FullCheck)
           {
-            if (Math.Abs(iPercent - Math.Floor(((double) I / (e.Results.Length - 1)) * 100d)) >= iInterval)
+            if (Math.Abs(iPercent - Math.Floor(((double)I / (e.Results.Length - 1)) * 100d)) >= iInterval)
             {
-              iPercent = (int) Math.Floor(((double) I / (e.Results.Length - 1)) * 100d);
+              iPercent = (int)Math.Floor(((double)I / (e.Results.Length - 1)) * 100d);
               Gtk.Main.Iteration();
               SetStatusText(LastTime, "Synchronizing History [" + iPercent + "%]...", false);
               Gtk.Main.Iteration();
@@ -2506,7 +2506,7 @@ namespace RestrictionTrackerGTK
         DisplayUsage(true, true);
       }
       if (remoteData != null)
-      { 
+      {
         remoteDataEvent(false);
         remoteData.Dispose();
         remoteData = null;
@@ -2522,7 +2522,7 @@ namespace RestrictionTrackerGTK
     }
     private void Main_DisplayChangeInterval(object o, EventArgs a)
     {
-      string state = (string) o;
+      string state = (string)o;
       if (tmrChanges != null)
       {
         tmrChanges.Dispose();
@@ -2545,7 +2545,7 @@ namespace RestrictionTrackerGTK
           {
             DoChange(ref lblTypeADldUsedVal, ref wDown, false);
             DoChange(ref lblTypeADldFreeVal, ref wDFree, (wDFree <= 0));
-            DoChange(ref lblTypeADldLimitVal, ref  wDLim, imSlowed);
+            DoChange(ref lblTypeADldLimitVal, ref wDLim, imSlowed);
             DoChange(ref lblTypeAUldUsedVal, ref wUp, false);
             DoChange(ref lblTypeAUldFreeVal, ref wUFree, (wUFree <= 0));
             DoChange(ref lblTypeAUldLimitVal, ref wULim, imSlowed);
@@ -2722,7 +2722,7 @@ namespace RestrictionTrackerGTK
     {
       if (value > 999)
       {
-        return Math.Round(((double) value / MBPerGB), mySettings.Accuracy).ToString().Trim() + " GB";
+        return Math.Round(((double)value / MBPerGB), mySettings.Accuracy).ToString().Trim() + " GB";
       }
       else
       {
@@ -2771,7 +2771,7 @@ namespace RestrictionTrackerGTK
         tmrChanges.Dispose();
         tmrChanges = null;
       }
-      tmrChanges = new System.Threading.Timer(DisplayChangeInterval, (object) "TYPEA", 75, System.Threading.Timeout.Infinite);
+      tmrChanges = new System.Threading.Timer(DisplayChangeInterval, (object)"TYPEA", 75, System.Threading.Timeout.Infinite);
       if (overDown)
         lblTypeADldFreeVal.TooltipText = "You are over your Download limit!";
       else
@@ -2792,8 +2792,8 @@ namespace RestrictionTrackerGTK
       }
       pctTypeADld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(pctTypeADld.Allocation.Size, lDown, lDownLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
       pctTypeAUld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(pctTypeAUld.Allocation.Size, lUp, lUpLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-      lblTypeADld.Text = "Download (" + AccuratePercent((double) lDown / lDownLim) + ")";
-      lblTypeAUld.Text = "Upload (" + AccuratePercent((double) lUp / lUpLim) + ")";
+      lblTypeADld.Text = "Download (" + AccuratePercent((double)lDown / lDownLim) + ")";
+      lblTypeAUld.Text = "Upload (" + AccuratePercent((double)lUp / lUpLim) + ")";
       SetFontSize(ref lblTypeADld, GetFontSize());
       SetFontSize(ref lblTypeAUld, GetFontSize());
       pctTypeADld.TooltipText = "Graph representing your download usage.";
@@ -2825,8 +2825,8 @@ namespace RestrictionTrackerGTK
       }
       sTTT = "Satellite Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
         "Last Updated " + sLastUpdate + "\n" +
-        "Download: " + MBorGB(lDown) + " (" + AccuratePercent((double) lDown / lDownLim) + ")" + dFree + "\n" +
-        "Upload: " + MBorGB(lUp) + " (" + AccuratePercent((double) lUp / lUpLim) + ")" + uFree;
+        "Download: " + MBorGB(lDown) + " (" + AccuratePercent((double)lDown / lDownLim) + ")" + dFree + "\n" +
+        "Upload: " + MBorGB(lUp) + " (" + AccuratePercent((double)lUp / lUpLim) + ")" + uFree;
       if (imFree)
       {
         sIconBefore = "graph_typea_free";
@@ -2835,8 +2835,8 @@ namespace RestrictionTrackerGTK
       {
         if (trayRes < 8)
           trayRes = 8;
-        int d = (int) Math.Round(((double) lDown / lDownLim) * trayRes);
-        int u = (int) Math.Round(((double) lUp / lUpLim) * trayRes);
+        int d = (int)Math.Round(((double)lDown / lDownLim) * trayRes);
+        int u = (int)Math.Round(((double)lUp / lUpLim) * trayRes);
         if (imSlowed)
         {
           if (d == trayRes && u == trayRes)
@@ -2878,7 +2878,7 @@ namespace RestrictionTrackerGTK
             if (lDown - lItems[I].DOWNLOAD >= mySettings.Overuse)
             {
               long ChangeSize = Math.Abs(lDown - lItems[I].DOWNLOAD);
-              ulong ChangeTime = (ulong) Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
+              ulong ChangeTime = (ulong)Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
               modFunctions.MakeNotifier(ref taskNotifier, false);
               if (taskNotifier != null)
               {
@@ -2891,7 +2891,7 @@ namespace RestrictionTrackerGTK
             else if (lUp - lItems[I].UPLOAD >= mySettings.Overuse)
             {
               long ChangeSize = Math.Abs(lDown - lItems[I].DOWNLOAD);
-              ulong ChangeTime = (ulong) Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
+              ulong ChangeTime = (ulong)Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
               modFunctions.MakeNotifier(ref taskNotifier, false);
               if (taskNotifier != null)
               {
@@ -2951,7 +2951,7 @@ namespace RestrictionTrackerGTK
         tmrChanges.Dispose();
         tmrChanges = null;
       }
-      tmrChanges = new System.Threading.Timer(DisplayChangeInterval, (object) "TYPEA", 75, System.Threading.Timeout.Infinite);
+      tmrChanges = new System.Threading.Timer(DisplayChangeInterval, (object)"TYPEA", 75, System.Threading.Timeout.Infinite);
       if (imSlowed)
       {
         lblTypeADldFreeVal.TooltipText = "You are over your Anytime limit!";
@@ -2974,8 +2974,8 @@ namespace RestrictionTrackerGTK
       }
       pctTypeADld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(pctTypeADld.Allocation.Size, lDown, lDownLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
       pctTypeAUld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(pctTypeAUld.Allocation.Size, lUp, lUpLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-      lblTypeADld.Text = "Anytime (" + AccuratePercent((double) lDown / lDownLim) + ")";
-      lblTypeAUld.Text = "Off-Peak (" + AccuratePercent((double) lUp / lUpLim) + ")";
+      lblTypeADld.Text = "Anytime (" + AccuratePercent((double)lDown / lDownLim) + ")";
+      lblTypeAUld.Text = "Off-Peak (" + AccuratePercent((double)lUp / lUpLim) + ")";
       SetFontSize(ref lblTypeADld, GetFontSize());
       SetFontSize(ref lblTypeAUld, GetFontSize());
       pctTypeADld.TooltipText = "Graph representing your Anytime usage.";
@@ -3007,8 +3007,8 @@ namespace RestrictionTrackerGTK
       }
       sTTT = "Satellite Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
         "Last Updated " + sLastUpdate + "\n" +
-        "Anytime: " + MBorGB(lDown) + " (" + AccuratePercent((double) lDown / lDownLim) + ")" + atFree + "\n" +
-        "Off-Peak: " + MBorGB(lUp) + " (" + AccuratePercent((double) lUp / lUpLim) + ")" + opFree;
+        "Anytime: " + MBorGB(lDown) + " (" + AccuratePercent((double)lDown / lDownLim) + ")" + atFree + "\n" +
+        "Off-Peak: " + MBorGB(lUp) + " (" + AccuratePercent((double)lUp / lUpLim) + ")" + opFree;
       if (imFree)
       {
         sIconBefore = "graph_typea_free";
@@ -3017,8 +3017,8 @@ namespace RestrictionTrackerGTK
       {
         if (trayRes < 8)
           trayRes = 8;
-        int d = (int) Math.Round(((double) lDown / lDownLim) * trayRes);
-        int u = (int) Math.Round(((double) lUp / lUpLim) * trayRes);
+        int d = (int)Math.Round(((double)lDown / lDownLim) * trayRes);
+        int u = (int)Math.Round(((double)lUp / lUpLim) * trayRes);
         if (imSlowed)
         {
           if (d == trayRes && u == trayRes)
@@ -3060,7 +3060,7 @@ namespace RestrictionTrackerGTK
             if (lDown - lItems[I].DOWNLOAD >= mySettings.Overuse)
             {
               long ChangeSize = Math.Abs(lDown - lItems[I].DOWNLOAD);
-              ulong ChangeTime = (ulong) Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
+              ulong ChangeTime = (ulong)Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
               modFunctions.MakeNotifier(ref taskNotifier, false);
               if (taskNotifier != null)
               {
@@ -3073,7 +3073,7 @@ namespace RestrictionTrackerGTK
             else if (lUp - lItems[I].UPLOAD >= mySettings.Overuse)
             {
               long ChangeSize = Math.Abs(lDown - lItems[I].DOWNLOAD);
-              ulong ChangeTime = (ulong) Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
+              ulong ChangeTime = (ulong)Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
               modFunctions.MakeNotifier(ref taskNotifier, false);
               if (taskNotifier != null)
               {
@@ -3139,7 +3139,7 @@ namespace RestrictionTrackerGTK
         tmrChanges.Dispose();
         tmrChanges = null;
       }
-      tmrChanges = new System.Threading.Timer(DisplayChangeInterval, (object) "TYPEB", 75, System.Threading.Timeout.Infinite);
+      tmrChanges = new System.Threading.Timer(DisplayChangeInterval, (object)"TYPEB", 75, System.Threading.Timeout.Infinite);
       if (imSlowed)
       {
         lblTypeBFreeVal.TooltipText = "You are over your usage limit!";
@@ -3153,7 +3153,7 @@ namespace RestrictionTrackerGTK
       pctTypeB.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctTypeB.Allocation.Size, lDown, lDownLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
       sTTT = "Satellite Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
         "Last Updated " + sLastUpdate + "\n" +
-        "Using " + MBorGB(lDown) + " of " + MBorGB(lDownLim) + " (" + AccuratePercent((double) lDown / lDownLim) + ")";
+        "Using " + MBorGB(lDown) + " of " + MBorGB(lDownLim) + " (" + AccuratePercent((double)lDown / lDownLim) + ")";
       if (lDownLim > lDown)
       {
         sTTT += "\n" + MBorGB(lDownLim - lDown) + " Free";
@@ -3174,7 +3174,7 @@ namespace RestrictionTrackerGTK
       {
         if (trayRes < 8)
           trayRes = 8;
-        int u = (int) Math.Round(((double) lDown / lDownLim) * trayRes);
+        int u = (int)Math.Round(((double)lDown / lDownLim) * trayRes);
         if (u > trayRes)
           u = trayRes;
         sIconBefore = "graph_typeb_" + u;
@@ -3196,7 +3196,7 @@ namespace RestrictionTrackerGTK
             if (lDown - lItems[I].DOWNLOAD >= mySettings.Overuse)
             {
               long ChangeSize = Math.Abs(lDown - lItems[I].DOWNLOAD);
-              ulong ChangeTime = (ulong) Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
+              ulong ChangeTime = (ulong)Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
               modFunctions.MakeNotifier(ref taskNotifier, false);
               if (taskNotifier != null)
               {
@@ -3308,7 +3308,7 @@ namespace RestrictionTrackerGTK
         if (!checkedAJAX && mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
         {
           SetStatusText(modDB.LOG_GetLast().ToString("g"), "Checking for AJAX List Update...", false);
-          UpdateAJAXLists AJAXUpdate = new UpdateAJAXLists(sProvider, mySettings.Timeout, mySettings.Proxy, (object) "GetUsage", UpdateAJAXLists_UpdateChecked);
+          UpdateAJAXLists AJAXUpdate = new UpdateAJAXLists(sProvider, mySettings.Timeout, mySettings.Proxy, (object)"GetUsage", UpdateAJAXLists_UpdateChecked);
           AJAXUpdate.GetType();
         }
         else
@@ -3320,7 +3320,7 @@ namespace RestrictionTrackerGTK
       }
       else
       {
-        if (((Gtk.Label) mnuRestore.Child).Text == "Restore")
+        if (((Gtk.Label)mnuRestore.Child).Text == "Restore")
         {
           ShowFromTray();
         }
@@ -3379,7 +3379,7 @@ namespace RestrictionTrackerGTK
       MainClass.fConfig.Modal = true;
       do
       {
-        dRet = (Gtk.ResponseType) MainClass.fConfig.Run();
+        dRet = (Gtk.ResponseType)MainClass.fConfig.Run();
       } while (dRet == ResponseType.None);
       MainClass.fConfig.Hide();
       MainClass.fConfig.Destroy();
@@ -3473,7 +3473,7 @@ namespace RestrictionTrackerGTK
     #region "Tray"
     protected void mnuRestore_Click(object sender, EventArgs e)
     {
-      if (((Gtk.Label) mnuRestore.Child).Text == "Hide")
+      if (((Gtk.Label)mnuRestore.Child).Text == "Hide")
       {
         HideToTray();
       }
@@ -3522,7 +3522,7 @@ namespace RestrictionTrackerGTK
       MainClass.fCustomColors.Modal = true;
       do
       {
-        dRet = (Gtk.ResponseType) MainClass.fCustomColors.Run();
+        dRet = (Gtk.ResponseType)MainClass.fCustomColors.Run();
       } while (dRet == ResponseType.None);
       if (dRet == ResponseType.Yes)
       {
@@ -3553,14 +3553,14 @@ namespace RestrictionTrackerGTK
         {
           sTitle = sTitle.Substring(0, sTitle.IndexOf("\n"));
         }
-        Frame fStatus = (Frame) sbMainStatus.Children[0];
+        Frame fStatus = (Frame)sbMainStatus.Children[0];
         fStatus.BorderWidth = 0;
-        Box bStatus = (Box) fStatus.Children[0];
+        Box bStatus = (Box)fStatus.Children[0];
         bStatus.BorderWidth = 0;
-        Label lStatus = (Label) bStatus.Children[0];
+        Label lStatus = (Label)bStatus.Children[0];
         lStatus.Markup = "<span size=\"" + GetFontSize() + "\">" + sTitle + "</span>";
         lStatus.Yalign = 0.25f;
-        sbMainStatus.HeightRequest = (int) Math.Ceiling((GetFontSize() / 1024d) * 2.5d);
+        sbMainStatus.HeightRequest = (int)Math.Ceiling((GetFontSize() / 1024d) * 2.5d);
       }
       if (!string.IsNullOrEmpty(sSubtitle))
       {
@@ -3594,7 +3594,7 @@ namespace RestrictionTrackerGTK
           tmrPulse.Dispose();
           tmrPulse = null;
         }
-        pbMainStatus.Fraction = ((double) value / max);
+        pbMainStatus.Fraction = ((double)value / max);
       }
       else
       {
@@ -3617,9 +3617,9 @@ namespace RestrictionTrackerGTK
         tmrPulse.Dispose();
         tmrPulse = null;
       }
-      Frame fStatus = (Frame) sbMainStatus.Children[0];
-      Box bStatus = (Box) fStatus.Children[0];
-      Label lStatus = (Label) bStatus.Children[0];
+      Frame fStatus = (Frame)sbMainStatus.Children[0];
+      Box bStatus = (Box)fStatus.Children[0];
+      Label lStatus = (Label)bStatus.Children[0];
       lStatus.Markup = "<span size=\"" + GetFontSize() + "\">Idle</span>";
       pbMainStatus.Fraction = 0d;
       lblMainStatus.Text = "";
@@ -3652,10 +3652,10 @@ namespace RestrictionTrackerGTK
         case 0:
           SetTrayIcon("throb_0");
           break;
-        case 1: 
+        case 1:
           SetTrayIcon("throb_1");
           break;
-        case 2: 
+        case 2:
           SetTrayIcon("throb_2");
           break;
         case 3:
@@ -3670,19 +3670,19 @@ namespace RestrictionTrackerGTK
         case 6:
           SetTrayIcon("throb_6");
           break;
-        case 7: 
+        case 7:
           SetTrayIcon("throb_7");
           break;
-        case 8: 
+        case 8:
           SetTrayIcon("throb_8");
           break;
-        case 9: 
+        case 9:
           SetTrayIcon("throb_9");
           break;
-        case 10: 
+        case 10:
           SetTrayIcon("throb_10");
           break;
-        case 11: 
+        case 11:
           SetTrayIcon("throb_11");
           break;
       }
@@ -3699,7 +3699,7 @@ namespace RestrictionTrackerGTK
     }
     protected void OnTrayIconActivate(object o, EventArgs e)
     {
-      if (((Gtk.Label) mnuRestore.Child).Text == "Hide")
+      if (((Gtk.Label)mnuRestore.Child).Text == "Hide")
       {
         HideToTray();
       }
@@ -3811,7 +3811,7 @@ namespace RestrictionTrackerGTK
       if (!string.IsNullOrEmpty(sFailTray))
       {
         ParamaterizedInvoker tFTP = modFunctions.SaveToFTP;
-        tFTP.BeginInvoke((object) sFailTray, null, null);
+        tFTP.BeginInvoke((object)sFailTray, null, null);
       }
       sFailTray = "";
     }
@@ -3936,12 +3936,12 @@ namespace RestrictionTrackerGTK
     }
     private void updateChecker_CheckResult(object sender, clsUpdate.CheckEventArgs e)
     {
-      EventArgs ea = (EventArgs) e;
+      EventArgs ea = (EventArgs)e;
       Gtk.Application.Invoke(sender, ea, Main_UpdateCheckerCheckResult);
     }
     private void Main_UpdateCheckerCheckResult(object sender, EventArgs ea)
     {
-      clsUpdate.CheckEventArgs e = (clsUpdate.CheckEventArgs) ea;
+      clsUpdate.CheckEventArgs e = (clsUpdate.CheckEventArgs)ea;
       mySettings.LastUpdate = DateTime.Now;
       mySettings.Save();
       if (e.Error == null & !e.Cancelled)
@@ -3954,7 +3954,7 @@ namespace RestrictionTrackerGTK
             case ResultType.NewUpdate:
               fUpdate = new dlgUpdate();
               fUpdate.NewUpdate(e.Version, false);
-              switch ((Gtk.ResponseType) fUpdate.Run())
+              switch ((Gtk.ResponseType)fUpdate.Run())
               {
                 case ResponseType.Yes:
                   if (remoteData != null)
@@ -4027,7 +4027,7 @@ namespace RestrictionTrackerGTK
               {
                 fUpdate = new dlgUpdate();
                 fUpdate.NewUpdate(e.Version, true);
-                switch ((Gtk.ResponseType) fUpdate.Run())
+                switch ((Gtk.ResponseType)fUpdate.Run())
                 {
                   case ResponseType.Yes:
                     if (remoteData != null)
@@ -4170,12 +4170,12 @@ namespace RestrictionTrackerGTK
     }
     private void updateChecker_DownloadResult(object sender, clsUpdate.DownloadEventArgs e)
     {
-      EventArgs ea = (EventArgs) e;
+      EventArgs ea = (EventArgs)e;
       Gtk.Application.Invoke(sender, ea, Main_UpdateCheckerDownloadResult);
     }
     private void Main_UpdateCheckerDownloadResult(object sender, EventArgs ea)
     {
-      clsUpdate.DownloadEventArgs e = (clsUpdate.DownloadEventArgs) ea;
+      clsUpdate.DownloadEventArgs e = (clsUpdate.DownloadEventArgs)ea;
       if (tmrSpeed != 0)
       {
         GLib.Source.Remove(tmrSpeed);
@@ -4233,26 +4233,26 @@ namespace RestrictionTrackerGTK
     private uint upCurPercent;
     private void updateChecker_UpdateProgressChanged(object sender, clsUpdate.ProgressEventArgs e)
     {
-      EventArgs ea = (EventArgs) e;
+      EventArgs ea = (EventArgs)e;
       Gtk.Application.Invoke(sender, ea, Main_UpdateCheckerUpdateProgressChanged);
     }
     private void Main_UpdateCheckerUpdateProgressChanged(object sender, EventArgs ea)
     {
-      clsUpdate.ProgressEventArgs e = (clsUpdate.ProgressEventArgs) ea;
+      clsUpdate.ProgressEventArgs e = (clsUpdate.ProgressEventArgs)ea;
       upCurSize = e.BytesReceived;
       upTotalSize = e.TotalBytesToReceive;
-      upCurPercent = (uint) e.ProgressPercentage;
+      upCurPercent = (uint)e.ProgressPercentage;
     }
     long upLastSize;
     private bool tmrSpeed_Tick()
     {
       if (upCurSize > upLastSize)
-        upDownSpeed = (ulong) (upCurSize - upLastSize);
+        upDownSpeed = (ulong)(upCurSize - upLastSize);
       else
         upDownSpeed = 0;
       upLastSize = upCurSize;
       string sProgress = "(" + upCurPercent + "%)";
-      string sStatus = modFunctions.ByteSize((ulong) upCurSize) + " of " + modFunctions.ByteSize((ulong) upTotalSize) + " at " + modFunctions.ByteSize(upDownSpeed) + "/s...";
+      string sStatus = modFunctions.ByteSize((ulong)upCurSize) + " of " + modFunctions.ByteSize((ulong)upTotalSize) + " at " + modFunctions.ByteSize(upDownSpeed) + "/s...";
       if (upTotalSize == 0)
       {
         sStatus = "Downloading Update (Waiting for Response)...";
@@ -4344,11 +4344,11 @@ namespace RestrictionTrackerGTK
     public void FailResponse(string Ret)
     {
       ResolveEventArgs ea = new ResolveEventArgs(Ret);
-      Gtk.Application.Invoke(null, (EventArgs) ea, Main_FailResponse);
+      Gtk.Application.Invoke(null, (EventArgs)ea, Main_FailResponse);
     }
     private void Main_FailResponse(object sender, EventArgs ea)
     {
-      ResolveEventArgs e = (ResolveEventArgs) ea;
+      ResolveEventArgs e = (ResolveEventArgs)ea;
       string Ret = e.Name;
       modFunctions.MakeNotifier(ref taskNotifier, false);
       if (taskNotifier != null)
@@ -4416,7 +4416,7 @@ namespace RestrictionTrackerGTK
       }
     }
     #endregion
-    private class SetStatusTextEventArgs : EventArgs
+    private class SetStatusTextEventArgs: EventArgs
     {
       public string Status;
       public string Details;
@@ -4435,7 +4435,7 @@ namespace RestrictionTrackerGTK
     }
     private void Main_SetStatusText(object o, EventArgs ea)
     {
-      SetStatusTextEventArgs e = (SetStatusTextEventArgs) ea;
+      SetStatusTextEventArgs e = (SetStatusTextEventArgs)ea;
       if (e.Status == "1/1/1970 12:00 AM")
       {
         if (e.Alert | e.Details.StartsWith("Next update in "))
@@ -4487,12 +4487,12 @@ namespace RestrictionTrackerGTK
         sDisp = sDISPLAY.Replace("%lt", sDisp_LT);
         if (lNext - lNow >= 1000)
         {
-          sDisp_TT_T = modFunctions.ConvertTime((ulong) (lNext - lNow), false, false);
+          sDisp_TT_T = modFunctions.ConvertTime((ulong)(lNext - lNow), false, false);
           sDisp_TT_M = sDISPLAY_TT_NEXT.Replace("%t", sDisp_TT_T);
         }
         else if (lNow - lNext >= 1000)
         {
-          sDisp_TT_T = modFunctions.ConvertTime((ulong) (lNow - lNext), false, false);
+          sDisp_TT_T = modFunctions.ConvertTime((ulong)(lNow - lNext), false, false);
           sDisp_TT_M = sDISPLAY_TT_LATE.Replace("%t", sDisp_TT_T);
         }
         else

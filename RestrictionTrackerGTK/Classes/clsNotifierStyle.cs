@@ -36,7 +36,7 @@ public class NotifierStyle
         {
           g.DrawImage(iBG, 0, 0);
         }
-        Background = (Image) bg.Clone();
+        Background = (Image)bg.Clone();
       }
     }
 
@@ -48,7 +48,7 @@ public class NotifierStyle
         {
           g.DrawImage(iClose, 0, 0);
         }
-        CloseButton = (Image) close.Clone();
+        CloseButton = (Image)close.Clone();
       }
     }
 
@@ -56,7 +56,7 @@ public class NotifierStyle
     using (FileStream fs = new FileStream(LocPath, FileMode.Open, FileAccess.Read, FileShare.Read))
     {
       byte[] inData = new byte[fs.Length];
-      fs.Read(inData, 0, (int) fs.Length);
+      fs.Read(inData, 0, (int)fs.Length);
       locData = System.Text.Encoding.GetEncoding("latin1").GetString(inData);
     }
     locData = locData.Replace("\n\r", "\n").Replace("\r", "\n");
@@ -152,9 +152,9 @@ public class TarFileData
     bIn.BaseStream.Seek(512, SeekOrigin.Current);
     if (FileSize > 0)
     {
-      FileData = bIn.ReadBytes((int) FileSize);
+      FileData = bIn.ReadBytes((int)FileSize);
       int Leftovers = 0;
-      Math.DivRem((int) FileSize, 512, out Leftovers);
+      Math.DivRem((int)FileSize, 512, out Leftovers);
       if (Leftovers > 0)
       {
         bIn.BaseStream.Seek(512 - Leftovers, SeekOrigin.Current);

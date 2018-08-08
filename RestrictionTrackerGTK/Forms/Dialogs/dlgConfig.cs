@@ -11,7 +11,7 @@ using System.Security.Policy;
 using System.Runtime.InteropServices;
 namespace RestrictionTrackerGTK
 {
-  public partial class dlgConfig :
+  public partial class dlgConfig:
     Gtk.Dialog
   {
     private RestrictionLibrary.remoteRestrictionTracker remoteTest;
@@ -43,7 +43,7 @@ namespace RestrictionTrackerGTK
       if (CurrentOS.IsMac)
       {
         pctAccountViaSatIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.account_user.png");
-        ((Gtk.Image) ((Gtk.HBox) ((Gtk.Alignment) cmdPassDisplay.Child).Child).Children[0]).Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.pass.png");
+        ((Gtk.Image)((Gtk.HBox)((Gtk.Alignment)cmdPassDisplay.Child).Child).Children[0]).Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.pass.png");
         pctAccountProviderIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.account_provider.png");
         pctAccountKeyIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.account_key.png");
         pctPrefStartIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.prefs_power.png");
@@ -57,13 +57,13 @@ namespace RestrictionTrackerGTK
         pctNetworkUpdateIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.net_update.png");
         pctAdvancedDataIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_data.png");
         pctAdvancedNetTestIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_none.png");
-        ((Gtk.Box.BoxChild) this.ActionArea[cmdSave]).Position = 1;
-        ((Gtk.Box.BoxChild) this.ActionArea[cmdClose]).Position = 0;
+        ((Gtk.Box.BoxChild)this.ActionArea[cmdSave]).Position = 1;
+        ((Gtk.Box.BoxChild)this.ActionArea[cmdClose]).Position = 0;
       }
       else
       {
-        ((Gtk.Box.BoxChild) this.ActionArea[cmdSave]).Position = 0;
-        ((Gtk.Box.BoxChild) this.ActionArea[cmdClose]).Position = 1;
+        ((Gtk.Box.BoxChild)this.ActionArea[cmdSave]).Position = 0;
+        ((Gtk.Box.BoxChild)this.ActionArea[cmdClose]).Position = 1;
       }
       txtStartWait.Alignment = 1;
       txtInterval.Alignment = 1;
@@ -194,36 +194,36 @@ namespace RestrictionTrackerGTK
         lblPurchaseKey.Markup = "<a href=\"http://wb.realityripple.com?wbEMail=" + mySettings.Account + "&amp;wbKey=" + mySettings.RemoteKey + "&amp;wbSubmit=\">" + LINK_PANEL + "</a>";
         lblPurchaseKey.TooltipText = LINK_PANEL_TT;
       }
-      if (mySettings.StartWait > (int) txtStartWait.Adjustment.Upper)
+      if (mySettings.StartWait > (int)txtStartWait.Adjustment.Upper)
       {
-        mySettings.StartWait = (int) txtStartWait.Adjustment.Upper;
+        mySettings.StartWait = (int)txtStartWait.Adjustment.Upper;
       }
-      if (mySettings.StartWait < (int) txtStartWait.Adjustment.Lower)
+      if (mySettings.StartWait < (int)txtStartWait.Adjustment.Lower)
       {
-        mySettings.StartWait = (int) txtStartWait.Adjustment.Lower;
+        mySettings.StartWait = (int)txtStartWait.Adjustment.Lower;
       }
-      txtStartWait.Value = (int) mySettings.StartWait;
+      txtStartWait.Value = (int)mySettings.StartWait;
       txtStartWait.Adjustment.PageIncrement = 1;
       chkStartup.Active = modFunctions.RunOnStartup;
-      if (mySettings.Interval > (int) txtInterval.Adjustment.Upper)
+      if (mySettings.Interval > (int)txtInterval.Adjustment.Upper)
       {
-        mySettings.Interval = (int) txtInterval.Adjustment.Upper;
+        mySettings.Interval = (int)txtInterval.Adjustment.Upper;
       }
-      if (mySettings.Interval < (int) txtInterval.Adjustment.Lower)
+      if (mySettings.Interval < (int)txtInterval.Adjustment.Lower)
       {
-        mySettings.Interval = (int) txtInterval.Adjustment.Lower;
+        mySettings.Interval = (int)txtInterval.Adjustment.Lower;
       }
-      txtInterval.Value = (int) mySettings.Interval;
+      txtInterval.Value = (int)mySettings.Interval;
       txtInterval.Adjustment.PageIncrement = 5;
-      if (mySettings.Accuracy > (int) txtAccuracy.Adjustment.Upper)
+      if (mySettings.Accuracy > (int)txtAccuracy.Adjustment.Upper)
       {
-        mySettings.Accuracy = (int) txtAccuracy.Adjustment.Upper;
+        mySettings.Accuracy = (int)txtAccuracy.Adjustment.Upper;
       }
-      if (mySettings.Accuracy < (int) txtAccuracy.Adjustment.Lower)
+      if (mySettings.Accuracy < (int)txtAccuracy.Adjustment.Lower)
       {
-        mySettings.Accuracy = (int) txtAccuracy.Adjustment.Lower;
+        mySettings.Accuracy = (int)txtAccuracy.Adjustment.Lower;
       }
-      txtAccuracy.Value = (int) mySettings.Accuracy;
+      txtAccuracy.Value = (int)mySettings.Accuracy;
       txtAccuracy.Adjustment.PageIncrement = 1;
       if (mySettings.Overuse == 0)
       {
@@ -237,25 +237,25 @@ namespace RestrictionTrackerGTK
       }
       chkOverAlert_Activated(null, null);
       txtOverTime.Value = mySettings.Overtime;
-      if (mySettings.Timeout > (int) txtTimeout.Adjustment.Upper)
+      if (mySettings.Timeout > (int)txtTimeout.Adjustment.Upper)
       {
-        mySettings.Timeout = (int) txtTimeout.Adjustment.Upper;
+        mySettings.Timeout = (int)txtTimeout.Adjustment.Upper;
       }
-      if (mySettings.Timeout < (int) txtTimeout.Adjustment.Lower)
+      if (mySettings.Timeout < (int)txtTimeout.Adjustment.Lower)
       {
-        mySettings.Timeout = (int) txtTimeout.Adjustment.Lower;
+        mySettings.Timeout = (int)txtTimeout.Adjustment.Lower;
       }
-      txtTimeout.Value = (int) mySettings.Timeout;
+      txtTimeout.Value = (int)mySettings.Timeout;
       txtTimeout.Adjustment.PageIncrement = 15;
-      if (mySettings.Retries > (int) txtRetries.Adjustment.Upper)
+      if (mySettings.Retries > (int)txtRetries.Adjustment.Upper)
       {
-        mySettings.Retries = (int) txtRetries.Adjustment.Upper;
+        mySettings.Retries = (int)txtRetries.Adjustment.Upper;
       }
-      if (mySettings.Retries < (int) txtRetries.Adjustment.Lower)
+      if (mySettings.Retries < (int)txtRetries.Adjustment.Lower)
       {
-        mySettings.Retries = (int) txtRetries.Adjustment.Lower;
+        mySettings.Retries = (int)txtRetries.Adjustment.Lower;
       }
-      txtRetries.Value = (int) mySettings.Retries;
+      txtRetries.Value = (int)mySettings.Retries;
       txtRetries.Adjustment.PageIncrement = 1;
       if (mySettings.Proxy == null)
       {
@@ -277,12 +277,12 @@ namespace RestrictionTrackerGTK
       }
       else
       {
-        System.Net.WebProxy wProxy = (System.Net.WebProxy) mySettings.Proxy;
+        System.Net.WebProxy wProxy = (System.Net.WebProxy)mySettings.Proxy;
         if (modFunctions.IsNumeric(wProxy.Address.Host.Replace(".", "")))
         {
           cmbProxyType.Active = 2;
           txtProxyAddress.Text = wProxy.Address.Host;
-          txtProxyPort.Value = (double) wProxy.Address.Port;
+          txtProxyPort.Value = (double)wProxy.Address.Port;
         }
         else
         {
@@ -312,10 +312,10 @@ namespace RestrictionTrackerGTK
         }
       }
       cmbProxyType_Changed(null, null);
-      chkNetworkProtocolSSL3.Active = ((((SecurityProtocolTypeEx) mySettings.SecurityProtocol) & SecurityProtocolTypeEx.Ssl3) == SecurityProtocolTypeEx.Ssl3);
-      chkNetworkProtocolTLS10.Active = ((((SecurityProtocolTypeEx) mySettings.SecurityProtocol) & SecurityProtocolTypeEx.Tls10) == SecurityProtocolTypeEx.Tls10);
-      chkNetworkProtocolTLS11.Active = ((((SecurityProtocolTypeEx) mySettings.SecurityProtocol) & SecurityProtocolTypeEx.Tls11) == SecurityProtocolTypeEx.Tls11);
-      chkNetworkProtocolTLS12.Active = ((((SecurityProtocolTypeEx) mySettings.SecurityProtocol) & SecurityProtocolTypeEx.Tls12) == SecurityProtocolTypeEx.Tls12);
+      chkNetworkProtocolSSL3.Active = ((((SecurityProtocolTypeEx)mySettings.SecurityProtocol) & SecurityProtocolTypeEx.Ssl3) == SecurityProtocolTypeEx.Ssl3);
+      chkNetworkProtocolTLS10.Active = ((((SecurityProtocolTypeEx)mySettings.SecurityProtocol) & SecurityProtocolTypeEx.Tls10) == SecurityProtocolTypeEx.Tls10);
+      chkNetworkProtocolTLS11.Active = ((((SecurityProtocolTypeEx)mySettings.SecurityProtocol) & SecurityProtocolTypeEx.Tls11) == SecurityProtocolTypeEx.Tls11);
+      chkNetworkProtocolTLS12.Active = ((((SecurityProtocolTypeEx)mySettings.SecurityProtocol) & SecurityProtocolTypeEx.Tls12) == SecurityProtocolTypeEx.Tls12);
       bool useTLSProxy = false;
       /*
       SecurityProtocolTypeEx myProtocol = (SecurityProtocolTypeEx) System.Net.ServicePointManager.SecurityProtocol;
@@ -503,27 +503,27 @@ namespace RestrictionTrackerGTK
       optAccountTypeRPL.Clicked += ValuesChanged;
       optAccountTypeRPX.Clicked += ValuesChanged;
       //
-      txtKey1.AddEvents((int) Gdk.EventType.KeyPress);
+      txtKey1.AddEvents((int)Gdk.EventType.KeyPress);
       txtKey1.Changed += txtProductKey_Changed;
       txtKey1.KeyPressEvent += txtProductKey_KeyPressEvent;
       txtKey1.TextInserted += txtProductKey_InsertText;
       txtKey1.ButtonPressEvent += txtProductKey_Clicked;
-      txtKey2.AddEvents((int) Gdk.EventType.KeyPress);
+      txtKey2.AddEvents((int)Gdk.EventType.KeyPress);
       txtKey2.Changed += txtProductKey_Changed;
       txtKey2.KeyPressEvent += txtProductKey_KeyPressEvent;
       txtKey2.TextInserted += txtProductKey_InsertText;
       txtKey2.ButtonPressEvent += txtProductKey_Clicked;
-      txtKey3.AddEvents((int) Gdk.EventType.KeyPress);
+      txtKey3.AddEvents((int)Gdk.EventType.KeyPress);
       txtKey3.Changed += txtProductKey_Changed;
       txtKey3.KeyPressEvent += txtProductKey_KeyPressEvent;
       txtKey3.TextInserted += txtProductKey_InsertText;
       txtKey3.ButtonPressEvent += txtProductKey_Clicked;
-      txtKey4.AddEvents((int) Gdk.EventType.KeyPress);
+      txtKey4.AddEvents((int)Gdk.EventType.KeyPress);
       txtKey4.Changed += txtProductKey_Changed;
       txtKey4.KeyPressEvent += txtProductKey_KeyPressEvent;
       txtKey4.TextInserted += txtProductKey_InsertText;
       txtKey4.ButtonPressEvent += txtProductKey_Clicked;
-      txtKey5.AddEvents((int) Gdk.EventType.KeyPress);
+      txtKey5.AddEvents((int)Gdk.EventType.KeyPress);
       txtKey5.Changed += txtProductKey_Changed;
       txtKey5.KeyPressEvent += txtProductKey_KeyPressEvent;
       txtKey5.TextInserted += txtProductKey_InsertText;
@@ -673,10 +673,10 @@ namespace RestrictionTrackerGTK
       bool canTLS10 = true;
       bool canTLS11 = true;
       bool canTLS12 = true;
-      SecurityProtocolTypeEx myProtocol = (SecurityProtocolTypeEx) System.Net.ServicePointManager.SecurityProtocol;
+      SecurityProtocolTypeEx myProtocol = (SecurityProtocolTypeEx)System.Net.ServicePointManager.SecurityProtocol;
       try
       {
-        System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Ssl3;
+        System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType)SecurityProtocolTypeEx.Ssl3;
       }
       catch (Exception)
       {
@@ -684,7 +684,7 @@ namespace RestrictionTrackerGTK
       }
       try
       {
-        System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls10;
+        System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType)SecurityProtocolTypeEx.Tls10;
       }
       catch (Exception)
       {
@@ -692,7 +692,7 @@ namespace RestrictionTrackerGTK
       }
       try
       {
-        System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls11;
+        System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType)SecurityProtocolTypeEx.Tls11;
       }
       catch (Exception)
       {
@@ -700,7 +700,7 @@ namespace RestrictionTrackerGTK
       }
       try
       {
-        System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls12;
+        System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType)SecurityProtocolTypeEx.Tls12;
       }
       catch (Exception)
       {
@@ -713,7 +713,7 @@ namespace RestrictionTrackerGTK
         canTLS11 = false;
         canTLS12 = false;
       }
-      System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) myProtocol;
+      System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType)myProtocol;
       if (canSSL3)
       {
         chkNetworkProtocolSSL3.Sensitive = true;
@@ -825,10 +825,10 @@ namespace RestrictionTrackerGTK
     protected void cmdHistoryDirOpen_Clicked(object sender, EventArgs e)
     {
       if (optHistoryLocalConfig.Active)
-      if (Directory.Exists(modFunctions.AppDataPath))
-        System.Diagnostics.Process.Start(modFunctions.AppDataPath);
-      else
-        modFunctions.ShowMessageBox(this, "The directory \"" + modFunctions.AppDataPath + "\" does not exist.\nPlease save the configuration first.", "Missing Directory", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+        if (Directory.Exists(modFunctions.AppDataPath))
+          System.Diagnostics.Process.Start(modFunctions.AppDataPath);
+        else
+          modFunctions.ShowMessageBox(this, "The directory \"" + modFunctions.AppDataPath + "\" does not exist.\nPlease save the configuration first.", "Missing Directory", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
       else if (Directory.Exists(txtHistoryDir.CurrentFolder))
         System.Diagnostics.Process.Start(txtHistoryDir.CurrentFolder);
       else
@@ -873,15 +873,15 @@ namespace RestrictionTrackerGTK
     protected void txtProductKey_InsertText(object o, Gtk.TextInsertedArgs e)
     {
       e.RetVal = true;
-      Gtk.Entry txtSender = (Gtk.Entry) o;
+      Gtk.Entry txtSender = (Gtk.Entry)o;
       txtSender.TextInserted -= txtProductKey_InsertText;
       txtSender.Text = txtSender.Text.ToUpper();
-      txtSender.TextInserted += txtProductKey_InsertText; 
+      txtSender.TextInserted += txtProductKey_InsertText;
     }
     [GLib.ConnectBefore]
     protected void txtProductKey_KeyPressEvent(object o, Gtk.KeyPressEventArgs e)
     {
-      Gtk.Entry txtSender = (Gtk.Entry) o;
+      Gtk.Entry txtSender = (Gtk.Entry)o;
       if ((e.Event.Key == Gdk.Key.v) & ((e.Event.State & Gdk.ModifierType.ControlMask) == Gdk.ModifierType.ControlMask))
       {
         Gtk.Clipboard cb = Gtk.Clipboard.Get(Gdk.Selection.Clipboard);
@@ -1039,7 +1039,7 @@ namespace RestrictionTrackerGTK
     {
       if (e.Event.Button == 3)
       {
-        txtMenuKeyItem = (Entry) o;
+        txtMenuKeyItem = (Entry)o;
         Gtk.Clipboard cb = Gtk.Clipboard.Get(Gdk.Selection.Clipboard);
         if (string.IsNullOrEmpty(txtKey1.Text) | string.IsNullOrEmpty(txtKey2.Text) | string.IsNullOrEmpty(txtKey3.Text) | string.IsNullOrEmpty(txtKey4.Text) | string.IsNullOrEmpty(txtKey5.Text))
         {
@@ -1108,7 +1108,7 @@ namespace RestrictionTrackerGTK
         lblProxyAddr.Sensitive = true;
         lblProxyAddr.Text = "IP Address:";
         txtProxyAddress.Sensitive = true;
-        ((Gtk.Table.TableChild) pnlProxy[txtProxyAddress]).RightAttach = 1;
+        ((Gtk.Table.TableChild)pnlProxy[txtProxyAddress]).RightAttach = 1;
         lblProxyPort.Visible = true;
         txtProxyPort.Visible = true;
         lblProxyPort.Sensitive = true;
@@ -1129,7 +1129,7 @@ namespace RestrictionTrackerGTK
         txtProxyPort.Visible = false;
         lblProxyPort.Sensitive = false;
         txtProxyPort.Sensitive = false;
-        ((Gtk.Table.TableChild) pnlProxy[txtProxyAddress]).RightAttach = 3;
+        ((Gtk.Table.TableChild)pnlProxy[txtProxyAddress]).RightAttach = 3;
         lblProxyUser.Sensitive = true;
         txtProxyUser.Sensitive = true;
         lblProxyPassword.Sensitive = true;
@@ -1142,7 +1142,7 @@ namespace RestrictionTrackerGTK
         lblProxyAddr.Sensitive = false;
         lblProxyAddr.Text = "IP Address:";
         txtProxyAddress.Sensitive = false;
-        ((Gtk.Table.TableChild) pnlProxy[txtProxyAddress]).RightAttach = 1;
+        ((Gtk.Table.TableChild)pnlProxy[txtProxyAddress]).RightAttach = 1;
         lblProxyPort.Visible = true;
         txtProxyPort.Visible = true;
         lblProxyPort.Sensitive = false;
@@ -1365,7 +1365,7 @@ namespace RestrictionTrackerGTK
         {
           if (sKey.Length > txtMenuKeyItem.MaxLength)
             sKey = sKey.Substring(0, txtMenuKeyItem.MaxLength);
-          txtMenuKeyItem.Text = sKey;  
+          txtMenuKeyItem.Text = sKey;
         }
       }
       txtMenuKeyItem = null;
@@ -1423,11 +1423,11 @@ namespace RestrictionTrackerGTK
     #region "Remote Service"
     protected void remoteTest_Failure(object sender, RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs e)
     {
-      Gtk.Application.Invoke(sender, (EventArgs) e, Main_RemoteTestFailure);
+      Gtk.Application.Invoke(sender, (EventArgs)e, Main_RemoteTestFailure);
     }
     private void Main_RemoteTestFailure(object sender, EventArgs ea)
     {
-      RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs e = (RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs) ea;
+      RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs e = (RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs)ea;
       bool bToSave = true;
       if (!CheckState)
         bToSave = false;
@@ -1559,7 +1559,7 @@ namespace RestrictionTrackerGTK
     }
     #endregion
     #region "Net Test"
-    private class FaviconDownloadIconCompletedEventArgs:EventArgs
+    private class FaviconDownloadIconCompletedEventArgs: EventArgs
     {
       public Gdk.Pixbuf Icon16;
       public Gdk.Pixbuf Icon32;
@@ -1576,11 +1576,11 @@ namespace RestrictionTrackerGTK
     protected void wsFavicon_DownloadIconCompleted(Gdk.Pixbuf icon16, Gdk.Pixbuf icon32, object token, Exception error)
     {
       FaviconDownloadIconCompletedEventArgs e = new FaviconDownloadIconCompletedEventArgs(icon16, icon32, token, error);
-      Gtk.Application.Invoke(this, (EventArgs) e, wsFavicon_DownloadIconCompletedAsync);
+      Gtk.Application.Invoke(this, (EventArgs)e, wsFavicon_DownloadIconCompletedAsync);
     }
     private void wsFavicon_DownloadIconCompletedAsync(object sender, EventArgs ea)
     {
-      FaviconDownloadIconCompletedEventArgs e = (FaviconDownloadIconCompletedEventArgs) ea;
+      FaviconDownloadIconCompletedEventArgs e = (FaviconDownloadIconCompletedEventArgs)ea;
       if (e.Error != null)
       {
         if (CurrentOS.IsMac)
@@ -1590,12 +1590,12 @@ namespace RestrictionTrackerGTK
       }
       else
       {
-        SetNetTestImage(e.Icon32, true, e.token, (object) e.Icon16);
+        SetNetTestImage(e.Icon32, true, e.token, (object)e.Icon16);
       }
     }
     protected void SetNetTestImage(Gdk.Pixbuf Image)
     {
-      waitingForEndOf = (object) 0;
+      waitingForEndOf = (object)0;
       pctAdvancedNetTestIcon.Pixbuf = Image;
       icoNetTest = null;
     }
@@ -1603,13 +1603,13 @@ namespace RestrictionTrackerGTK
     protected void SetNetTestImage(Gdk.Pixbuf Image, bool End, object Token, object tag)
     {
       if (waitingForEndOf == null)
-        waitingForEndOf = (object) 0;
-      if ((End) & (((int) Token) != ((int) waitingForEndOf)))
+        waitingForEndOf = (object)0;
+      if ((End) & (((int)Token) != ((int)waitingForEndOf)))
         return;
       pctAdvancedNetTestIcon.Pixbuf = Image;
-      icoNetTest = (Gdk.Pixbuf) tag;
+      icoNetTest = (Gdk.Pixbuf)tag;
       if (End)
-        waitingForEndOf = (object) 0;
+        waitingForEndOf = (object)0;
       else
         waitingForEndOf = Token;
     }
@@ -1640,14 +1640,14 @@ namespace RestrictionTrackerGTK
     private int MakeAToken(string fromString)
     {
       Random rand = new Random();
-      uint iToken = (uint) (fromString.Length * rand.Next(0, 31) + rand.Next(0, int.MaxValue - 1));
+      uint iToken = (uint)(fromString.Length * rand.Next(0, 31) + rand.Next(0, int.MaxValue - 1));
       iToken = iToken % int.MaxValue;
       for (int i = 0; i < fromString.Length; i++)
       {
         iToken *= fromString[i];
         iToken %= int.MaxValue;
       }
-      return (int) iToken;
+      return (int)iToken;
     }
     #endregion
     #endregion
@@ -1690,7 +1690,7 @@ namespace RestrictionTrackerGTK
       MainClass.fAlertSelection.TransientFor = this;
       MainClass.fAlertSelection.Modal = true;
       MainClass.fAlertSelection.WindowPosition = Gtk.WindowPosition.CenterOnParent;
-      Gtk.ResponseType ret = (Gtk.ResponseType) MainClass.fAlertSelection.Run();
+      Gtk.ResponseType ret = (Gtk.ResponseType)MainClass.fAlertSelection.Run();
 
       if (ret == Gtk.ResponseType.Yes)
       {
@@ -1717,7 +1717,7 @@ namespace RestrictionTrackerGTK
       Gtk.ResponseType dRet;
       do
       {
-        dRet = (Gtk.ResponseType) MainClass.fCustomColors.Run();
+        dRet = (Gtk.ResponseType)MainClass.fCustomColors.Run();
       } while (dRet == Gtk.ResponseType.None);
       if (dRet == Gtk.ResponseType.Yes)
       {
@@ -2130,22 +2130,22 @@ namespace RestrictionTrackerGTK
         }
       }
       mySettings.TLSProxy = chkTLSProxy.Active;
-      mySettings.SecurityProtocol = (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.None;
+      mySettings.SecurityProtocol = (System.Net.SecurityProtocolType)SecurityProtocolTypeEx.None;
       if (chkNetworkProtocolSSL3.Active)
       {
-        mySettings.SecurityProtocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Ssl3;
+        mySettings.SecurityProtocol |= (System.Net.SecurityProtocolType)SecurityProtocolTypeEx.Ssl3;
       }
       if (chkNetworkProtocolTLS10.Active)
       {
-        mySettings.SecurityProtocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls10;
+        mySettings.SecurityProtocol |= (System.Net.SecurityProtocolType)SecurityProtocolTypeEx.Tls10;
       }
       if (chkNetworkProtocolTLS11.Active)
       {
-        mySettings.SecurityProtocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls11;
+        mySettings.SecurityProtocol |= (System.Net.SecurityProtocolType)SecurityProtocolTypeEx.Tls11;
       }
       if (chkNetworkProtocolTLS12.Active)
       {
-        mySettings.SecurityProtocol |= (System.Net.SecurityProtocolType) SecurityProtocolTypeEx.Tls12;
+        mySettings.SecurityProtocol |= (System.Net.SecurityProtocolType)SecurityProtocolTypeEx.Tls12;
       }
       mySettings.SecurityEnforced = chkNetworkSecurityEnforce.Active;
       string sNetTestIco = System.IO.Path.Combine(modFunctions.AppDataPath, "netTest.png");
@@ -2175,7 +2175,7 @@ namespace RestrictionTrackerGTK
       }
       else
       {
-        mySettings.NetTestURL = null; 
+        mySettings.NetTestURL = null;
         try
         {
           if (System.IO.File.Exists(sNetTestIco))
@@ -2246,15 +2246,15 @@ namespace RestrictionTrackerGTK
         sKey = "";
       if (string.Compare(mySettings.RemoteKey, sKey, true) != 0)
         return true;
-      if ((int) mySettings.StartWait - txtStartWait.Value != 0)
+      if ((int)mySettings.StartWait - txtStartWait.Value != 0)
         return true;
-      if ((int) mySettings.Interval - txtInterval.Value != 0)
+      if ((int)mySettings.Interval - txtInterval.Value != 0)
         return true;
-      if ((int) mySettings.Accuracy - txtAccuracy.Value != 0)
+      if ((int)mySettings.Accuracy - txtAccuracy.Value != 0)
         return true;
-      if ((int) mySettings.Timeout - txtTimeout.Value != 0)
+      if ((int)mySettings.Timeout - txtTimeout.Value != 0)
         return true;
-      if ((int) mySettings.Retries - txtRetries.Value != 0)
+      if ((int)mySettings.Retries - txtRetries.Value != 0)
         return true;
       if (chkStartup.Active ^ File.Exists(modFunctions.StartupPath))
         return true;
@@ -2285,10 +2285,10 @@ namespace RestrictionTrackerGTK
         return true;
       if (chkOverAlert.Active)
       {
-        if ((int) mySettings.Overuse - txtOverSize.Value != 0)
+        if ((int)mySettings.Overuse - txtOverSize.Value != 0)
           return true;
       }
-      if ((int) mySettings.Overtime - txtOverTime.Value != 0)
+      if ((int)mySettings.Overtime - txtOverTime.Value != 0)
         return true;
       if (mySettings.UpdateBETA != chkUpdateBETA.Active)
         return true;
@@ -2346,12 +2346,12 @@ namespace RestrictionTrackerGTK
           return true;
         if (cmbProxyType.Active == 1)
           return true;
-        Uri addr = ((System.Net.WebProxy) mySettings.Proxy).Address;
+        Uri addr = ((System.Net.WebProxy)mySettings.Proxy).Address;
         if (cmbProxyType.Active == 2)
         {
           if (string.Compare(txtProxyAddress.Text, addr.Host) != 0)
             return true;
-          if ((int) txtProxyPort.Value - addr.Port != 0)
+          if ((int)txtProxyPort.Value - addr.Port != 0)
             return true;
         }
         if (cmbProxyType.Active == 3)
@@ -2391,19 +2391,19 @@ namespace RestrictionTrackerGTK
       {
         return true;
       }
-      if ((((SecurityProtocolTypeEx) mySettings.SecurityProtocol & SecurityProtocolTypeEx.Ssl3) == SecurityProtocolTypeEx.Ssl3) == !chkNetworkProtocolSSL3.Active)
+      if ((((SecurityProtocolTypeEx)mySettings.SecurityProtocol & SecurityProtocolTypeEx.Ssl3) == SecurityProtocolTypeEx.Ssl3) == !chkNetworkProtocolSSL3.Active)
       {
         return true;
       }
-      if ((((SecurityProtocolTypeEx) mySettings.SecurityProtocol & SecurityProtocolTypeEx.Tls10) == SecurityProtocolTypeEx.Tls10) == !chkNetworkProtocolTLS10.Active)
+      if ((((SecurityProtocolTypeEx)mySettings.SecurityProtocol & SecurityProtocolTypeEx.Tls10) == SecurityProtocolTypeEx.Tls10) == !chkNetworkProtocolTLS10.Active)
       {
         return true;
       }
-      if ((((SecurityProtocolTypeEx) mySettings.SecurityProtocol & SecurityProtocolTypeEx.Tls11) == SecurityProtocolTypeEx.Tls11) == !chkNetworkProtocolTLS11.Active)
+      if ((((SecurityProtocolTypeEx)mySettings.SecurityProtocol & SecurityProtocolTypeEx.Tls11) == SecurityProtocolTypeEx.Tls11) == !chkNetworkProtocolTLS11.Active)
       {
         return true;
       }
-      if ((((SecurityProtocolTypeEx) mySettings.SecurityProtocol & SecurityProtocolTypeEx.Tls12) == SecurityProtocolTypeEx.Tls12) == !chkNetworkProtocolTLS12.Active)
+      if ((((SecurityProtocolTypeEx)mySettings.SecurityProtocol & SecurityProtocolTypeEx.Tls12) == SecurityProtocolTypeEx.Tls12) == !chkNetworkProtocolTLS12.Active)
       {
         return true;
       }

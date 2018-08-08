@@ -601,7 +601,7 @@ namespace RestrictionTrackerGTK
     {
       try
       {
-        byte[] bData = System.Text.Encoding.UTF8.GetBytes((string) sData);
+        byte[] bData = System.Text.Encoding.UTF8.GetBytes((string)sData);
         string sBase64Data = Convert.ToBase64String(bData, Base64FormattingOptions.None);
         WebClientEx sckUpload = new WebClientEx();
         sckUpload.KeepAlive = false;
@@ -755,9 +755,9 @@ namespace RestrictionTrackerGTK
         return Message;
       }
     }
-    class ActivateLinkEventArgs : GLib.SignalArgs
+    class ActivateLinkEventArgs: GLib.SignalArgs
     {
-      public string Url { get { return (string) base.Args[0]; } }
+      public string Url { get { return (string)base.Args[0]; } }
     }
     [GLib.ConnectBefore]
     static void HandleActivateLink(object o, ActivateLinkEventArgs e)
@@ -802,7 +802,7 @@ namespace RestrictionTrackerGTK
           if (Math.Abs(DateDiff(DateInterval.Minute, dRow.DATETIME, fromDate)) < closestVal)
           {
             closestRow = dRow;
-            closestVal = (int) Math.Abs(DateDiff(DateInterval.Minute, dRow.DATETIME, fromDate));
+            closestVal = (int)Math.Abs(DateDiff(DateInterval.Minute, dRow.DATETIME, fromDate));
           }
         }
         return closestRow;
@@ -816,7 +816,7 @@ namespace RestrictionTrackerGTK
           if (Math.Abs(DateDiff(DateInterval.Minute, dRow.DATETIME, fromDate)) < closestVal)
           {
             closestRow = dRow;
-            closestVal = (int) Math.Abs(DateDiff(DateInterval.Minute, dRow.DATETIME, fromDate));
+            closestVal = (int)Math.Abs(DateDiff(DateInterval.Minute, dRow.DATETIME, fromDate));
           }
         }
         return closestRow;
@@ -855,7 +855,7 @@ namespace RestrictionTrackerGTK
           yVMax = 0;
         yMax = yVMax;
         if (yMax % 1000 != 0)
-          yMax = (int) (((double) yMax / 1000) * 1000);
+          yMax = (int)(((double)yMax / 1000) * 1000);
         lMax = yVMax;
       }
       else
@@ -882,53 +882,53 @@ namespace RestrictionTrackerGTK
         else
           yMax = yUMax;
         if (yMax % 1000 != 0)
-          yMax = (int) (((double) yMax / 1000) * 1000);
+          yMax = (int)(((double)yMax / 1000) * 1000);
         if (Down == 1)
           lMax = yDMax;
         else
           lMax = yUMax;
       }
       if (lMax % 1000 != 0)
-        lMax = (int) (((double) lMax / 1000) * 1000) + 1000;
+        lMax = (int)(((double)lMax / 1000) * 1000) + 1000;
       Image iPic = new Bitmap(ImgSize.Width, ImgSize.Height);
       Graphics g = Graphics.FromImage(iPic);
       Font tFont = new Font(FontFamily.GenericSansSerif, 7);
       g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-      int lYWidth = (int) g.MeasureString(yMax.ToString().Trim() + " MB", tFont).Width + 10;
-      int lXHeight = (int) g.MeasureString(DateTime.Now.ToString("g"), tFont).Height + 10;
+      int lYWidth = (int)g.MeasureString(yMax.ToString().Trim() + " MB", tFont).Width + 10;
+      int lXHeight = (int)g.MeasureString(DateTime.Now.ToString("g"), tFont).Height + 10;
       long lLineWidth = (ImgSize.Width - 4) - lYWidth - 1;
       g.Clear(ColorBG);
       int yTop = lXHeight / 2;
-      int yHeight = (int) (ImgSize.Height - (lXHeight * 1.5));
+      int yHeight = (int)(ImgSize.Height - (lXHeight * 1.5));
       if (Down == 255)
       {
-        uGraph = new Rectangle(lYWidth, yTop, (int) lLineWidth + 1, yHeight);
+        uGraph = new Rectangle(lYWidth, yTop, (int)lLineWidth + 1, yHeight);
         uData = Data;
       }
       else
       {
-        dGraph = new Rectangle(lYWidth, yTop, (int) lLineWidth + 1, yHeight);
+        dGraph = new Rectangle(lYWidth, yTop, (int)lLineWidth + 1, yHeight);
         dData = Data;
       }
       g.DrawLine(new Pen(ColorText), lYWidth, yTop, lYWidth, yTop + yHeight);
       g.DrawLine(new Pen(ColorText), lYWidth, yTop + yHeight, ImgSize.Width, yTop + yHeight);
       oldDate = Data[0].DATETIME;
       newDate = Data[Data.Length - 1].DATETIME;
-      for (int i = 0; i <= (int) lMax; i += (int) ((((lMax / ((double) yHeight / (tFont.Size + 12)))) / 100) * 100))
+      for (int i = 0; i <= (int)lMax; i += (int)((((lMax / ((double)yHeight / (tFont.Size + 12)))) / 100) * 100))
       {
-        int iY = (int) (yTop + yHeight - (i / (double) lMax * yHeight));
+        int iY = (int)(yTop + yHeight - (i / (double)lMax * yHeight));
         g.DrawString(i.ToString().Trim() + " MB", tFont, new SolidBrush(ColorText), lYWidth - g.MeasureString(i.ToString().Trim() + " MB", tFont).Width - 5, iY - (g.MeasureString(i.ToString().Trim() + " MB", tFont).Height / 2));
         g.DrawLine(new Pen(ColorText), lYWidth - 3, iY, lYWidth, iY);
       }
       for (long i = 0; i <= lMax; i += (lMax / 10))
       {
-        int iY = (int) (yTop + yHeight - (i / (double) lMax * yHeight));
+        int iY = (int)(yTop + yHeight - (i / (double)lMax * yHeight));
         if (i > 0)
           g.DrawLine(new Pen(ColorGridLight), lYWidth + 1, iY, ImgSize.Width - 4, iY);
       }
       for (long i = 0; i <= lMax; i += (lMax / 5))
       {
-        int iY = (int) (yTop + yHeight - (i / (double) lMax * yHeight));
+        int iY = (int)(yTop + yHeight - (i / (double)lMax * yHeight));
         if (i > 0)
           g.DrawLine(new Pen(ColorGridDark), lYWidth + 1, iY, ImgSize.Width - 4, iY);
       }
@@ -939,22 +939,22 @@ namespace RestrictionTrackerGTK
       double lAxisSubInterval = 1.0;
       uint lAxisLabelInterval = 5;
       long lMaxTime = Math.Abs(DateDiff(DateInterval.Second, lStart, lEnd));
-      double dPPS = (double) lLineWidth / (double) lMaxTime;
+      double dPPS = (double)lLineWidth / (double)lMaxTime;
       double dSPP = 1 / dPPS;
       DateInterval dGraphInterval = DateInterval.Second;
-      uint lGraphInterval = (uint) Math.Ceiling(dSPP);
+      uint lGraphInterval = (uint)Math.Ceiling(dSPP);
       if (lGraphInterval >= 60)
       {
         dGraphInterval = DateInterval.Minute;
-        lGraphInterval = (uint) Math.Floor(lGraphInterval / 60.0);
+        lGraphInterval = (uint)Math.Floor(lGraphInterval / 60.0);
         if (lGraphInterval >= 60)
         {
           dGraphInterval = DateInterval.Hour;
-          lGraphInterval = (uint) Math.Floor(lGraphInterval / 60.0);
+          lGraphInterval = (uint)Math.Floor(lGraphInterval / 60.0);
           if (lGraphInterval >= 24)
           {
             dGraphInterval = DateInterval.Day;
-            lGraphInterval = (uint) Math.Floor(lGraphInterval / 24.0);
+            lGraphInterval = (uint)Math.Floor(lGraphInterval / 24.0);
           }
         }
       }
@@ -1126,30 +1126,30 @@ namespace RestrictionTrackerGTK
       {
         return new Bitmap(1, 1);
       }
-      double dAxisCompInter = lLineWidth / (double) lMaxAxisTime;
-      double dGraphCompInter = lLineWidth / (double) lMaxGraphTime;
+      double dAxisCompInter = lLineWidth / (double)lMaxAxisTime;
+      double dGraphCompInter = lLineWidth / (double)lMaxGraphTime;
       for (double i = 0; i <= lMaxAxisTime; i += lAxisSubInterval)
       {
-        int lX = (int) (lYWidth + (i * dAxisCompInter)) + 1;
+        int lX = (int)(lYWidth + (i * dAxisCompInter)) + 1;
         if (i > 0)
           g.DrawLine(new Pen(ColorGridLight), lX, yTop, lX, ImgSize.Height - lXHeight);
       }
       for (long i = 0; i <= lMaxAxisTime; i += lAxisInterval)
       {
-        int lX = (int) (lYWidth + (i * dAxisCompInter)) + 1;
+        int lX = (int)(lYWidth + (i * dAxisCompInter)) + 1;
         if (i > 0)
           g.DrawLine(new Pen(ColorText), lX, ImgSize.Height - (lXHeight - 3), lX, ImgSize.Height - lXHeight);
         if (i > 0)
           g.DrawLine(new Pen(ColorGridDark), lX, yTop, lX, ImgSize.Height - lXHeight);
       }
-      long lastI = (long) (lYWidth + (lMaxAxisTime * dAxisCompInter));
+      long lastI = (long)(lYWidth + (lMaxAxisTime * dAxisCompInter));
       if (lastI >= (ImgSize.Width - 4))
         lastI = (ImgSize.Width - 4);
       string sLastDisp = lEnd.ToString(sDispV);
       float iLastDispWidth = g.MeasureString(sLastDisp, tFont).Width;
       for (long i = 0; i <= lMaxAxisTime; i += lAxisLabelInterval)
       {
-        int lX = (int) (lYWidth + (i * dAxisCompInter)) + 1;
+        int lX = (int)(lYWidth + (i * dAxisCompInter)) + 1;
         if (i == 0)
           lX--;
         DateTime dDisp = DateAdd(dAxisInterval, i, lStart);
@@ -1190,9 +1190,9 @@ namespace RestrictionTrackerGTK
       }
       int MaxY = 0;
       if (Down == 255)
-        MaxY = (int) (yTop + yHeight - (Data[Data.Length - 1].UPLIM / (double) lMax * yHeight));
+        MaxY = (int)(yTop + yHeight - (Data[Data.Length - 1].UPLIM / (double)lMax * yHeight));
       else
-        MaxY = (int) (yTop + yHeight - (Data[Data.Length - 1].DOWNLIM / (double) lMax * yHeight));
+        MaxY = (int)(yTop + yHeight - (Data[Data.Length - 1].DOWNLIM / (double)lMax * yHeight));
       Point[] lMaxPoints = new Point[lMaxGraphTime + 1];
       Point[] lPoints = new Point[lMaxGraphTime + 4];
       byte[] lTypes = new byte[lMaxGraphTime + 4];
@@ -1263,8 +1263,8 @@ namespace RestrictionTrackerGTK
               lVal = lastVal;
           }
         }
-        lMaxPoints[I].X = (int) (lYWidth + (I * dGraphCompInter) + 1);
-        lMaxPoints[I].Y = (int) (yTop + yHeight - (lVal / (double) lMax * yHeight));
+        lMaxPoints[I].X = (int)(lYWidth + (I * dGraphCompInter) + 1);
+        lMaxPoints[I].Y = (int)(yTop + yHeight - (lVal / (double)lMax * yHeight));
         if (I > 0)
         {
           if (lMaxPoints[I - 1].X == 0 & lMaxPoints[I - 1].Y == 0)
@@ -1274,7 +1274,7 @@ namespace RestrictionTrackerGTK
               J++;
             for (long K = 1; K < J; K++)
             {
-              lMaxPoints[I - K].X = (int) (lYWidth + ((I - K) * dGraphCompInter) + 1);
+              lMaxPoints[I - K].X = (int)(lYWidth + ((I - K) * dGraphCompInter) + 1);
               lMaxPoints[I - K].Y = (lMaxPoints[I - J].Y + lMaxPoints[I].Y) / 2;
             }
           }
@@ -1319,7 +1319,7 @@ namespace RestrictionTrackerGTK
         }
         if (mHigh == -1)
           mHigh = 0;
-        long aMax = (long) Math.Floor((mLow + mHigh) / 2.0);
+        long aMax = (long)Math.Floor((mLow + mHigh) / 2.0);
         if (lHigh > (Math.Floor(aMax / 10.0) * 9))
         {
           if (lHigh > -1)
@@ -1423,7 +1423,7 @@ namespace RestrictionTrackerGTK
         else
         {
           if ((lHigh > -1) & (lLow < long.MaxValue))
-            lVal = (long) Math.Round((lLow + lHigh) / 2.0);
+            lVal = (long)Math.Round((lLow + lHigh) / 2.0);
           else if (lHigh > -1)
             lVal = lHigh;
           else if (lLow < long.MaxValue)
@@ -1484,7 +1484,7 @@ namespace RestrictionTrackerGTK
                 }
               }
               if ((nextLVal < long.MaxValue) & (nextHVal > -1))
-                lVal = (long) Math.Round((nextLVal + nextHVal) / 2.0);
+                lVal = (long)Math.Round((nextLVal + nextHVal) / 2.0);
               else
                 lVal = lastVal;
             }
@@ -1493,10 +1493,10 @@ namespace RestrictionTrackerGTK
         if (lVal > -1)
           lastVal = lVal;
         if (I > 0)
-          lPoints[I].X = (int) (lYWidth + (I * dGraphCompInter) + 1);
+          lPoints[I].X = (int)(lYWidth + (I * dGraphCompInter) + 1);
         else
-          lPoints[I].X = (int) (lYWidth + (I * dGraphCompInter));
-        lPoints[I].Y = (int) (yTop + yHeight - (lVal / (double) lMax * yHeight));
+          lPoints[I].X = (int)(lYWidth + (I * dGraphCompInter));
+        lPoints[I].Y = (int)(yTop + yHeight - (lVal / (double)lMax * yHeight));
         if (I > 0)
         {
           if (lPoints[I - 1].X == 0 & lPoints[I - 1].Y == 0)
@@ -1506,7 +1506,7 @@ namespace RestrictionTrackerGTK
               J++;
             for (long K = 1; K < J; K++)
             {
-              lPoints[I - K].X = (int) (lYWidth + ((I - K) * dGraphCompInter) + 1);
+              lPoints[I - K].X = (int)(lYWidth + ((I - K) * dGraphCompInter) + 1);
               lPoints[I - K].Y = (lPoints[I - J].Y + lPoints[I].Y) / 2;
             }
           }
@@ -1519,12 +1519,12 @@ namespace RestrictionTrackerGTK
       lPoints[lMaxGraphTime + 1] = new Point(ImgSize.Width, yTop + yHeight);
       lPoints[lMaxGraphTime + 2] = new Point(lYWidth, yTop + yHeight);
       lPoints[lMaxGraphTime + 3] = lPoints[0];
-      lTypes[0] = (byte) PathPointType.Start;
+      lTypes[0] = (byte)PathPointType.Start;
       for (long I = 1; I <= lMaxGraphTime + 2; I++)
       {
-        lTypes[I] = (byte) PathPointType.Line;
+        lTypes[I] = (byte)PathPointType.Line;
       }
-      lTypes[lMaxGraphTime + 3] = (byte) (PathPointType.Line | PathPointType.CloseSubpath);
+      lTypes[lMaxGraphTime + 3] = (byte)(PathPointType.Line | PathPointType.CloseSubpath);
       g.DrawLines(new Pen(new SolidBrush(ColorMax), 5), lMaxPoints);
       GraphicsPath gPath = new GraphicsPath(lPoints, lTypes);
       LinearGradientBrush fBrush = TriGradientBrush(new Point(lYWidth, MaxY), new Point(lYWidth, yTop + yHeight), Color.FromArgb(192, ColorA), Color.FromArgb(192, ColorB), Color.FromArgb(192, ColorC));
@@ -1582,8 +1582,8 @@ namespace RestrictionTrackerGTK
       {
         return null;
       }
-      double dTotal = (double) Total;
-      double dCurrent = (double) Current;
+      double dTotal = (double)Total;
+      double dCurrent = (double)Current;
       if (Total == 0)
       {
         Image bmpTmp = new Bitmap(ImgSize.Width, ImgSize.Height);
@@ -1663,7 +1663,7 @@ namespace RestrictionTrackerGTK
             g.Clear(ColorBG);
             if (Total > 0 & Current > 0)
             {
-              Val = (long) Math.Round((dTotal - dCurrent) / dTotal * ImgSize.Height);
+              Val = (long)Math.Round((dTotal - dCurrent) / dTotal * ImgSize.Height);
               g.FillRectangle(linGrBrush, 0, Val, ImgSize.Width, ImgSize.Height - Val);
               for (double I = -1; I <= ImgSize.Height + 1; I += ((ImgSize.Height + 2.0) / 10.0))
               {
@@ -1751,9 +1751,9 @@ namespace RestrictionTrackerGTK
           g.Clear(ColorBG);
           if (Total > 0 & (Down > 0 | Up > 0))
           {
-            long upWidth = (long) Math.Round(ImgSize.Width - ((Total - (double) Up) / Total * ImgSize.Width));
+            long upWidth = (long)Math.Round(ImgSize.Width - ((Total - (double)Up) / Total * ImgSize.Width));
             g.FillRectangle(upBrush, 0, 0, upWidth, ImgSize.Height);
-            long downWidth = (long) Math.Round(ImgSize.Width - ((Total - (double) Down) / Total * ImgSize.Width));
+            long downWidth = (long)Math.Round(ImgSize.Width - ((Total - (double)Down) / Total * ImgSize.Width));
             g.FillRectangle(downBrush, upWidth, 0, downWidth, ImgSize.Height);
             for (double I = -1; I <= ImgSize.Width + 1; I += ((ImgSize.Width + 2.0) / 10.0))
             {
@@ -1761,11 +1761,11 @@ namespace RestrictionTrackerGTK
             }
             if (Over > 0)
             {
-              Msg = "Down:  " + FormatPercent((double) Down / Total, Accuracy) + "\nUp:    " + FormatPercent((double) Up / Total, Accuracy) + "\nOver:  " + FormatPercent((double) Over / Total, Accuracy) + "\nTotal: " + FormatPercent(((double) Down + Up + Over) / Total, Accuracy);
+              Msg = "Down:  " + FormatPercent((double)Down / Total, Accuracy) + "\nUp:    " + FormatPercent((double)Up / Total, Accuracy) + "\nOver:  " + FormatPercent((double)Over / Total, Accuracy) + "\nTotal: " + FormatPercent(((double)Down + Up + Over) / Total, Accuracy);
             }
             else
             {
-              Msg = "Down:  " + FormatPercent((double) Down / Total, Accuracy) + "\nUp:    " + FormatPercent((double) Up / Total, Accuracy) + "\nTotal: " + FormatPercent(((double) Down + Up) / Total, Accuracy);
+              Msg = "Down:  " + FormatPercent((double)Down / Total, Accuracy) + "\nUp:    " + FormatPercent((double)Up / Total, Accuracy) + "\nTotal: " + FormatPercent(((double)Down + Up) / Total, Accuracy);
             }
           }
           else
@@ -1787,9 +1787,9 @@ namespace RestrictionTrackerGTK
           if (Total > 0 & (Down > 0 | Up > 0))
           {
             long fillT = Down + Up;
-            long upWidth = (long) Math.Round(ImgSize.Width - ((fillT - (double) Up) / fillT * ImgSize.Width));
+            long upWidth = (long)Math.Round(ImgSize.Width - ((fillT - (double)Up) / fillT * ImgSize.Width));
             g.FillRectangle(upBrush, 0, 0, upWidth, ImgSize.Height);
-            long downWidth = (long) Math.Round(ImgSize.Width - ((fillT - (double) Down) / fillT * ImgSize.Width));
+            long downWidth = (long)Math.Round(ImgSize.Width - ((fillT - (double)Down) / fillT * ImgSize.Width));
             g.FillRectangle(downBrush, upWidth, 0, downWidth, ImgSize.Height);
             for (double I = -1; I <= ImgSize.Width + 1; I += ((ImgSize.Width + 2.0) / 10.0))
             {
@@ -1797,11 +1797,11 @@ namespace RestrictionTrackerGTK
             }
             if (Over > 0)
             {
-              Msg = "Down:  " + FormatPercent((double) Down / Total, Accuracy) + "\nUp:    " + FormatPercent((double) Up / Total, Accuracy) + "\nOver:  " + FormatPercent((double) Over / Total, Accuracy) + "\nTotal: " + FormatPercent(((double) Down + Up + Over) / Total, Accuracy);
+              Msg = "Down:  " + FormatPercent((double)Down / Total, Accuracy) + "\nUp:    " + FormatPercent((double)Up / Total, Accuracy) + "\nOver:  " + FormatPercent((double)Over / Total, Accuracy) + "\nTotal: " + FormatPercent(((double)Down + Up + Over) / Total, Accuracy);
             }
             else
             {
-              Msg = "Down:  " + FormatPercent((double) Down / Total, Accuracy) + "\nUp:    " + FormatPercent((double) Up / Total, Accuracy) + "\nTotal: " + FormatPercent(((double) Down + Up) / Total, Accuracy);
+              Msg = "Down:  " + FormatPercent((double)Down / Total, Accuracy) + "\nUp:    " + FormatPercent((double)Up / Total, Accuracy) + "\nTotal: " + FormatPercent(((double)Down + Up) / Total, Accuracy);
             }
 
           }
@@ -1858,13 +1858,13 @@ namespace RestrictionTrackerGTK
           g.Clear(ColorBG);
           if (Total > 0 & Down > 0)
           {
-            long downWidth = (long) Math.Round(ImgSize.Width - (((Total - (double) Down) / Total) * ImgSize.Width));
+            long downWidth = (long)Math.Round(ImgSize.Width - (((Total - (double)Down) / Total) * ImgSize.Width));
             g.FillRectangle(downBrush, 0, 0, downWidth, ImgSize.Height);
             for (double I = -1; I <= ImgSize.Width + 1; I += ((ImgSize.Width + 2.0) / 10.0))
             {
               g.DrawLine(new Pen(ColorBG), Convert.ToInt32(I), 0, Convert.ToInt32(I), ImgSize.Height);
             }
-            Msg = FormatPercent((double) Down / Total, Accuracy);
+            Msg = FormatPercent((double)Down / Total, Accuracy);
           }
           else
           {
@@ -1889,7 +1889,7 @@ namespace RestrictionTrackerGTK
             {
               g.DrawLine(new Pen(ColorBG), Convert.ToInt32(I), 0, Convert.ToInt32(I), ImgSize.Height);
             }
-            Msg = FormatPercent((double) Down / Total, Accuracy);
+            Msg = FormatPercent((double)Down / Total, Accuracy);
           }
           else
           {
@@ -1950,7 +1950,7 @@ namespace RestrictionTrackerGTK
         cBlend.Colors = new Color[] { Color.FromArgb(Alpha, cC), Color.FromArgb(Alpha, cB), Color.FromArgb(Alpha, cA) };
         fillBrush.InterpolationColors = cBlend;
       }
-      long yUsed = (long) Math.Round(iSize - ((double) lUsed / lLim * iSize));
+      long yUsed = (long)Math.Round(iSize - ((double)lUsed / lLim * iSize));
       if (yUsed < 0)
       {
         yUsed = 0;
@@ -1959,7 +1959,7 @@ namespace RestrictionTrackerGTK
       {
         yUsed = iSize;
       }
-      g.FillRectangle(fillBrush, 0, yUsed, (float) Math.Floor(iSize / 2d), iSize - yUsed);
+      g.FillRectangle(fillBrush, 0, yUsed, (float)Math.Floor(iSize / 2d), iSize - yUsed);
     }
     public static void CreateTrayIcon_Right(ref Graphics g, long lUsed, long lLim, Color cA, Color cB, Color cC, int iSize)
     {
@@ -1976,7 +1976,7 @@ namespace RestrictionTrackerGTK
         cBlend.Colors = new Color[] { Color.FromArgb(Alpha, cC), Color.FromArgb(Alpha, cB), Color.FromArgb(Alpha, cA) };
         fillBrush.InterpolationColors = cBlend;
       }
-      long yUsed = (long) Math.Round(iSize - ((double) lUsed / lLim * iSize));
+      long yUsed = (long)Math.Round(iSize - ((double)lUsed / lLim * iSize));
       if (yUsed < 0)
       {
         yUsed = 0;
@@ -1985,7 +1985,7 @@ namespace RestrictionTrackerGTK
       {
         yUsed = iSize;
       }
-      g.FillRectangle(fillBrush, (float) Math.Floor(iSize / 2d), yUsed, (float) Math.Ceiling(iSize / 2d), iSize - yUsed);
+      g.FillRectangle(fillBrush, (float)Math.Floor(iSize / 2d), yUsed, (float)Math.Ceiling(iSize / 2d), iSize - yUsed);
     }
     #endregion
     public static void ScreenDefaultColors(ref AppSettings.AppColors Colors, localRestrictionTracker.SatHostTypes useStyle)
@@ -2184,7 +2184,7 @@ namespace RestrictionTrackerGTK
           outColors.HistoryDarkGrid = Color.DarkGray;
           break;
       }
-      return(outColors);
+      return (outColors);
     }
     #endregion
     //    /// <summary>
@@ -2252,9 +2252,9 @@ namespace RestrictionTrackerGTK
         case DateInterval.Minute:
           return dateValue.AddMinutes(number);
         case DateInterval.Month:
-          return dateValue.AddMonths((int) number);
+          return dateValue.AddMonths((int)number);
         case DateInterval.Quarter:
-          return dateValue.AddMonths((int) number * 3);
+          return dateValue.AddMonths((int)number * 3);
         case DateInterval.Second:
           return dateValue.AddSeconds(number);
         case DateInterval.Weekday:
@@ -2268,29 +2268,29 @@ namespace RestrictionTrackerGTK
     public static long DateDiff(DateInterval interval, DateTime date1, DateTime date2)
     {
       switch (interval)
-      { 
+      {
         case DateInterval.Day:
         case DateInterval.DayOfYear:
           System.TimeSpan spanForDays = date2 - date1;
-          return (long) spanForDays.TotalDays;
+          return (long)spanForDays.TotalDays;
         case DateInterval.Hour:
           System.TimeSpan spanForHours = date2 - date1;
-          return (long) spanForHours.TotalHours;
+          return (long)spanForHours.TotalHours;
         case DateInterval.Minute:
           System.TimeSpan spanForMinutes = date2 - date1;
-          return (long) spanForMinutes.TotalMinutes;
+          return (long)spanForMinutes.TotalMinutes;
         case DateInterval.Month:
           return ((date2.Year - date1.Year) * 12) + (date2.Month - date1.Month);
         case DateInterval.Quarter:
-          long dateOneQuarter = (long) System.Math.Ceiling(date1.Month / 3.0);
-          long dateTwoQuarter = (long) System.Math.Ceiling(date2.Month / 3.0);
+          long dateOneQuarter = (long)System.Math.Ceiling(date1.Month / 3.0);
+          long dateTwoQuarter = (long)System.Math.Ceiling(date2.Month / 3.0);
           return (4 * (date2.Year - date1.Year)) + dateTwoQuarter - dateOneQuarter;
         case DateInterval.Second:
           System.TimeSpan spanForSeconds = date2 - date1;
-          return (long) spanForSeconds.TotalSeconds;
+          return (long)spanForSeconds.TotalSeconds;
         case DateInterval.Weekday:
           System.TimeSpan spanForWeekdays = date2 - date1;
-          return (long) (spanForWeekdays.TotalDays / 7.0);
+          return (long)(spanForWeekdays.TotalDays / 7.0);
         case DateInterval.WeekOfYear:
           System.DateTime dateOneModified = date1;
           System.DateTime dateTwoModified = date2;
@@ -2303,7 +2303,7 @@ namespace RestrictionTrackerGTK
             dateOneModified = dateOneModified.AddDays(-1);
           }
           System.TimeSpan spanForWeekOfYear = dateTwoModified - dateOneModified;
-          return (long) (spanForWeekOfYear.TotalDays / 7.0);
+          return (long)(spanForWeekOfYear.TotalDays / 7.0);
         case DateInterval.Year:
           return date2.Year - date1.Year;
         default:
@@ -2359,7 +2359,7 @@ namespace RestrictionTrackerGTK
       {
         dlg.Title = title;
       }
-      Gtk.ResponseType ret = (Gtk.ResponseType) dlg.Run();
+      Gtk.ResponseType ret = (Gtk.ResponseType)dlg.Run();
       dlg.Destroy();
       return ret;
     }
@@ -2377,7 +2377,7 @@ namespace RestrictionTrackerGTK
       {
         dlg.Title = title;
       }
-      Gtk.ResponseType ret = (Gtk.ResponseType) dlg.Run();
+      Gtk.ResponseType ret = (Gtk.ResponseType)dlg.Run();
       dlg.Destroy();
       return ret;
     }
@@ -2406,7 +2406,7 @@ namespace RestrictionTrackerGTK
           if (File.Exists(screenPath))
           {
             Gdk.Pixbuf pbImage = new Gdk.Pixbuf(screenPath);
-            Bitmap bImg = (Bitmap) PixbufToImage(pbImage);
+            Bitmap bImg = (Bitmap)PixbufToImage(pbImage);
             pbImage.Dispose();
             pbImage = null;
             if (File.Exists(screenPath))
@@ -2419,10 +2419,10 @@ namespace RestrictionTrackerGTK
       {
         Gdk.Window window = Gdk.Global.DefaultRootWindow;
         if (window != null)
-        {           
-          Gdk.Pixbuf scrnBuf = new Gdk.Pixbuf(Gdk.Colorspace.Rgb, false, 8, rectIn.Width, rectIn.Height);          
-          scrnBuf.GetFromDrawable(window, Gdk.Colormap.System, rectIn.X, rectIn.Y, 0, 0, rectIn.Width, rectIn.Height);  
-          return (Bitmap) PixbufToImage(scrnBuf);
+        {
+          Gdk.Pixbuf scrnBuf = new Gdk.Pixbuf(Gdk.Colorspace.Rgb, false, 8, rectIn.Width, rectIn.Height);
+          scrnBuf.GetFromDrawable(window, Gdk.Colormap.System, rectIn.X, rectIn.Y, 0, 0, rectIn.Width, rectIn.Height);
+          return (Bitmap)PixbufToImage(scrnBuf);
         }
         return null;
       }
@@ -2455,7 +2455,7 @@ namespace RestrictionTrackerGTK
           }
         }
       }
-      return bitOut; 
+      return bitOut;
     }
     public static Bitmap MakeTransparent(Bitmap bitIn, Color TransparencyKey)
     {
@@ -2482,12 +2482,12 @@ namespace RestrictionTrackerGTK
     }
     public static Color GdkColorToDrawingColor(Gdk.Color c)
     {
-      return Color.FromArgb(255, (int) Math.Floor(c.Red / 256d), (int) Math.Floor(c.Green / 256d), (int) Math.Floor(c.Blue / 256d));
+      return Color.FromArgb(255, (int)Math.Floor(c.Red / 256d), (int)Math.Floor(c.Green / 256d), (int)Math.Floor(c.Blue / 256d));
     }
     public static Gdk.Color DrawingColorToGdkColor(Color c)
     {
-      Gdk.Color ret = new Gdk.Color((byte) c.R, (byte) c.G, (byte) c.B);
-      ret.Pixel = (uint) c.A;
+      Gdk.Color ret = new Gdk.Color((byte)c.R, (byte)c.G, (byte)c.B);
+      ret.Pixel = (uint)c.A;
       return ret;
     }
     public static Size GdkSizeToDrawingSize(Gdk.Size s)
@@ -2522,7 +2522,7 @@ namespace RestrictionTrackerGTK
         else if (a.A != b.A)
           ret = false;
       }
-      return(ret);
+      return (ret);
     }
     public static bool CompareColors(Color a, Gdk.Color b)
     {
@@ -2534,7 +2534,7 @@ namespace RestrictionTrackerGTK
         ret = false;
       else if (a.B != b2.B)
         ret = false;
-      return(ret);
+      return (ret);
     }
     public static bool CompareColors(Gdk.Color a, Gdk.Color b)
     {
@@ -2545,7 +2545,7 @@ namespace RestrictionTrackerGTK
         ret = false;
       else if (a.Blue != b.Blue)
         ret = false;
-      return(ret);
+      return (ret);
     }
     #endregion
     public static Gdk.Pixbuf ImageToPixbuf(Image img)
@@ -2578,7 +2578,7 @@ namespace RestrictionTrackerGTK
       }
       catch (Exception)
       {
-        return ((Image) new System.Drawing.Bitmap(MainClass.fMain.GetType(), "Resources.error.png"));
+        return ((Image)new System.Drawing.Bitmap(MainClass.fMain.GetType(), "Resources.error.png"));
       }
     }
     #endregion
@@ -2614,8 +2614,8 @@ namespace RestrictionTrackerGTK
           else
           {
             if (Directory.Exists(OSXStartup))
-            if (File.Exists(Path.Combine(OSXStartup, OSXShortcut)))
-              File.Delete(Path.Combine(OSXStartup, OSXShortcut));
+              if (File.Exists(Path.Combine(OSXStartup, OSXShortcut)))
+                File.Delete(Path.Combine(OSXStartup, OSXShortcut));
           }
         }
         else
@@ -2629,8 +2629,8 @@ namespace RestrictionTrackerGTK
             try
             {
               if (Directory.Exists(LinStartup))
-              if (File.Exists(Path.Combine(LinStartup, LinShortcut)))
-                File.Delete(Path.Combine(LinStartup, LinShortcut));
+                if (File.Exists(Path.Combine(LinStartup, LinShortcut)))
+                  File.Delete(Path.Combine(LinStartup, LinShortcut));
             }
             catch (Exception)
             {
@@ -2779,7 +2779,7 @@ namespace RestrictionTrackerGTK
       {
         if (string.IsNullOrEmpty(dirB))
         {
-          return true; 
+          return true;
         }
         else
         {

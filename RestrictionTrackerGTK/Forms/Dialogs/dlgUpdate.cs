@@ -3,7 +3,7 @@ using System.Threading;
 using RestrictionLibrary;
 namespace RestrictionTrackerGTK
 {
-  public partial class dlgUpdate :
+  public partial class dlgUpdate:
     Gtk.Dialog
   {
     private bool Ret;
@@ -12,13 +12,13 @@ namespace RestrictionTrackerGTK
       this.Build();
       if (CurrentOS.IsMac)
       {
-        ((Gtk.Box.BoxChild) this.ActionArea[cmdDownload]).Position = 1;
-        ((Gtk.Box.BoxChild) this.ActionArea[cmdCancel]).Position = 0;
+        ((Gtk.Box.BoxChild)this.ActionArea[cmdDownload]).Position = 1;
+        ((Gtk.Box.BoxChild)this.ActionArea[cmdCancel]).Position = 0;
       }
       else
       {
-        ((Gtk.Box.BoxChild) this.ActionArea[cmdDownload]).Position = 0;
-        ((Gtk.Box.BoxChild) this.ActionArea[cmdCancel]).Position = 1;
+        ((Gtk.Box.BoxChild)this.ActionArea[cmdDownload]).Position = 0;
+        ((Gtk.Box.BoxChild)this.ActionArea[cmdCancel]).Position = 1;
       }
       this.Show();
       this.GdkWindow.SetDecorations(Gdk.WMDecoration.All | Gdk.WMDecoration.Maximize | Gdk.WMDecoration.Minimize | Gdk.WMDecoration.Resizeh | Gdk.WMDecoration.Menu);
@@ -88,13 +88,13 @@ namespace RestrictionTrackerGTK
     {
       if (scrInfo.Visible)
       {
-        ((Gtk.Label) cmdChanges.Child).LabelProp = "_Changes >>";
+        ((Gtk.Label)cmdChanges.Child).LabelProp = "_Changes >>";
         scrInfo.Visible = false;
       }
       else
       {
         txtInfo.HeightRequest = 100;
-        ((Gtk.Label) cmdChanges.Child).LabelProp = "_Changes <<";
+        ((Gtk.Label)cmdChanges.Child).LabelProp = "_Changes <<";
         scrInfo.Visible = true;
         if (!txtInfo.Buffer.Text.StartsWith("Released:"))
         {
@@ -129,7 +129,7 @@ namespace RestrictionTrackerGTK
       SetVerInfo(sRet);
     }
     private class VerInfoEventArgs
-      :EventArgs
+      : EventArgs
     {
       public string Message;
       public VerInfoEventArgs(string sMsg)
@@ -143,7 +143,7 @@ namespace RestrictionTrackerGTK
     }
     private void Main_SetVerInfo(object o, EventArgs ea)
     {
-      VerInfoEventArgs e = (VerInfoEventArgs) ea;
+      VerInfoEventArgs e = (VerInfoEventArgs)ea;
       txtInfo.Buffer.Text = e.Message;
       cmdChanges.Sensitive = true;
       cmdChanges.GrabFocus();

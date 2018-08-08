@@ -44,12 +44,12 @@ namespace RestrictionTrackerGTK
       if (IsWindows)
       {
         Name = Environment.OSVersion.VersionString;
- 
+
         Name = Name.Replace("Microsoft ", "");
         Name = Name.Replace("  ", " ");
         Name = Name.Replace(" )", ")");
         Name = Name.Trim();
- 
+
         Name = Name.Replace("NT 10.", "10 %bit 10.");
         Name = Name.Replace("NT 6.3", "8.1 %bit 6.3");
         Name = Name.Replace("NT 6.2", "8 %bit 6.2");
@@ -57,7 +57,7 @@ namespace RestrictionTrackerGTK
         Name = Name.Replace("NT 6.0", "Vista %bit 6.0");
         Name = Name.Replace("NT 5.", "XP %bit 5.");
         Name = Name.Replace("%bit", (Is64bitWindows ? "64bit" : "32bit"));
- 
+
         if (Is64bitWindows)
         {
           Is64bit = true;
@@ -74,10 +74,10 @@ namespace RestrictionTrackerGTK
         {
           IsUnix = true;
           IsMac = true;
- 
+
           Name = "MacOS X " + ReadProcessOutput("sw_vers", "-productVersion");
           Name = Name.Trim();
- 
+
           string machine = ReadProcessOutput("uname", "-m");
           if (machine.Contains("x86_64"))
           {
@@ -87,18 +87,18 @@ namespace RestrictionTrackerGTK
           {
             Is32bit = true;
           }
- 
+
           Name += " " + (Is32bit ? "32bit" : "64bit");
         }
         else if (UnixName.Contains("Linux"))
         {
           IsUnix = true;
           IsLinux = true;
- 
+
           Name = ReadProcessOutput("lsb_release", "-d");
           Name = Name.Substring(Name.IndexOf(":") + 1);
           Name = Name.Trim();
- 
+
           string machine = ReadProcessOutput("uname", "-m");
           if (machine.Contains("x86_64"))
           {
@@ -108,7 +108,7 @@ namespace RestrictionTrackerGTK
           {
             Is32bit = true;
           }
- 
+
           Name += " " + (Is32bit ? "32bit" : "64bit");
         }
         else if (!string.IsNullOrEmpty(UnixName))

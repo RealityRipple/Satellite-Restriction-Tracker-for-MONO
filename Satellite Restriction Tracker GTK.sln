@@ -18,16 +18,12 @@ Global
 		StartupItem = RestrictionTrackerGTK\RestrictionTrackerGTK.csproj
 		Policies = $0
 		$0.DotNetNamingPolicy = $1
-		$1.DirectoryNamespaceAssociation = None
-		$1.ResourceNamePolicy = FileFormatDefault
 		$0.TextStylePolicy = $2
-		$2.FileWidth = 120
 		$2.TabWidth = 2
 		$2.IndentWidth = 2
 		$2.EolMarker = Unix
-		$2.inheritsSet = VisualStudio
-		$2.inheritsScope = text/plain
 		$2.scope = text/x-csharp
+		$2.TabsToSpaces = True
 		$0.CSharpFormattingPolicy = $3
 		$3.IndentSwitchBody = True
 		$3.AnonymousMethodBraceStyle = NextLine
@@ -69,12 +65,10 @@ Global
 		$3.IndexerArgumentWrapping = DoNotWrap
 		$3.NewLineAferIndexerOpenBracket = SameLine
 		$3.IndexerClosingBracketOnNewLine = SameLine
-		$3.inheritsSet = Mono
-		$3.inheritsScope = text/x-csharp
 		$3.scope = text/x-csharp
+		$3.LabelPositioning = LeftMost
+		$3.SpaceBeforeColonInBaseTypeDeclaration = False
 		$0.StandardHeader = $4
-		$4.Text = 
-		$4.IncludeInNewFiles = True
 		$0.NameConventionPolicy = $5
 		$5.Rules = $6
 		$6.NamingRule = $7
@@ -218,13 +212,11 @@ Global
 		$31.Wrap = False
 		$30.inheritsSet = Mono
 		$0.TextStylePolicy = $32
-		$32.FileWidth = 120
 		$32.TabWidth = 2
 		$32.IndentWidth = 2
 		$32.EolMarker = Unix
-		$32.inheritsSet = VisualStudio
-		$32.inheritsScope = text/plain
 		$32.scope = text/plain
+		$32.TabsToSpaces = True
 		description = Satellite Restriction Tracker
 		version = 1.5.2
 	EndGlobalSection

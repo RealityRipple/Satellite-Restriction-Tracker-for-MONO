@@ -3,7 +3,7 @@ using RestrictionLibrary;
 using System.Drawing;
 namespace RestrictionTrackerGTK
 {
-  public partial class dlgCustomColors :
+  public partial class dlgCustomColors:
     Gtk.Dialog
   {
     private long lDown;
@@ -51,13 +51,13 @@ namespace RestrictionTrackerGTK
       this.Build();
       if (CurrentOS.IsMac)
       {
-        ((Gtk.Box.BoxChild) this.ActionArea[cmdSave]).Position = 1;
-        ((Gtk.Box.BoxChild) this.ActionArea[cmdClose]).Position = 0;
+        ((Gtk.Box.BoxChild)this.ActionArea[cmdSave]).Position = 1;
+        ((Gtk.Box.BoxChild)this.ActionArea[cmdClose]).Position = 0;
       }
       else
       {
-        ((Gtk.Box.BoxChild) this.ActionArea[cmdSave]).Position = 0;
-        ((Gtk.Box.BoxChild) this.ActionArea[cmdClose]).Position = 1;
+        ((Gtk.Box.BoxChild)this.ActionArea[cmdSave]).Position = 0;
+        ((Gtk.Box.BoxChild)this.ActionArea[cmdClose]).Position = 1;
       }
       this.WindowStateEvent += HandleWindowStateEvent;
 
@@ -323,7 +323,7 @@ namespace RestrictionTrackerGTK
       Color mt = modFunctions.GdkColorToDrawingColor(cmdMainText.Color);
       Color mbg = modFunctions.GdkColorToDrawingColor(cmdMainBG.Color);
 
-     
+
       Color tda = modFunctions.GdkColorToDrawingColor(cmdTrayDownA.Color);
       Color tdb = modFunctions.GdkColorToDrawingColor(cmdTrayDownB.Color);
       if (!chkTrayDownB.Active)
@@ -372,13 +372,13 @@ namespace RestrictionTrackerGTK
       int iHeight = pctMain.HeightRequest;
       if (iHeight > pctMain.Allocation.Height)
         iHeight = pctMain.Allocation.Height;
-      int iHalfW = (int) Math.Floor(iWidth / 2d);
-      int iHalfH = (int) Math.Floor(iHeight / 2d);
-     
+      int iHalfW = (int)Math.Floor(iWidth / 2d);
+      int iHalfH = (int)Math.Floor(iHeight / 2d);
+
       Graphics g;
       if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY)
       {
-        Rectangle FakeMRect = new Rectangle(0, 0, iWidth - 1, iHeight * 2); 
+        Rectangle FakeMRect = new Rectangle(0, 0, iWidth - 1, iHeight * 2);
         Image FakeD = modFunctions.DisplayProgress(modFunctions.DrawingSizeToGdkSize(FakeMRect.Size), lDown, lDownLim, mySettings.Accuracy, mda, mdb, mdc, mt, mbg);
         Image FakeU = modFunctions.DisplayProgress(modFunctions.DrawingSizeToGdkSize(FakeMRect.Size), lUp, lUpLim, mySettings.Accuracy, mua, mub, muc, mt, mbg);
         Bitmap fakeI = new Bitmap(iWidth, iHeight);
@@ -420,7 +420,7 @@ namespace RestrictionTrackerGTK
       }
       Bitmap imgTray = new Bitmap(16, 16);
       g = Graphics.FromImage(imgTray);
-      
+
       g.Clear(Color.Transparent);
       if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY)
       {
@@ -479,8 +479,8 @@ namespace RestrictionTrackerGTK
       iHeight = pctHistory.HeightRequest;
       if (iHeight > pctHistory.Allocation.Height)
         iHeight = pctHistory.Allocation.Height;
-      iHalfW = (int) Math.Floor(iWidth / 2d);
-      iHalfH = (int) Math.Floor(iHeight / 2d);
+      iHalfW = (int)Math.Floor(iWidth / 2d);
+      iHalfH = (int)Math.Floor(iHeight / 2d);
       if (FakeData == null || FakeData.Count == 0)
       {
         MakeFakeData();
@@ -492,14 +492,14 @@ namespace RestrictionTrackerGTK
         Image FakeU = modFunctions.DrawLineGraph(FakeData.ToArray(), false, FakeHRect.Size, hul, hua, hub, huc, ht, hbg, hum, hgl, hgd);
         Bitmap fakeI = new Bitmap(iWidth, iHeight);
         g = Graphics.FromImage(fakeI);
-        
+
         g.Clear(Color.Black);
         g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
         g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
         g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-        int iHistH = (int) (iHalfH * 0.85d);
-        Rectangle dRect = new Rectangle(0, (int) ((double) iHalfH * 0.1d), iWidth, iHistH);
-        Rectangle uRect = new Rectangle(0, (int) ((double) iHalfH + ((double) iHalfH * 0.05d)), iWidth, iHistH);
+        int iHistH = (int)(iHalfH * 0.85d);
+        Rectangle dRect = new Rectangle(0, (int)((double)iHalfH * 0.1d), iWidth, iHistH);
+        Rectangle uRect = new Rectangle(0, (int)((double)iHalfH + ((double)iHalfH * 0.05d)), iWidth, iHistH);
         g.DrawImage(FakeD, dRect, FakeHRect, GraphicsUnit.Pixel);
         g.DrawImage(FakeU, uRect, FakeHRect, GraphicsUnit.Pixel);
 
@@ -511,9 +511,9 @@ namespace RestrictionTrackerGTK
 
         Rectangle dRect;
         if (iWidth / FakeR.Width > iHeight / FakeR.Height)
-          dRect = new Rectangle((iWidth - (int) (iHeight * (FakeR.Width / (double) FakeR.Height))) / 2, 0, (int) (iHeight * (FakeR.Width / (double) FakeR.Height)), iHeight);
+          dRect = new Rectangle((iWidth - (int)(iHeight * (FakeR.Width / (double)FakeR.Height))) / 2, 0, (int)(iHeight * (FakeR.Width / (double)FakeR.Height)), iHeight);
         else
-          dRect = new Rectangle(0, (iHeight - (int) (iWidth * (FakeR.Height / (double) FakeR.Width))) / 2, iWidth, (int) (iWidth * (FakeR.Height / (double) FakeR.Width)));
+          dRect = new Rectangle(0, (iHeight - (int)(iWidth * (FakeR.Height / (double)FakeR.Width))) / 2, iWidth, (int)(iWidth * (FakeR.Height / (double)FakeR.Width)));
 
         Bitmap fakeI = new Bitmap(dRect.Width, dRect.Height);
         g = Graphics.FromImage(fakeI);
@@ -539,8 +539,8 @@ namespace RestrictionTrackerGTK
         g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
         g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
         g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-        Rectangle dRect = new Rectangle(0, (int) (iHalfH * 0.1d), iWidth, (int) (iHalfH * 0.85d));
-        Rectangle uRect = new Rectangle(0, (int) (iHalfH + (iHalfH * 0.05d)), iWidth, (int) (iHalfH * 0.85d));
+        Rectangle dRect = new Rectangle(0, (int)(iHalfH * 0.1d), iWidth, (int)(iHalfH * 0.85d));
+        Rectangle uRect = new Rectangle(0, (int)(iHalfH + (iHalfH * 0.05d)), iWidth, (int)(iHalfH * 0.85d));
         g.DrawImage(FakeD, dRect, FakeHRect, GraphicsUnit.Pixel);
         g.DrawImage(FakeU, uRect, FakeHRect, GraphicsUnit.Pixel);
         pctHistory.Pixbuf = modFunctions.ImageToPixbuf(fakeI);
@@ -639,17 +639,17 @@ namespace RestrictionTrackerGTK
       cmdSave.Sensitive = SettingsChanged();
     }
     [GLib.ConnectBefore]
-    private void cmdColor_MouseUp(Object sender, Gtk.ButtonReleaseEventArgs  e)
+    private void cmdColor_MouseUp(Object sender, Gtk.ButtonReleaseEventArgs e)
     {
       if (e.Event.Button == 3)
       {
-        cbSelected = (Gtk.ColorButton) sender;
+        cbSelected = (Gtk.ColorButton)sender;
         mnuColorOpts.ShowAll();
         mnuColorOpts.Popup();
       }
       RedrawImages();
     }
-    private void pctMain_MouseUp(object sender, Gtk.ButtonReleaseEventArgs  e)
+    private void pctMain_MouseUp(object sender, Gtk.ButtonReleaseEventArgs e)
     {
       if (e.Event.Button == 1)
       {
@@ -691,7 +691,7 @@ namespace RestrictionTrackerGTK
       }
       RedrawImages();
     }
-    private void pctTray_MouseUp(object sender, Gtk.ButtonReleaseEventArgs  e)
+    private void pctTray_MouseUp(object sender, Gtk.ButtonReleaseEventArgs e)
     {
       if (e.Event.Button == 1)
       {
@@ -735,8 +735,8 @@ namespace RestrictionTrackerGTK
     }
     private void chkB_CheckedChanged(System.Object sender, System.EventArgs e)
     {
-      Gtk.CheckButton chkThis = (Gtk.CheckButton) sender;
-      Gtk.ColorButton cmdThis = (Gtk.ColorButton) getControlFromName(ref pnlCustomColors, chkThis.Name.Replace("chk", "cmd"));
+      Gtk.CheckButton chkThis = (Gtk.CheckButton)sender;
+      Gtk.ColorButton cmdThis = (Gtk.ColorButton)getControlFromName(ref pnlCustomColors, chkThis.Name.Replace("chk", "cmd"));
       if (cmdThis == null)
       {
         return;
@@ -933,7 +933,7 @@ namespace RestrictionTrackerGTK
         {
           if (wIn is Gtk.Container)
           {
-            Gtk.Container bItem = (Gtk.Container) wIn;
+            Gtk.Container bItem = (Gtk.Container)wIn;
             if (bItem.Children.Length > 0)
             {
               for (int i = 0; i < bItem.Children.Length; i++)
@@ -966,7 +966,7 @@ namespace RestrictionTrackerGTK
         {
           if (wIn is Gtk.Container)
           {
-            Gtk.Container bItem = (Gtk.Container) wIn;
+            Gtk.Container bItem = (Gtk.Container)wIn;
             if (bItem.Children.Length > 0)
             {
               for (int i = 0; i < bItem.Children.Length; i++)
@@ -990,7 +990,7 @@ namespace RestrictionTrackerGTK
     private void SetElColor(ref Gtk.ColorButton cmdColor, Color color)
     {
       cmdColor.Color = modFunctions.DrawingColorToGdkColor(color);
-      Gtk.CheckButton chkThis = (Gtk.CheckButton) getControlFromName(ref pnlCustomColors, cmdColor.Name.Replace("cmd", "chk"));
+      Gtk.CheckButton chkThis = (Gtk.CheckButton)getControlFromName(ref pnlCustomColors, cmdColor.Name.Replace("cmd", "chk"));
       if (chkThis != null)
       {
         chkThis.Active = !(color == Color.Transparent);
@@ -1289,141 +1289,141 @@ namespace RestrictionTrackerGTK
       {
         Size preSize = new Size(100, 55);
         pnlMain.NRows = 3;
-        ((Gtk.Table.TableChild) pnlMain[pnlMainStyle]).TopAttach = 2;
-        ((Gtk.Table.TableChild) pnlMain[pnlMainStyle]).BottomAttach = 3;
+        ((Gtk.Table.TableChild)pnlMain[pnlMainStyle]).TopAttach = 2;
+        ((Gtk.Table.TableChild)pnlMain[pnlMainStyle]).BottomAttach = 3;
         pnlMain.Remove(grpMainUp);
-        ((Gtk.Table.TableChild) pnlMain[grpMainDown]).TopAttach = 1;
-        ((Gtk.Table.TableChild) pnlMain[grpMainDown]).BottomAttach = 2;
+        ((Gtk.Table.TableChild)pnlMain[grpMainDown]).TopAttach = 1;
+        ((Gtk.Table.TableChild)pnlMain[grpMainDown]).BottomAttach = 2;
 
-        ((Gtk.Table.TableChild) pnlMain[evnMain]).TopAttach = 0;
-        ((Gtk.Table.TableChild) pnlMain[evnMain]).LeftAttach = 0;
-        ((Gtk.Table.TableChild) pnlMain[evnMain]).BottomAttach = 1;
-        ((Gtk.Table.TableChild) pnlMain[evnMain]).RightAttach = 1;
+        ((Gtk.Table.TableChild)pnlMain[evnMain]).TopAttach = 0;
+        ((Gtk.Table.TableChild)pnlMain[evnMain]).LeftAttach = 0;
+        ((Gtk.Table.TableChild)pnlMain[evnMain]).BottomAttach = 1;
+        ((Gtk.Table.TableChild)pnlMain[evnMain]).RightAttach = 1;
         pnlMain.NColumns = 1;
         pctMain.WidthRequest = preSize.Width;
         pctMain.HeightRequest = preSize.Height;
 
         pnlMainStyle.NRows = 4;
-        ((Gtk.Table.TableChild) pnlMainStyle[lblMainBG]).TopAttach = 1;
-        ((Gtk.Table.TableChild) pnlMainStyle[lblMainBG]).BottomAttach = 2;
-        ((Gtk.Table.TableChild) pnlMainStyle[lblMainBG]).LeftAttach = 0;
-        ((Gtk.Table.TableChild) pnlMainStyle[lblMainBG]).RightAttach = 1;
+        ((Gtk.Table.TableChild)pnlMainStyle[lblMainBG]).TopAttach = 1;
+        ((Gtk.Table.TableChild)pnlMainStyle[lblMainBG]).BottomAttach = 2;
+        ((Gtk.Table.TableChild)pnlMainStyle[lblMainBG]).LeftAttach = 0;
+        ((Gtk.Table.TableChild)pnlMainStyle[lblMainBG]).RightAttach = 1;
 
-        ((Gtk.Table.TableChild) pnlMainStyle[cmdMainBG]).TopAttach = 1;
-        ((Gtk.Table.TableChild) pnlMainStyle[cmdMainBG]).BottomAttach = 2;
-        ((Gtk.Table.TableChild) pnlMainStyle[cmdMainBG]).LeftAttach = 1;
-        ((Gtk.Table.TableChild) pnlMainStyle[cmdMainBG]).RightAttach = 2;
+        ((Gtk.Table.TableChild)pnlMainStyle[cmdMainBG]).TopAttach = 1;
+        ((Gtk.Table.TableChild)pnlMainStyle[cmdMainBG]).BottomAttach = 2;
+        ((Gtk.Table.TableChild)pnlMainStyle[cmdMainBG]).LeftAttach = 1;
+        ((Gtk.Table.TableChild)pnlMainStyle[cmdMainBG]).RightAttach = 2;
         pnlMainStyle.NColumns = 2;
 
         pnlTray.NRows = 2;
         pnlTray.Remove(grpTrayUp);
-        ((Gtk.Table.TableChild) pnlTray[grpTrayDown]).TopAttach = 1;
-        ((Gtk.Table.TableChild) pnlTray[grpTrayDown]).BottomAttach = 2;
+        ((Gtk.Table.TableChild)pnlTray[grpTrayDown]).TopAttach = 1;
+        ((Gtk.Table.TableChild)pnlTray[grpTrayDown]).BottomAttach = 2;
 
-        ((Gtk.Table.TableChild) pnlTray[evnTray]).TopAttach = 0;
-        ((Gtk.Table.TableChild) pnlTray[evnTray]).LeftAttach = 0;
-        ((Gtk.Table.TableChild) pnlTray[evnTray]).BottomAttach = 1;
-        ((Gtk.Table.TableChild) pnlTray[evnTray]).RightAttach = 2;
+        ((Gtk.Table.TableChild)pnlTray[evnTray]).TopAttach = 0;
+        ((Gtk.Table.TableChild)pnlTray[evnTray]).LeftAttach = 0;
+        ((Gtk.Table.TableChild)pnlTray[evnTray]).BottomAttach = 1;
+        ((Gtk.Table.TableChild)pnlTray[evnTray]).RightAttach = 2;
         pnlTray.NColumns = 1;
         pctTray.WidthRequest = preSize.Width;
         pctTray.HeightRequest = preSize.Height;
 
 
         pnlHistory.NRows = 3;
-        ((Gtk.Table.TableChild) pnlHistory[pnlHistoryStyle]).TopAttach = 2;
-        ((Gtk.Table.TableChild) pnlHistory[pnlHistoryStyle]).BottomAttach = 3;
+        ((Gtk.Table.TableChild)pnlHistory[pnlHistoryStyle]).TopAttach = 2;
+        ((Gtk.Table.TableChild)pnlHistory[pnlHistoryStyle]).BottomAttach = 3;
         pnlHistory.Remove(grpHistoryUp);
-        ((Gtk.Table.TableChild) pnlHistory[grpHistoryDown]).TopAttach = 1;
-        ((Gtk.Table.TableChild) pnlHistory[grpHistoryDown]).BottomAttach = 2;
+        ((Gtk.Table.TableChild)pnlHistory[grpHistoryDown]).TopAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistory[grpHistoryDown]).BottomAttach = 2;
 
         pnlHistoryDown.NColumns = 7;
 
-        ((Gtk.Table.TableChild) pnlHistoryDown[lblHistoryDownA]).TopAttach = 0;
-        ((Gtk.Table.TableChild) pnlHistoryDown[lblHistoryDownA]).BottomAttach = 1;
-        ((Gtk.Table.TableChild) pnlHistoryDown[lblHistoryDownA]).LeftAttach = 4;
-        ((Gtk.Table.TableChild) pnlHistoryDown[lblHistoryDownA]).RightAttach = 5;
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownA]).TopAttach = 0;
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownA]).BottomAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownA]).LeftAttach = 4;
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownA]).RightAttach = 5;
 
-        ((Gtk.Table.TableChild) pnlHistoryDown[cmdHistoryDownA]).TopAttach = 0;
-        ((Gtk.Table.TableChild) pnlHistoryDown[cmdHistoryDownA]).BottomAttach = 1;
-        ((Gtk.Table.TableChild) pnlHistoryDown[cmdHistoryDownA]).LeftAttach = 6;
-        ((Gtk.Table.TableChild) pnlHistoryDown[cmdHistoryDownA]).RightAttach = 7;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownA]).TopAttach = 0;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownA]).BottomAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownA]).LeftAttach = 6;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownA]).RightAttach = 7;
 
-        ((Gtk.Table.TableChild) pnlHistoryDown[chkHistoryDownB]).TopAttach = 1;
-        ((Gtk.Table.TableChild) pnlHistoryDown[chkHistoryDownB]).BottomAttach = 2;
-        ((Gtk.Table.TableChild) pnlHistoryDown[chkHistoryDownB]).LeftAttach = 4;
-        ((Gtk.Table.TableChild) pnlHistoryDown[chkHistoryDownB]).RightAttach = 5;
+        ((Gtk.Table.TableChild)pnlHistoryDown[chkHistoryDownB]).TopAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistoryDown[chkHistoryDownB]).BottomAttach = 2;
+        ((Gtk.Table.TableChild)pnlHistoryDown[chkHistoryDownB]).LeftAttach = 4;
+        ((Gtk.Table.TableChild)pnlHistoryDown[chkHistoryDownB]).RightAttach = 5;
 
-        ((Gtk.Table.TableChild) pnlHistoryDown[cmdHistoryDownB]).TopAttach = 1;
-        ((Gtk.Table.TableChild) pnlHistoryDown[cmdHistoryDownB]).BottomAttach = 2;
-        ((Gtk.Table.TableChild) pnlHistoryDown[cmdHistoryDownB]).LeftAttach = 6;
-        ((Gtk.Table.TableChild) pnlHistoryDown[cmdHistoryDownB]).RightAttach = 7;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownB]).TopAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownB]).BottomAttach = 2;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownB]).LeftAttach = 6;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownB]).RightAttach = 7;
 
-        ((Gtk.Table.TableChild) pnlHistoryDown[lblHistoryDownC]).TopAttach = 2;
-        ((Gtk.Table.TableChild) pnlHistoryDown[lblHistoryDownC]).BottomAttach = 3;
-        ((Gtk.Table.TableChild) pnlHistoryDown[lblHistoryDownC]).LeftAttach = 4;
-        ((Gtk.Table.TableChild) pnlHistoryDown[lblHistoryDownC]).RightAttach = 5;
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownC]).TopAttach = 2;
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownC]).BottomAttach = 3;
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownC]).LeftAttach = 4;
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownC]).RightAttach = 5;
 
-        ((Gtk.Table.TableChild) pnlHistoryDown[cmdHistoryDownC]).TopAttach = 2;
-        ((Gtk.Table.TableChild) pnlHistoryDown[cmdHistoryDownC]).BottomAttach = 3;
-        ((Gtk.Table.TableChild) pnlHistoryDown[cmdHistoryDownC]).LeftAttach = 6;
-        ((Gtk.Table.TableChild) pnlHistoryDown[cmdHistoryDownC]).RightAttach = 7;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownC]).TopAttach = 2;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownC]).BottomAttach = 3;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownC]).LeftAttach = 6;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownC]).RightAttach = 7;
 
-        ((Gtk.Table.TableChild) pnlHistoryDown[lblHistoryDownMax]).TopAttach = 2;
-        ((Gtk.Table.TableChild) pnlHistoryDown[lblHistoryDownMax]).BottomAttach = 3;
-        ((Gtk.Table.TableChild) pnlHistoryDown[lblHistoryDownMax]).LeftAttach = 0;
-        ((Gtk.Table.TableChild) pnlHistoryDown[lblHistoryDownMax]).RightAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownMax]).TopAttach = 2;
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownMax]).BottomAttach = 3;
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownMax]).LeftAttach = 0;
+        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownMax]).RightAttach = 1;
 
-        ((Gtk.Table.TableChild) pnlHistoryDown[cmdHistoryDownMax]).TopAttach = 2;
-        ((Gtk.Table.TableChild) pnlHistoryDown[cmdHistoryDownMax]).BottomAttach = 3;
-        ((Gtk.Table.TableChild) pnlHistoryDown[cmdHistoryDownMax]).LeftAttach = 2;
-        ((Gtk.Table.TableChild) pnlHistoryDown[cmdHistoryDownMax]).RightAttach = 3;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownMax]).TopAttach = 2;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownMax]).BottomAttach = 3;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownMax]).LeftAttach = 2;
+        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownMax]).RightAttach = 3;
         pnlHistoryDown.NRows = 3;
 
-        ((Gtk.Table.TableChild) pnlHistory[evnHistory]).TopAttach = 0;
-        ((Gtk.Table.TableChild) pnlHistory[evnHistory]).LeftAttach = 0;
-        ((Gtk.Table.TableChild) pnlHistory[evnHistory]).BottomAttach = 1;
-        ((Gtk.Table.TableChild) pnlHistory[evnHistory]).RightAttach = 2;
+        ((Gtk.Table.TableChild)pnlHistory[evnHistory]).TopAttach = 0;
+        ((Gtk.Table.TableChild)pnlHistory[evnHistory]).LeftAttach = 0;
+        ((Gtk.Table.TableChild)pnlHistory[evnHistory]).BottomAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistory[evnHistory]).RightAttach = 2;
         pnlHistory.NColumns = 1;
         pctHistory.WidthRequest = preSize.Width;
         pctHistory.HeightRequest = preSize.Height;
 
         pnlHistoryStyle.NColumns = 5;
-        ((Gtk.Table.TableChild) pnlHistoryStyle[lblHistoryBG]).TopAttach = 1;
-        ((Gtk.Table.TableChild) pnlHistoryStyle[lblHistoryBG]).BottomAttach = 2;
-        ((Gtk.Table.TableChild) pnlHistoryStyle[lblHistoryBG]).LeftAttach = 0;
-        ((Gtk.Table.TableChild) pnlHistoryStyle[lblHistoryBG]).RightAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryBG]).TopAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryBG]).BottomAttach = 2;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryBG]).LeftAttach = 0;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryBG]).RightAttach = 1;
 
-        ((Gtk.Table.TableChild) pnlHistoryStyle[cmdHistoryBG]).TopAttach = 1;
-        ((Gtk.Table.TableChild) pnlHistoryStyle[cmdHistoryBG]).BottomAttach = 2;
-        ((Gtk.Table.TableChild) pnlHistoryStyle[cmdHistoryBG]).LeftAttach = 1;
-        ((Gtk.Table.TableChild) pnlHistoryStyle[cmdHistoryBG]).RightAttach = 2;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryBG]).TopAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryBG]).BottomAttach = 2;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryBG]).LeftAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryBG]).RightAttach = 2;
 
-        ((Gtk.Table.TableChild) pnlHistoryStyle[lblHistoryGridL]).TopAttach = 0;
-        ((Gtk.Table.TableChild) pnlHistoryStyle[lblHistoryGridL]).BottomAttach = 1;
-        ((Gtk.Table.TableChild) pnlHistoryStyle[lblHistoryGridL]).LeftAttach = 3;
-        ((Gtk.Table.TableChild) pnlHistoryStyle[lblHistoryGridL]).RightAttach = 4;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryGridL]).TopAttach = 0;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryGridL]).BottomAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryGridL]).LeftAttach = 3;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryGridL]).RightAttach = 4;
 
-        ((Gtk.Table.TableChild) pnlHistoryStyle[cmdHistoryLightGrid]).TopAttach = 0;
-        ((Gtk.Table.TableChild) pnlHistoryStyle[cmdHistoryLightGrid]).BottomAttach = 1;
-        ((Gtk.Table.TableChild) pnlHistoryStyle[cmdHistoryLightGrid]).LeftAttach = 4;
-        ((Gtk.Table.TableChild) pnlHistoryStyle[cmdHistoryLightGrid]).RightAttach = 5;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryLightGrid]).TopAttach = 0;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryLightGrid]).BottomAttach = 1;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryLightGrid]).LeftAttach = 4;
+        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryLightGrid]).RightAttach = 5;
         pnlHistoryStyle.NRows = 2;
 
         pnlCustomColors.NColumns = 3;
-        ((Gtk.Table.TableChild) pnlCustomColors[grpHistory]).RightAttach = 3;
-        ((Gtk.Table.TableChild) pnlCustomColors[grpHistory]).LeftAttach = 2;
-        ((Gtk.Table.TableChild) pnlCustomColors[grpHistory]).TopAttach = 0;
-        ((Gtk.Table.TableChild) pnlCustomColors[grpHistory]).BottomAttach = 1;
+        ((Gtk.Table.TableChild)pnlCustomColors[grpHistory]).RightAttach = 3;
+        ((Gtk.Table.TableChild)pnlCustomColors[grpHistory]).LeftAttach = 2;
+        ((Gtk.Table.TableChild)pnlCustomColors[grpHistory]).TopAttach = 0;
+        ((Gtk.Table.TableChild)pnlCustomColors[grpHistory]).BottomAttach = 1;
 
-        ((Gtk.Table.TableChild) pnlCustomColors[grpTray]).RightAttach = 2;
-        ((Gtk.Table.TableChild) pnlCustomColors[grpTray]).LeftAttach = 1;
-        ((Gtk.Table.TableChild) pnlCustomColors[grpTray]).TopAttach = 0;
-        ((Gtk.Table.TableChild) pnlCustomColors[grpTray]).BottomAttach = 1;
+        ((Gtk.Table.TableChild)pnlCustomColors[grpTray]).RightAttach = 2;
+        ((Gtk.Table.TableChild)pnlCustomColors[grpTray]).LeftAttach = 1;
+        ((Gtk.Table.TableChild)pnlCustomColors[grpTray]).TopAttach = 0;
+        ((Gtk.Table.TableChild)pnlCustomColors[grpTray]).BottomAttach = 1;
 
-        ((Gtk.Table.TableChild) pnlCustomColors[grpMain]).RightAttach = 1;
-        ((Gtk.Table.TableChild) pnlCustomColors[grpMain]).LeftAttach = 0;
-        ((Gtk.Table.TableChild) pnlCustomColors[grpMain]).TopAttach = 0;
-        ((Gtk.Table.TableChild) pnlCustomColors[grpMain]).BottomAttach = 1;
+        ((Gtk.Table.TableChild)pnlCustomColors[grpMain]).RightAttach = 1;
+        ((Gtk.Table.TableChild)pnlCustomColors[grpMain]).LeftAttach = 0;
+        ((Gtk.Table.TableChild)pnlCustomColors[grpMain]).TopAttach = 0;
+        ((Gtk.Table.TableChild)pnlCustomColors[grpMain]).BottomAttach = 1;
         pnlCustomColors.NRows = 1;
       }
     }

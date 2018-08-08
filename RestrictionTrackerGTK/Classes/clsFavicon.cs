@@ -9,7 +9,7 @@ using Gdk;
 using Gtk;
 namespace RestrictionTrackerGTK
 {
-  public class clsFavicon : IDisposable
+  public class clsFavicon: IDisposable
   {
     private RestrictionLibrary.WebClientCore wsFile;
     public delegate void DownloadIconCompletedCallback(Gdk.Pixbuf icon16, Gdk.Pixbuf icon32, object token, Exception Error);
@@ -25,8 +25,8 @@ namespace RestrictionTrackerGTK
     }
     private void BeginConnect(object o)
     {
-      string URL = (string) ((object[]) o)[0];
-      object token = ((object[]) o)[1];
+      string URL = (string)((object[])o)[0];
+      object token = ((object[])o)[1];
       if (!URL.Contains("://"))
         URL = "http://" + URL;
       Uri URI;
@@ -111,14 +111,14 @@ namespace RestrictionTrackerGTK
                       }
                       else if (URL.Contains("//"))
                       {
-                        string oldURL = (string) URI.OriginalString;
+                        string oldURL = (string)URI.OriginalString;
                         if (oldURL.Contains("://"))
                           oldURL = oldURL.Substring(0, oldURL.IndexOf("://") + 1);
                         URL = oldURL + URL;
                       }
                       else
                       {
-                        string oldURL = (string) URI.OriginalString;
+                        string oldURL = (string)URI.OriginalString;
                         if (!oldURL.EndsWith("/") & oldURL.IndexOf("/", oldURL.IndexOf("//") + 2) > -1)
                           oldURL = oldURL.Substring(0, oldURL.LastIndexOf("/") + 1);
                         if (URL.StartsWith("/"))
@@ -181,11 +181,11 @@ namespace RestrictionTrackerGTK
     }
     private void DownloadFile(object state)
     {
-      Uri URI = (Uri) ((object[]) state)[0];
-      string Filename = (string) ((object[]) state)[1];
-      object token = ((object[]) state)[2];
+      Uri URI = (Uri)((object[])state)[0];
+      string Filename = (string)((object[])state)[1];
+      object token = ((object[])state)[2];
       wsFile.DownloadFileCompleted += wsFile_DownloadFileCompleted;
-      bool trySimpler = (bool) ((object[]) state)[3];
+      bool trySimpler = (bool)((object[])state)[3];
       try
       {
         wsFile.DownloadFileAsync(URI, Filename, new object[] { token, URI, trySimpler });
@@ -203,7 +203,7 @@ namespace RestrictionTrackerGTK
         {
           g.DrawImage(fromImage, 0, 0, width, height);
         }
-        return (Bitmap) newImage.Clone();
+        return (Bitmap)newImage.Clone();
       }
     }
     private Bitmap GenerateCloneImage(System.Drawing.Icon fromIcon)
@@ -214,14 +214,14 @@ namespace RestrictionTrackerGTK
         {
           g.DrawIcon(fromIcon, 0, 0);
         }
-        return (Bitmap) newImage.Clone();
+        return (Bitmap)newImage.Clone();
       }
     }
     void wsFile_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
     {
-      object Token = ((object[]) e.UserState)[0];
-      Uri URI = (Uri) ((object[]) e.UserState)[1];
-      bool trySimpler = (bool) ((object[]) e.UserState)[2];
+      object Token = ((object[])e.UserState)[0];
+      Uri URI = (Uri)((object[])e.UserState)[1];
+      bool trySimpler = (bool)((object[])e.UserState)[2];
       if (e.Error != null)
       {
         if (!trySimpler)
@@ -293,7 +293,7 @@ namespace RestrictionTrackerGTK
         File.Delete(imgFile);
       if (didOK)
       {
-        c_callback.Invoke(modFunctions.ImageToPixbuf((System.Drawing.Image) pctPNG16.Clone()), modFunctions.ImageToPixbuf((System.Drawing.Image) pctPNG32.Clone()), Token, null);
+        c_callback.Invoke(modFunctions.ImageToPixbuf((System.Drawing.Image)pctPNG16.Clone()), modFunctions.ImageToPixbuf((System.Drawing.Image)pctPNG32.Clone()), Token, null);
       }
       else
       {
