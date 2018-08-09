@@ -40,7 +40,7 @@ RestrictionTrackerLib
  Constructor for <see cref="T:RestrictionLibrary.DetermineType"/> class, which also begins the determination procedure.
  </summary>
 	<param name="Provider">URL to determine the type of.</param>
-	<param name="Timeout">Number of milliseconds to wait for a response from the server while testing the connection.</param>
+	<param name="Timeout">Number of seconds to wait for a response from the server while testing the connection.</param>
 	<param name="Proxy">Proxy settings for testing the servers.</param>
 	<param name="callback">Callback subroutine to be triggered when the type has been determined.</param>
 </member><member name="T:RestrictionLibrary.DetermineType">
@@ -56,7 +56,7 @@ RestrictionTrackerLib
  Constructor for <see cref="T:RestrictionLibrary.UpdateAJAXLists"/> class, which also begins the update procedure.
  </summary>
 	<param name="HostAddress">Host to determine the AJAX Lists of.</param>
-	<param name="iTimeout">Number of milliseconds to wait for a response from the server while testing the connection.</param>
+	<param name="iTimeout">Number of seconds to wait for a response from the server while testing the connection.</param>
 	<param name="pProxy">Proxy settings for testing the servers.</param>
 	<param name="callback">Callback subroutine to be triggered when the type has been determined.</param>
 </member><member name="T:RestrictionLibrary.UpdateAJAXLists">

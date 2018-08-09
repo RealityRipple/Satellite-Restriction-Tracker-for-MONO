@@ -11,7 +11,7 @@
     <AssemblyName>RestrictionTracker</AssemblyName>
     <StartupObject>RestrictionTrackerGTK.MainClass</StartupObject>
     <ApplicationIcon>Resources\sat.ico</ApplicationIcon>
-    <ReleaseVersion>1.5.3</ReleaseVersion>
+    <ReleaseVersion>1.5.4</ReleaseVersion>
     <Description>Satellite Restriction Tracker</Description>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>trackergtk.snk</AssemblyOriginatorKeyFile>
@@ -64,9 +64,6 @@
     </Reference>
     <Reference Include="appindicator-sharp">
       <HintPath>..\appindicator-sharp.dll</HintPath>
-    </Reference>
-    <Reference Include="RestrictionTrackerLib">
-      <HintPath>..\RestrictionTrackerLib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
