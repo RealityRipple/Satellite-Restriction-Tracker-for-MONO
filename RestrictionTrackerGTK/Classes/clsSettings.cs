@@ -358,8 +358,8 @@ namespace RestrictionTrackerGTK
           XmlNodeList xOrderList = m_node.ChildNodes;
           foreach (XmlNode m_order in xOrderList)
           {
-            string oName = m_node.Attributes[0].InnerText;
-            string oValue = m_node.FirstChild.InnerText;
+            string oName = m_order.Attributes[0].InnerText;
+            string oValue = m_order.FirstChild.InnerText;
             if (oName.CompareTo("Short") == 0)
             {
               m_AJAXShort = oValue;
