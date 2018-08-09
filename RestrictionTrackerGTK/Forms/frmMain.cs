@@ -4294,7 +4294,23 @@ namespace RestrictionTrackerGTK
       checkedAJAX = true;
       if (string.IsNullOrEmpty(shortList) || string.IsNullOrEmpty(fullList))
       {
-        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Unable to Update AJAX Lists. Preparing Connection anyway...", false);
+        if (!string.IsNullOrEmpty(shortList))
+        {
+          if (shortList.StartsWith("ERR_"))
+            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Error Updating AJAX Lists. Preparing Connection anyway...\nError: " + shortList.Substring(4), false);
+          else if (shortList.StartsWith("URL_"))
+            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Unable to Update AJAX Lists. Preparing Connection anyway...\nRedirected to " + shortList.Substring(4) + ".", false);
+          else if (shortList == "DATA_EMPTY")
+            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Unable to Update AJAX Lists. Preparing Connection anyway...\nNo Data from Server.", false);
+          else if (shortList.StartsWith("DATA_REDIR_"))
+            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Unable to Update AJAX Lists. Preparing Connection anyway...\nRedirection to new URL.\n" + shortList.Substring(11), false);
+          else if (shortList.StartsWith("DATA_SEP_"))
+            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Unable to Update AJAX Lists. Preparing Connection anyway...\nMalformed Data from Server.\n" + shortList.Substring(9), false);
+          else
+            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Unable to Update AJAX Lists. Preparing Connection anyway...\nData: " + shortList, false);
+        }
+        else
+          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Unable to Update AJAX Lists. Preparing Connection anyway...", false);
         DisplayUsage(false, true);
         return;
       }
