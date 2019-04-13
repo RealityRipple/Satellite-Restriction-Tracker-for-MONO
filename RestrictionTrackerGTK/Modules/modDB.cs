@@ -57,22 +57,19 @@ namespace RestrictionTrackerGTK
       {
         return;
       }
-      if (Math.Abs(LOG_GetLast().Subtract(dTime).TotalMinutes) >= HistoryAge)
+      if (lDownLim <= 0)
       {
-        if (lDownLim > 0 | lUpLim > 0)
-        {
-          if (usageDB == null)
-          {
-            usageDB = new DataBase();
-          }
-          usageDB.Add(new DataBase.DataRow(dTime, lDown, lDownLim, lUp, lUpLim));
-          if (Save)
-          {
-            LOG_Sort();
-            System.Threading.Thread tX = new System.Threading.Thread(new System.Threading.ThreadStart(LOG_Save));
-            tX.Start();
-          }
-        }
+        return;
+      }
+      if (usageDB == null)
+      {
+        usageDB = new DataBase();
+      }
+      usageDB.Add(new DataBase.DataRow(dTime, lDown, lDownLim, lUp, lUpLim));
+      if (Save)
+      {
+        System.Threading.Thread tX = new System.Threading.Thread(new System.Threading.ThreadStart(LOG_Save));
+        tX.Start();
       }
     }
     public static void LOG_Get(long lngIndex, out System.DateTime dtDate, out long lngDown, out long lngDownLim, out long lngUp, out long lngUpLim)
@@ -81,7 +78,8 @@ namespace RestrictionTrackerGTK
       {
         if (LOG_GetCount() > lngIndex)
         {
-          DataBase.DataRow dbRow = usageDB.ToArray()[lngIndex];
+          DataBase.DataRow[] dArr = usageDB.ToArray();
+          DataBase.DataRow dbRow = dArr[lngIndex];
           dtDate = dbRow.DATETIME;
           lngDown = dbRow.DOWNLOAD;
           lngDownLim = dbRow.DOWNLIM;
@@ -95,6 +93,28 @@ namespace RestrictionTrackerGTK
       lngDownLim = 0;
       lngUp = 0;
       lngUpLim = 0;
+    }
+    public static DataBase.DataRow[] LOG_GetRange(System.DateTime dtStart, System.DateTime dtEnd)
+    {
+      System.Collections.Generic.List<DataBase.DataRow> lRet = new System.Collections.Generic.List<DataBase.DataRow>();
+      if (!isLoaded)
+      {
+        return lRet.ToArray();
+      }
+      UInt64 kStart = (UInt64) Math.Floor((double) (dtStart.Ticks / 600000000));
+      UInt64 kEnd = (UInt64) Math.Floor((double) (dtEnd.Ticks / 600000000));
+      foreach(System.Collections.Generic.KeyValuePair<UInt64,DataBase.DataRow> dRow in usageDB)
+      {
+        if (dRow.Key >= kStart && dRow.Key <= kEnd)
+        {
+          lRet.Add(dRow.Value);
+        }
+        if (dRow.Key > kEnd)
+        {
+          break;
+        }
+      }
+      return lRet.ToArray();
     }
     public static int LOG_GetCount()
     {
@@ -114,14 +134,11 @@ namespace RestrictionTrackerGTK
       {
         return new System.DateTime(1970, 1, 1);
       }
-      if (LOG_GetCount() > 0)
-      {
-        return usageDB.ToArray()[LOG_GetCount() - 1].DATETIME;
-      }
-      else
+      if (LOG_GetCount() < 1)
       {
         return new System.DateTime(1970, 1, 1);
       }
+      return usageDB.GetLast().DATETIME;
     }
     public static void LOG_Initialize(string sAccount, bool withDisplay)
     {
@@ -176,22 +193,6 @@ namespace RestrictionTrackerGTK
           LOG_Save(false);
         }
         usageDB = null;
-      }
-    }
-    public static void LOG_Sort()
-    {
-      if (!isLoaded)
-      {
-        return;
-      }
-      while (isSaving)
-      {
-        System.Threading.Thread.Sleep(0);
-        System.Threading.Thread.Sleep(100);
-      }
-      if (usageDB != null)
-      {
-        usageDB.Sort();
       }
     }
     static internal void LOG_Save()

@@ -3054,7 +3054,7 @@ namespace RestrictionTrackerGTK
         int timeCheck = -mySettings.Overtime;
         if (timeCheck <= -15)
         {
-          DataBase.DataRow[] lItems = Array.FindAll(modDB.usageDB.ToArray(), (DataBase.DataRow satRow) => satRow.DATETIME.CompareTo(DateTime.Now.AddMinutes(timeCheck)) >= 0 & satRow.DATETIME.CompareTo(DateTime.Now) <= 0);
+          DataBase.DataRow[] lItems = modDB.LOG_GetRange(DateTime.Now.AddMinutes(timeCheck), DateTime.Now);
           for (int I = lItems.Length - 2; I >= 0; I += -1)
           {
             if (lDown - lItems[I].DOWNLOAD >= mySettings.Overuse)

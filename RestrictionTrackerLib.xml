@@ -563,10 +563,6 @@ RestrictionTrackerLib
 	<summary>
  Begin loading DataBase entries from the path specified in the snitialization subroutine.
  </summary>
-</member><member name="M:RestrictionLibrary.DataBase.Sort">
-	<summary>
- Organize the entire DataBase by date and time.
- </summary>
 </member><member name="M:RestrictionLibrary.DataBase.Add(RestrictionLibrary.DataBase.DataRow)">
 	<summary>
  Add a new DataRow entry to the DataBase.
@@ -585,13 +581,13 @@ RestrictionTrackerLib
  Remove all entries from this DataBase.
  </summary>
 	<remarks>This is literally identical to the initialization subroutine without parameters.</remarks>
-</member><member name="M:RestrictionLibrary.DataBase.Contains(RestrictionLibrary.DataBase.DataRow)">
+</member><member name="M:RestrictionLibrary.DataBase.Contains(System.Collections.Generic.KeyValuePair{System.UInt64,RestrictionLibrary.DataBase.DataRow})">
 	<summary>
  Check for existence of an item by searching for an exact match. 
  </summary>
-	<param name="item">The exact match of the <see cref="T:RestrictionLibrary.DataBase.DataRow"/> you wish to find.</param>
+	<param name="item">The exact match of the KeyValuePair(Of UInt64, DataRow)) you wish to find.</param>
 	<returns><c>True</c> is returned if the DataBase contains at least one copy of the <paramref name="item"/>, <c>False</c> otherwise.</returns>
-</member><member name="M:RestrictionLibrary.DataBase.CopyTo(RestrictionLibrary.DataBase.DataRow[],System.Int32)">
+</member><member name="M:RestrictionLibrary.DataBase.CopyTo(System.Collections.Generic.KeyValuePair{System.UInt64,RestrictionLibrary.DataBase.DataRow}[],System.Int32)">
 	<summary>
  Copy data from this DataBase into an array of DataRows.
  </summary>
@@ -616,19 +612,19 @@ RestrictionTrackerLib
  </summary>
 	<value></value>
 	<returns>This property is always false because it is always false for all arrays.</returns>
-</member><member name="M:RestrictionLibrary.DataBase.Remove(RestrictionLibrary.DataBase.DataRow)">
-	<summary>
- Remove a DataRow entry from the DataBase.
- </summary>
-	<param name="item">The DataRow entry to remove.</param>
-	<returns><c>True</c> if the entry was successfully removed from the DataBase, <c>False</c> if the entry could not be found.</returns>
-	<remarks>This function only uses the <see cref="F:RestrictionLibrary.DataBase.DataRow.DATETIME"/> value to compare against entries in the DataBase.</remarks>
 </member><member name="M:RestrictionLibrary.DataBase.Remove(System.DateTime)">
 	<summary>
  Remove a DataRow entry from the DataBase.
  </summary>
 	<param name="DateTime">The Date and Time of the DataRow entry to remove.</param>
 	<returns><c>True</c> if the entry was successfully removed from the DataBase, <c>False</c> if the entry could not be found.</returns>
+</member><member name="M:RestrictionLibrary.DataBase.Remove(System.UInt64)">
+	<summary>
+ Remove a DataRow entry from the DataBase.
+ </summary>
+	<param name="item">The DataRow entry to remove.</param>
+	<returns><c>True</c> if the entry was successfully removed from the DataBase, <c>False</c> if the entry could not be found.</returns>
+	<remarks>This function only uses the <see cref="F:RestrictionLibrary.DataBase.DataRow.DATETIME"/> value to compare against entries in the DataBase.</remarks>
 </member><member name="M:RestrictionLibrary.DataBase.GetEnumerator">
 	<summary>
  Returns an enumerator that iterates through the DataBase.

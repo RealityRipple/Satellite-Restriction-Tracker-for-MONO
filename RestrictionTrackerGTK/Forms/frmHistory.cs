@@ -468,7 +468,7 @@ namespace RestrictionTrackerGTK
         }
         if (modDB.usageDB != null && modDB.usageDB.Count > 0)
         {
-          DataBase.DataRow[] lItems = Array.FindAll(modDB.usageDB.ToArray(), (DataBase.DataRow satRow) => satRow.DATETIME.CompareTo(dFrom) >= 0 & satRow.DATETIME.CompareTo(dTo) <= 0);
+          DataBase.DataRow[] lItems = modDB.LOG_GetRange(dFrom, dTo);
           extraData = lItems;
           DoResize(true);
         }
@@ -489,7 +489,7 @@ namespace RestrictionTrackerGTK
         DataBase.DataRow[] lItems = null;
         if (modDB.usageDB != null && modDB.usageDB.Count > 0)
         {
-          lItems = Array.FindAll(modDB.usageDB.ToArray(), (DataBase.DataRow satRow) => satRow.DATETIME.CompareTo(dFrom) >= 0 & satRow.DATETIME.CompareTo(dTo) <= 0);
+          lItems = modDB.LOG_GetRange(dFrom, dTo);
         }
         else
         {
@@ -711,19 +711,20 @@ namespace RestrictionTrackerGTK
       {
         if (modDB.usageDB != null)
         {
-          if (modDB.usageDB.Count > 1)
+          DataBase.DataRow[] dbValues = modDB.usageDB.ToArray();
+          if (dbValues.Length > 1)
           {
             ShowProgress("Querying DataBase...", "Scanning for Resets...");
-            for (int i = modDB.usageDB.Count - 1; i >= 1; i--)
+            for (int i = dbValues.Length - 1; i >= 1; i--)
             {
-              SetProgress(modDB.usageDB.Count - i, modDB.usageDB.Count, "");
-              DataBase.DataRow thisDB = modDB.usageDB.ToArray()[i];
+              SetProgress(dbValues.Length - i, dbValues.Length, "");
+              DataBase.DataRow thisDB = dbValues[i];
               DataBase.DataRow lastDB = thisDB;
               if (i > 0)
-                lastDB = modDB.usageDB.ToArray()[i - 1];
+                lastDB = dbValues[i - 1];
               DataBase.DataRow nextDB = thisDB;
-              if (i < modDB.usageDB.Count - 1)
-                nextDB = modDB.usageDB.ToArray()[i + 1];
+              if (i < dbValues.Length - 1)
+                nextDB = dbValues[i + 1];
               if (((thisDB.DOWNLOAD < lastDB.DOWNLOAD) | (thisDB.DOWNLOAD == 0 & lastDB.DOWNLOAD == 0)) &
                   ((thisDB.UPLOAD < lastDB.UPLOAD) | (thisDB.UPLOAD == 0 & lastDB.UPLOAD == 0)) &
                   !(lastDB.DOWNLOAD == 0 & lastDB.UPLOAD == 0) &
@@ -748,19 +749,19 @@ namespace RestrictionTrackerGTK
               }
             }
           }
-          else if (modDB.usageDB.Count > 0)
+          else if (dbValues.Length > 0)
           {
-            if (modDB.usageDB.ToArray()[0].DATETIME > dtwFrom.MaxDate)
+            if (dbValues[0].DATETIME > dtwFrom.MaxDate)
             {
               From30DaysAgo = dtwFrom.MaxDate;
             }
-            else if (modDB.usageDB.ToArray()[0].DATETIME < dtwFrom.MinDate)
+            else if (dbValues[0].DATETIME < dtwFrom.MinDate)
             {
               From30DaysAgo = dtwFrom.MinDate;
             }
             else
             {
-              From30DaysAgo = modDB.usageDB.ToArray()[0].DATETIME;
+              From30DaysAgo = dbValues[0].DATETIME;
             }
           }
           else
@@ -819,20 +820,21 @@ namespace RestrictionTrackerGTK
       {
         if (modDB.usageDB != null)
         {
-          if (modDB.usageDB.Count > 1)
+          DataBase.DataRow[] dbValues = modDB.usageDB.ToArray();
+          if (dbValues.Length > 1)
           {
             ShowProgress("Querying DataBase...", "Scanning for Resets...");
             int Finds = 0;
-            for (int i = modDB.usageDB.Count - 1; i > 1; i--)
+            for (int i = dbValues.Length - 1; i > 1; i--)
             {
-              SetProgress(modDB.usageDB.Count - i, modDB.usageDB.Count, "");
-              DataBase.DataRow thisDB = modDB.usageDB.ToArray()[i];
+              SetProgress(dbValues.Length - i, dbValues.Length, "");
+              DataBase.DataRow thisDB = dbValues[i];
               DataBase.DataRow lastDB = thisDB;
               if (i > 0)
-                lastDB = modDB.usageDB.ToArray()[i - 1];
+                lastDB = dbValues[i - 1];
               DataBase.DataRow nextDB = thisDB;
-              if (i < modDB.usageDB.Count - 1)
-                nextDB = modDB.usageDB.ToArray()[i + 1];
+              if (i < dbValues.Length - 1)
+                nextDB = dbValues[i + 1];
               if (((thisDB.DOWNLOAD < lastDB.DOWNLOAD) | (thisDB.DOWNLOAD == 0 & lastDB.DOWNLOAD == 0)) &
                   ((thisDB.UPLOAD < lastDB.UPLOAD) | (thisDB.UPLOAD == 0 & lastDB.UPLOAD == 0)) &
                   !(lastDB.DOWNLOAD == 0 & lastDB.UPLOAD == 0) &
@@ -865,19 +867,19 @@ namespace RestrictionTrackerGTK
               From60DaysAgo = dtwFrom.MinDate;
             }
           }
-          else if (modDB.usageDB.Count > 0)
+          else if (dbValues.Length > 0)
           {
-            if (modDB.usageDB.ToArray()[0].DATETIME > dtwFrom.MaxDate)
+            if (dbValues[0].DATETIME > dtwFrom.MaxDate)
             {
               From60DaysAgo = dtwFrom.MaxDate;
             }
-            else if (modDB.usageDB.ToArray()[0].DATETIME < dtwFrom.MinDate)
+            else if (dbValues[0].DATETIME < dtwFrom.MinDate)
             {
               From60DaysAgo = dtwFrom.MinDate;
             }
             else
             {
-              From60DaysAgo = modDB.usageDB.ToArray()[0].DATETIME;
+              From60DaysAgo = dbValues[0].DATETIME;
             }
           }
           else
@@ -961,8 +963,6 @@ namespace RestrictionTrackerGTK
             ShowProgress("", "Loading File into DataBase...");
             modDB.usageDB = wbImport;
           }
-          ShowProgress("", "Sorting DataBase...");
-          modDB.LOG_Sort();
           ShowProgress("", "Saving DataBase...");
           modDB.LOG_Save(true);
           HideProgress();
@@ -1034,9 +1034,9 @@ namespace RestrictionTrackerGTK
           System.DateTime dTo = System.DateTime.Parse(dtwTo.Date.Date.ToShortDateString() + " 11:59:59 PM");
           DataBase newDB = new DataBase();
           newDB.ProgressState += usageDB_ProgressState;
-          foreach (DataBase.DataRow satRow in modDB.usageDB)
+          foreach (System.Collections.Generic.KeyValuePair<UInt64, DataBase.DataRow> satRow in modDB.usageDB)
           {
-            if (satRow.DATETIME.CompareTo(dFrom) >= 0 & satRow.DATETIME.CompareTo(dTo) <= 0)
+            if (satRow.Value.DATETIME.CompareTo(dFrom) >= 0 & satRow.Value.DATETIME.CompareTo(dTo) <= 0)
             {
               newDB.Add(satRow);
             }
