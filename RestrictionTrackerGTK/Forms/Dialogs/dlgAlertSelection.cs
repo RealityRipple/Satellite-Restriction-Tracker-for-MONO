@@ -17,7 +17,7 @@ namespace RestrictionTrackerGTK
       this.Build();
       ((Gtk.Box.BoxChild)this.ActionArea[lblMore]).Position = 0;
       ((Gtk.Box.BoxChild)this.ActionArea[vsButtons]).Position = 1;
-      if (CurrentOS.IsMac)
+      if (RestrictionLibrary.CurrentOS.IsMac)
       {
         ((Gtk.Box.BoxChild)this.ActionArea[cmdClose]).Position = 2;
         ((Gtk.Box.BoxChild)this.ActionArea[cmdSave]).Position = 3;

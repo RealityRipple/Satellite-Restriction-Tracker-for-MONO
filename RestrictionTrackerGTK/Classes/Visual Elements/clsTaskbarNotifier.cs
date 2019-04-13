@@ -293,9 +293,9 @@ namespace RestrictionTrackerGTK
       wndMax.SkipPagerHint = true;
       wndMax.SkipTaskbarHint = true;
       wndMax.FocusOnMap = false;
-      wndMax.Decorated = CurrentOS.IsMac;
+      wndMax.Decorated = RestrictionLibrary.CurrentOS.IsMac;
       wndMax.Show();
-      if (!CurrentOS.IsMac)
+      if (!RestrictionLibrary.CurrentOS.IsMac)
         wndMax.Maximize();
       titleText = strTitle;
       contentText = strContent;
@@ -430,7 +430,7 @@ namespace RestrictionTrackerGTK
       Gtk.Window wndMax = (Gtk.Window)o;
       if (args.Allocation.Width == 200)
       {
-        if (CurrentOS.IsMac)
+        if (RestrictionLibrary.CurrentOS.IsMac)
           wndMax.Maximize();
       }
     }

@@ -161,7 +161,6 @@
     <Compile Include="Modules\modDB.cs" />
     <Compile Include="Classes\clsUpdate.cs" />
     <Compile Include="Classes\clsBugReport.cs" />
-    <Compile Include="Classes\clsCurrentOS.cs" />
     <Compile Include="gtk-gui\RestrictionTrackerGTK.frmAbout.cs" />
     <Compile Include="gtk-gui\RestrictionTrackerGTK.frmHistory.cs" />
     <Compile Include="gtk-gui\RestrictionTrackerGTK.frmMain.cs" />

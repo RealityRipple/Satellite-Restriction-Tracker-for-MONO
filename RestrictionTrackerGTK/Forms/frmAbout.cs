@@ -16,19 +16,19 @@ namespace RestrictionTrackerGTK
       base(Gtk.WindowType.Toplevel)
     {
       sUpdatePath = string.Empty;
-      if (CurrentOS.IsMac)
+      if (RestrictionLibrary.CurrentOS.IsMac)
         sUpdatePath = System.IO.Path.Combine(modFunctions.AppData, "Setup.dmg");
-      else if (CurrentOS.IsLinux)
+      else if (RestrictionLibrary.CurrentOS.IsLinux)
         sUpdatePath = System.IO.Path.Combine(modFunctions.AppData, "Setup.bz2.sh");
       this.Build();
       this.WindowStateEvent += HandleWindowStateEvent;
       this.Title = "About " + modFunctions.ProductName;
       modFunctions.PrepareLink(lblProduct);
-      if (CurrentOS.IsLinux)
+      if (RestrictionLibrary.CurrentOS.IsLinux)
         lblProduct.Markup = "<a href=\"http://srt.realityripple.com/For_MONO/linux.php\">" + modFunctions.ProductName + " for Linux</a>";
-      else if (CurrentOS.IsMac)
+      else if (RestrictionLibrary.CurrentOS.IsMac)
         lblProduct.Markup = "<a href=\"http://srt.realityripple.com/For_MONO/mac.php\">" + modFunctions.ProductName + " for OS X</a>";
-      else if (CurrentOS.IsWindows)
+      else if (RestrictionLibrary.CurrentOS.IsWindows)
         lblProduct.Markup = "<a href=\"http://srt.realityripple.com/For_MONO/\">" + modFunctions.ProductName + " for Windows (on MONO)</a>";
       else
         lblProduct.Markup = "<a href=\"http://srt.realityripple.com/For_MONO/\">" + modFunctions.ProductName + " for MONO</a>";
@@ -210,7 +210,7 @@ namespace RestrictionTrackerGTK
         GLib.Source.Remove(tReset);
         tReset = 0;
       }
-      if (CurrentOS.IsLinux)
+      if (RestrictionLibrary.CurrentOS.IsLinux)
         System.Diagnostics.Process.Start("chmod", "+x \"" + sUpdatePath + "\"");
       SetButtonUpdate("Apply _Update", modFunctions.ProductName + " must be restarted before the update can be applied.");
     }
