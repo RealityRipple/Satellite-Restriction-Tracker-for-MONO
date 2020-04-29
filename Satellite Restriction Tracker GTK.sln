@@ -218,6 +218,6 @@ Global
 		$32.scope = text/plain
 		$32.TabsToSpaces = True
 		description = Satellite Restriction Tracker
-		version = 1.5.4.2
+		version = 1.5.5
 	EndGlobalSection
 EndGlobal
