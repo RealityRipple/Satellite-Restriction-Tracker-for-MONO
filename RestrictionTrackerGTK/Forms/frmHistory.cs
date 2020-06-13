@@ -94,6 +94,7 @@ namespace RestrictionTrackerGTK
       {
         case localRestrictionTracker.SatHostTypes.Dish_EXEDE:
         case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
+        case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER:
         case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
           ((Gtk.Label)cmd30Days.Child).LabelProp = "T_his Period";
           cmd30Days.TooltipMarkup = "Query the database to get the history of this usage period.";
@@ -312,6 +313,7 @@ namespace RestrictionTrackerGTK
                   break;
                 case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
                 case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
+                case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER:
                   evnUld.Visible = false;
                   pnlGraph.Homogeneous = false;
                   pnlGraph.CheckResize();
@@ -548,6 +550,7 @@ namespace RestrictionTrackerGTK
               break;
             case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
             case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
+            case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER:
               lvUsage = (DataListView)new RuralPortalView();
               break;
             default:

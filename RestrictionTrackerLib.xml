@@ -6,1207 +6,1465 @@ RestrictionTrackerLib
 </name>
 </assembly>
 <members>
-<member name="F:RestrictionLibrary.DetermineType.SatHostGroup.Dish">
-	<summary>
- Provider uses Dish login system (Unique to mydish.com).
- </summary>
-</member><member name="F:RestrictionLibrary.DetermineType.SatHostGroup.RuralPortal">
-	<summary>
- Provider uses general RuralPortal login system (DOMAIN.ruralportal.net).
- </summary>
-</member><member name="F:RestrictionLibrary.DetermineType.SatHostGroup.WildBlue">
-	<summary>
- Provider uses legacy WildBlue login system (myaccount.DOMAIN/wbisp/DOMAIN).
- </summary>
-</member><member name="F:RestrictionLibrary.DetermineType.SatHostGroup.Exede">
-	<summary>
- Provider uses modern Exede login system (exede.net or satelliteinternetco.com, uses AJAX).
- </summary>
-</member><member name="F:RestrictionLibrary.DetermineType.SatHostGroup.Other">
-	<summary>
- The provider is unknown or hasn't been determined yet.
- </summary>
-</member><member name="T:RestrictionLibrary.DetermineType.SatHostGroup">
-	<summary>
- Enumeration of provider types, which generally describe the login system, though not necessarily the exact provider or usage type.
- </summary>
-</member><member name="T:RestrictionLibrary.DetermineType.TypeDeterminedCallback">
-	<summary>
- Callback subroutine to be triggered when a type has been determined in the <see cref="T:RestrictionLibrary.DetermineType"/> class.
- </summary>
-	<param name="HostGroup">Provider type generally describing the provider domain name's login system.</param>
-</member><member name="M:RestrictionLibrary.DetermineType.#ctor(System.String,System.Int32,System.Net.IWebProxy,RestrictionLibrary.DetermineType.TypeDeterminedCallback)">
-	<summary>
- Constructor for <see cref="T:RestrictionLibrary.DetermineType"/> class, which also begins the determination procedure.
- </summary>
-	<param name="Provider">URL to determine the type of.</param>
-	<param name="Timeout">Number of seconds to wait for a response from the server while testing the connection.</param>
-	<param name="Proxy">Proxy settings for testing the servers.</param>
-	<param name="callback">Callback subroutine to be triggered when the type has been determined.</param>
-</member><member name="T:RestrictionLibrary.DetermineType">
-	<summary>
- Class for determining the account type for a provider domain name.
- </summary>
-</member><member name="T:RestrictionLibrary.UpdateAJAXLists.UpdateCallback">
-	<summary>
- Callback subroutine to be triggered when a type has been determined in the <see cref="T:RestrictionLibrary.UpdateAJAXLists"/> class.
- </summary>
-</member><member name="M:RestrictionLibrary.UpdateAJAXLists.#ctor(System.String,System.Int32,System.Net.IWebProxy,System.Object,RestrictionLibrary.UpdateAJAXLists.UpdateCallback)">
-	<summary>
- Constructor for <see cref="T:RestrictionLibrary.UpdateAJAXLists"/> class, which also begins the update procedure.
- </summary>
-	<param name="HostAddress">Host to determine the AJAX Lists of.</param>
-	<param name="iTimeout">Number of seconds to wait for a response from the server while testing the connection.</param>
-	<param name="pProxy">Proxy settings for testing the servers.</param>
-	<param name="callback">Callback subroutine to be triggered when the type has been determined.</param>
-</member><member name="T:RestrictionLibrary.UpdateAJAXLists">
-	<summary>
- Class for grabbing Exede AJAX Lists
- </summary>
-</member><member name="P:RestrictionLibrary.My.Resources.Resources.ResourceManager">
-	<summary>
+<member name="T:RestrictionLibrary.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:RestrictionLibrary.My.Resources.Resources.ResourceManager">
+<summary>
   Returns the cached ResourceManager instance used by this class.
 </summary>
-</member><member name="P:RestrictionLibrary.My.Resources.Resources.Culture">
-	<summary>
+</member>
+<member name="P:RestrictionLibrary.My.Resources.Resources.Culture">
+<summary>
   Overrides the current thread's CurrentUICulture property for all
   resource lookups using this strongly typed resource class.
 </summary>
-</member><member name="P:RestrictionLibrary.My.Resources.Resources.sat">
-	<summary>
+</member>
+<member name="P:RestrictionLibrary.My.Resources.Resources.sat">
+<summary>
   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
 </summary>
-</member><member name="T:RestrictionLibrary.My.Resources.Resources">
-	<summary>
-  A strongly-typed resource class, for looking up localized strings, etc.
-</summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_LEGACY">
-	<summary>
- WildBlue type meter with <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs">Type A</see> usage, including Download, Download Limit, Upload, and Upload Limit values, reading through an address of myaccount.DOMAIN/wbisp/DOMAIN/.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_EXEDE">
-	<summary>
- Exede type meter with <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs">Type B</see> usage, including only Used and Limit values, reading through either my.exede.net or my.satelliteinternetco.com, using AJAX.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY">
-	<summary>
- RuralPortal WildBlue type meter with <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs">Type A</see> usage, including Download, Download Limit, Upload, and Upload Limit values, reading through an address of DOMAIN.ruralportal.net.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE">
-	<summary>
- RuralPortal Exede type meter with <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs">Type B</see> usage, including only Used and Limit values, reading through an address of DOMAIN.ruralportal.net.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.Dish_EXEDE">
-	<summary>
- Exede through Dish Network type meter with <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs">Type A2</see> uage, including AnyTime, AnyTime Limit, Off-Peak, and Off-Peak Limit values, reading through mydish.com.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.Other">
-	<summary>
- The provider is unknown or hasn't been determined yet.
- </summary>
-</member><member name="T:RestrictionLibrary.localRestrictionTracker.SatHostTypes">
-	<summary>
- Types of Satellite hosts which are supported by <see cref="T:RestrictionLibrary.localRestrictionTracker"/>.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionStates.Initialize">
-	<summary>
- The class is being initialized.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionStates.Prepare">
-	<summary>
- Praparing to log in.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionStates.Login">
-	<summary>
- Logging in.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionStates.TableDownload">
-	<summary>
- Downloading the Usage Table.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionStates.TableRead">
-	<summary>
- Reading the Usage Table.
- </summary>
-</member><member name="T:RestrictionLibrary.localRestrictionTracker.ConnectionStates">
-	<summary>
- Current status of the <see cref="T:RestrictionLibrary.localRestrictionTracker"/> connection.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.None">
-	<summary>
- Use the <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionStates"/> value instead of this value. There's no further breakdown of status.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.ReadLogin">
-	<summary>
- The login page is being read. Only Exede uses this step.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.Authenticate">
-	<summary>
- The username and password are being sent. All providers use this step.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.AuthenticateRetry">
-	<summary>
- Authentication has to be sent a second time. Exede and RuralPortal use this step.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.Verify">
-	<summary>
- The login is being verified. Only Dish uses this step.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.LoadHome">
-	<summary>
- The home page is being loaded. This is also known as the Dashboard. Exede and Dish use this step.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.LoadAJAX">
-	<summary>
- AJAX data off the home page is being loaded. Only Exede uses this step.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.LoadAJAXRetry">
-	<summary>
- The previous attempt to load AJAX data failed, so now the system is loading every page of AJAX data it can in an attempt to find the meter. Only Exede uses this step.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.LoadTable">
-	<summary>
- The usage meter is being loaded. This is the final step, unless it has to be retried. All providers use this step.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.LoadTableRetry">
-	<summary>
- The usage meter is being loaded again. Sometimes it needs to be this way. Only Dish uses this step.
- </summary>
-</member><member name="T:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates">
-	<summary>
- Current stage of the <see cref="T:RestrictionLibrary.localRestrictionTracker"/> connection (more detailed than <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionStates"/>).
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType.UnknownAccountType">
-	<summary>
- The Account Type is unknown, so the <see cref="T:RestrictionLibrary.localRestrictionTracker"/> connection can not begin. There should be no <see cref="P:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.Message"/> for this <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs"/>.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType.UnknownAccountDetails">
-	<summary>
- The Username or Password are missing, so the <see cref="T:RestrictionLibrary.localRestrictionTracker"/> connection can not begin. There should be no <see cref="P:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.Message"/> for this <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs"/>.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType.LoginIssue">
-	<summary>
- There was an issue while logging in, but the login process is still going through. Currently the only issue triggered is from <see cref="F:RestrictionLibrary.DetermineType.SatHostGroup.RuralPortal"/> with the <see cref="P:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.Message"/> "Your password needs to be changed." when the server is prompting the user to change the password for one reason or another.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType.LoginFailure">
-	<summary>
- There was an issue while logging in. The <see cref="P:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.Message"/> will contain information about the <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionFailure"/>.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType.FatalLoginFailure">
-	<summary>
- There was an issue while logging in, and the <see cref="P:RestrictionLibrary.AppSettings.AccountType"/> is wrong. The <see cref="P:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.Message"/> will contain information about the <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionFailure"/>.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType.ConnectionTimeout">
-	<summary>
- The server timed out. There should be no <see cref="P:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.Message"/> for this <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs"/>.
- </summary>
-</member><member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType.TLSTooOld">
-	<summary>
- The version of TLS is too old. The <see cref="P:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.Message"/> for this <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs"/> will either be the string "VER" if TLS 1.1 and 1.2 are both disabled, or "PROXY" if the TLS Proxy is disabled.
- </summary>
-</member><member name="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType">
-	<summary>
- Types of connection failures.
- </summary>
-</member><member name="M:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.#ctor(RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType,System.String,System.String)">
-	<summary>
- Constructor for a <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs"/> class, used in a <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionFailure"/> event to notify about a problem during connection.
- </summary>
-	<param name="ftFailType">The <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType"/> describes the type of <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionFailure"/> for this event. See the description for each type for details.</param>
-	<param name="sMessage">A message containing information about the <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionFailure"/>. Not all <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType">FailureTypes</see> use messages.</param>
-	<param name="sFailure">Extra data passed to the program about the <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionFailure"/>, which can be reported to the RealityRipple Software servers to resolve in the next version. This is usually HTML and JavaScript from a single page of the login process or the meter.</param>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.Fail">
-	<summary>
- Extra data passed to the program about the <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionFailure"/>, which can be reported to the RealityRipple Software servers to resolve in the next version. This is usually HTML and JavaScript from a single page of the login process or the meter.
- </summary>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.Message">
-	<summary>
- A message containing information about the <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionFailure"/>. Not all <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType">FailureTypes</see> use messages.
- </summary>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.Type">
-	<summary>
- The <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType"/> describes the type of <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionFailure"/> for this event. See the description for each type for details.
- </summary>
-</member><member name="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs">
-	<summary>
- Information regarding the type of <see cref="T:RestrictionLibrary.localRestrictionTracker"/> connection failure received and any details.
- </summary>
-</member><member name="E:RestrictionLibrary.localRestrictionTracker.ConnectionFailure">
-	<summary>
- Triggered when the connection to a usage page fails or has an issue.
- </summary>
-	<param name="sender">Instance of the <see cref="T:RestrictionLibrary.localRestrictionTracker"/> class.</param>
-	<param name="e"><see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs"/> data regarding the failure.</param>
-</member><member name="M:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs.#ctor(System.Int64,System.Int64,System.Int64,System.Int64,System.DateTime,System.Boolean,System.Boolean)">
-	<summary>
- Constructor for a <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs"/> used in <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionWBLResult"/> and <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionRPLResult"/> events.
- </summary>
-	<param name="lDown">Number of megabytes used in download.</param>
-	<param name="lDownLim">Number of megabytes allowed in download.</param>
-	<param name="lUp">Number of megabytes used in upload.</param>
-	<param name="lUpLim">Number of megabytes allowed in upload.</param>
-	<param name="dUpdate">The specific date and time of this usage.</param>
-	<param name="bSlow"><c>True</c> if the connection has been reported as restricted, <c>False</c> otherwise.</param>
-	<param name="bFree"><c>True</c> if usage is reported not to count at the moment, <c>False</c> under normal conditions.</param>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs.Download">
-	<summary>
- Number of megabytes used in download.
- </summary>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs.DownloadLimit">
-	<summary>
- Number of megabytes allowed in download.
- </summary>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs.Upload">
-	<summary>
- Number of megabytes used in upload.
- </summary>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs.UploadLimit">
-	<summary>
- Number of megabytes allowed in upload.
- </summary>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs.Update">
-	<summary>
- The specific date and time of this usage.
- </summary>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs.SlowedDetected">
-	<summary>
-		<c>True</c> if the connection has been reported as restricted, <c>False</c> otherwise.
- </summary>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs.FreeDetected">
-	<summary>
-		<c>True</c> if usage is reported not to count at the moment, <c>False</c> under normal conditions.
- </summary>
-</member><member name="T:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs">
-	<summary>
- Result from a Type A usage meter, containing Download, Download Limit, Upload, and Upload Limit values.
- </summary>
-</member><member name="M:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs.#ctor(System.Int64,System.Int64,System.Int64,System.Int64,System.DateTime,System.Boolean,System.Boolean)">
-	<summary>
- Constructor for a <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs"/> used in <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionDNXResult"/> events.
- </summary>
-	<param name="lAnyTime">Number of megabytes used during AnyTime hours.</param>
-	<param name="lAnyTimeLim">Number of megabytes allowed during AnyTime hours.</param>
-	<param name="lOffPeak">Number of megabytes used during Off-Peak hours.</param>
-	<param name="lOffPeakLim">Number of megabytes allowed during Off-Peak hours.</param>
-	<param name="dUpdate">The specific date and time of this usage.</param>
-	<param name="bSlow"><c>True</c> if the connection has been reported as restricted, <c>False</c> otherwise.</param>
-	<param name="bFree"><c>True</c> if usage is reported not to count at the moment, <c>False</c> under normal conditions.</param>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs.AnyTime">
-	<summary>
- Number of megabytes used during AnyTime hours.
- </summary>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs.AnyTimeLimit">
-	<summary>
- Number of megabytes allowed during AnyTime hours.
- </summary>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs.OffPeak">
-	<summary>
- Number of megabytes used during Off-Peak hours.
- </summary>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs.OffPeakLimit">
-	<summary>
- Number of megabytes allowed during Off-Peak hours.
- </summary>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs.Update">
-	<summary>
- The specific date and time of this usage.
- </summary>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs.SlowedDetected">
-	<summary>
-		<c>True</c> if the connection has been reported as restricted, <c>False</c> otherwise.
- </summary>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs.FreeDetected">
-	<summary>
-		<c>True</c> if usage is reported not to count at the moment, <c>False</c> under normal conditions.
- </summary>
-</member><member name="T:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs">
-	<summary>
- Result from Type A2 usage meter, containing AnyTime, AnyTime Limit, Off-Peak, and Off-Peak Limit values.
- </summary>
-</member><member name="M:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs.#ctor(System.Int64,System.Int64,System.DateTime,System.Boolean,System.Boolean)">
-	<summary>
- Constructor for a <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs"/> used in <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionWBXResult"/> and <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionRPXResult"/> events.
- </summary>
-	<param name="lUsed">Total number of megabytes used.</param>
-	<param name="lLimit">Total number of megabytes allowed.</param>
-	<param name="dUpdate">The specific date and time of this usage.</param>
-	<param name="bSlow"><c>True</c> if the connection has been reported as restricted, <c>False</c> otherwise.</param>
-	<param name="bFree"><c>True</c> if usage is reported not to count at the moment, <c>False</c> under normal conditions.</param>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs.Used">
-	<summary>
- Total number of megabytes used.
- </summary>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs.Limit">
-	<summary>
- Total number of megabytes allowed.
- </summary>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs.Update">
-	<summary>
- The specific date and time of this usage.
- </summary>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs.SlowedDetected">
-	<summary>
- If your connection is restricted, this value will be set to <c>True</c>. Currently only set by <see cref="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_LEGACY"/>.
- </summary>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs.FreeDetected">
-	<summary>
- If the usage isn't being counted, this value will be set to <c>True</c>. Currently rarely used by <see cref="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_LEGACY"/>.
- </summary>
-</member><member name="T:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs">
-	<summary>
- Result from Type B usage meter, containing Used and Limit values.
- </summary>
-</member><member name="E:RestrictionLibrary.localRestrictionTracker.ConnectionWBLResult">
-	<summary>
- Triggered when the server returns data for a <see cref="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_LEGACY"/> account.
- </summary>
-	<param name="sender">Instance of the <see cref="T:RestrictionLibrary.localRestrictionTracker"/> class.</param>
-	<param name="e"><see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs"/> data regarding the result.</param>
-</member><member name="E:RestrictionLibrary.localRestrictionTracker.ConnectionWBXResult">
-	<summary>
- Triggered when the server returns data for a <see cref="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_EXEDE"/> account.
- </summary>
-	<param name="sender">Instance of the <see cref="T:RestrictionLibrary.localRestrictionTracker"/> class.</param>
-	<param name="e"><see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs"/> data regarding the result.</param>
-</member><member name="E:RestrictionLibrary.localRestrictionTracker.ConnectionDNXResult">
-	<summary>
- Triggered when the server returns data for a <see cref="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.Dish_EXEDE"/> account.
- </summary>
-	<param name="sender">Instance of the <see cref="T:RestrictionLibrary.localRestrictionTracker"/> class.</param>
-	<param name="e"><see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs"/> data regarding the result.</param>
-</member><member name="E:RestrictionLibrary.localRestrictionTracker.ConnectionRPLResult">
-	<summary>
- Triggered when the server returns data for a <see cref="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY"/> account.
- </summary>
-	<param name="sender">Instance of the <see cref="T:RestrictionLibrary.localRestrictionTracker"/> class.</param>
-	<param name="e"><see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs"/> data regarding the result.</param>
-</member><member name="E:RestrictionLibrary.localRestrictionTracker.ConnectionRPXResult">
-	<summary>
- Triggered when the server returns data for a <see cref="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE"/> account.
- </summary>
-	<param name="sender">Instance of the <see cref="T:RestrictionLibrary.localRestrictionTracker"/> class.</param>
-	<param name="e"><see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs"/> data regarding the result.</param>
-</member><member name="M:RestrictionLibrary.localRestrictionTracker.ConnectionStatusEventArgs.#ctor(RestrictionLibrary.localRestrictionTracker.ConnectionStates,RestrictionLibrary.localRestrictionTracker.ConnectionSubStates,System.Int32)">
-	<summary>
- Constructor for <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionStatusEventArgs"/> class.
- </summary>
-	<param name="status">Current status of the <see cref="T:RestrictionLibrary.localRestrictionTracker"/> connection.</param>
-	<param name="substate">Current stage of the <see cref="T:RestrictionLibrary.localRestrictionTracker"/> connection (more detailed than <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionStates"/>). This value is <see cref="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.None"/> by default.</param>
-	<param name="stage">The stage of the stage, so to speak. This numeric value contains detailed information on <paramref name="substate"/> values which may trigger more than one time.</param>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.ConnectionStatusEventArgs.Status">
-	<summary>
- Current status of the <see cref="T:RestrictionLibrary.localRestrictionTracker"/> connection.
- </summary>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.ConnectionStatusEventArgs.SubState">
-	<summary>
- Current stage of the <see cref="T:RestrictionLibrary.localRestrictionTracker"/> connection (more detailed than <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionStates"/>).
- </summary>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.ConnectionStatusEventArgs.Stage">
-	<summary>
- The stage of the stage, so to speak. This numeric value contains detailed information on <see cref="P:RestrictionLibrary.localRestrictionTracker.ConnectionStatusEventArgs.SubState"/> values which may trigger more than one time.
- </summary>
-</member><member name="T:RestrictionLibrary.localRestrictionTracker.ConnectionStatusEventArgs">
-	<summary>
- Class storing information regarding the current connection status, useful for displaying progress during connection or determining the location of an error.
- </summary>
-</member><member name="E:RestrictionLibrary.localRestrictionTracker.ConnectionStatus">
-	<summary>
- Triggered when new information regarding the current connection status is available.
- </summary>
-	<param name="sender">Instance of the <see cref="T:RestrictionLibrary.localRestrictionTracker"/> class.</param>
-	<param name="e"><see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionStatusEventArgs"/> data regarding the current state of the connection.</param>
-</member><member name="M:RestrictionLibrary.localRestrictionTracker.LoginCompletionEventArgs.#ctor(RestrictionLibrary.localRestrictionTracker.SatHostTypes)">
-	<summary>
- Constructor for the <see cref="T:RestrictionLibrary.localRestrictionTracker.LoginCompletionEventArgs"/> class.
- </summary>
-	<param name="myHostType">The type of host for this provider.</param>
-</member><member name="P:RestrictionLibrary.localRestrictionTracker.LoginCompletionEventArgs.HostType">
-	<summary>
- The type of host for this provider.
- </summary>
-</member><member name="T:RestrictionLibrary.localRestrictionTracker.LoginCompletionEventArgs">
-	<summary>
- Class storing information regarding a successful connection without data, which contains the <see cref="T:RestrictionLibrary.localRestrictionTracker.SatHostTypes">SatHostType</see> for the connected provider.
- </summary>
-</member><member name="E:RestrictionLibrary.localRestrictionTracker.LoginComplete">
-	<summary>
- Triggered when the server verifies that the account's login information is correct.
- </summary>
-	<param name="sender">Instance of the <see cref="T:RestrictionLibrary.localRestrictionTracker"/> class.</param>
-	<param name="e"><see cref="T:RestrictionLibrary.localRestrictionTracker.LoginCompletionEventArgs"/> data regarding the <see cref="T:RestrictionLibrary.localRestrictionTracker.SatHostTypes">SatHostType</see> of the account.</param>
-</member><member name="M:RestrictionLibrary.localRestrictionTracker.#ctor(System.String,System.Boolean)">
-	<summary>
- Constructor for the <see cref="T:RestrictionLibrary.localRestrictionTracker"/> class, which also begins the connection process.
- </summary>
-	<param name="ConfigPath">Directory where the user.config file is stored.</param>
-	<param name="OnlyLogin">If set to <c>True</c>, this connection will abort after verifying that the Username and Password are valid, without returning data. This value is <c>False</c> by default.</param>
-</member><member name="T:RestrictionLibrary.localRestrictionTracker">
-	<summary>
- Accesses WildBlue, Exede, RuralPortal, and Dish usage pages and handles all communication internally.
- </summary>
-</member><member name="F:RestrictionLibrary.DataBase.DataRow.DATETIME">
-	<summary>
- The Date and Time of the data stored in this row.
- </summary>
-</member><member name="F:RestrictionLibrary.DataBase.DataRow.DOWNLOAD">
-	<summary>
- The number of Megabytes used in download activity at the specified date and time.
- </summary>
-</member><member name="F:RestrictionLibrary.DataBase.DataRow.DOWNLIM">
-	<summary>
- The maximum number of Megabytes allowed in download activity for the plan at the specified date and time.
- </summary>
-</member><member name="F:RestrictionLibrary.DataBase.DataRow.UPLOAD">
-	<summary>
- The number of Megabytes used in upload activity at the specified date and time.
- </summary>
-</member><member name="F:RestrictionLibrary.DataBase.DataRow.UPLIM">
-	<summary>
- The maximum number of Megabytes allowed in upload activity for the plan at the specified date and time.
- </summary>
-</member><member name="M:RestrictionLibrary.DataBase.DataRow.#ctor(System.DateTime,System.Int64,System.Int64,System.Int64,System.Int64)">
-	<summary>
- Create a new DataRow entry.
- </summary>
-	<param name="dTime">The Date and Time of the entry.</param>
-	<param name="lDown">The number of Megabytes used in download activity for this entry.</param>
-	<param name="lDownLim">The maximum number of Megabytes allowed in download activity for this entry.</param>
-	<param name="lUp">The number of Megabytes used in upload activity for this entry.</param>
-	<param name="lUpLim">The maximum number of Megabytes allowed in upload activity for this entry.</param>
-</member><member name="P:RestrictionLibrary.DataBase.DataRow.sDATETIME">
-	<summary>
- Get a string representation of the Date and Time of the data stored in this row.
- </summary>
-	<returns>The date and time are returned in the format "MM/DD/YYYY HH:MM", or the standard "g".</returns>
-</member><member name="P:RestrictionLibrary.DataBase.DataRow.sDOWNLOAD">
-	<summary>
- Get a string representation of the number of Megabytes used in download activity for this row.
- </summary>
-	<returns>The download value is returned with standard thousands separators and no decimal.</returns>
-</member><member name="P:RestrictionLibrary.DataBase.DataRow.sDOWNLIM">
-	<summary>
- Get a string representation of the number of Megabytes allowed in download activity for this row.
- </summary>
-	<returns>The download limit is returned with standard thousands separators and no decimal.</returns>
-</member><member name="P:RestrictionLibrary.DataBase.DataRow.sUPLOAD">
-	<summary>
- Get a string representation of the number of Megabytes used in upload activity for this row.
- </summary>
-	<returns>The upload value is returned with standard thousands separators and no decimal.</returns>
-</member><member name="P:RestrictionLibrary.DataBase.DataRow.sUPLIM">
-	<summary>
- Get a string representation of the number of Megabytes allowed in upload activity for this row.
- </summary>
-	<returns>The upload limit is returned with standard thousands separators and no decimal.</returns>
-</member><member name="M:RestrictionLibrary.DataBase.DataRow.ToString">
-	<summary>
- Get a string representation of this row in the format "MM/DD/YYYY HH:MM [Down: 0,000/0,000][, ][Up: 0,000/0,000]".
- </summary>
-	<returns>The return value will always contain the <see cref="P:RestrictionLibrary.DataBase.DataRow.sDATETIME"/> value, and will be followed with Download and/or Upload values if either the value or limit is greater than 0.</returns>
-</member><member name="P:RestrictionLibrary.DataBase.DataRow.Empty">
-	<summary>
- This is a standard empty DataRow with all values set to zero.
- </summary>
-	<returns></returns>
-</member><member name="M:RestrictionLibrary.DataBase.DataRow.IsEmpty(RestrictionLibrary.DataBase.DataRow)">
-	<summary>
- Check a <see cref="T:RestrictionLibrary.DataBase.DataRow"/> entry to see if it is empty or unset.
- </summary>
-	<param name="dRow">The <see cref="T:RestrictionLibrary.DataBase.DataRow"/> entry you wish to check.</param>
-	<returns>A boolean value of <c>True</c> is returned if the <paramref name="dRow"/> entry is empty, <c>False</c> otherwise.</returns>
-</member><member name="M:RestrictionLibrary.DataBase.DataRow.IsEmpty">
-	<summary>
- Check this <see cref="T:RestrictionLibrary.DataBase.DataRow"/> entry to see if it is empty or unset.
- </summary>
-	<returns>A boolean value of <c>True</c> is returned if this entry is empty, <c>False</c> otherwise.</returns>
-</member><member name="T:RestrictionLibrary.DataBase.DataRow">
-	<summary>
- Stores information about usage activity at a single date and time.
- </summary>
-</member><member name="M:RestrictionLibrary.DataBase.#ctor">
-	<summary>
- Create a new DataBase with no entries.
- </summary>
-	<remarks>If this subroutine is called on an existing database, it will be erased.</remarks>
-</member><member name="F:RestrictionLibrary.DataBase.StopNew">
-	<summary>
- Set this value to true to stop loading a databased called from the initialization subroutine.
- </summary>
-</member><member name="M:RestrictionLibrary.DataBase.ProgressStateEventArgs.#ctor(System.Int32,System.Int32)">
-	<summary>
- A progress value containing the current number of things done and the total number of things to do.
- </summary>
-	<param name="Value">The current number of things that have been done.</param>
-	<param name="Total">The total number of things there are to do.</param>
-</member><member name="P:RestrictionLibrary.DataBase.ProgressStateEventArgs.Value">
-	<summary>
- The Current number of things that have been done.
- </summary>
-</member><member name="P:RestrictionLibrary.DataBase.ProgressStateEventArgs.Total">
-	<summary>
- The total number of things to do.
- </summary>
-</member><member name="E:RestrictionLibrary.DataBase.ProgressState">
-	<summary>
- The loading of the DataBase has progressed to a specific point.
- </summary>
-	<param name="sender">A reference to this <see cref="T:RestrictionLibrary.DataBase"/> class.</param>
-	<param name="e">A <see cref="T:RestrictionLibrary.DataBase.ProgressStateEventArgs"/> entry with the current Value and Total of the DataBase load's progress.</param>
-</member><member name="M:RestrictionLibrary.DataBase.#ctor(System.String,System.Boolean)">
-	<summary>
- Create a new DataBase with entries loaded from the specified <paramref name="Path"/>.
- </summary>
-	<param name="Path">Path to a saved DataBase in either WB, XML, or CSV formats.</param>
-	<param name="withDisplay">Return the current progress of the load through the ProgressState event.</param>
-	<remarks>This subroutine will not begin the load process. You must call <see cref="M:RestrictionLibrary.DataBase.StartNew"/> to begin loading the database. This is to allow initialization and loading at separate times or on separate threads.</remarks>
-</member><member name="M:RestrictionLibrary.DataBase.StartNew">
-	<summary>
- Begin loading DataBase entries from the path specified in the snitialization subroutine.
- </summary>
-</member><member name="M:RestrictionLibrary.DataBase.Add(RestrictionLibrary.DataBase.DataRow)">
-	<summary>
- Add a new DataRow entry to the DataBase.
- </summary>
-	<param name="item">The new DataRow entry to add.</param>
-	<remarks>The entry won't be added if it's less than one minute apart from another DataRow in the DataBase.</remarks>
-</member><member name="M:RestrictionLibrary.DataBase.Merge(RestrictionLibrary.DataBase,System.Boolean)">
-	<summary>
- Add all the entries of another DataBase into this one.
- </summary>
-	<param name="db">The other DataBase to include in this one.</param>
-	<param name="withDisplay">Return the current progress of the merge through the ProgressState event.</param>
-	<remarks>The original DataBase will not be modified or erased by this process.</remarks>
-</member><member name="M:RestrictionLibrary.DataBase.Clear">
-	<summary>
- Remove all entries from this DataBase.
- </summary>
-	<remarks>This is literally identical to the initialization subroutine without parameters.</remarks>
-</member><member name="M:RestrictionLibrary.DataBase.Contains(System.Collections.Generic.KeyValuePair{System.UInt64,RestrictionLibrary.DataBase.DataRow})">
-	<summary>
- Check for existence of an item by searching for an exact match. 
- </summary>
-	<param name="item">The exact match of the KeyValuePair(Of UInt64, DataRow)) you wish to find.</param>
-	<returns><c>True</c> is returned if the DataBase contains at least one copy of the <paramref name="item"/>, <c>False</c> otherwise.</returns>
-</member><member name="M:RestrictionLibrary.DataBase.CopyTo(System.Collections.Generic.KeyValuePair{System.UInt64,RestrictionLibrary.DataBase.DataRow}[],System.Int32)">
-	<summary>
- Copy data from this DataBase into an array of DataRows.
- </summary>
-	<param name="array">The array of <see cref="T:RestrictionLibrary.DataBase.DataRow"/>s in which to copy this DataBase.</param>
-	<param name="arrayIndex">The location at which to start copying data into in the <paramref name="array"/>.</param>
-	<remarks>
- The number of items to be copied will be equal to the space allocated for items in the <paramref name="array"/> from the <paramref name="arrayIndex"/> value to the end.
- </remarks>
-</member><member name="M:RestrictionLibrary.DataBase.ToArray">
-	<summary>
- Convert this DataBase into an array of <see cref="T:RestrictionLibrary.DataBase.DataRow"/> entries.
- </summary>
-	<returns>The full list of entries in this DataBase.</returns>
-</member><member name="P:RestrictionLibrary.DataBase.Count">
-	<summary>
- The total number of entries in this DataBase.
- </summary>
-	<remarks>The value will be 0 if the DataBase is not initialized or if it's been erased.</remarks>
-</member><member name="P:RestrictionLibrary.DataBase.IsReadOnly">
-	<summary>
- Gets a value indicating whether the DataBase is read-only.
- </summary>
-	<value></value>
-	<returns>This property is always false because it is always false for all arrays.</returns>
-</member><member name="M:RestrictionLibrary.DataBase.Remove(System.DateTime)">
-	<summary>
- Remove a DataRow entry from the DataBase.
- </summary>
-	<param name="DateTime">The Date and Time of the DataRow entry to remove.</param>
-	<returns><c>True</c> if the entry was successfully removed from the DataBase, <c>False</c> if the entry could not be found.</returns>
-</member><member name="M:RestrictionLibrary.DataBase.Remove(System.UInt64)">
-	<summary>
- Remove a DataRow entry from the DataBase.
- </summary>
-	<param name="item">The DataRow entry to remove.</param>
-	<returns><c>True</c> if the entry was successfully removed from the DataBase, <c>False</c> if the entry could not be found.</returns>
-	<remarks>This function only uses the <see cref="F:RestrictionLibrary.DataBase.DataRow.DATETIME"/> value to compare against entries in the DataBase.</remarks>
-</member><member name="M:RestrictionLibrary.DataBase.GetEnumerator">
-	<summary>
- Returns an enumerator that iterates through the DataBase.
- </summary>
-	<returns>A <see cref="T:System.Collections.Generic.IEnumerable`1"/> that can be used to iterate through the DataBase.</returns>
-</member><member name="M:RestrictionLibrary.DataBase.GetEnumerator1">
-	<summary>
- Returns an enumerator that iterates through the DataBase.
- </summary>
-	<returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the DataBase.</returns>
-</member><member name="M:RestrictionLibrary.DataBase.GetLast">
-	<summary>
- Returns the latest entry in the DataBase.
- </summary>
-	<returns></returns>
-	<remarks>This function will sort the DataBase before returning a value.</remarks>
-</member><member name="M:RestrictionLibrary.DataBase.ToString">
-	<summary>
- A full XML representation of the DataBase.
- </summary>
-	<returns></returns>
-	<remarks>This function will sort the DataBase before returning a value.</remarks>
-</member><member name="M:RestrictionLibrary.DataBase.ToString(System.Boolean)">
-	<summary>
- A full XML representation of the DataBase.
- </summary>
-	<param name="withDisplay">Return the current progress of the function through the ProgressState event.</param>
-	<returns></returns>
-	<remarks>This function will sort the DataBase before returning a value.</remarks>
-</member><member name="M:RestrictionLibrary.DataBase.Save(System.String,System.Boolean)">
-	<summary>
- Save the DataBase to the specified <paramref name="Path"/>.
- </summary>
-	<param name="Path">Path to a save location for the DataBase in either WB, XML, or CSV formats.</param>
-	<param name="withDisplay">Return the current progress of the save through the ProgressState event.</param>
-	<returns><c>True</c> is returned if </returns>
-</member><member name="T:RestrictionLibrary.DataBase">
-	<summary>
+</member>
+<member name="T:RestrictionLibrary.DataBase">
+ <summary>
  Stores information about usage activity for an account, with access to subroutines and functions for manipulating the list and storing it as one of three file types.
  </summary>
-	<remarks>This class also contains a child <see cref="T:RestrictionLibrary.DataBase.DataRow"/> class which provides access to individual events of this larger list and is used as a Type in some instances.</remarks>
-</member><member name="P:RestrictionLibrary.RR_HMAC.HashName">
-	<summary>
- Gets or sets the name of the hash algorithm to use for hashing.
- </summary>
-	<value></value>
-	<returns>The name of the hash algorithm.</returns>
-	<exception cref="T:System.Security.Cryptography.CryptographicException">The current hash algorithm cannot be changed.</exception>
-</member><member name="P:RestrictionLibrary.RR_HMAC.Key">
-	<summary>
- Gets or sets the key to use in the hash algorithm.
- </summary>
-	<value></value>
-	<returns>The key to use in the hash algorithm.</returns>
-	<exception cref="T:System.Security.Cryptography.CryptographicException">An attempt is made to change the System.Security.Cryptography.HMAC.Key property after hashing has begun.</exception>
-</member><member name="M:RestrictionLibrary.RR_HMAC.Initialize">
-	<summary>
- Initializes an instance of the default implementation of <see cref="T:RestrictionLibrary.RR_HMAC"/>.
- </summary>
-</member><member name="M:RestrictionLibrary.RR_HMAC.Create">
-	<summary>
- Creates an instance of the default implementation of a Hash-based Message Authentication Code (HMAC).
- </summary>
-	<returns>A new instance of an HMAC.</returns>
-</member><member name="M:RestrictionLibrary.RR_HMAC.Create(System.String)">
-	<summary>
- Creates an instance of the default implementation of a Hash-based Message Authentication Code (HMAC).
- </summary>
-	<param name="algorithmName">The HMAC implementation to use.</param>
-	<returns>A new instance of the specified HMAC implementation.</returns>
-</member><member name="T:RestrictionLibrary.RR_HMAC">
-	<summary>
- Represents the abstract class from which RR_HMACSHA512 must derive.
- </summary>
-</member><member name="M:RestrictionLibrary.RR_HMACSHA512.#ctor">
-	<summary>
- Initializes a new instance of the <see cref="T:RestrictionLibrary.RR_HMACSHA512"/> class with a randomly generated key.
- </summary>
-</member><member name="M:RestrictionLibrary.RR_HMACSHA512.#ctor(System.Byte[])">
-	<summary>
- Initializes a new instance of the <see cref="T:RestrictionLibrary.RR_HMACSHA512"/> class with the specified key data.
- </summary>
-	<param name="key__1">The secret key for System.Security.Cryptography.HMACSHA512 encryption. The key can be any length. However, if it is more than 64 bytes long it will be hashed (using SHA-1) to derive a 64-byte key. Therefore, the recommended size of the secret key is 64 bytes.</param>
-</member><member name="P:RestrictionLibrary.RR_HMACSHA512.ProduceLegacyHmacValues">
-	<summary>
- Provides a workaround for the .NET Framework version 2.0 implementation of the <see cref="T:RestrictionLibrary.RR_HMACSHA512"/> algorithm, which is inconsistent with the .NET Framework version 2.0 Service Pack 1 implementation.
- </summary>
-	<value></value>
-	<returns>true to enable .NET Framework version 2.0 Service Pack 1 applications to interact with .NET Framework 2.0 applications; otherwise, false.</returns>
-</member><member name="T:RestrictionLibrary.RR_HMACSHA512">
-	<summary>
- SHA-512 hashing with support for the Legacy HMAC values of .NET 2.0 and modern values provided by .NET 2.0 SP1 and newer.
- </summary>
-</member><member name="M:RestrictionLibrary.StoredPassword.DecryptApp(System.String)">
-	<summary>
- Decrypt a password that was encrypted with the Tracker EXE GUID.
- </summary>
-	<param name="PassCrypt">The base64 encoded encrypted password.</param>
-	<returns>The raw password which was encrypted.</returns>
-</member><member name="M:RestrictionLibrary.StoredPassword.EncryptApp(System.String)">
-	<summary>
- Encrypt a password using the Tracker EXE GUID.
- </summary>
-	<param name="Password">The password to encrypt.</param>
-	<returns>An base64 output of the encrypted password.</returns>
-</member><member name="M:RestrictionLibrary.StoredPassword.DecryptLogger(System.String)">
-	<summary>
- Decrypt a password that was encrypted with the Logger EXE GUID.
- </summary>
-	<param name="PassCrypt">The base64 encoded encrypted password.</param>
-	<returns>The raw password which was encrypted.</returns>
-</member><member name="M:RestrictionLibrary.StoredPassword.EncryptLogger(System.String)">
-	<summary>
- Encrypt a password using the Logger EXE GUID.
- </summary>
-	<param name="Password">The password to encrypt.</param>
-	<returns>An base64 output of the encrypted password.</returns>
-</member><member name="F:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.NoUsername">
-	<summary>
- The Username does not exist on the server.
- </summary>
-</member><member name="F:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadProduct">
-	<summary>
- The Product Key has been disabled.
- </summary>
-</member><member name="F:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadServer">
-	<summary>
- The server's authenticity could not be verified.
- </summary>
-</member><member name="F:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadPassword">
-	<summary>
- Incorrect Password.
- </summary>
-</member><member name="F:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadLogin">
-	<summary>
- The server could not log in to the provider.
- </summary>
-</member><member name="F:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.NoData">
-	<summary>
- No usage data accumulated yet.
- </summary>
-</member><member name="F:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.NoPassword">
-	<summary>
- The server does not know what your password is.
- </summary>
-</member><member name="F:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.Network">
-	<summary>
- Network connection error.
- </summary>
-</member><member name="F:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.NotBase64">
-	<summary>
- Server response was not Base64 encoded. All server responses should be, so this either means the server crapped out and gave a PHP error, or the connection was redirected elsewhere.
- </summary>
-</member><member name="T:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType">
-	<summary>
- Types of failures used by the <see cref="T:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs"/> class.
- </summary>
-</member><member name="F:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.Type">
-	<summary>
- The type of failure received from the server.
- </summary>
-</member><member name="F:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.Details">
-	<summary>
- Details regarding the failure received from the server.
- </summary>
-</member><member name="M:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.#ctor(RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType,System.String)">
-	<summary>
- Generate a failure message as received from the server.
- </summary>
-	<param name="Failure">The type of failure received from the server.</param>
-	<param name="Extra">Details regarding the failure from the server (optional). This data will be parsed down to the HTML title if one exists.</param>
-</member><member name="T:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs">
-	<summary>
- Information regarding the type of failure received and any details.
- </summary>
-</member><member name="E:RestrictionLibrary.remoteRestrictionTracker.Failure">
-	<summary>
- Triggered when the connection to the Remote Usage Service fails.
- </summary>
-	<param name="sender">Instance of the <see cref="T:RestrictionLibrary.remoteRestrictionTracker"/> class.</param>
-	<param name="e"><see cref="T:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs"/> data regarding the failure.</param>
-</member><member name="F:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Provider">
-	<summary>
- The type of provider which this account uses.
- </summary>
-</member><member name="F:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result.Time">
-	<summary>
- The exact date and time this usage data belongs to.
- </summary>
-</member><member name="F:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result.Down">
-	<summary>
- Number of megabytes used in download.
- </summary>
-</member><member name="F:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result.DownMax">
-	<summary>
- Number of megabytes allowed in download.
- </summary>
-</member><member name="F:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result.Up">
-	<summary>
- Number of megabytes used in upload.
- </summary>
-</member><member name="F:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result.UpMax">
-	<summary>
- Number of megabytes allowed in upload.
- </summary>
-</member><member name="M:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result.#ctor(System.DateTime,System.Int32,System.Int32)">
-	<summary>
- Generate a new <see cref="T:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result"/> using a <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs">Type B</see> history.
- </summary>
-	<param name="AtTime">The specific date and time of this usage.</param>
-	<param name="iUsed">Total number of megabytes used.</param>
-	<param name="iMax">Total number of megabytes allowed.</param>
-	<remarks><see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs">Type B</see> history data does not separate Download and Upload data, and stores the Used and Max values in both Down and Up variables.</remarks>
-</member><member name="M:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result.#ctor(System.DateTime,System.Int32,System.Int32,System.Int32,System.Int32)">
-	<summary>
- Generate a new <see cref="T:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result"/> using a <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs">Type A</see> history.
- </summary>
-	<param name="AtTime">The specific date and time of this usage.</param>
-	<param name="iDown">Number of megabytes used in download.</param>
-	<param name="iDownMax">Number of megabytes allowed in download.</param>
-	<param name="iUp">Number of megabytes used in upload.</param>
-	<param name="iUpMax">Number of megabytes allowed in upload.</param>
-	<remarks><see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs">Type A</see> history data separates Download and Upload data, providing a more accurate breakdown of usage.</remarks>
-</member><member name="T:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result">
-	<summary>
- A structure containing a single moment in usage history.
- </summary>
-</member><member name="F:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Results">
-	<summary>
- List of <see cref="T:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result"/> values in an array. This contains all the results which fit the range requested in the <paramref name="UpdateFrom"/> param in the <see cref="T:RestrictionLibrary.remoteRestrictionTracker"/> constructor.
- </summary>
-</member><member name="M:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.#ctor(RestrictionLibrary.localRestrictionTracker.SatHostTypes,RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result[])">
-	<summary>
- Generate a success message containing the data received from the server.
- </summary>
-	<param name="mProvider">The type of provider which this account uses.</param>
-	<param name="mResults">An array of <see cref="T:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result"/> values containing all the responses from the server.</param>
-</member><member name="T:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs">
-	<summary>
- Response information from the server on a successful connection to the Remote Usage Service.
- </summary>
-</member><member name="E:RestrictionLibrary.remoteRestrictionTracker.Success">
-	<summary>
- Triggered when the Remote Usage Service returns data.
- </summary>
-	<param name="sender">Instance of the <see cref="T:RestrictionLibrary.remoteRestrictionTracker"/> class.</param>
-	<param name="e"><see cref="T:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs"/> data regarding the result.</param>
-</member><member name="E:RestrictionLibrary.remoteRestrictionTracker.OKKey">
-	<summary>
- Triggered when the connection to the Remote Usage Service succeeds and the Product Key is correct.
- </summary>
-	<param name="sender">Instance of the <see cref="T:RestrictionLibrary.remoteRestrictionTracker"/> class.</param>
-	<param name="e">Empty <see cref="T:System.EventArgs"/> object.</param>
-</member><member name="M:RestrictionLibrary.remoteRestrictionTracker.#ctor(System.String,System.String,System.String,System.Net.IWebProxy,System.Int32,System.DateTime,System.String)">
-	<summary>
- Constructor of the class, which also starts the connection process.
- </summary>
-	<param name="Username">The Remote Usage Service account to connect to, which consists of the meter page Username and Provider Domain separated by an "@".</param>
-	<param name="Password">The password for the account. If this is set to blank, the connection will terminate after the <see cref="E:RestrictionLibrary.remoteRestrictionTracker.OKKey"/> event, which is useful for verifying the legitimacy of a <paramref name="ProductKey"/> without initiating a full connection.</param>
-	<param name="ProductKey">The account's Product Key, including hyphens, in the format XXXXXX-XXXX-XXXX-XXXX-XXXXXX</param>
-	<param name="Proxy">Proxy settings for connecting to the Remote Usage Service.</param>
-	<param name="Timeout">How long to wait between messages before timing out during connection.</param>
-	<param name="UpdateFrom">The earliest date to grab information from. The Remote Usage Service will return data from this date until the present time, rather than an entire usage history. Set the year to 2000 to grab the whole history.</param>
-	<param name="ConfigPath">The directory where configuration data is stored. This is used for reporting socket errors. If this value is null, then socket errors are not reported.</param>
-</member><member name="T:RestrictionLibrary.remoteRestrictionTracker">
-	<summary>
- Accesses the Remote Usage Service and handles all communication internally.
- </summary>
-</member><member name="M:RestrictionLibrary.WebClientCore.#ctor(System.Boolean)">
-	<summary>
- Create a new instance of the <see cref="T:RestrictionLibrary.WebClientCore"/> Class.
- </summary>
-	<param name="useEvents">If set to <c>True</c>, failures will trigger events, if <c>False</c>, failures will throw errors.</param>
-</member><member name="M:RestrictionLibrary.WebClientCore.#ctor">
-	<summary>
- Create a new instance of the <see cref="T:RestrictionLibrary.WebClientCore"/> Class.
- </summary>
-</member><member name="M:RestrictionLibrary.WebClientCore.ErrorEventArgs.#ctor(System.Exception)">
-	<summary>
- Create a new instance of the <see cref="T:RestrictionLibrary.WebClientCore.ErrorEventArgs"/> Class for use with the <see cref="E:RestrictionLibrary.WebClientCore.Failure"/> event.
- </summary>
-	<param name="Err">The Exception being passed through the <see cref="E:RestrictionLibrary.WebClientCore.Failure"/> event.</param>
-</member><member name="T:RestrictionLibrary.WebClientCore.ErrorEventArgs">
-	<summary>
- A <see cref="T:RestrictionLibrary.WebClientCore"/> Upload or Download request failure message containing an <see cref="T:System.Exception"/>.
- </summary>
-</member><member name="F:RestrictionLibrary.WebClientCore.REPLACE_COMMA">
-	<summary>
- This constant replaces any commas in the values of cookies received, and will be replaced by commas on any cookies being sent.
- </summary>
-</member><member name="F:RestrictionLibrary.WebClientCore.REPLACE_SEMIC">
-	<summary>
- This constant replaces any semicolons in the values of cookies received, and will be replaced by semicolons on any cookies being sent.
- </summary>
-</member><member name="P:RestrictionLibrary.WebClientCore.CookieJar">
-	<summary>
- Acts as the container for a collection of <see cref="T:System.Net.CookieCollection"/> objects for use with an instance of the <see cref="T:RestrictionLibrary.WebClientCore"/> class.
- </summary>
-	<value>A new CookieJar to use in place of the default empty Jar. This is useful for sharing and storing sessions and cookies across multiple <see cref="T:RestrictionLibrary.WebClientCore"/> instances.</value>
-	<returns>The current CookieJar for this <see cref="T:RestrictionLibrary.WebClientCore"/>.</returns>
-</member><member name="P:RestrictionLibrary.WebClientCore.SendCookieJar">
-	<summary>
- The way cookies are sent can be modified using this property.
- </summary>
-	<value>Cookies will be sent by text if this value is <c>False</c>, and by both text and cookie jar if <c>True</c>.</value>
-	<returns>See the value entry for details on the return values.</returns>
-</member><member name="P:RestrictionLibrary.WebClientCore.ResponseURI">
-	<summary>
- The <see cref="T:System.Uri"/> of the last <see cref="M:RestrictionLibrary.WebClientCore.GetWebResponse(System.Net.WebRequest)"/> event after any redirection.
- </summary>
-	<returns>Initially, the value will be <c>Nothing</c> until a <see cref="M:RestrictionLibrary.WebClientCore.GetWebResponse(System.Net.WebRequest)"/> event occurs. It may be equal to the <see cref="T:System.Uri"/> sent in a Download or Upload request, or it may be modified during the request as per page redirection standards*.</returns>
-	<remarks>*Page Redirection can be disabled using the <see cref="P:RestrictionLibrary.WebClientCore.ManualRedirect"/> property. The standards followed if <see cref="P:RestrictionLibrary.WebClientCore.ManualRedirect"/> is set to <c>False</c> are the HTTP 300 Status Code set of errors. Up to 50 redirects are allowed if <see cref="P:System.Net.HttpWebRequest.MaximumAutomaticRedirections"/> has not been set manually.</remarks>
-</member><member name="P:RestrictionLibrary.WebClientCore.Timeout">
-	<summary>
- Gets or sets the time-out value in seconds for the <see cref="M:System.Net.HttpWebRequest.GetResponse"/> and <see cref="M:System.Net.HttpWebRequest.GetRequestStream"/> methods.
- </summary>
-	<value></value>
-	<returns>The number of milliseconds to wait before the request times out. The default is 120 seconds.</returns>
-</member><member name="P:RestrictionLibrary.WebClientCore.ReadWriteTimeout">
-	<summary>
- Gets or sets a time-out in seconds when writing to or reading from a stream.
- </summary>
-	<value></value>
-	<returns>The number of seconds before the writing or reading times out. The default value is 300 seconds (5 minutes).</returns>
-</member><member name="P:RestrictionLibrary.WebClientCore.HTTPVersion">
-	<summary>
- Gets or sets the version of HTTP to use for the request.
- </summary>
-	<value></value>
-	<returns>The HTTP version to use for the request. The default is <see cref="F:System.Net.HttpVersion.Version11"/>.</returns>
-</member><member name="P:RestrictionLibrary.WebClientCore.ErrorBypass">
-	<summary>
- Gets or sets a <see cref="T:System.Boolean"/> value which determines how the <see cref="T:RestrictionLibrary.WebClientCore"/> reacts to the HTTP 400 Status Code set of errors.
- </summary>
-	<value>If set to <c>True</c> and the error contains a <see cref="T:System.Net.WebResponse"/> value, that response is sent instead of an error.</value>
-	<returns>If <c>True</c>, errors may be bypassed and trigger Upload and Download completion events, if possible. If <c>False</c>, all error responses are treated as errors. The default value is <c>True</c>.</returns>
-</member><member name="P:RestrictionLibrary.WebClientCore.KeepAlive">
-	<summary>
- Gets or sets a value that indicates whether to make a persistent connection to the Internet resource.
- </summary>
-	<value>If set to <c>True</c>, the <see cref="T:RestrictionLibrary.WebClientCore"/> will send a Connection HTTP header with the value Keep-alive; if <c>False</c>, Close.</value>
-	<returns><c>True</c> if the request to the Internet resource should contain a Connection HTTP header with the value Keep-alive; otherwise, <c>False</c>. The default is <c>True</c>.</returns>
-</member><member name="P:RestrictionLibrary.WebClientCore.ManualRedirect">
-	<summary>
- Gets or sets a <see cref="T:System.Boolean"/> value which determines how the <see cref="T:RestrictionLibrary.WebClientCore"/> reacts to the HTTP 300 Status Code set of errors.
- </summary>
-	<value></value>
-	<returns><c>False</c> if the request should automatically follow redirection responses from the Internet resource; otherwise, <c>True</c>. The default value is <c>True</c>.</returns>
-</member><member name="E:RestrictionLibrary.WebClientCore.Failure">
-	<summary>
- A <see cref="T:RestrictionLibrary.WebClientCore"/> Upload or Download request has failed.
- </summary>
-	<param name="sender">The class which is triggering the event.</param>
-	<param name="e">The exception contained in an EventArg</param>
-</member><member name="P:RestrictionLibrary.WebClientCore.UserAgent">
-	<summary>
- The User Agent for Satellite Restriction Tracker
- </summary>
-	<value></value>
-	<returns></returns>
-</member><member name="P:RestrictionLibrary.WebClientEx.Timeout">
-	<summary>
- Gets or sets the time-out value in seconds for the <see cref="M:System.Net.HttpWebRequest.GetResponse"/> and <see cref="M:System.Net.HttpWebRequest.GetRequestStream"/> methods.
- </summary>
-	<value></value>
-	<returns>The number of milliseconds to wait before the request times out. The default is 180 seconds.</returns>
-</member><member name="P:RestrictionLibrary.WebClientEx.ReadWriteTimeout">
-	<summary>
- Gets or sets a time-out in seconds when writing to or reading from a stream.
- </summary>
-	<value></value>
-	<returns>The number of seconds before the writing or reading times out. The default value is 7200 seconds (2 hours).</returns>
-</member><member name="P:RestrictionLibrary.WebClientEx.Proxy">
-	<summary>
- Gets or sets the proxy used by this <see cref="T:RestrictionLibrary.WebClientEx"/> object.
- </summary>
-	<value></value>
-	<returns>An <see cref="T:System.Net.IWebProxy"/> instance used to send requests.</returns>
-</member><member name="P:RestrictionLibrary.WebClientEx.CookieJar">
-	<summary>
- Acts as the container for a collection of <see cref="T:System.Net.CookieCollection"/> objects for use with an instance of the <see cref="T:RestrictionLibrary.WebClientEx"/> class.
- </summary>
-	<value>A new CookieJar to use in place of the default empty Jar. This is useful for sharing and storing sessions and cookies across multiple <see cref="T:RestrictionLibrary.WebClientEx"/> instances.</value>
-	<returns>The current CookieJar for this <see cref="T:RestrictionLibrary.WebClientEx"/>.</returns>
-</member><member name="P:RestrictionLibrary.WebClientEx.Encoding">
-	<summary>
- Gets and sets the System.Text.Encoding used to upload and download strings.
- </summary>
-	<value></value>
-	<returns>A System.Text.Encoding that is used to encode strings. The default value of this property is <see cref="F:RestrictionLibrary.srlFunctions.LATIN_1"/>.</returns>
-</member><member name="P:RestrictionLibrary.WebClientEx.ResponseURI">
-	<summary>
- The <see cref="T:System.Uri"/> of the last <see cref="M:RestrictionLibrary.WebClientCore.GetWebResponse(System.Net.WebRequest)"/> event after any redirection.
- </summary>
-	<returns>Initially, the value will be <c>Nothing</c> until a <see cref="M:RestrictionLibrary.WebClientCore.GetWebResponse(System.Net.WebRequest)"/> event occurs. It may be equal to the <see cref="T:System.Uri"/> sent in a Download or Upload request, or it may be modified during the request as per page redirection standards*.</returns>
-	<remarks>*Page Redirection can be disabled using the <see cref="P:RestrictionLibrary.WebClientEx.ManualRedirect"/> property. The standards followed if <see cref="P:RestrictionLibrary.WebClientEx.ManualRedirect"/> is set to <c>False</c> are the HTTP 300 Status Code set of errors. Up to 50 redirects are allowed if <see cref="P:System.Net.HttpWebRequest.MaximumAutomaticRedirections"/> has not been set manually.</remarks>
-</member><member name="P:RestrictionLibrary.WebClientEx.ErrorBypass">
-	<summary>
- Gets or sets a <see cref="T:System.Boolean"/> value which determines how the <see cref="T:RestrictionLibrary.WebClientCore"/> reacts to the HTTP 400 Status Code set of errors.
- </summary>
-	<value>If set to <c>True</c> and the error contains a <see cref="T:System.Net.WebResponse"/> value, that response is sent instead of an error.</value>
-	<returns>If <c>True</c>, errors may be bypassed and trigger Upload and Download completion events, if possible. If <c>False</c>, all error responses are treated as errors. The default value is <c>True</c>.</returns>
-</member><member name="P:RestrictionLibrary.WebClientEx.KeepAlive">
-	<summary>
- Gets or sets a value that indicates whether to make a persistent connection to the Internet resource.
- </summary>
-	<value>If set to <c>True</c>, the <see cref="T:RestrictionLibrary.WebClientCore"/> will send a Connection HTTP header with the value Keep-alive; if <c>False</c>, Close.</value>
-	<returns><c>True</c> if the request to the Internet resource should contain a Connection HTTP header with the value Keep-alive; otherwise, <c>False</c>. The default is <c>True</c>.</returns>
-</member><member name="P:RestrictionLibrary.WebClientEx.ManualRedirect">
-	<summary>
- Gets or sets a <see cref="T:System.Boolean"/> value which determines how the <see cref="T:RestrictionLibrary.WebClientCore"/> reacts to the HTTP 300 Status Code set of errors.
- </summary>
-	<value></value>
-	<returns><c>False</c> if the request should automatically follow redirection responses from the Internet resource; otherwise, <c>True</c>. The default value is <c>True</c>.</returns>
-</member><member name="P:RestrictionLibrary.WebClientEx.SendHeaders">
-	<summary>
- Gets or sets a collection of header name/value pairs associated with the request.
- </summary>
-	<value></value>
-	<returns>A <see cref="T:System.Net.WebHeaderCollection"/> containing header name/value pairs associated with this request.</returns>
-</member><member name="P:RestrictionLibrary.WebClientEx.IsBusy">
-	<summary>
- Returns a Boolean value that provides information about the state of the request.
- </summary>
-	<value></value>
-	<returns>If <c>True</c>, the request has been processed and is being sent, the client is waiting for the server, or data is being received in response. Otherwise, the request has not yet been sent or a response has already been received.</returns>
-</member><member name="F:RestrictionLibrary.SecurityProtocolTypeEx.None">
-	<summary>
- Specifies no security protocol is to be used.
- </summary>
-	<remarks>This value is technically invalid, but exists for use with Settings to allow no protocol to be selected in the case of a Remote Usage Service subscription.</remarks>
-</member><member name="F:RestrictionLibrary.SecurityProtocolTypeEx.Ssl3">
-	<summary>
- Specifies the Secure Socket Layer (SSL) 3.0 security protocol.
- </summary>
-</member><member name="F:RestrictionLibrary.SecurityProtocolTypeEx.Tls10">
-	<summary>
- Specifies the Transport Layer Security (TLS) 1.0 security protocol.
- </summary>
-</member><member name="F:RestrictionLibrary.SecurityProtocolTypeEx.Tls11">
-	<summary>
- Specifies the Transport Layer Security (TLS) 1.1 security protocol.
- </summary>
-</member><member name="F:RestrictionLibrary.SecurityProtocolTypeEx.Tls12">
-	<summary>
- Specifies the Transport Layer Security (TLS) 1.2 security protocol.
- </summary>
-</member><member name="T:RestrictionLibrary.SecurityProtocolTypeEx">
-	<summary>
- Specifies the security protocols that are supported by the Schannel security package.
- </summary>
-	<remarks>This contains the additional TLS 1.1 and 1.2 standards lacking in <see cref="T:System.Net.SecurityProtocolType"/>, which require newer .NET Framework versions.</remarks>
-</member><member name="F:RestrictionLibrary.srlFunctions.LATIN_1">
-	<summary>
+ <remarks>This class also contains a child <see cref="T:RestrictionLibrary.DataBase.DataRow" /> class which provides access to individual events of this larger list and is used as a Type in some instances.</remarks>
+</member>
+<member name="T:RestrictionLibrary.DataBase.DataRow">
+ <summary>
+ Stores information about usage activity at a single date and time.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.DataBase.DataRow.DATETIME">
+ <summary>
+ The Date and Time of the data stored in this row.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.DataBase.DataRow.DOWNLOAD">
+ <summary>
+ The number of Megabytes used in download activity at the specified date and time.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.DataBase.DataRow.DOWNLIM">
+ <summary>
+ The maximum number of Megabytes allowed in download activity for the plan at the specified date and time.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.DataBase.DataRow.UPLOAD">
+ <summary>
+ The number of Megabytes used in upload activity at the specified date and time.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.DataBase.DataRow.UPLIM">
+ <summary>
+ The maximum number of Megabytes allowed in upload activity for the plan at the specified date and time.
+ </summary>
+</member>
+<member name="M:RestrictionLibrary.DataBase.DataRow.#ctor(System.DateTime,System.Int64,System.Int64,System.Int64,System.Int64)">
+ <summary>
+ Create a new DataRow entry.
+ </summary>
+ <param name="dTime">The Date and Time of the entry.</param>
+ <param name="lDown">The number of Megabytes used in download activity for this entry.</param>
+ <param name="lDownLim">The maximum number of Megabytes allowed in download activity for this entry.</param>
+ <param name="lUp">The number of Megabytes used in upload activity for this entry.</param>
+ <param name="lUpLim">The maximum number of Megabytes allowed in upload activity for this entry.</param>
+</member>
+<member name="P:RestrictionLibrary.DataBase.DataRow.sDATETIME">
+ <summary>
+ Get a string representation of the Date and Time of the data stored in this row.
+ </summary>
+ <returns>The date and time are returned in the format "MM/DD/YYYY HH:MM", or the standard "g".</returns>
+</member>
+<member name="P:RestrictionLibrary.DataBase.DataRow.sDOWNLOAD">
+ <summary>
+ Get a string representation of the number of Megabytes used in download activity for this row.
+ </summary>
+ <returns>The download value is returned with standard thousands separators and no decimal.</returns>
+</member>
+<member name="P:RestrictionLibrary.DataBase.DataRow.sDOWNLIM">
+ <summary>
+ Get a string representation of the number of Megabytes allowed in download activity for this row.
+ </summary>
+ <returns>The download limit is returned with standard thousands separators and no decimal.</returns>
+</member>
+<member name="P:RestrictionLibrary.DataBase.DataRow.sUPLOAD">
+ <summary>
+ Get a string representation of the number of Megabytes used in upload activity for this row.
+ </summary>
+ <returns>The upload value is returned with standard thousands separators and no decimal.</returns>
+</member>
+<member name="P:RestrictionLibrary.DataBase.DataRow.sUPLIM">
+ <summary>
+ Get a string representation of the number of Megabytes allowed in upload activity for this row.
+ </summary>
+ <returns>The upload limit is returned with standard thousands separators and no decimal.</returns>
+</member>
+<member name="M:RestrictionLibrary.DataBase.DataRow.ToString">
+ <summary>
+ Get a string representation of this row in the format "MM/DD/YYYY HH:MM [Down: 0,000/0,000][, ][Up: 0,000/0,000]".
+ </summary>
+ <returns>The return value will always contain the <see cref="P:RestrictionLibrary.DataBase.DataRow.sDATETIME" /> value, and will be followed with Download and/or Upload values if either the value or limit is greater than 0.</returns>
+</member>
+<member name="P:RestrictionLibrary.DataBase.DataRow.Empty">
+ <summary>
+ This is a standard empty DataRow with all values set to zero.
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:RestrictionLibrary.DataBase.DataRow.IsEmpty(RestrictionLibrary.DataBase.DataRow)">
+ <summary>
+ Check a <see cref="T:RestrictionLibrary.DataBase.DataRow" /> entry to see if it is empty or unset.
+ </summary>
+ <param name="dRow">The <see cref="T:RestrictionLibrary.DataBase.DataRow" /> entry you wish to check.</param>
+ <returns>A boolean value of <c>True</c> is returned if the <paramref name="dRow" /> entry is empty, <c>False</c> otherwise.</returns>
+</member>
+<member name="M:RestrictionLibrary.DataBase.DataRow.IsEmpty">
+ <summary>
+ Check this <see cref="T:RestrictionLibrary.DataBase.DataRow" /> entry to see if it is empty or unset.
+ </summary>
+ <returns>A boolean value of <c>True</c> is returned if this entry is empty, <c>False</c> otherwise.</returns>
+</member>
+<member name="M:RestrictionLibrary.DataBase.#ctor">
+ <summary>
+ Create a new DataBase with no entries.
+ </summary>
+ <remarks>If this subroutine is called on an existing database, it will be erased.</remarks>
+</member>
+<member name="F:RestrictionLibrary.DataBase.StopNew">
+ <summary>
+ Set this value to true to stop loading a databased called from the initialization subroutine.
+ </summary>
+</member>
+<member name="M:RestrictionLibrary.DataBase.ProgressStateEventArgs.#ctor(System.Int32,System.Int32)">
+ <summary>
+ A progress value containing the current number of things done and the total number of things to do.
+ </summary>
+ <param name="Value">The current number of things that have been done.</param>
+ <param name="Total">The total number of things there are to do.</param>
+</member>
+<member name="P:RestrictionLibrary.DataBase.ProgressStateEventArgs.Value">
+ <summary>
+ The Current number of things that have been done.
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.DataBase.ProgressStateEventArgs.Total">
+ <summary>
+ The total number of things to do.
+ </summary>
+</member>
+<member name="E:RestrictionLibrary.DataBase.ProgressState">
+ <summary>
+ The loading of the DataBase has progressed to a specific point.
+ </summary>
+ <param name="sender">A reference to this <see cref="T:RestrictionLibrary.DataBase" /> class.</param>
+ <param name="e">A <see cref="T:RestrictionLibrary.DataBase.ProgressStateEventArgs" /> entry with the current Value and Total of the DataBase load's progress.</param>
+</member>
+<member name="M:RestrictionLibrary.DataBase.#ctor(System.String,System.Boolean)">
+ <summary>
+ Create a new DataBase with entries loaded from the specified <paramref name="Path" />.
+ </summary>
+ <param name="Path">Path to a saved DataBase in either WB, XML, or CSV formats.</param>
+ <param name="withDisplay">Return the current progress of the load through the ProgressState event.</param>
+ <remarks>This subroutine will not begin the load process. You must call <see cref="M:RestrictionLibrary.DataBase.StartNew" /> to begin loading the database. This is to allow initialization and loading at separate times or on separate threads.</remarks>
+</member>
+<member name="M:RestrictionLibrary.DataBase.StartNew">
+ <summary>
+ Begin loading DataBase entries from the path specified in the snitialization subroutine.
+ </summary>
+</member>
+<member name="M:RestrictionLibrary.DataBase.Add(RestrictionLibrary.DataBase.DataRow)">
+ <summary>
+ Add a new DataRow entry to the DataBase.
+ </summary>
+ <param name="item">The new DataRow entry to add.</param>
+ <remarks>The entry won't be added if it's less than one minute apart from another DataRow in the DataBase.</remarks>
+</member>
+<member name="M:RestrictionLibrary.DataBase.Merge(RestrictionLibrary.DataBase,System.Boolean)">
+ <summary>
+ Add all the entries of another DataBase into this one.
+ </summary>
+ <param name="db">The other DataBase to include in this one.</param>
+ <param name="withDisplay">Return the current progress of the merge through the ProgressState event.</param>
+ <remarks>The original DataBase will not be modified or erased by this process.</remarks>
+</member>
+<member name="M:RestrictionLibrary.DataBase.Clear">
+ <summary>
+ Remove all entries from this DataBase.
+ </summary>
+ <remarks>This is literally identical to the initialization subroutine without parameters.</remarks>
+</member>
+<member name="M:RestrictionLibrary.DataBase.Contains(System.Collections.Generic.KeyValuePair{System.UInt64,RestrictionLibrary.DataBase.DataRow})">
+ <summary>
+ Check for existence of an item by searching for an exact match. 
+ </summary>
+ <param name="item">The exact match of the KeyValuePair(Of UInt64, DataRow)) you wish to find.</param>
+ <returns><c>True</c> is returned if the DataBase contains at least one copy of the <paramref name="item" />, <c>False</c> otherwise.</returns>
+</member>
+<member name="M:RestrictionLibrary.DataBase.CopyTo(System.Collections.Generic.KeyValuePair{System.UInt64,RestrictionLibrary.DataBase.DataRow}[],System.Int32)">
+ <summary>
+ Copy data from this DataBase into an array of DataRows.
+ </summary>
+ <param name="array">The array of <see cref="T:RestrictionLibrary.DataBase.DataRow" />s in which to copy this DataBase.</param>
+ <param name="arrayIndex">The location at which to start copying data into in the <paramref name="array" />.</param>
+ <remarks>
+ The number of items to be copied will be equal to the space allocated for items in the <paramref name="array" /> from the <paramref name="arrayIndex" /> value to the end.
+ </remarks>
+</member>
+<member name="M:RestrictionLibrary.DataBase.ToArray">
+ <summary>
+ Convert this DataBase into an array of <see cref="T:RestrictionLibrary.DataBase.DataRow" /> entries.
+ </summary>
+ <returns>The full list of entries in this DataBase.</returns>
+</member>
+<member name="P:RestrictionLibrary.DataBase.Count">
+ <summary>
+ The total number of entries in this DataBase.
+ </summary>
+ <remarks>The value will be 0 if the DataBase is not initialized or if it's been erased.</remarks>
+</member>
+<member name="P:RestrictionLibrary.DataBase.IsReadOnly">
+ <summary>
+ Gets a value indicating whether the DataBase is read-only.
+ </summary>
+ <value></value>
+ <returns>This property is always false because it is always false for all arrays.</returns>
+</member>
+<member name="M:RestrictionLibrary.DataBase.Remove(System.DateTime)">
+ <summary>
+ Remove a DataRow entry from the DataBase.
+ </summary>
+ <param name="DateTime">The Date and Time of the DataRow entry to remove.</param>
+ <returns><c>True</c> if the entry was successfully removed from the DataBase, <c>False</c> if the entry could not be found.</returns>
+</member>
+<member name="M:RestrictionLibrary.DataBase.Remove(System.UInt64)">
+ <summary>
+ Remove a DataRow entry from the DataBase.
+ </summary>
+ <param name="item">The DataRow entry to remove.</param>
+ <returns><c>True</c> if the entry was successfully removed from the DataBase, <c>False</c> if the entry could not be found.</returns>
+ <remarks>This function only uses the <see cref="F:RestrictionLibrary.DataBase.DataRow.DATETIME" /> value to compare against entries in the DataBase.</remarks>
+</member>
+<member name="M:RestrictionLibrary.DataBase.GetEnumerator">
+ <summary>
+ Returns an enumerator that iterates through the DataBase.
+ </summary>
+ <returns>A <see cref="T:System.Collections.Generic.IEnumerable`1" /> that can be used to iterate through the DataBase.</returns>
+</member>
+<member name="M:RestrictionLibrary.DataBase.GetEnumerator1">
+ <summary>
+ Returns an enumerator that iterates through the DataBase.
+ </summary>
+ <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the DataBase.</returns>
+</member>
+<member name="M:RestrictionLibrary.DataBase.GetLast">
+ <summary>
+ Returns the latest entry in the DataBase.
+ </summary>
+ <returns></returns>
+ <remarks>This function will sort the DataBase before returning a value.</remarks>
+</member>
+<member name="M:RestrictionLibrary.DataBase.ToString">
+ <summary>
+ A full XML representation of the DataBase.
+ </summary>
+ <returns></returns>
+ <remarks>This function will sort the DataBase before returning a value.</remarks>
+</member>
+<member name="M:RestrictionLibrary.DataBase.ToString(System.Boolean)">
+ <summary>
+ A full XML representation of the DataBase.
+ </summary>
+ <param name="withDisplay">Return the current progress of the function through the ProgressState event.</param>
+ <returns></returns>
+ <remarks>This function will sort the DataBase before returning a value.</remarks>
+</member>
+<member name="M:RestrictionLibrary.DataBase.Save(System.String,System.Boolean)">
+ <summary>
+ Save the DataBase to the specified <paramref name="Path" />.
+ </summary>
+ <param name="Path">Path to a save location for the DataBase in either WB, XML, or CSV formats.</param>
+ <param name="withDisplay">Return the current progress of the save through the ProgressState event.</param>
+ <returns><c>True</c> is returned if </returns>
+</member>
+<member name="F:RestrictionLibrary.srlFunctions.LATIN_1">
+ <summary>
  ISO-8859-1 Latin-1 Encoding
  </summary>
-	<remarks>Charset for Latin-1 when using Text Encoding functions.</remarks>
-</member><member name="M:RestrictionLibrary.srlFunctions.PercentEncode(System.String)">
-	<summary>
+ <remarks>Charset for Latin-1 when using Text Encoding functions.</remarks>
+</member>
+<member name="M:RestrictionLibrary.srlFunctions.PercentEncode(System.String)">
+ <summary>
  Encodes a string for use in HTML form submissions.
  </summary>
-	<param name="string">The string you wish to percent-encode.</param>
-	<returns>A string identical to <paramref name="string"/> except that nonalphanumeric characters are encoded for use in HTML forms.</returns>
-	<remarks>
-		<para>This function percent-encodes all non-alphanumeric characters with four exceptions.</para>
-		<para><c>Spaces</c> will be replaced with a "+" rather than "%20".</para>
-		<para><c>Hyphens</c>, <c>Underscores</c>, and <c>Asterisks</c> will be left alone.</para>
-	</remarks>
-</member><member name="M:RestrictionLibrary.srlFunctions.PadHex(System.UInt32)">
-	<summary>
+ <param name="string">The string you wish to percent-encode.</param>
+ <returns>A string identical to <paramref name="string" /> except that nonalphanumeric characters are encoded for use in HTML forms.</returns>
+ <remarks>
+  <para>This function percent-encodes all non-alphanumeric characters with four exceptions.</para>
+  <para><c>Spaces</c> will be replaced with a &quot;+&quot; rather than &quot;%20&quot;.</para>
+  <para><c>Hyphens</c>, <c>Underscores</c>, and <c>Asterisks</c> will be left alone.</para>
+ </remarks>
+</member>
+<member name="M:RestrictionLibrary.srlFunctions.PercentDecode(System.String)">
+ <summary>
+ Decodes a string from encoded URL data.
+ </summary>
+ <param name="string">The string you wish to percent-decode.</param>
+ <returns>A string decoded from <paramref name="string" /> where nonalphanumeric characters are returned to their original form.</returns>
+ <remarks>
+  <para>This function percent-decodes all non-alphanumeric characters.</para>
+ </remarks>
+</member>
+<member name="M:RestrictionLibrary.srlFunctions.PadHex(System.UInt32)">
+ <summary>
  Convert an <c>Integer</c> into a hexadecimal string with an appropriate zero-prefix padding.
  </summary>
-	<param name="value">The base-10 number you wish to convert to base-16.</param>
-	<returns>A string containing the hexadecimal value that was passed to the function.</returns>
-	<remarks>
-		<para>If the length of the hexadecimal value is less than 8 characters and odd, one zero is prefixed.</para>
-		<para>If the length of the hexadecimal value is between 9 and 15 characters, enough zeroes are prefixed to bring the length to 16.</para>
-		<para>If the length of the hexadecimal value is between 17 and 31 characters, the string will be padded to 32.</para>
-		<para>If the length of the hexadecimal value is between 33 and 63 characters, the string will be padded to 64.</para>
-		<para>If the length of the hexadecimal value is between 65 and 127 characters, the string will be padded to 128.</para>
-		<para>If the length of the hexadecimal value is greater than 128, the string will not be padded.</para>
-	</remarks>
-</member><member name="M:RestrictionLibrary.srlFunctions.PadHex(System.UInt32,System.UInt16)">
-	<summary>
+ <param name="value">The base-10 number you wish to convert to base-16.</param>
+ <returns>A string containing the hexadecimal value that was passed to the function.</returns>
+ <remarks>
+ <para>If the length of the hexadecimal value is less than 8 characters and odd, one zero is prefixed.</para>
+ <para>If the length of the hexadecimal value is between 9 and 15 characters, enough zeroes are prefixed to bring the length to 16.</para>
+ <para>If the length of the hexadecimal value is between 17 and 31 characters, the string will be padded to 32.</para>
+ <para>If the length of the hexadecimal value is between 33 and 63 characters, the string will be padded to 64.</para>
+ <para>If the length of the hexadecimal value is between 65 and 127 characters, the string will be padded to 128.</para>
+ <para>If the length of the hexadecimal value is greater than 128, the string will not be padded.</para>
+ </remarks>
+</member>
+<member name="M:RestrictionLibrary.srlFunctions.PadHex(System.UInt32,System.UInt16)">
+ <summary>
  Convert an <c>Integer</c> into a hexadecimal string with a specific zero-prefix padding.
  </summary>
-	<param name="value">The base-10 number you wish to convert to base-16.</param>
-	<param name="padTo">The minimum length of the output value.</param>
-	<returns>A string containing the hexadecimal value that was passed to the function.</returns>
-	<remarks>If the length of the hexadecimal value is greater than <paramref name="padTo"/> then no padding is performed.</remarks>
-</member><member name="M:RestrictionLibrary.srlFunctions.HexDecode(System.String)">
-	<summary>
+ <param name="value">The base-10 number you wish to convert to base-16.</param>
+ <param name="padTo">The minimum length of the output value.</param>
+ <returns>A string containing the hexadecimal value that was passed to the function.</returns>
+ <remarks>If the length of the hexadecimal value is greater than <paramref name="padTo" /> then no padding is performed.</remarks>
+</member>
+<member name="M:RestrictionLibrary.srlFunctions.HexDecode(System.String)">
+ <summary>
  Reverts hexadecimal HTML entities in a string to their original characters.
  </summary>
-	<param name="string">The string you wish to decode.</param>
-	<returns>A string identical to <paramref name="string"/> except that all encoded values have been decoded.</returns>
-	<remarks>A hexadecimal HTML entity is in the form of &amp;#xNN;, where NN is a hexadecimal ASCII value for the character it represents.</remarks>
-</member><member name="M:RestrictionLibrary.srlFunctions.NetworkErrorToString(System.Exception,System.String)">
-	<summary>
- Converts an <see cref="T:System.Exception"/> to a more pleasant and human-readable network error message.
+ <param name="string">The string you wish to decode.</param>
+ <returns>A string identical to <paramref name="string" /> except that all encoded values have been decoded.</returns>
+ <remarks>A hexadecimal HTML entity is in the form of &amp;#xNN;, where NN is a hexadecimal ASCII value for the character it represents.</remarks>
+</member>
+<member name="M:RestrictionLibrary.srlFunctions.NetworkErrorToString(System.Exception,System.String)">
+ <summary>
+ Converts an <see cref="T:System.Exception" /> to a more pleasant and human-readable network error message.
  </summary>
-	<param name="ex">The network exception which should be converted. Any exceptions which are not recognized will be reported.</param>
-	<param name="dataPath">The folder where socket errors will be saved to if they are not recognized.</param>
-	<returns>A simpler and cleaner description of the network error passed in <paramref name="ex"/>.</returns>
-	<remarks>See Also: <seealso cref="M:RestrictionLibrary.srlFunctions.ReportSocketError(System.Exception,System.String)"/></remarks>
-</member><member name="M:RestrictionLibrary.srlFunctions.ReportSocketError(System.Exception,System.String)">
-	<summary>
- Saves an <see cref="T:System.Exception"/> to a network error log which will later be reported.
+ <param name="ex">The network exception which should be converted. Any exceptions which are not recognized will be reported.</param>
+ <param name="dataPath">The folder where socket errors will be saved to if they are not recognized.</param>
+ <returns>A simpler and cleaner description of the network error passed in <paramref name="ex" />.</returns>
+ <remarks>See Also: <seealso cref="M:RestrictionLibrary.srlFunctions.ReportSocketError(System.Exception,System.String)" /></remarks>
+</member>
+<member name="M:RestrictionLibrary.srlFunctions.ReportSocketError(System.Exception,System.String)">
+ <summary>
+ Saves an <see cref="T:System.Exception" /> to a network error log which will later be reported.
  </summary>
-	<param name="ex">The exception which needs to be reported.</param>
-	<param name="dataPath">The folder where socket errors will be saved to.</param>
-	<remarks>See Also: <seealso cref="M:RestrictionLibrary.srlFunctions.NetworkErrorToString(System.Exception,System.String)"/>, <seealso cref="M:RestrictionLibrary.srlFunctions.SendSocketErrors(System.String)"/>.</remarks>
-</member><member name="M:RestrictionLibrary.srlFunctions.SendSocketErrors(System.String)">
-	<summary>
+ <param name="ex">The exception which needs to be reported.</param>
+ <param name="dataPath">The folder where socket errors will be saved to.</param>
+ <remarks>See Also: <seealso cref="M:RestrictionLibrary.srlFunctions.NetworkErrorToString(System.Exception,System.String)" />, <seealso cref="M:RestrictionLibrary.srlFunctions.SendSocketErrors(System.String)" />.</remarks>
+</member>
+<member name="M:RestrictionLibrary.srlFunctions.SendSocketErrors(System.String)">
+ <summary>
  Loads network errors from a log file and reports them to the RealityRipple.com server.
  </summary>
-	<param name="dataPath">The folder where socket errors will be loaded from.</param>
-	<remarks>See Also: <seealso cref="M:RestrictionLibrary.srlFunctions.ReportSocketError(System.Exception,System.String)"/></remarks>
-</member><member name="M:RestrictionLibrary.srlFunctions.TruncateURL(System.String)">
-	<summary>
+ <param name="dataPath">The folder where socket errors will be loaded from.</param>
+ <remarks>See Also: <seealso cref="M:RestrictionLibrary.srlFunctions.ReportSocketError(System.Exception,System.String)" /></remarks>
+</member>
+<member name="M:RestrictionLibrary.srlFunctions.TruncateURL(System.String)">
+ <summary>
  Clip down the length of a URL to arround 125 characters.
  </summary>
-	<param name="url">The address you'd like to cut down.</param>
-	<returns>A smaller version of the address.</returns>
-</member><member name="M:RestrictionLibrary.srlFunctions.HostTypeToString(RestrictionLibrary.localRestrictionTracker.SatHostTypes)">
-	<summary>
- Converts a <see cref="T:RestrictionLibrary.localRestrictionTracker.SatHostTypes"/> value to a simple string.
+ <param name="url">The address you'd like to cut down.</param>
+ <returns>A smaller version of the address.</returns>
+</member>
+<member name="M:RestrictionLibrary.srlFunctions.HostTypeToString(RestrictionLibrary.localRestrictionTracker.SatHostTypes)">
+ <summary>
+ Converts a <see cref="T:RestrictionLibrary.localRestrictionTracker.SatHostTypes" /> value to a simple string.
  </summary>
-	<param name="hostType">A Satellite Internet host type enumeration.</param>
-	<returns>If the <paramref name="hostType"/> is a valid <see cref="T:RestrictionLibrary.localRestrictionTracker.SatHostTypes"/>, the return will be a three-letter value. Otherwise, it will be the letter "O".</returns>
-	<remarks>
-		<para>WildBlue_LEGACY: "WBL"</para>
-		<para>WildBlue_EXEDE: "WBX"</para>
-		<para>RuralPortal_LEGACY: "RPL"</para>
-		<para>RuralPortal_EXEDE: "RPX"</para>
-		<para>Dish_EXEDE: "DNX"</para>
-		<para>Other Values: "O"</para>
-		<para>See Also: <seealso cref="M:RestrictionLibrary.srlFunctions.StringToHostType(System.String)"/></para>
-	</remarks>
-</member><member name="M:RestrictionLibrary.srlFunctions.StringToHostType(System.String)">
-	<summary>
- Converts a simple string value to a <see cref="T:RestrictionLibrary.localRestrictionTracker.SatHostTypes"/>.
+ <param name="hostType">A Satellite Internet host type enumeration.</param>
+ <returns>If the <paramref name="hostType" /> is a valid <see cref="T:RestrictionLibrary.localRestrictionTracker.SatHostTypes" />, the return will be a three-letter value. Otherwise, it will be the letter &quot;O&quot;.</returns>
+ <remarks>
+  <para>WildBlue_LEGACY: &quot;WBL&quot;</para>
+  <para>WildBlue_EXEDE: &quot;WBX&quot;</para>
+  <para>RuralPortal_LEGACY: &quot;RPL&quot;</para>
+  <para>RuralPortal_EXEDE: &quot;RPX&quot;</para>
+  <para>Dish_EXEDE: &quot;DNX&quot;</para>
+  <para>Other Values: &quot;O&quot;</para>
+  <para>See Also: <seealso cref="M:RestrictionLibrary.srlFunctions.StringToHostType(System.String)" /></para>
+ </remarks>
+</member>
+<member name="M:RestrictionLibrary.srlFunctions.StringToHostType(System.String)">
+ <summary>
+ Converts a simple string value to a <see cref="T:RestrictionLibrary.localRestrictionTracker.SatHostTypes" />.
  </summary>
-	<param name="host">The string to be converted to a <see cref="T:RestrictionLibrary.localRestrictionTracker.SatHostTypes"/> enumeration value.</param>
-	<returns>The closest <see cref="T:RestrictionLibrary.localRestrictionTracker.SatHostTypes"/> match detected.</returns>
-	<remarks>
-		<para>These values are <i>not</i> case-sensitive.</para>
-		<para>"WBL", "WildBlue": WildBlue_LEGACY</para>
-		<para>"WBX", "WBV", "Exede": WildBlue_EXEDE</para>
-		<para>"RPL", "RuralPortal": RuralPortal_LEGACY</para>
-		<para>"RPX": RuralPortal_EXEDE</para>
-		<para>"DNX", "Dish", "DishNet": Dish_EXEDE</para>
-		<para>Other Values: Other</para>
-		<para>See Also: <seealso cref="M:RestrictionLibrary.srlFunctions.HostTypeToString(RestrictionLibrary.localRestrictionTracker.SatHostTypes)"/></para>
-	</remarks>
-</member><member name="M:RestrictionLibrary.srlFunctions.InUseChecker(System.String,System.IO.FileAccess)">
-	<summary>
+ <param name="host">The string to be converted to a <see cref="T:RestrictionLibrary.localRestrictionTracker.SatHostTypes" /> enumeration value.</param>
+ <returns>The closest <see cref="T:RestrictionLibrary.localRestrictionTracker.SatHostTypes" /> match detected.</returns>
+ <remarks>
+  <para>These values are <i>not</i> case-sensitive.</para>
+  <para>&quot;WBL&quot;, &quot;WildBlue&quot;: WildBlue_LEGACY</para>
+  <para>&quot;WBX&quot;, &quot;WBV&quot;, &quot;Exede&quot;: WildBlue_EXEDE</para>
+  <para>&quot;RPL&quot;, &quot;RuralPortal&quot;: RuralPortal_LEGACY</para>
+  <para>&quot;RPX&quot;: RuralPortal_EXEDE</para>
+  <para>&quot;DNX&quot;, &quot;Dish&quot;, &quot;DishNet&quot;: Dish_EXEDE</para>
+  <para>Other Values: Other</para>
+  <para>See Also: <seealso cref="M:RestrictionLibrary.srlFunctions.HostTypeToString(RestrictionLibrary.localRestrictionTracker.SatHostTypes)" /></para>
+ </remarks>
+</member>
+<member name="M:RestrictionLibrary.srlFunctions.InUseChecker(System.String,System.IO.FileAccess)">
+ <summary>
  Attempts to see if a file is in use, waiting for it to be freed.
  </summary>
-	<param name="path">The exact path to the file which needs to be checked.</param>
-	<param name="access">Write permissions required for checking.</param>
-	<returns><c>True</c> on available, <c>False</c> on in use.</returns>
-	<remarks>This function can take up to five seconds while waiting for successful file access.</remarks>
-</member><member name="M:RestrictionLibrary.srlFunctions.TickCount">
-	<summary>
+ <param name="path">The exact path to the file which needs to be checked.</param>
+ <param name="access">Write permissions required for checking.</param>
+ <returns><c>True</c> on available, <c>False</c> on in use.</returns>
+ <remarks>This function can take up to five seconds while waiting for successful file access.</remarks>
+</member>
+<member name="M:RestrictionLibrary.srlFunctions.TickCount">
+ <summary>
  Number of ticks since the computer started up.
  </summary>
-</member><member name="M:RestrictionLibrary.srlFunctions.IterativeEqualityCheck(System.Byte[],System.Byte[])">
-	<summary>
+</member>
+<member name="M:RestrictionLibrary.srlFunctions.IterativeEqualityCheck(System.Byte[],System.Byte[])">
+ <summary>
  Iterates through two <see cref="T:System.Byte">Byte arrays</see> to ensure their precise equality.
  </summary>
-	<param name="inArray1">One of two byte arrays to check for exact equality.</param>
-	<param name="inArray2">The other of two byte arrays to check for exact equality.</param>
-	<returns><c>True</c> if both arrays are binary equal, <c>False</c> otherwise.</returns>
-	<remarks>If the lengths of the arrays is different, the result will be <c>False</c>.</remarks>
-</member><member name="M:RestrictionLibrary.srlFunctions.GetCLRVersion">
-	<summary>
+ <param name="inArray1">One of two byte arrays to check for exact equality.</param>
+ <param name="inArray2">The other of two byte arrays to check for exact equality.</param>
+ <returns><c>True</c> if both arrays are binary equal, <c>False</c> otherwise.</returns>
+ <remarks>If the lengths of the arrays is different, the result will be <c>False</c>.</remarks>
+</member>
+<member name="M:RestrictionLibrary.srlFunctions.GetCLRVersion">
+ <summary>
  Common Language Runtime exact version number.
  </summary>
-</member><member name="M:RestrictionLibrary.srlFunctions.GetCLRCleanVersion">
-	<summary>
+</member>
+<member name="M:RestrictionLibrary.srlFunctions.GetCLRCleanVersion">
+ <summary>
  Common Language Runtime Name and Release version.
+ </summary>
+</member>
+<member name="T:RestrictionLibrary.RR_HMAC">
+ <summary>
+ Represents the abstract class from which RR_HMACSHA512 must derive.
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.RR_HMAC.HashName">
+ <summary>
+ Gets or sets the name of the hash algorithm to use for hashing.
+ </summary>
+ <value></value>
+ <returns>The name of the hash algorithm.</returns>
+ <exception cref="T:System.Security.Cryptography.CryptographicException">The current hash algorithm cannot be changed.</exception>
+</member>
+<member name="P:RestrictionLibrary.RR_HMAC.Key">
+ <summary>
+ Gets or sets the key to use in the hash algorithm.
+ </summary>
+ <value></value>
+ <returns>The key to use in the hash algorithm.</returns>
+ <exception cref="T:System.Security.Cryptography.CryptographicException">An attempt is made to change the System.Security.Cryptography.HMAC.Key property after hashing has begun.</exception>
+</member>
+<member name="M:RestrictionLibrary.RR_HMAC.Initialize">
+ <summary>
+ Initializes an instance of the default implementation of <see cref="T:RestrictionLibrary.RR_HMAC" />.
+ </summary>
+</member>
+<member name="M:RestrictionLibrary.RR_HMAC.Create">
+ <summary>
+ Creates an instance of the default implementation of a Hash-based Message Authentication Code (HMAC).
+ </summary>
+ <returns>A new instance of an HMAC.</returns>
+</member>
+<member name="M:RestrictionLibrary.RR_HMAC.Create(System.String)">
+ <summary>
+ Creates an instance of the default implementation of a Hash-based Message Authentication Code (HMAC).
+ </summary>
+ <param name="algorithmName">The HMAC implementation to use.</param>
+ <returns>A new instance of the specified HMAC implementation.</returns>
+</member>
+<member name="T:RestrictionLibrary.RR_HMACSHA512">
+ <summary>
+ SHA-512 hashing with support for the Legacy HMAC values of .NET 2.0 and modern values provided by .NET 2.0 SP1 and newer.
+ </summary>
+</member>
+<member name="M:RestrictionLibrary.RR_HMACSHA512.#ctor">
+ <summary>
+ Initializes a new instance of the <see cref="T:RestrictionLibrary.RR_HMACSHA512" /> class with a randomly generated key.
+ </summary>
+</member>
+<member name="M:RestrictionLibrary.RR_HMACSHA512.#ctor(System.Byte[])">
+ <summary>
+ Initializes a new instance of the <see cref="T:RestrictionLibrary.RR_HMACSHA512" /> class with the specified key data.
+ </summary>
+ <param name="key__1">The secret key for System.Security.Cryptography.HMACSHA512 encryption. The key can be any length. However, if it is more than 64 bytes long it will be hashed (using SHA-1) to derive a 64-byte key. Therefore, the recommended size of the secret key is 64 bytes.</param>
+</member>
+<member name="P:RestrictionLibrary.RR_HMACSHA512.ProduceLegacyHmacValues">
+ <summary>
+ Provides a workaround for the .NET Framework version 2.0 implementation of the <see cref="T:RestrictionLibrary.RR_HMACSHA512" /> algorithm, which is inconsistent with the .NET Framework version 2.0 Service Pack 1 implementation.
+ </summary>
+ <value></value>
+ <returns>true to enable .NET Framework version 2.0 Service Pack 1 applications to interact with .NET Framework 2.0 applications; otherwise, false.</returns>
+</member>
+<member name="T:RestrictionLibrary.remoteRestrictionTracker">
+ <summary>
+ Accesses the Remote Usage Service and handles all communication internally.
+ </summary>
+</member>
+<member name="T:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs">
+ <summary>
+ Information regarding the type of failure received and any details.
+ </summary>
+</member>
+<member name="T:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType">
+ <summary>
+ Types of failures used by the <see cref="T:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs" /> class.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.NoUsername">
+ <summary>
+ The Username does not exist on the server.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadProduct">
+ <summary>
+ The Product Key has been disabled.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadServer">
+ <summary>
+ The server's authenticity could not be verified.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadPassword">
+ <summary>
+ Incorrect Password.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadLogin">
+ <summary>
+ The server could not log in to the provider.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.NoData">
+ <summary>
+ No usage data accumulated yet.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.NoPassword">
+ <summary>
+ The server does not know what your password is.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.Network">
+ <summary>
+ Network connection error.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.NotBase64">
+ <summary>
+ Server response was not Base64 encoded. All server responses should be, so this either means the server crapped out and gave a PHP error, or the connection was redirected elsewhere.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.Type">
+ <summary>
+ The type of failure received from the server.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.Details">
+ <summary>
+ Details regarding the failure received from the server.
+ </summary>
+</member>
+<member name="M:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.#ctor(RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType,System.String)">
+ <summary>
+ Generate a failure message as received from the server.
+ </summary>
+ <param name="Failure">The type of failure received from the server.</param>
+ <param name="Extra">Details regarding the failure from the server (optional). This data will be parsed down to the HTML title if one exists.</param>
+</member>
+<member name="E:RestrictionLibrary.remoteRestrictionTracker.Failure">
+ <summary>
+ Triggered when the connection to the Remote Usage Service fails.
+ </summary>
+ <param name="sender">Instance of the <see cref="T:RestrictionLibrary.remoteRestrictionTracker" /> class.</param>
+ <param name="e"><see cref="T:RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs" /> data regarding the failure.</param>
+</member>
+<member name="T:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs">
+ <summary>
+ Response information from the server on a successful connection to the Remote Usage Service.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Provider">
+ <summary>
+ The type of provider which this account uses.
+ </summary>
+</member>
+<member name="T:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result">
+ <summary>
+ A structure containing a single moment in usage history.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result.Time">
+ <summary>
+ The exact date and time this usage data belongs to.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result.Down">
+ <summary>
+ Number of megabytes used in download.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result.DownMax">
+ <summary>
+ Number of megabytes allowed in download.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result.Up">
+ <summary>
+ Number of megabytes used in upload.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result.UpMax">
+ <summary>
+ Number of megabytes allowed in upload.
+ </summary>
+</member>
+<member name="M:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result.#ctor(System.DateTime,System.Int32,System.Int32)">
+ <summary>
+ Generate a new <see cref="T:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result" /> using a <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs">Type B</see> history.
+ </summary>
+ <param name="AtTime">The specific date and time of this usage.</param>
+ <param name="iUsed">Total number of megabytes used.</param>
+ <param name="iMax">Total number of megabytes allowed.</param>
+ <remarks><see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs">Type B</see> history data does not separate Download and Upload data, and stores the Used and Max values in both Down and Up variables.</remarks>
+</member>
+<member name="M:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result.#ctor(System.DateTime,System.Int32,System.Int32,System.Int32,System.Int32)">
+ <summary>
+ Generate a new <see cref="T:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result" /> using a <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs">Type A</see> history.
+ </summary>
+ <param name="AtTime">The specific date and time of this usage.</param>
+ <param name="iDown">Number of megabytes used in download.</param>
+ <param name="iDownMax">Number of megabytes allowed in download.</param>
+ <param name="iUp">Number of megabytes used in upload.</param>
+ <param name="iUpMax">Number of megabytes allowed in upload.</param>
+ <remarks><see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs">Type A</see> history data separates Download and Upload data, providing a more accurate breakdown of usage.</remarks>
+</member>
+<member name="F:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Results">
+ <summary>
+ List of <see cref="T:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result" /> values in an array. This contains all the results which fit the range requested in the UpdateFrom param in the <see cref="T:RestrictionLibrary.remoteRestrictionTracker" /> constructor.
+ </summary>
+</member>
+<member name="M:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.#ctor(RestrictionLibrary.localRestrictionTracker.SatHostTypes,RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result[])">
+ <summary>
+ Generate a success message containing the data received from the server.
+ </summary>
+ <param name="mProvider">The type of provider which this account uses.</param>
+ <param name="mResults">An array of <see cref="T:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs.Result" /> values containing all the responses from the server.</param>
+</member>
+<member name="E:RestrictionLibrary.remoteRestrictionTracker.Success">
+ <summary>
+ Triggered when the Remote Usage Service returns data.
+ </summary>
+ <param name="sender">Instance of the <see cref="T:RestrictionLibrary.remoteRestrictionTracker" /> class.</param>
+ <param name="e"><see cref="T:RestrictionLibrary.remoteRestrictionTracker.SuccessEventArgs" /> data regarding the result.</param>
+</member>
+<member name="E:RestrictionLibrary.remoteRestrictionTracker.OKKey">
+ <summary>
+ Triggered when the connection to the Remote Usage Service succeeds and the Product Key is correct.
+ </summary>
+ <param name="sender">Instance of the <see cref="T:RestrictionLibrary.remoteRestrictionTracker" /> class.</param>
+ <param name="e">Empty <see cref="T:System.EventArgs" /> object.</param>
+</member>
+<member name="M:RestrictionLibrary.remoteRestrictionTracker.#ctor(System.String,System.String,System.String,System.Net.IWebProxy,System.Int32,System.DateTime,System.String)">
+ <summary>
+ Constructor of the class, which also starts the connection process.
+ </summary>
+ <param name="Username">The Remote Usage Service account to connect to, which consists of the meter page Username and Provider Domain separated by an "@".</param>
+ <param name="Password">The password for the account. If this is set to blank, the connection will terminate after the <see cref="E:RestrictionLibrary.remoteRestrictionTracker.OKKey" /> event, which is useful for verifying the legitimacy of a <paramref name="ProductKey" /> without initiating a full connection.</param>
+ <param name="ProductKey">The account's Product Key, including hyphens, in the format XXXXXX-XXXX-XXXX-XXXX-XXXXXX</param>
+ <param name="Proxy">Proxy settings for connecting to the Remote Usage Service.</param>
+ <param name="Timeout">How long to wait between messages before timing out during connection.</param>
+ <param name="UpdateFrom">The earliest date to grab information from. The Remote Usage Service will return data from this date until the present time, rather than an entire usage history. Set the year to 2000 to grab the whole history.</param>
+ <param name="ConfigPath">The directory where configuration data is stored. This is used for reporting socket errors. If this value is null, then socket errors are not reported.</param>
+</member>
+<member name="T:RestrictionLibrary.localRestrictionTracker">
+ <summary>
+ Accesses WildBlue, Exede, RuralPortal, and Dish usage pages and handles all communication internally.
+ </summary>
+</member>
+<member name="T:RestrictionLibrary.localRestrictionTracker.SatHostTypes">
+ <summary>
+ Types of Satellite hosts which are supported by <see cref="T:RestrictionLibrary.localRestrictionTracker" />.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_LEGACY">
+ <summary>
+ WildBlue type meter with <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs">Type A</see> usage, including Download, Download Limit, Upload, and Upload Limit values, reading through an address of myaccount.DOMAIN/wbisp/DOMAIN/.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_EXEDE">
+ <summary>
+ Exede type meter with <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs">Type B</see> usage, including only Used and Limit values, reading through my.exede.net.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER">
+ <summary>
+ Exede type meter with <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs">Type B</see> usage, including only Used and Limit values, reading through my.satelliteinternetco.com, using AJAX.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY">
+ <summary>
+ RuralPortal WildBlue type meter with <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs">Type A</see> usage, including Download, Download Limit, Upload, and Upload Limit values, reading through an address of DOMAIN.ruralportal.net.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE">
+ <summary>
+ RuralPortal Exede type meter with <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs">Type B</see> usage, including only Used and Limit values, reading through an address of DOMAIN.ruralportal.net.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.Dish_EXEDE">
+ <summary>
+ Exede through Dish Network type meter with <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs">Type A2</see> uage, including AnyTime, AnyTime Limit, Off-Peak, and Off-Peak Limit values, reading through mydish.com.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.Other">
+ <summary>
+ The provider is unknown or hasn't been determined yet.
+ </summary>
+</member>
+<member name="T:RestrictionLibrary.localRestrictionTracker.ConnectionStates">
+ <summary>
+ Current status of the <see cref="T:RestrictionLibrary.localRestrictionTracker" /> connection.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionStates.Initialize">
+ <summary>
+ The class is being initialized.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionStates.Prepare">
+ <summary>
+ Praparing to log in.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionStates.Login">
+ <summary>
+ Logging in.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionStates.TableDownload">
+ <summary>
+ Downloading the Usage Table.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionStates.TableRead">
+ <summary>
+ Reading the Usage Table.
+ </summary>
+</member>
+<member name="T:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates">
+ <summary>
+ Current stage of the <see cref="T:RestrictionLibrary.localRestrictionTracker" /> connection (more detailed than <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionStates" />).
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.None">
+ <summary>
+ Use the <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionStates" /> value instead of this value. There's no further breakdown of status.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.ReadLogin">
+ <summary>
+ The login page is being read. Only Exede Reseller uses this step.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.Authenticate">
+ <summary>
+ The username and password are being sent. All providers use this step.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.AuthenticateRetry">
+ <summary>
+ Authentication has to be sent a second time. Exede and RuralPortal use this step.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.Verify">
+ <summary>
+ The login is being verified. Only Dish uses this step.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.LoadHome">
+ <summary>
+ The home page is being loaded. This is also known as the Dashboard. Exede and Dish use this step.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.LoadAJAX">
+ <summary>
+ AJAX data off the home page is being loaded. Only Exede uses this step.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.LoadAJAXRetry">
+ <summary>
+ The previous attempt to load AJAX data failed, so now the system is loading every page of AJAX data it can in an attempt to find the meter. Only Exede Reseller uses this step.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.LoadTable">
+ <summary>
+ The usage meter is being loaded. This is the final step, unless it has to be retried. All providers use this step.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.LoadTableRetry">
+ <summary>
+ The usage meter is being loaded again. Sometimes it needs to be this way. Only Dish uses this step.
+ </summary>
+</member>
+<member name="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs">
+ <summary>
+ Information regarding the type of <see cref="T:RestrictionLibrary.localRestrictionTracker" /> connection failure received and any details.
+ </summary>
+</member>
+<member name="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType">
+ <summary>
+ Types of connection failures.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType.UnknownAccountType">
+ <summary>
+ The Account Type is unknown, so the <see cref="T:RestrictionLibrary.localRestrictionTracker" /> connection can not begin. There should be no <see cref="P:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.Message" /> for this <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs" />.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType.UnknownAccountDetails">
+ <summary>
+ The Username or Password are missing, so the <see cref="T:RestrictionLibrary.localRestrictionTracker" /> connection can not begin. There should be no <see cref="P:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.Message" /> for this <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs" />.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType.LoginIssue">
+ <summary>
+ There was an issue while logging in, but the login process is still going through. Currently the only issue triggered is from <see cref="F:RestrictionLibrary.DetermineType.SatHostGroup.RuralPortal" /> with the <see cref="P:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.Message" /> "Your password needs to be changed." when the server is prompting the user to change the password for one reason or another.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType.LoginFailure">
+ <summary>
+ There was an issue while logging in. The <see cref="P:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.Message" /> will contain information about the <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionFailure" />.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType.FatalLoginFailure">
+ <summary>
+ There was an issue while logging in, and the <see cref="P:RestrictionLibrary.AppSettings.AccountType" /> is wrong. The <see cref="P:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.Message" /> will contain information about the <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionFailure" />.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType.ConnectionTimeout">
+ <summary>
+ The server timed out. There should be no <see cref="P:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.Message" /> for this <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs" />.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType.TLSTooOld">
+ <summary>
+ The version of TLS is too old. The <see cref="P:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.Message" /> for this <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs" /> will either be the string "VER" if TLS 1.1 and 1.2 are both disabled, or "PROXY" if the TLS Proxy is disabled.
+ </summary>
+</member>
+<member name="M:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.#ctor(RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType,System.String,System.String)">
+ <summary>
+ Constructor for a <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs" /> class, used in a <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionFailure" /> event to notify about a problem during connection.
+ </summary>
+ <param name="ftFailType">The <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType" /> describes the type of <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionFailure" /> for this event. See the description for each type for details.</param>
+ <param name="sMessage">A message containing information about the <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionFailure" />. Not all <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType">FailureTypes</see> use messages.</param>
+ <param name="sFailure">Extra data passed to the program about the <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionFailure" />, which can be reported to the RealityRipple Software servers to resolve in the next version. This is usually HTML and JavaScript from a single page of the login process or the meter.</param>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.Fail">
+ <summary>
+ Extra data passed to the program about the <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionFailure" />, which can be reported to the RealityRipple Software servers to resolve in the next version. This is usually HTML and JavaScript from a single page of the login process or the meter.
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.Message">
+ <summary>
+ A message containing information about the <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionFailure" />. Not all <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType">FailureTypes</see> use messages.
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.Type">
+ <summary>
+ The <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs.FailureType" /> describes the type of <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionFailure" /> for this event. See the description for each type for details.
+ </summary>
+</member>
+<member name="E:RestrictionLibrary.localRestrictionTracker.ConnectionFailure">
+ <summary>
+ Triggered when the connection to a usage page fails or has an issue.
+ </summary>
+ <param name="sender">Instance of the <see cref="T:RestrictionLibrary.localRestrictionTracker" /> class.</param>
+ <param name="e"><see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs" /> data regarding the failure.</param>
+</member>
+<member name="T:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs">
+ <summary>
+ Result from a Type A usage meter, containing Download, Download Limit, Upload, and Upload Limit values.
+ </summary>
+</member>
+<member name="M:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs.#ctor(System.Int64,System.Int64,System.Int64,System.Int64,System.DateTime,System.Boolean,System.Boolean)">
+ <summary>
+ Constructor for a <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs" /> used in <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionWBLResult" /> and <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionRPLResult" /> events.
+ </summary>
+ <param name="lDown">Number of megabytes used in download.</param>
+ <param name="lDownLim">Number of megabytes allowed in download.</param>
+ <param name="lUp">Number of megabytes used in upload.</param>
+ <param name="lUpLim">Number of megabytes allowed in upload.</param>
+ <param name="dUpdate">The specific date and time of this usage.</param>
+ <param name="bSlow"><c>True</c> if the connection has been reported as restricted, <c>False</c> otherwise.</param>
+ <param name="bFree"><c>True</c> if usage is reported not to count at the moment, <c>False</c> under normal conditions.</param>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs.Download">
+ <summary>
+ Number of megabytes used in download.
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs.DownloadLimit">
+ <summary>
+ Number of megabytes allowed in download.
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs.Upload">
+ <summary>
+ Number of megabytes used in upload.
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs.UploadLimit">
+ <summary>
+ Number of megabytes allowed in upload.
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs.Update">
+ <summary>
+ The specific date and time of this usage.
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs.SlowedDetected">
+ <summary>
+ <c>True</c> if the connection has been reported as restricted, <c>False</c> otherwise.
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs.FreeDetected">
+ <summary>
+ <c>True</c> if usage is reported not to count at the moment, <c>False</c> under normal conditions.
+ </summary>
+</member>
+<member name="T:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs">
+ <summary>
+ Result from Type A2 usage meter, containing AnyTime, AnyTime Limit, Off-Peak, and Off-Peak Limit values.
+ </summary>
+</member>
+<member name="M:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs.#ctor(System.Int64,System.Int64,System.Int64,System.Int64,System.DateTime,System.Boolean,System.Boolean)">
+ <summary>
+ Constructor for a <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs" /> used in <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionDNXResult" /> events.
+ </summary>
+ <param name="lAnyTime">Number of megabytes used during AnyTime hours.</param>
+ <param name="lAnyTimeLim">Number of megabytes allowed during AnyTime hours.</param>
+ <param name="lOffPeak">Number of megabytes used during Off-Peak hours.</param>
+ <param name="lOffPeakLim">Number of megabytes allowed during Off-Peak hours.</param>
+ <param name="dUpdate">The specific date and time of this usage.</param>
+ <param name="bSlow"><c>True</c> if the connection has been reported as restricted, <c>False</c> otherwise.</param>
+ <param name="bFree"><c>True</c> if usage is reported not to count at the moment, <c>False</c> under normal conditions.</param>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs.AnyTime">
+ <summary>
+ Number of megabytes used during AnyTime hours.
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs.AnyTimeLimit">
+ <summary>
+ Number of megabytes allowed during AnyTime hours.
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs.OffPeak">
+ <summary>
+ Number of megabytes used during Off-Peak hours.
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs.OffPeakLimit">
+ <summary>
+ Number of megabytes allowed during Off-Peak hours.
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs.Update">
+ <summary>
+ The specific date and time of this usage.
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs.SlowedDetected">
+ <summary>
+ <c>True</c> if the connection has been reported as restricted, <c>False</c> otherwise.
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs.FreeDetected">
+ <summary>
+ <c>True</c> if usage is reported not to count at the moment, <c>False</c> under normal conditions.
+ </summary>
+</member>
+<member name="T:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs">
+ <summary>
+ Result from Type B usage meter, containing Used and Limit values.
+ </summary>
+</member>
+<member name="M:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs.#ctor(System.Int64,System.Int64,System.DateTime,System.Boolean,System.Boolean)">
+ <summary>
+ Constructor for a <see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs" /> used in <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionWBXResult" />, <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionWXRResult" />, and <see cref="E:RestrictionLibrary.localRestrictionTracker.ConnectionRPXResult" /> events.
+ </summary>
+ <param name="lUsed">Total number of megabytes used.</param>
+ <param name="lLimit">Total number of megabytes allowed.</param>
+ <param name="dUpdate">The specific date and time of this usage.</param>
+ <param name="bSlow"><c>True</c> if the connection has been reported as restricted, <c>False</c> otherwise.</param>
+ <param name="bFree"><c>True</c> if usage is reported not to count at the moment, <c>False</c> under normal conditions.</param>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs.Used">
+ <summary>
+ Total number of megabytes used.
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs.Limit">
+ <summary>
+ Total number of megabytes allowed.
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs.Update">
+ <summary>
+ The specific date and time of this usage.
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs.SlowedDetected">
+ <summary>
+ If your connection is restricted, this value will be set to <c>True</c>. Currently only set by <see cref="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_LEGACY" />.
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs.FreeDetected">
+ <summary>
+ If the usage isn't being counted, this value will be set to <c>True</c>. Currently rarely used by <see cref="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_LEGACY" />.
+ </summary>
+</member>
+<member name="E:RestrictionLibrary.localRestrictionTracker.ConnectionWBLResult">
+ <summary>
+ Triggered when the server returns data for a <see cref="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_LEGACY" /> account.
+ </summary>
+ <param name="sender">Instance of the <see cref="T:RestrictionLibrary.localRestrictionTracker" /> class.</param>
+ <param name="e"><see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs" /> data regarding the result.</param>
+</member>
+<member name="E:RestrictionLibrary.localRestrictionTracker.ConnectionWBXResult">
+ <summary>
+ Triggered when the server returns data for a <see cref="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_EXEDE" /> account.
+ </summary>
+ <param name="sender">Instance of the <see cref="T:RestrictionLibrary.localRestrictionTracker" /> class.</param>
+ <param name="e"><see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs" /> data regarding the result.</param>
+</member>
+<member name="E:RestrictionLibrary.localRestrictionTracker.ConnectionWXRResult">
+ <summary>
+ Triggered when the server returns data for a <see cref="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER" /> account.
+ </summary>
+ <param name="sender">Instance of the <see cref="T:RestrictionLibrary.localRestrictionTracker" /> class.</param>
+ <param name="e"><see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs" /> data regarding the result.</param>
+</member>
+<member name="E:RestrictionLibrary.localRestrictionTracker.ConnectionDNXResult">
+ <summary>
+ Triggered when the server returns data for a <see cref="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.Dish_EXEDE" /> account.
+ </summary>
+ <param name="sender">Instance of the <see cref="T:RestrictionLibrary.localRestrictionTracker" /> class.</param>
+ <param name="e"><see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEA2ResultEventArgs" /> data regarding the result.</param>
+</member>
+<member name="E:RestrictionLibrary.localRestrictionTracker.ConnectionRPLResult">
+ <summary>
+ Triggered when the server returns data for a <see cref="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY" /> account.
+ </summary>
+ <param name="sender">Instance of the <see cref="T:RestrictionLibrary.localRestrictionTracker" /> class.</param>
+ <param name="e"><see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEAResultEventArgs" /> data regarding the result.</param>
+</member>
+<member name="E:RestrictionLibrary.localRestrictionTracker.ConnectionRPXResult">
+ <summary>
+ Triggered when the server returns data for a <see cref="F:RestrictionLibrary.localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE" /> account.
+ </summary>
+ <param name="sender">Instance of the <see cref="T:RestrictionLibrary.localRestrictionTracker" /> class.</param>
+ <param name="e"><see cref="T:RestrictionLibrary.localRestrictionTracker.TYPEBResultEventArgs" /> data regarding the result.</param>
+</member>
+<member name="T:RestrictionLibrary.localRestrictionTracker.ConnectionStatusEventArgs">
+ <summary>
+ Class storing information regarding the current connection status, useful for displaying progress during connection or determining the location of an error.
+ </summary>
+</member>
+<member name="M:RestrictionLibrary.localRestrictionTracker.ConnectionStatusEventArgs.#ctor(RestrictionLibrary.localRestrictionTracker.ConnectionStates,RestrictionLibrary.localRestrictionTracker.ConnectionSubStates,System.Int32)">
+ <summary>
+ Constructor for <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionStatusEventArgs" /> class.
+ </summary>
+ <param name="status">Current status of the <see cref="T:RestrictionLibrary.localRestrictionTracker" /> connection.</param>
+ <param name="substate">Current stage of the <see cref="T:RestrictionLibrary.localRestrictionTracker" /> connection (more detailed than <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionStates" />). This value is <see cref="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.None" /> by default.</param>
+ <param name="stage">The stage of the stage, so to speak. This numeric value contains detailed information on <paramref name="substate" /> values which may trigger more than one time.</param>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.ConnectionStatusEventArgs.Status">
+ <summary>
+ Current status of the <see cref="T:RestrictionLibrary.localRestrictionTracker" /> connection.
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.ConnectionStatusEventArgs.SubState">
+ <summary>
+ Current stage of the <see cref="T:RestrictionLibrary.localRestrictionTracker" /> connection (more detailed than <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionStates" />).
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.ConnectionStatusEventArgs.Stage">
+ <summary>
+ The stage of the stage, so to speak. This numeric value contains detailed information on <see cref="P:RestrictionLibrary.localRestrictionTracker.ConnectionStatusEventArgs.SubState" /> values which may trigger more than one time.
+ </summary>
+</member>
+<member name="E:RestrictionLibrary.localRestrictionTracker.ConnectionStatus">
+ <summary>
+ Triggered when new information regarding the current connection status is available.
+ </summary>
+ <param name="sender">Instance of the <see cref="T:RestrictionLibrary.localRestrictionTracker" /> class.</param>
+ <param name="e"><see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionStatusEventArgs" /> data regarding the current state of the connection.</param>
+</member>
+<member name="T:RestrictionLibrary.localRestrictionTracker.LoginCompletionEventArgs">
+ <summary>
+ Class storing information regarding a successful connection without data, which contains the <see cref="T:RestrictionLibrary.localRestrictionTracker.SatHostTypes">SatHostType</see> for the connected provider.
+ </summary>
+</member>
+<member name="M:RestrictionLibrary.localRestrictionTracker.LoginCompletionEventArgs.#ctor(RestrictionLibrary.localRestrictionTracker.SatHostTypes)">
+ <summary>
+ Constructor for the <see cref="T:RestrictionLibrary.localRestrictionTracker.LoginCompletionEventArgs" /> class.
+ </summary>
+ <param name="myHostType">The type of host for this provider.</param>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.LoginCompletionEventArgs.HostType">
+ <summary>
+ The type of host for this provider.
+ </summary>
+</member>
+<member name="E:RestrictionLibrary.localRestrictionTracker.LoginComplete">
+ <summary>
+ Triggered when the server verifies that the account's login information is correct.
+ </summary>
+ <param name="sender">Instance of the <see cref="T:RestrictionLibrary.localRestrictionTracker" /> class.</param>
+ <param name="e"><see cref="T:RestrictionLibrary.localRestrictionTracker.LoginCompletionEventArgs" /> data regarding the <see cref="T:RestrictionLibrary.localRestrictionTracker.SatHostTypes">SatHostType</see> of the account.</param>
+</member>
+<member name="M:RestrictionLibrary.localRestrictionTracker.#ctor(System.String,System.Boolean)">
+ <summary>
+ Constructor for the <see cref="T:RestrictionLibrary.localRestrictionTracker" /> class, which also begins the connection process.
+ </summary>
+ <param name="ConfigPath">Directory where the user.config file is stored.</param>
+ <param name="OnlyLogin">If set to <c>True</c>, this connection will abort after verifying that the Username and Password are valid, without returning data. This value is <c>False</c> by default.</param>
+</member>
+<member name="M:RestrictionLibrary.StoredPassword.DecryptApp(System.String)">
+ <summary>
+ Decrypt a password that was encrypted with the Tracker EXE GUID.
+ </summary>
+ <param name="PassCrypt">The base64 encoded encrypted password.</param>
+ <returns>The raw password which was encrypted.</returns>
+</member>
+<member name="M:RestrictionLibrary.StoredPassword.EncryptApp(System.String)">
+ <summary>
+ Encrypt a password using the Tracker EXE GUID.
+ </summary>
+ <param name="Password">The password to encrypt.</param>
+ <returns>An base64 output of the encrypted password.</returns>
+</member>
+<member name="M:RestrictionLibrary.StoredPassword.DecryptLogger(System.String)">
+ <summary>
+ Decrypt a password that was encrypted with the Logger EXE GUID.
+ </summary>
+ <param name="PassCrypt">The base64 encoded encrypted password.</param>
+ <returns>The raw password which was encrypted.</returns>
+</member>
+<member name="M:RestrictionLibrary.StoredPassword.EncryptLogger(System.String)">
+ <summary>
+ Encrypt a password using the Logger EXE GUID.
+ </summary>
+ <param name="Password">The password to encrypt.</param>
+ <returns>An base64 output of the encrypted password.</returns>
+</member>
+<member name="T:RestrictionLibrary.DetermineType">
+ <summary>
+ Class for determining the account type for a provider domain name.
+ </summary>
+</member>
+<member name="T:RestrictionLibrary.DetermineType.SatHostGroup">
+ <summary>
+ Enumeration of provider types, which generally describe the login system, though not necessarily the exact provider or usage type.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.DetermineType.SatHostGroup.Dish">
+ <summary>
+ Provider uses Dish login system (Unique to mydish.com).
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.DetermineType.SatHostGroup.RuralPortal">
+ <summary>
+ Provider uses general RuralPortal login system (DOMAIN.ruralportal.net).
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.DetermineType.SatHostGroup.WildBlue">
+ <summary>
+ Provider uses legacy WildBlue login system (myaccount.DOMAIN/wbisp/DOMAIN).
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.DetermineType.SatHostGroup.Exede">
+ <summary>
+ Provider uses modern Exede login system (exede.net).
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.DetermineType.SatHostGroup.ExedeReseller">
+ <summary>
+ Provider uses last-gen Exede login system (satelliteinternetco.com, uses AJAX).
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.DetermineType.SatHostGroup.Other">
+ <summary>
+ The provider is unknown or hasn't been determined yet.
+ </summary>
+</member>
+<member name="T:RestrictionLibrary.DetermineType.TypeDeterminedCallback">
+ <summary>
+ Callback subroutine to be triggered when a type has been determined in the <see cref="T:RestrictionLibrary.DetermineType" /> class.
+ </summary>
+ <param name="HostGroup">Provider type generally describing the provider domain name's login system.</param>
+</member>
+<member name="M:RestrictionLibrary.DetermineType.#ctor(System.String,System.Int32,System.Net.IWebProxy,RestrictionLibrary.DetermineType.TypeDeterminedCallback)">
+ <summary>
+ Constructor for <see cref="T:RestrictionLibrary.DetermineType" /> class, which also begins the determination procedure.
+ </summary>
+ <param name="Provider">URL to determine the type of.</param>
+ <param name="Timeout">Number of seconds to wait for a response from the server while testing the connection.</param>
+ <param name="Proxy">Proxy settings for testing the servers.</param>
+ <param name="callback">Callback subroutine to be triggered when the type has been determined.</param>
+</member>
+<member name="T:RestrictionLibrary.UpdateAJAXLists">
+ <summary>
+ Class for grabbing Exede AJAX Lists
+ </summary>
+</member>
+<member name="T:RestrictionLibrary.UpdateAJAXLists.UpdateCallback">
+ <summary>
+ Callback subroutine to be triggered when a type has been determined in the <see cref="T:RestrictionLibrary.UpdateAJAXLists" /> class.
+ </summary>
+</member>
+<member name="M:RestrictionLibrary.UpdateAJAXLists.#ctor(System.String,System.Int32,System.Net.IWebProxy,System.Object,RestrictionLibrary.UpdateAJAXLists.UpdateCallback)">
+ <summary>
+ Constructor for <see cref="T:RestrictionLibrary.UpdateAJAXLists" /> class, which also begins the update procedure.
+ </summary>
+ <param name="HostAddress">Host to determine the AJAX Lists of.</param>
+ <param name="iTimeout">Number of seconds to wait for a response from the server while testing the connection.</param>
+ <param name="pProxy">Proxy settings for testing the servers.</param>
+ <param name="callback">Callback subroutine to be triggered when the type has been determined.</param>
+</member>
+<member name="M:RestrictionLibrary.WebClientCore.#ctor(System.Boolean)">
+ <summary>
+ Create a new instance of the <see cref="T:RestrictionLibrary.WebClientCore" /> Class.
+ </summary>
+ <param name="useEvents">If set to <c>True</c>, failures will trigger events, if <c>False</c>, failures will throw errors.</param>
+</member>
+<member name="M:RestrictionLibrary.WebClientCore.#ctor">
+ <summary>
+ Create a new instance of the <see cref="T:RestrictionLibrary.WebClientCore" /> Class.
+ </summary>
+</member>
+<member name="T:RestrictionLibrary.WebClientCore.ErrorEventArgs">
+ <summary>
+ A <see cref="T:RestrictionLibrary.WebClientCore" /> Upload or Download request failure message containing an <see cref="T:System.Exception" />.
+ </summary>
+</member>
+<member name="M:RestrictionLibrary.WebClientCore.ErrorEventArgs.#ctor(System.Exception)">
+ <summary>
+ Create a new instance of the <see cref="T:RestrictionLibrary.WebClientCore.ErrorEventArgs" /> Class for use with the <see cref="E:RestrictionLibrary.WebClientCore.Failure" /> event.
+ </summary>
+ <param name="Err">The Exception being passed through the <see cref="E:RestrictionLibrary.WebClientCore.Failure" /> event.</param>
+</member>
+<member name="F:RestrictionLibrary.WebClientCore.REPLACE_COMMA">
+ <summary>
+ This constant replaces any commas in the values of cookies received, and will be replaced by commas on any cookies being sent.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.WebClientCore.REPLACE_SEMIC">
+ <summary>
+ This constant replaces any semicolons in the values of cookies received, and will be replaced by semicolons on any cookies being sent.
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.WebClientCore.CookieJar">
+ <summary>
+ Acts as the container for a collection of <see cref="T:System.Net.CookieCollection" /> objects for use with an instance of the <see cref="T:RestrictionLibrary.WebClientCore" /> class.
+ </summary>
+ <value>A new CookieJar to use in place of the default empty Jar. This is useful for sharing and storing sessions and cookies across multiple <see cref="T:RestrictionLibrary.WebClientCore" /> instances.</value>
+ <returns>The current CookieJar for this <see cref="T:RestrictionLibrary.WebClientCore" />.</returns>
+</member>
+<member name="P:RestrictionLibrary.WebClientCore.SendCookieJar">
+ <summary>
+ The way cookies are sent can be modified using this property.
+ </summary>
+ <value>Cookies will be sent by text if this value is <c>False</c>, and by both text and cookie jar if <c>True</c>.</value>
+ <returns>See the value entry for details on the return values.</returns>
+</member>
+<member name="P:RestrictionLibrary.WebClientCore.ResponseURI">
+ <summary>
+ The <see cref="T:System.Uri" /> of the last <see cref="M:RestrictionLibrary.WebClientCore.GetWebResponse(System.Net.WebRequest)" /> event after any redirection.
+ </summary>
+ <returns>Initially, the value will be <c>Nothing</c> until a <see cref="M:RestrictionLibrary.WebClientCore.GetWebResponse(System.Net.WebRequest)" /> event occurs. It may be equal to the <see cref="T:System.Uri" /> sent in a Download or Upload request, or it may be modified during the request as per page redirection standards*.</returns>
+ <remarks>*Page Redirection can be disabled using the <see cref="P:RestrictionLibrary.WebClientCore.ManualRedirect" /> property. The standards followed if <see cref="P:RestrictionLibrary.WebClientCore.ManualRedirect" /> is set to <c>False</c> are the HTTP 300 Status Code set of errors. Up to 50 redirects are allowed if <see cref="P:System.Net.HttpWebRequest.MaximumAutomaticRedirections" /> has not been set manually.</remarks>
+</member>
+<member name="P:RestrictionLibrary.WebClientCore.Timeout">
+ <summary>
+ Gets or sets the time-out value in seconds for the <see cref="M:System.Net.HttpWebRequest.GetResponse" /> and <see cref="M:System.Net.HttpWebRequest.GetRequestStream" /> methods.
+ </summary>
+ <value></value>
+ <returns>The number of milliseconds to wait before the request times out. The default is 120 seconds.</returns>
+</member>
+<member name="P:RestrictionLibrary.WebClientCore.ReadWriteTimeout">
+ <summary>
+ Gets or sets a time-out in seconds when writing to or reading from a stream.
+ </summary>
+ <value></value>
+ <returns>The number of seconds before the writing or reading times out. The default value is 300 seconds (5 minutes).</returns>
+</member>
+<member name="P:RestrictionLibrary.WebClientCore.HTTPVersion">
+ <summary>
+ Gets or sets the version of HTTP to use for the request.
+ </summary>
+ <value></value>
+ <returns>The HTTP version to use for the request. The default is <see cref="F:System.Net.HttpVersion.Version11" />.</returns>
+</member>
+<member name="P:RestrictionLibrary.WebClientCore.ErrorBypass">
+ <summary>
+ Gets or sets a <see cref="T:System.Boolean" /> value which determines how the <see cref="T:RestrictionLibrary.WebClientCore" /> reacts to the HTTP 400 Status Code set of errors.
+ </summary>
+ <value>If set to <c>True</c> and the error contains a <see cref="T:System.Net.WebResponse" /> value, that response is sent instead of an error.</value>
+ <returns>If <c>True</c>, errors may be bypassed and trigger Upload and Download completion events, if possible. If <c>False</c>, all error responses are treated as errors. The default value is <c>True</c>.</returns>
+</member>
+<member name="P:RestrictionLibrary.WebClientCore.KeepAlive">
+ <summary>
+ Gets or sets a value that indicates whether to make a persistent connection to the Internet resource.
+ </summary>
+ <value>If set to <c>True</c>, the <see cref="T:RestrictionLibrary.WebClientCore" /> will send a Connection HTTP header with the value Keep-alive; if <c>False</c>, Close.</value>
+ <returns><c>True</c> if the request to the Internet resource should contain a Connection HTTP header with the value Keep-alive; otherwise, <c>False</c>. The default is <c>True</c>.</returns>
+</member>
+<member name="P:RestrictionLibrary.WebClientCore.ManualRedirect">
+ <summary>
+ Gets or sets a <see cref="T:System.Boolean" /> value which determines how the <see cref="T:RestrictionLibrary.WebClientCore" /> reacts to the HTTP 300 Status Code set of errors.
+ </summary>
+ <value></value>
+ <returns><c>False</c> if the request should automatically follow redirection responses from the Internet resource; otherwise, <c>True</c>. The default value is <c>True</c>.</returns>
+</member>
+<member name="E:RestrictionLibrary.WebClientCore.Failure">
+ <summary>
+ A <see cref="T:RestrictionLibrary.WebClientCore" /> Upload or Download request has failed.
+ </summary>
+ <param name="sender">The class which is triggering the event.</param>
+ <param name="e">The exception contained in an EventArg</param>
+</member>
+<member name="P:RestrictionLibrary.WebClientCore.UserAgent">
+ <summary>
+ The User Agent for Satellite Restriction Tracker
+ </summary>
+ <value></value>
+ <returns></returns>
+</member>
+<member name="P:RestrictionLibrary.WebClientEx.Timeout">
+ <summary>
+ Gets or sets the time-out value in seconds for the <see cref="M:System.Net.HttpWebRequest.GetResponse" /> and <see cref="M:System.Net.HttpWebRequest.GetRequestStream" /> methods.
+ </summary>
+ <value></value>
+ <returns>The number of milliseconds to wait before the request times out. The default is 180 seconds.</returns>
+</member>
+<member name="P:RestrictionLibrary.WebClientEx.ReadWriteTimeout">
+ <summary>
+ Gets or sets a time-out in seconds when writing to or reading from a stream.
+ </summary>
+ <value></value>
+ <returns>The number of seconds before the writing or reading times out. The default value is 7200 seconds (2 hours).</returns>
+</member>
+<member name="P:RestrictionLibrary.WebClientEx.Proxy">
+ <summary>
+ Gets or sets the proxy used by this <see cref="T:RestrictionLibrary.WebClientEx" /> object.
+ </summary>
+ <value></value>
+ <returns>An <see cref="T:System.Net.IWebProxy" /> instance used to send requests.</returns>
+</member>
+<member name="P:RestrictionLibrary.WebClientEx.CookieJar">
+ <summary>
+ Acts as the container for a collection of <see cref="T:System.Net.CookieCollection" /> objects for use with an instance of the <see cref="T:RestrictionLibrary.WebClientEx" /> class.
+ </summary>
+ <value>A new CookieJar to use in place of the default empty Jar. This is useful for sharing and storing sessions and cookies across multiple <see cref="T:RestrictionLibrary.WebClientEx" /> instances.</value>
+ <returns>The current CookieJar for this <see cref="T:RestrictionLibrary.WebClientEx" />.</returns>
+</member>
+<member name="P:RestrictionLibrary.WebClientEx.Encoding">
+ <summary>
+ Gets and sets the System.Text.Encoding used to upload and download strings.
+ </summary>
+ <value></value>
+ <returns>A System.Text.Encoding that is used to encode strings. The default value of this property is <see cref="F:RestrictionLibrary.srlFunctions.LATIN_1" />.</returns>
+</member>
+<member name="P:RestrictionLibrary.WebClientEx.ResponseURI">
+ <summary>
+ The <see cref="T:System.Uri" /> of the last <see cref="M:RestrictionLibrary.WebClientCore.GetWebResponse(System.Net.WebRequest)" /> event after any redirection.
+ </summary>
+ <returns>Initially, the value will be <c>Nothing</c> until a <see cref="M:RestrictionLibrary.WebClientCore.GetWebResponse(System.Net.WebRequest)" /> event occurs. It may be equal to the <see cref="T:System.Uri" /> sent in a Download or Upload request, or it may be modified during the request as per page redirection standards*.</returns>
+ <remarks>*Page Redirection can be disabled using the <see cref="P:RestrictionLibrary.WebClientEx.ManualRedirect" /> property. The standards followed if <see cref="P:RestrictionLibrary.WebClientEx.ManualRedirect" /> is set to <c>False</c> are the HTTP 300 Status Code set of errors. Up to 50 redirects are allowed if <see cref="P:System.Net.HttpWebRequest.MaximumAutomaticRedirections" /> has not been set manually.</remarks>
+</member>
+<member name="P:RestrictionLibrary.WebClientEx.ErrorBypass">
+ <summary>
+ Gets or sets a <see cref="T:System.Boolean" /> value which determines how the <see cref="T:RestrictionLibrary.WebClientCore" /> reacts to the HTTP 400 Status Code set of errors.
+ </summary>
+ <value>If set to <c>True</c> and the error contains a <see cref="T:System.Net.WebResponse" /> value, that response is sent instead of an error.</value>
+ <returns>If <c>True</c>, errors may be bypassed and trigger Upload and Download completion events, if possible. If <c>False</c>, all error responses are treated as errors. The default value is <c>True</c>.</returns>
+</member>
+<member name="P:RestrictionLibrary.WebClientEx.KeepAlive">
+ <summary>
+ Gets or sets a value that indicates whether to make a persistent connection to the Internet resource.
+ </summary>
+ <value>If set to <c>True</c>, the <see cref="T:RestrictionLibrary.WebClientCore" /> will send a Connection HTTP header with the value Keep-alive; if <c>False</c>, Close.</value>
+ <returns><c>True</c> if the request to the Internet resource should contain a Connection HTTP header with the value Keep-alive; otherwise, <c>False</c>. The default is <c>True</c>.</returns>
+</member>
+<member name="P:RestrictionLibrary.WebClientEx.ManualRedirect">
+ <summary>
+ Gets or sets a <see cref="T:System.Boolean" /> value which determines how the <see cref="T:RestrictionLibrary.WebClientCore" /> reacts to the HTTP 300 Status Code set of errors.
+ </summary>
+ <value></value>
+ <returns><c>False</c> if the request should automatically follow redirection responses from the Internet resource; otherwise, <c>True</c>. The default value is <c>True</c>.</returns>
+</member>
+<member name="P:RestrictionLibrary.WebClientEx.SendHeaders">
+ <summary>
+ Gets or sets a collection of header name/value pairs associated with the request.
+ </summary>
+ <value></value>
+ <returns>A <see cref="T:System.Net.WebHeaderCollection" /> containing header name/value pairs associated with this request.</returns>
+</member>
+<member name="P:RestrictionLibrary.WebClientEx.IsBusy">
+ <summary>
+ Returns a Boolean value that provides information about the state of the request.
+ </summary>
+ <value></value>
+ <returns>If <c>True</c>, the request has been processed and is being sent, the client is waiting for the server, or data is being received in response. Otherwise, the request has not yet been sent or a response has already been received.</returns>
+</member>
+<member name="T:RestrictionLibrary.SecurityProtocolTypeEx">
+ <summary>
+ Specifies the security protocols that are supported by the Schannel security package.
+ </summary>
+ <remarks>This contains the additional TLS 1.1 and 1.2 standards lacking in <see cref="T:System.Net.SecurityProtocolType" />, which require newer .NET Framework versions.</remarks>
+</member>
+<member name="F:RestrictionLibrary.SecurityProtocolTypeEx.None">
+ <summary>
+ Specifies no security protocol is to be used.
+ </summary>
+ <remarks>This value is technically invalid, but exists for use with Settings to allow no protocol to be selected in the case of a Remote Usage Service subscription.</remarks>
+</member>
+<member name="F:RestrictionLibrary.SecurityProtocolTypeEx.Ssl3">
+ <summary>
+ Specifies the Secure Socket Layer (SSL) 3.0 security protocol.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.SecurityProtocolTypeEx.Tls10">
+ <summary>
+ Specifies the Transport Layer Security (TLS) 1.0 security protocol.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.SecurityProtocolTypeEx.Tls11">
+ <summary>
+ Specifies the Transport Layer Security (TLS) 1.1 security protocol.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.SecurityProtocolTypeEx.Tls12">
+ <summary>
+ Specifies the Transport Layer Security (TLS) 1.2 security protocol.
  </summary>
 </member>
 </members>

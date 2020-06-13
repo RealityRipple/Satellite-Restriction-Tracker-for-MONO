@@ -235,7 +235,7 @@ namespace RestrictionTrackerGTK
             c_callback.Invoke(localRestrictionTracker.SatHostTypes.Dish_EXEDE);
           }
         }
-        else if (Provider.ToLower() == "exede.com" | Provider.ToLower() == "exede.net" | Provider.ToLower() == "satelliteinternetco.com")
+        else if (Provider.ToLower() == "exede.com" | Provider.ToLower() == "exede.net")
         {
           if (c_callback == null)
           {
@@ -246,6 +246,19 @@ namespace RestrictionTrackerGTK
           if (c_callback != null)
           {
             c_callback.Invoke(localRestrictionTracker.SatHostTypes.WildBlue_EXEDE);
+          }
+        }
+        else if (Provider.ToLower() == "satelliteinternetco.com")
+        {
+          if (c_callback == null)
+          {
+            System.Threading.Thread.Sleep(0);
+            System.Threading.Thread.Sleep(100);
+            System.Threading.Thread.Sleep(0);
+          }
+          if (c_callback != null)
+          {
+            c_callback.Invoke(localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER);
           }
         }
         else
@@ -402,6 +415,8 @@ namespace RestrictionTrackerGTK
           mySettings.AccountType = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
         else if (e.HostGroup == DetermineType.SatHostGroup.Exede)
           mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
+        else if (e.HostGroup == DetermineType.SatHostGroup.Exede)
+          mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER;
         modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
         mySettings.Save();
         SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Connection...", false);
@@ -1222,7 +1237,7 @@ namespace RestrictionTrackerGTK
           }
         }
       }
-      else if (myPanel == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE | myPanel == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
+      else if (myPanel == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE | myPanel == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE | myPanel == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER)
       {
         if (lblTypeBUsedVal.Text == " -- ")
         {
@@ -1811,7 +1826,7 @@ namespace RestrictionTrackerGTK
                   NextGrabTick = long.MaxValue;
                   PauseActivity = "Preparing Connection";
                   EnableProgressIcon();
-                  if (!checkedAJAX && mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
+                  if (!checkedAJAX && mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER)
                   {
                     SetStatusText(modDB.LOG_GetLast().ToString("g"), "Checking for AJAX List Update...", false);
                     UpdateAJAXLists AJAXUpdate = new UpdateAJAXLists(sProvider, mySettings.Timeout, mySettings.Proxy, (object)"GetUsage", UpdateAJAXLists_UpdateChecked);
@@ -2023,7 +2038,10 @@ namespace RestrictionTrackerGTK
               SetStatusText(modDB.LOG_GetLast().ToString("g"), "Reading Login Page...", false);
               break;
             case localRestrictionTracker.ConnectionSubStates.Authenticate:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Authenticating...", false);
+              if (e.Stage < 1)
+                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Authenticating...", false);
+              else
+                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Authenticating (Stage " + (e.Stage + 1) + ")...", false);
               break;
             case localRestrictionTracker.ConnectionSubStates.AuthenticateRetry:
               if (e.Stage < 1)
@@ -2032,7 +2050,10 @@ namespace RestrictionTrackerGTK
                 SetStatusText(modDB.LOG_GetLast().ToString("g"), "Re-Authenticating (Attempt " + e.Stage + ")...", false);
               break;
             case localRestrictionTracker.ConnectionSubStates.Verify:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Verifying Authentication...", false);
+              if (e.Stage < 1)
+                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Verifying Authentication...", false);
+              else
+                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Verifying Access (Stage " + e.Stage + ")...", false);
               break;
             default:
               SetStatusText(modDB.LOG_GetLast().ToString("g"), "Logging In...", false);
@@ -2043,13 +2064,16 @@ namespace RestrictionTrackerGTK
           switch (e.SubState)
           {
             case localRestrictionTracker.ConnectionSubStates.LoadHome:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Home Page...", false);
+              if (e.Stage < 1)
+                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Home Page...", false);
+              else
+                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Home Page (Stage " + (e.Stage + 1) + ")...", false);
               break;
             case localRestrictionTracker.ConnectionSubStates.LoadAJAX:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading AJAX Data (" + e.Stage + " of " + localData.ExedeAJAXFirstTryRequests + ")...", false);
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading AJAX Data (" + e.Stage + " of " + localData.ExedeResellerAJAXFirstTryRequests + ")...", false);
               break;
             case localRestrictionTracker.ConnectionSubStates.LoadAJAXRetry:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Re-Downloading AJAX Data (" + e.Stage + " of " + localData.ExedeAJAXSecondTryRequests + ")...", false);
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Re-Downloading AJAX Data (" + e.Stage + " of " + localData.ExedeResellerAJAXSecondTryRequests + ")...", false);
               break;
             case localRestrictionTracker.ConnectionSubStates.LoadTable:
               SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Usage Table...", false);
@@ -2155,7 +2179,7 @@ namespace RestrictionTrackerGTK
             localDataEvent(true);
             return;
           }
-          if (e.Message == "AJAX failed to yield data table." && GrabAttempt < 1)
+          if ((e.Message == "AJAX failed to yield data table." || e.Message == "Can't determine AJAX order.") && GrabAttempt < 1)
           {
             GrabAttempt++;
             if (localData != null)
@@ -2336,6 +2360,32 @@ namespace RestrictionTrackerGTK
       modDB.LOG_Add(e.Update, e.Used, e.Limit, e.Used, e.Limit, true);
       myPanel = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
       mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
+      mySettings.Save();
+      modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
+      if (e.SlowedDetected)
+        imSlowed = true;
+      imFree = e.FreeDetected;
+      DisplayUsage(true, true);
+      if (localData != null)
+      {
+        localDataEvent(false);
+        localData.Dispose();
+        localData = null;
+      }
+    }
+    private void localData_ConnectionWXRResult(object sender, localRestrictionTracker.TYPEBResultEventArgs e)
+    {
+      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionWXRResult);
+    }
+    private void Main_LocalDataConnectionWXRResult(object o, EventArgs ea)
+    {
+      localRestrictionTracker.TYPEBResultEventArgs e = (localRestrictionTracker.TYPEBResultEventArgs)ea;
+      GrabAttempt = 0;
+      SetStatusText(e.Update.ToString("g"), "Saving History...", false);
+      NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
+      modDB.LOG_Add(e.Update, e.Used, e.Limit, e.Used, e.Limit, true);
+      myPanel = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER;
+      mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER;
       mySettings.Save();
       modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
       if (e.SlowedDetected)
@@ -3095,28 +3145,7 @@ namespace RestrictionTrackerGTK
         return;
       }
       string sTTT = this.Title;
-      if (lDown >= lDownLim)
-      {
-        imSlowed = true;
-      }
-      if ((mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE) | (mySettings.AccountType == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE) | (mySettings.AccountType == localRestrictionTracker.SatHostTypes.Dish_EXEDE))
-      {
-        if (lDown < lDownLim)
-        {
-          imSlowed = false;
-        }
-        if (lDownLim == 150000)
-        {
-          imSlowed = false;
-        }
-      }
-      else
-      {
-        if (lDown < lDownLim * 0.7)
-        {
-          imSlowed = false;
-        }
-      }
+      imSlowed = (lDown >= lDownLim);
       if (pnlTypeA.Visible)
       {
         pnlTypeA.Visible = false;
@@ -3221,6 +3250,7 @@ namespace RestrictionTrackerGTK
         {
           case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
           case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
+          case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER:
             DisplayTypeBResults(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
             break;
           case localRestrictionTracker.SatHostTypes.Dish_EXEDE:

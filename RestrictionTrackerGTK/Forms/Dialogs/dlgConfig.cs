@@ -111,6 +111,7 @@ namespace RestrictionTrackerGTK
           optAccountTypeWBL.Active = true;
           break;
         case RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
+        case RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER:
           optAccountTypeWBX.Active = true;
           break;
         case RestrictionLibrary.localRestrictionTracker.SatHostTypes.Dish_EXEDE:
@@ -826,11 +827,29 @@ namespace RestrictionTrackerGTK
     {
       if (optHistoryLocalConfig.Active)
         if (Directory.Exists(modFunctions.AppDataPath))
-          System.Diagnostics.Process.Start(modFunctions.AppDataPath);
+        {
+          try
+          {
+            System.Diagnostics.Process.Start(modFunctions.AppDataPath);
+          }
+          catch (Exception ex)
+          {
+            modFunctions.ShowMessageBox(this, "The directory \"" + modFunctions.AppDataPath + "\" could not be opened.\n\n" + ex.Message, "Unable to Launch File Explorer", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+          }
+        }
         else
           modFunctions.ShowMessageBox(this, "The directory \"" + modFunctions.AppDataPath + "\" does not exist.\nPlease save the configuration first.", "Missing Directory", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
       else if (Directory.Exists(txtHistoryDir.CurrentFolder))
-        System.Diagnostics.Process.Start(txtHistoryDir.CurrentFolder);
+      {
+        try
+        {
+          System.Diagnostics.Process.Start(txtHistoryDir.CurrentFolder);
+        }
+        catch (Exception ex)
+        {
+          modFunctions.ShowMessageBox(this, "The directory \"" + txtHistoryDir.CurrentFolder + "\" could not be opened.\n\n" + ex.Message, "Unable to Launch File Explorer", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+        }
+      }
       else
         modFunctions.ShowMessageBox(this, "The directory \"" + txtHistoryDir.CurrentFolder + "\" does not exist.\nPlease save the configuration first.", "Missing Directory", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
     }
@@ -2224,6 +2243,7 @@ namespace RestrictionTrackerGTK
               return true;
             break;
           case RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
+          case RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER:
             if (!optAccountTypeWBX.Active)
               return true;
             break;
