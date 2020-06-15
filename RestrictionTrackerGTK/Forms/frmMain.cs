@@ -3335,7 +3335,7 @@ namespace RestrictionTrackerGTK
         {
           updateFull = false;
         }
-        if (!checkedAJAX && mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE)
+        if (!checkedAJAX && mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER)
         {
           SetStatusText(modDB.LOG_GetLast().ToString("g"), "Checking for AJAX List Update...", false);
           UpdateAJAXLists AJAXUpdate = new UpdateAJAXLists(sProvider, mySettings.Timeout, mySettings.Proxy, (object)"GetUsage", UpdateAJAXLists_UpdateChecked);
