@@ -2023,40 +2023,43 @@ namespace RestrictionTrackerGTK
     {
       localRestrictionTracker.ConnectionStatusEventArgs e = (localRestrictionTracker.ConnectionStatusEventArgs)ea;
       NextGrabTick = srlFunctions.TickCount() + ((mySettings.Timeout + 15) * 1000);
+      string sAppend = "";
+      if (e.Attempt > 0)
+      {
+        if (e.Stage > 0)
+        {
+          sAppend = " (Stage " + (e.Stage + 1) + ", Redirect #" + e.Attempt + ")";
+        }
+        else
+        {
+          sAppend = " (Redirect #" + e.Attempt + ")";
+        }
+      } else if (e.Stage > 0)
+      {
+        sAppend = " (Stage " + (e.Stage + 1) + ")";
+      }
       switch (e.Status)
       {
         case localRestrictionTracker.ConnectionStates.Initialize:
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Initializing Connection...", false);
+          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Initializing Connection" + sAppend + "...", false);
           break;
         case localRestrictionTracker.ConnectionStates.Prepare:
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing to Log In...", false);
+          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing to Log In" + sAppend + "...", false);
           break;
         case localRestrictionTracker.ConnectionStates.Login:
           switch (e.SubState)
           {
             case localRestrictionTracker.ConnectionSubStates.ReadLogin:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Reading Login Page...", false);
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Reading Login Page" + sAppend + "...", false);
               break;
             case localRestrictionTracker.ConnectionSubStates.Authenticate:
-              if (e.Stage < 1)
-                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Authenticating...", false);
-              else
-                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Authenticating (Stage " + (e.Stage + 1) + ")...", false);
-              break;
-            case localRestrictionTracker.ConnectionSubStates.AuthenticateRetry:
-              if (e.Stage < 1)
-                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Re-Authenticating...", false);
-              else
-                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Re-Authenticating (Attempt " + e.Stage + ")...", false);
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Authenticating" + sAppend + "...", false);
               break;
             case localRestrictionTracker.ConnectionSubStates.Verify:
-              if (e.Stage < 1)
-                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Verifying Authentication...", false);
-              else
-                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Verifying Access (Stage " + e.Stage + ")...", false);
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Verifying Authentication" + sAppend + "...", false);
               break;
             default:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Logging In...", false);
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Logging In" + sAppend + "...", false);
               break;
           }
           break;
@@ -2064,30 +2067,24 @@ namespace RestrictionTrackerGTK
           switch (e.SubState)
           {
             case localRestrictionTracker.ConnectionSubStates.LoadHome:
-              if (e.Stage < 1)
-                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Home Page...", false);
-              else
-                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Home Page (Stage " + (e.Stage + 1) + ")...", false);
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Home Page" + sAppend + "...", false);
               break;
             case localRestrictionTracker.ConnectionSubStates.LoadAJAX:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading AJAX Data (" + e.Stage + " of " + localData.ExedeResellerAJAXFirstTryRequests + ")...", false);
-              break;
-            case localRestrictionTracker.ConnectionSubStates.LoadAJAXRetry:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Re-Downloading AJAX Data (" + e.Stage + " of " + localData.ExedeResellerAJAXSecondTryRequests + ")...", false);
+              if (e.Attempt == 0)
+                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading AJAX Data (" + e.Stage + " of " + localData.ExedeResellerAJAXFirstTryRequests + ")...", false);
+              else
+                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading AJAX Data (" + e.Stage + " of " + localData.ExedeResellerAJAXSecondTryRequests + ")...", false);
               break;
             case localRestrictionTracker.ConnectionSubStates.LoadTable:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Usage Table...", false);
-              break;
-            case localRestrictionTracker.ConnectionSubStates.LoadTableRetry:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Re-Downloading Usage Table...", false);
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Usage Table" + sAppend + "...", false);
               break;
             default:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Usage Table...", false);
+              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Usage Table" + sAppend + "...", false);
               break;
           }
           break;
         case localRestrictionTracker.ConnectionStates.TableRead:
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Reading Usage Table...", false);
+          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Reading Usage Table" + sAppend + "...", false);
           break;
       }
     }

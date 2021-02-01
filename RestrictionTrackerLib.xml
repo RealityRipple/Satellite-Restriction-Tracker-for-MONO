@@ -778,17 +778,12 @@ RestrictionTrackerLib
 </member>
 <member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.ReadLogin">
  <summary>
- The login page is being read. Only Exede Reseller uses this step.
+ The login page is being read. Exede and Exede Reseller use this step.
  </summary>
 </member>
 <member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.Authenticate">
  <summary>
  The username and password are being sent. All providers use this step.
- </summary>
-</member>
-<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.AuthenticateRetry">
- <summary>
- Authentication has to be sent a second time. Exede and RuralPortal use this step.
  </summary>
 </member>
 <member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.Verify">
@@ -806,19 +801,9 @@ RestrictionTrackerLib
  AJAX data off the home page is being loaded. Only Exede uses this step.
  </summary>
 </member>
-<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.LoadAJAXRetry">
- <summary>
- The previous attempt to load AJAX data failed, so now the system is loading every page of AJAX data it can in an attempt to find the meter. Only Exede Reseller uses this step.
- </summary>
-</member>
 <member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.LoadTable">
  <summary>
- The usage meter is being loaded. This is the final step, unless it has to be retried. All providers use this step.
- </summary>
-</member>
-<member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.LoadTableRetry">
- <summary>
- The usage meter is being loaded again. Sometimes it needs to be this way. Only Dish uses this step.
+ The previous attempt to load AJAX data failed, so now the system is loading every page of AJAX data it can in an attempt to find the meter. Only Exede Reseller uses this step.
  </summary>
 </member>
 <member name="T:RestrictionLibrary.localRestrictionTracker.ConnectionFailureEventArgs">
@@ -1087,13 +1072,14 @@ RestrictionTrackerLib
  Class storing information regarding the current connection status, useful for displaying progress during connection or determining the location of an error.
  </summary>
 </member>
-<member name="M:RestrictionLibrary.localRestrictionTracker.ConnectionStatusEventArgs.#ctor(RestrictionLibrary.localRestrictionTracker.ConnectionStates,RestrictionLibrary.localRestrictionTracker.ConnectionSubStates,System.Int32)">
+<member name="M:RestrictionLibrary.localRestrictionTracker.ConnectionStatusEventArgs.#ctor(RestrictionLibrary.localRestrictionTracker.ConnectionStates,RestrictionLibrary.localRestrictionTracker.ConnectionSubStates,System.Int32,System.Int32)">
  <summary>
  Constructor for <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionStatusEventArgs" /> class.
  </summary>
  <param name="status">Current status of the <see cref="T:RestrictionLibrary.localRestrictionTracker" /> connection.</param>
  <param name="substate">Current stage of the <see cref="T:RestrictionLibrary.localRestrictionTracker" /> connection (more detailed than <see cref="T:RestrictionLibrary.localRestrictionTracker.ConnectionStates" />). This value is <see cref="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.None" /> by default.</param>
  <param name="stage">The stage of the stage, so to speak. This numeric value contains detailed information on <paramref name="substate" /> values which may trigger more than one time.</param>
+ <param name="attempt">The number of retries the current connection is on. Retries are normal during connection, as part of the redirection process.</param>
 </member>
 <member name="P:RestrictionLibrary.localRestrictionTracker.ConnectionStatusEventArgs.Status">
  <summary>
@@ -1108,6 +1094,11 @@ RestrictionTrackerLib
 <member name="P:RestrictionLibrary.localRestrictionTracker.ConnectionStatusEventArgs.Stage">
  <summary>
  The stage of the stage, so to speak. This numeric value contains detailed information on <see cref="P:RestrictionLibrary.localRestrictionTracker.ConnectionStatusEventArgs.SubState" /> values which may trigger more than one time.
+ </summary>
+</member>
+<member name="P:RestrictionLibrary.localRestrictionTracker.ConnectionStatusEventArgs.Attempt">
+ <summary>
+ The number of retries the current connection is on. Retries are normal during connection, as part of the redirection process.
  </summary>
 </member>
 <member name="E:RestrictionLibrary.localRestrictionTracker.ConnectionStatus">
