@@ -55,88 +55,100 @@ namespace RestrictionTrackerGTK
       fMain = new frmMain();
       if (CurrentOS.IsMac)
       {
-        ApplicationEvents.Quit += delegate (object sender, ApplicationQuitEventArgs e)
+        try
         {
-          Application.Quit();
-          e.Handled = true;
-        };
-        ApplicationEvents.Reopen += delegate (object sender, ApplicationEventArgs e)
+          ApplicationEvents.Quit += delegate (object sender, ApplicationQuitEventArgs e)
+          {
+            Application.Quit();
+            e.Handled = true;
+          };
+          ApplicationEvents.Reopen += delegate (object sender, ApplicationEventArgs e)
+          {
+            fMain.ShowFromTray();
+            e.Handled = true;
+          };
+          ApplicationEvents.Prefs += delegate (object sender, ApplicationEventArgs e)
+          {
+            fMain.cmdConfig_Click(new object(), new EventArgs());
+            e.Handled = true;
+          };
+          IgeMacMenuGroup appGroup = IgeMacMenu.AddAppMenuGroup();
+          MenuItem mnuAbout = new MenuItem();
+          mnuAbout.Activated += delegate (object sender, EventArgs e)
+          {
+            fMain.cmdAbout_Click(new object(), new EventArgs());
+          };
+          appGroup.AddMenuItem(mnuAbout, "About " + modFunctions.ProductName);
+          appGroup.AddMenuItem(new MenuItem(), "-");
+          MenuItem mnuHistory = new MenuItem();
+          mnuHistory.Activated += delegate (object sender, EventArgs e)
+          {
+            fMain.cmdHistory_Click(new object(), new EventArgs());
+          };
+          appGroup.AddMenuItem(mnuHistory, "Usage History");
+          MenuItem mnuConfig = new MenuItem();
+          mnuConfig.Activated += delegate (object sender, EventArgs e)
+          {
+            fMain.cmdConfig_Click(new object(), new EventArgs());
+          };
+          appGroup.AddMenuItem(mnuConfig, "Preferences...");
+        }
+        catch(Exception )
         {
-          fMain.ShowFromTray();
-          e.Handled = true;
-        };
-        ApplicationEvents.Prefs += delegate (object sender, ApplicationEventArgs e)
+        } 
+        try
         {
-          fMain.cmdConfig_Click(new object(), new EventArgs());
-          e.Handled = true;
-        };
-        IgeMacMenuGroup appGroup = IgeMacMenu.AddAppMenuGroup();
-        MenuItem mnuAbout = new MenuItem();
-        mnuAbout.Activated += delegate (object sender, EventArgs e)
-        {
-          fMain.cmdAbout_Click(new object(), new EventArgs());
-        };
-        appGroup.AddMenuItem(mnuAbout, "About " + modFunctions.ProductName);
-        appGroup.AddMenuItem(new MenuItem(), "-");
-        MenuItem mnuHistory = new MenuItem();
-        mnuHistory.Activated += delegate (object sender, EventArgs e)
-        {
-          fMain.cmdHistory_Click(new object(), new EventArgs());
-        };
-        appGroup.AddMenuItem(mnuHistory, "Usage History");
-        MenuItem mnuConfig = new MenuItem();
-        mnuConfig.Activated += delegate (object sender, EventArgs e)
-        {
-          fMain.cmdConfig_Click(new object(), new EventArgs());
-        };
-        appGroup.AddMenuItem(mnuConfig, "Preferences...");
+          MenuBar srtMenu = new MenuBar();
+          Menu helpMenu = new Menu();
+          MenuItem helpMenuItem = new MenuItem("Help");
 
-        MenuBar srtMenu = new MenuBar();
-        Menu helpMenu = new Menu();
-        MenuItem helpMenuItem = new MenuItem("Help");
+          MenuItem mnuFAQ = new MenuItem("Frequently Asked Questions");
+          mnuFAQ.Activated += delegate (object sender, EventArgs e)
+          {
+            System.Diagnostics.Process.Start("http://srt.realityripple.com/faq.php");
+          };
+          helpMenu.Append(mnuFAQ);
+          mnuFAQ.Show();
 
-        MenuItem mnuFAQ = new MenuItem("Frequently Asked Questions");
-        mnuFAQ.Activated += delegate (object sender, EventArgs e)
+          MenuItem mnuChanges = new MenuItem("What's New in " + modFunctions.ProductName + " v" + modFunctions.ProductVersion);
+          mnuChanges.Activated += delegate (object sender, EventArgs e)
+          {
+            System.Diagnostics.Process.Start("http://srt.realityripple.com/For-MONO/changes.php");
+          };
+          helpMenu.Append(mnuChanges);
+          mnuChanges.Show();
+
+          MenuItem mnuHelpSpace1 = new MenuItem("-");
+          helpMenu.Append(mnuHelpSpace1);
+          mnuHelpSpace1.Show();
+
+          MenuItem mnuWebsite = new MenuItem("Visit the " + modFunctions.ProductName + " Home Page");
+          mnuWebsite.Activated += delegate (object sender, EventArgs e)
+          {
+            System.Diagnostics.Process.Start("http://srt.realityripple.com/For-MONO/mac.php");
+          };
+          helpMenu.Append(mnuWebsite);
+          mnuWebsite.Show();
+
+          MenuItem mnuBug = new MenuItem("Report a Bug");
+          mnuBug.Activated += delegate (object sender, EventArgs e)
+          {
+            System.Diagnostics.Process.Start("http://bugs.realityripple.com/bug_report_page.php?project_id=2");
+          };
+          helpMenu.Append(mnuBug);
+          mnuBug.Show();
+
+          helpMenuItem.Submenu = helpMenu;
+          helpMenu.Show();
+          srtMenu.Append(helpMenuItem);
+          helpMenuItem.Show();
+
+          IgeMacMenu.MenuBar = srtMenu;
+          srtMenu.Show();
+        }
+        catch(Exception )
         {
-          System.Diagnostics.Process.Start("http://srt.realityripple.com/faq.php");
-        };
-        helpMenu.Append(mnuFAQ);
-        mnuFAQ.Show();
-
-        MenuItem mnuChanges = new MenuItem("What's New in " + modFunctions.ProductName + " v" + modFunctions.ProductVersion);
-        mnuChanges.Activated += delegate (object sender, EventArgs e)
-        {
-          System.Diagnostics.Process.Start("http://srt.realityripple.com/For-MONO/changes.php");
-        };
-        helpMenu.Append(mnuChanges);
-        mnuChanges.Show();
-
-        MenuItem mnuHelpSpace1 = new MenuItem("-");
-        helpMenu.Append(mnuHelpSpace1);
-        mnuHelpSpace1.Show();
-
-        MenuItem mnuWebsite = new MenuItem("Visit the " + modFunctions.ProductName + " Home Page");
-        mnuWebsite.Activated += delegate (object sender, EventArgs e)
-        {
-          System.Diagnostics.Process.Start("http://srt.realityripple.com/For-MONO/mac.php");
-        };
-        helpMenu.Append(mnuWebsite);
-        mnuWebsite.Show();
-
-        MenuItem mnuBug = new MenuItem("Report a Bug");
-        mnuBug.Activated += delegate (object sender, EventArgs e)
-        {
-          System.Diagnostics.Process.Start("http://bugs.realityripple.com/bug_report_page.php?project_id=2");
-        };
-        helpMenu.Append(mnuBug);
-        mnuBug.Show();
-
-        helpMenuItem.Submenu = helpMenu;
-        helpMenu.Show();
-        srtMenu.Append(helpMenuItem);
-        helpMenuItem.Show();
-        IgeMacMenu.MenuBar = srtMenu;
-        srtMenu.Show();
+        }
       }
       fMain.Show();
       Application.Run();
