@@ -178,7 +178,15 @@ namespace RestrictionTrackerGTK
         txtKey5.Text = "";
       }
       modFunctions.PrepareLink(lblPurchaseKey);
-      if (txtKey1.Text.Length < 6 | txtKey2.Text.Length < 4 | txtKey3.Text.Length < 4 | txtKey4.Text.Length < 4 | txtKey5.Text.Length < 6)
+      if (txtKey1.Text.Length == txtKey1.MaxLength & txtKey2.Text.Length == txtKey2.MaxLength & txtKey3.Text.Length == txtKey3.MaxLength & txtKey4.Text.Length == txtKey4.MaxLength & txtKey5.Text.Length == txtKey5.MaxLength)
+      {
+        bRemoteAcct = true;
+        pctKeyState.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.ok.png");
+        pctKeyState.TooltipText = "Thank you for purchasing the Remote Usage Service for " + modFunctions.ProductName + "!";
+        lblPurchaseKey.Markup = "<a href=\"http://wb.realityripple.com?wbEMail=" + mySettings.Account + "&amp;wbKey=" + mySettings.RemoteKey + "&amp;wbSubmit=\">" + LINK_PANEL + "</a>";
+        lblPurchaseKey.TooltipText = LINK_PANEL_TT;
+      }
+      else
       {
         bRemoteAcct = false;
         pctKeyState.Pixbuf = null;
@@ -186,14 +194,6 @@ namespace RestrictionTrackerGTK
         pctKeyState.TooltipText = "";
         lblPurchaseKey.Markup = LINK_PURCHASE;
         lblPurchaseKey.TooltipText = LINK_PURCHASE_TT;
-      }
-      else
-      {
-        bRemoteAcct = true;
-        pctKeyState.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.ok.png");
-        pctKeyState.TooltipText = "Thank you for purchasing the Remote Usage Service for " + modFunctions.ProductName + "!";
-        lblPurchaseKey.Markup = "<a href=\"http://wb.realityripple.com?wbEMail=" + mySettings.Account + "&amp;wbKey=" + mySettings.RemoteKey + "&amp;wbSubmit=\">" + LINK_PANEL + "</a>";
-        lblPurchaseKey.TooltipText = LINK_PANEL_TT;
       }
       if (mySettings.StartWait > (int)txtStartWait.Adjustment.Upper)
       {
@@ -880,13 +880,13 @@ namespace RestrictionTrackerGTK
       }
       lblPurchaseKey.Markup = LINK_PURCHASE;
       lblPurchaseKey.TooltipText = LINK_PURCHASE_TT;
-      if (txtKey1.Text.Length < 6 | txtKey2.Text.Length < 4 | txtKey3.Text.Length < 4 | txtKey4.Text.Length < 4 | txtKey5.Text.Length < 6)
+      if (txtKey1.Text.Length == txtKey1.MaxLength & txtKey2.Text.Length == txtKey2.MaxLength & txtKey3.Text.Length == txtKey3.MaxLength & txtKey4.Text.Length == txtKey4.MaxLength & txtKey5.Text.Length == txtKey5.MaxLength)
       {
-        cmdSave.Sensitive = SettingsChanged();
+        KeyCheck();
       }
       else
       {
-        KeyCheck();
+        cmdSave.Sensitive = SettingsChanged();
       }
     }
     protected void txtProductKey_InsertText(object o, Gtk.TextInsertedArgs e)
@@ -1039,7 +1039,11 @@ namespace RestrictionTrackerGTK
       }
       lblPurchaseKey.Markup = LINK_PURCHASE;
       lblPurchaseKey.TooltipText = LINK_PURCHASE_TT;
-      if ((txtKey1.Text.Length < 6) | (txtKey2.Text.Length < 4) | (txtKey3.Text.Length < 4) | (txtKey4.Text.Length < 4) | (txtKey5.Text.Length < 6))
+      if (txtKey1.Text.Length == txtKey1.MaxLength & txtKey2.Text.Length == txtKey2.MaxLength & txtKey3.Text.Length == txtKey3.MaxLength & txtKey4.Text.Length == txtKey4.MaxLength & txtKey5.Text.Length == txtKey5.MaxLength)
+      {
+        KeyCheck();
+      }
+      else
       {
         bRemoteAcct = false;
         pctKeyState.Pixbuf = null;
@@ -1047,10 +1051,6 @@ namespace RestrictionTrackerGTK
         pctKeyState.TooltipText = "";
         cmdSave.Sensitive = SettingsChanged();
         DoCheck();
-      }
-      else
-      {
-        KeyCheck();
       }
     }
     [GLib.ConnectBefore]
@@ -1673,7 +1673,7 @@ namespace RestrictionTrackerGTK
     #region "Remote Service Results"
     protected void evnKeyState_ButtonPressEvent(object sender, Gtk.ButtonPressEventArgs e)
     {
-      if (txtKey1.Text.Length == 6 & txtKey2.Text.Length == 4 & txtKey3.Text.Length == 4 & txtKey4.Text.Length == 4 & txtKey5.Text.Length == 6)
+      if (txtKey1.Text.Length == txtKey1.MaxLength & txtKey2.Text.Length == txtKey2.MaxLength & txtKey3.Text.Length == txtKey3.MaxLength & txtKey4.Text.Length == txtKey4.MaxLength & txtKey5.Text.Length == txtKey5.MaxLength)
         KeyCheck();
     }
     bool CheckState;
@@ -1823,7 +1823,9 @@ namespace RestrictionTrackerGTK
         mySettings.PassCrypt = RestrictionLibrary.StoredPassword.EncryptApp(txtPassword.Text);
         bAccount = true;
       }
-      string sKey = txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text;
+      string sKey = "";
+      if (txtKey1.Text.Length == txtKey1.MaxLength & txtKey2.Text.Length == txtKey2.MaxLength & txtKey3.Text.Length == txtKey3.MaxLength & txtKey4.Text.Length == txtKey4.MaxLength & txtKey5.Text.Length == txtKey5.MaxLength)
+       sKey = txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text;
       if (mySettings.RemoteKey != sKey)
       {
         if (bRemoteAcct)
