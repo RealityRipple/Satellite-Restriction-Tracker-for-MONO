@@ -72,32 +72,36 @@ namespace RestrictionTrackerGTK
             fMain.cmdConfig_Click(new object(), new EventArgs());
             e.Handled = true;
           };
-          IgeMacMenuGroup appGroup = IgeMacMenu.AddAppMenuGroup();
-          MenuItem mnuAbout = new MenuItem();
-          mnuAbout.Activated += delegate (object sender, EventArgs e)
-          {
-            fMain.cmdAbout_Click(new object(), new EventArgs());
-          };
-          appGroup.AddMenuItem(mnuAbout, "About " + modFunctions.ProductName);
-          appGroup.AddMenuItem(new MenuItem(), "-");
-          MenuItem mnuHistory = new MenuItem();
-          mnuHistory.Activated += delegate (object sender, EventArgs e)
-          {
-            fMain.cmdHistory_Click(new object(), new EventArgs());
-          };
-          appGroup.AddMenuItem(mnuHistory, "Usage History");
-          MenuItem mnuConfig = new MenuItem();
-          mnuConfig.Activated += delegate (object sender, EventArgs e)
-          {
-            fMain.cmdConfig_Click(new object(), new EventArgs());
-          };
-          appGroup.AddMenuItem(mnuConfig, "Preferences...");
         }
-        catch(Exception )
+        catch (Exception)
         {
-        } 
+        }
+        bool bMenu = false;
         try
         {
+          IgeMacMenuGroup appGroup = IgeMacMenu.AddAppMenuGroup();
+          if (appGroup != null)
+          {
+            MenuItem mnuAbout = new MenuItem();
+            mnuAbout.Activated += delegate (object sender, EventArgs e)
+            {
+              fMain.cmdAbout_Click(new object(), new EventArgs());
+            };
+            appGroup.AddMenuItem(mnuAbout, "About " + modFunctions.ProductName);
+            appGroup.AddMenuItem(new MenuItem(), "-");
+            MenuItem mnuHistory = new MenuItem();
+            mnuHistory.Activated += delegate (object sender, EventArgs e)
+            {
+              fMain.cmdHistory_Click(new object(), new EventArgs());
+            };
+            appGroup.AddMenuItem(mnuHistory, "Usage History");
+            MenuItem mnuConfig = new MenuItem();
+            mnuConfig.Activated += delegate (object sender, EventArgs e)
+            {
+              fMain.cmdConfig_Click(new object(), new EventArgs());
+            };
+            appGroup.AddMenuItem(mnuConfig, "Preferences...");
+          }
           MenuBar srtMenu = new MenuBar();
           Menu helpMenu = new Menu();
           MenuItem helpMenuItem = new MenuItem("Help");
@@ -145,9 +149,96 @@ namespace RestrictionTrackerGTK
 
           IgeMacMenu.MenuBar = srtMenu;
           srtMenu.Show();
+          bMenu = true;
         }
-        catch(Exception )
+        catch (Exception)
         {
+        }
+        if (bMenu == false)
+        {
+          try
+          {
+            MenuBar srtMenu = new MenuBar();
+            Menu helpMenu = new Menu();
+            MenuItem helpMenuItem = new MenuItem("Help");
+
+            MenuItem mnuFAQ = new MenuItem("Frequently Asked Questions");
+            mnuFAQ.Activated += delegate (object sender, EventArgs e)
+            {
+              System.Diagnostics.Process.Start("http://srt.realityripple.com/faq.php");
+            };
+            helpMenu.Append(mnuFAQ);
+            mnuFAQ.Show();
+
+            MenuItem mnuChanges = new MenuItem("What's New in " + modFunctions.ProductName + " v" + modFunctions.ProductVersion);
+            mnuChanges.Activated += delegate (object sender, EventArgs e)
+            {
+              System.Diagnostics.Process.Start("http://srt.realityripple.com/For-MONO/changes.php");
+            };
+            helpMenu.Append(mnuChanges);
+            mnuChanges.Show();
+
+            SeparatorMenuItem mnuHelpSpace1 = new SeparatorMenuItem();
+            helpMenu.Append(mnuHelpSpace1);
+            mnuHelpSpace1.Show();
+
+            MenuItem mnuWebsite = new MenuItem("Visit the " + modFunctions.ProductName + " Home Page");
+            mnuWebsite.Activated += delegate (object sender, EventArgs e)
+            {
+              System.Diagnostics.Process.Start("http://srt.realityripple.com/For-MONO/mac.php");
+            };
+            helpMenu.Append(mnuWebsite);
+            mnuWebsite.Show();
+
+            MenuItem mnuBug = new MenuItem("Report a Bug");
+            mnuBug.Activated += delegate (object sender, EventArgs e)
+            {
+              System.Diagnostics.Process.Start("http://bugs.realityripple.com/bug_report_page.php?project_id=2");
+            };
+            helpMenu.Append(mnuBug);
+            mnuBug.Show();
+
+            helpMenuItem.Submenu = helpMenu;
+            helpMenu.Show();
+            srtMenu.Append(helpMenuItem);
+            helpMenuItem.Show();
+
+            GtkOSXApplication.MenuBar = srtMenu;
+            srtMenu.Show();
+
+            GtkMacMenuGroup appGroup = GtkOSXApplication.AddAppMenuGroup();
+            if (appGroup != null)
+            {
+              MenuItem mnuAbout = new MenuItem("About " + modFunctions.ProductName);
+              mnuAbout.Activated += delegate (object sender, EventArgs e)
+              {
+                fMain.cmdAbout_Click(new object(), new EventArgs());
+              };
+              appGroup.AddMenuItem(mnuAbout);
+              mnuAbout.Show();
+              SeparatorMenuItem mnuAppSpace1 = new SeparatorMenuItem();
+              appGroup.AddMenuItem(mnuAppSpace1);
+              mnuAppSpace1.Show();
+              MenuItem mnuHistory = new MenuItem("Usage History");
+              mnuHistory.Activated += delegate (object sender, EventArgs e)
+              {
+                fMain.cmdHistory_Click(new object(), new EventArgs());
+              };
+              appGroup.AddMenuItem(mnuHistory);
+              mnuHistory.Show();
+              MenuItem mnuConfig = new MenuItem("Preferences...");
+              mnuConfig.Activated += delegate (object sender, EventArgs e)
+              {
+                fMain.cmdConfig_Click(new object(), new EventArgs());
+              };
+              appGroup.AddMenuItem(mnuConfig);
+              mnuConfig.Show();
+            }
+            bMenu = true;
+          }
+          catch (Exception)
+          {
+          }
         }
       }
       fMain.Show();
