@@ -6,36 +6,12 @@ namespace MacInterop
   public class IgeMacMenu
   {
     [DllImport("libigemacintegration.dylib")]
-    static extern void ige_mac_menu_connect_window_key_handler(IntPtr window);
-    public static void ConnectWindowKeyHandler(Gtk.Window window)
-    {
-      ige_mac_menu_connect_window_key_handler(window.Handle);
-    }
-    [DllImport("libigemacintegration.dylib")]
-    static extern void ige_mac_menu_set_global_key_handler_enabled(bool enabled);
-    public static bool GlobalKeyHandlerEnabled
-    {
-      set
-      {
-        ige_mac_menu_set_global_key_handler_enabled(value);
-      }
-    }
-    [DllImport("libigemacintegration.dylib")]
     static extern void ige_mac_menu_set_menu_bar(IntPtr menu_shell);
     public static Gtk.MenuShell MenuBar
     {
       set
       {
         ige_mac_menu_set_menu_bar(value == null ? IntPtr.Zero : value.Handle);
-      }
-    }
-    [DllImport("libigemacintegration.dylib")]
-    static extern void ige_mac_menu_set_quit_menu_item(IntPtr quit_item);
-    public static Gtk.MenuItem QuitMenuItem
-    {
-      set
-      {
-        ige_mac_menu_set_quit_menu_item(value == null ? IntPtr.Zero : value.Handle);
       }
     }
     [DllImport("libigemacintegration.dylib")]
