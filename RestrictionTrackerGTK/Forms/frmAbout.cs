@@ -27,7 +27,7 @@ namespace RestrictionTrackerGTK
       if (RestrictionLibrary.CurrentOS.IsLinux)
         lblProduct.Markup = "<a href=\"http://srt.realityripple.com/For_MONO/linux.php\">" + modFunctions.ProductName + " for Linux</a>";
       else if (RestrictionLibrary.CurrentOS.IsMac)
-        lblProduct.Markup = "<a href=\"http://srt.realityripple.com/For_MONO/mac.php\">" + modFunctions.ProductName + " for OS X</a>";
+        lblProduct.Markup = "<a href=\"http://srt.realityripple.com/For_MONO/mac.php\">" + modFunctions.ProductName + " for macOS</a>";
       else if (RestrictionLibrary.CurrentOS.IsWindows)
         lblProduct.Markup = "<a href=\"http://srt.realityripple.com/For_MONO/\">" + modFunctions.ProductName + " for Windows (on MONO)</a>";
       else
