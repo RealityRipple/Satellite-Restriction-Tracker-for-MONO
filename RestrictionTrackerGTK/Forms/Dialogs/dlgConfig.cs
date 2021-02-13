@@ -102,7 +102,10 @@ namespace RestrictionTrackerGTK
       cmbProvider.Entry.Text = sProvider;
       if (mySettings.PassCrypt != null)
       {
-        txtPassword.Text = RestrictionLibrary.StoredPassword.DecryptApp(mySettings.PassCrypt);
+        if (string.IsNullOrEmpty(mySettings.PassKey) | string.IsNullOrEmpty(mySettings.PassSalt))
+          txtPassword.Text = RestrictionLibrary.StoredPasswordLegacy.DecryptApp(mySettings.PassCrypt);
+        else
+          txtPassword.Text = RestrictionLibrary.StoredPassword.Decrypt(mySettings.PassCrypt, mySettings.PassKey, mySettings.PassSalt);
       }
       txtPassword.Visibility = false;
       switch (mySettings.AccountType)
@@ -1818,14 +1821,23 @@ namespace RestrictionTrackerGTK
         mySettings.Account = txtAccount.Text + "@" + cmbProvider.Entry.Text;
         bAccount = true;
       }
-      if (RestrictionLibrary.StoredPassword.DecryptApp(mySettings.PassCrypt) != txtPassword.Text)
+      bool newPass = false;
+      if (string.IsNullOrEmpty(mySettings.PassKey))
+        newPass = true;
+      else
+        newPass = (string.Compare(StoredPassword.Decrypt(mySettings.PassCrypt, mySettings.PassKey, mySettings.PassSalt), txtPassword.Text, false) != 0);
+      if (newPass)
       {
-        mySettings.PassCrypt = RestrictionLibrary.StoredPassword.EncryptApp(txtPassword.Text);
+        byte[] newKey = StoredPassword.GenerateKey();
+        byte[] newSalt = StoredPassword.GenerateSalt();
+        mySettings.PassCrypt = StoredPassword.Encrypt(txtPassword.Text, newKey, newSalt);
+        mySettings.PassKey = Convert.ToBase64String(newKey);
+        mySettings.PassSalt = Convert.ToBase64String(newSalt);
         bAccount = true;
       }
       string sKey = "";
       if (txtKey1.Text.Length == txtKey1.MaxLength & txtKey2.Text.Length == txtKey2.MaxLength & txtKey3.Text.Length == txtKey3.MaxLength & txtKey4.Text.Length == txtKey4.MaxLength & txtKey5.Text.Length == txtKey5.MaxLength)
-       sKey = txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text;
+        sKey = txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text;
       if (mySettings.RemoteKey != sKey)
       {
         if (bRemoteAcct)
@@ -2232,8 +2244,15 @@ namespace RestrictionTrackerGTK
         if (string.Compare(mySettings.Account, txtAccount.Text + "@" + cmbProvider.Entry.Text, true) != 0)
           return true;
       }
-      if (mySettings.PassCrypt != RestrictionLibrary.StoredPassword.EncryptApp(txtPassword.Text))
+      if (string.IsNullOrEmpty(mySettings.PassKey) | string.IsNullOrEmpty(mySettings.PassSalt))
+      {
         return true;
+      }
+      else
+      {
+        if (RestrictionLibrary.StoredPassword.Decrypt(mySettings.PassCrypt, mySettings.PassKey, mySettings.PassSalt) != txtPassword.Text)
+          return true;
+      }
       if (mySettings.AccountTypeForced == chkAccountTypeAuto.Active)
         return true;
       if (!chkAccountTypeAuto.Active)

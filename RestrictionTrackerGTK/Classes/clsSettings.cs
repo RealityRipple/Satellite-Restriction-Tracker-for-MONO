@@ -29,6 +29,8 @@ namespace RestrictionTrackerGTK
     private Gdk.Size m_MainSize;
     private string m_RemoteKey;
     private string m_PassCrypt;
+    private string m_PassKey;
+    private string m_PassSalt;
     private int m_Timeout;
     private int m_Retries;
     private int m_Overuse;
@@ -257,6 +259,18 @@ namespace RestrictionTrackerGTK
         else if (xName.CompareTo("PassCrypt") == 0)
         {
           m_PassCrypt = xValue;
+          m_PassKey = "";
+          m_PassSalt = "";
+          if (m_node.Attributes.Count > 1)
+          {
+            foreach (XmlAttribute m_attrib in m_node.Attributes)
+            {
+              if (m_attrib.Name.CompareTo("key") == 0)
+                m_PassKey  = m_attrib.InnerText ;
+              else if (m_attrib.Name.CompareTo("salt") == 0)
+                m_PassSalt = m_attrib.InnerText;
+            }
+          }
         }
         else if (xName.CompareTo("Timeout") == 0)
         {
@@ -614,6 +628,8 @@ namespace RestrictionTrackerGTK
       m_MainSize = new Gdk.Size(450, 200);
       m_RemoteKey = null;
       m_PassCrypt = null;
+      m_PassKey = "";
+      m_PassSalt = "";
       m_Timeout = 120;
       m_Retries = 2;
       m_Overuse = 0;
@@ -741,7 +757,7 @@ namespace RestrictionTrackerGTK
         "      <setting name=\"Account\" type=\"" + sAccountType + "\" forceType=\"" + sAccountTypeF + "\">\n" +
         "        <value>" + m_Account + "</value>\n" +
         "      </setting>\n" +
-        "      <setting name=\"PassCrypt\">\n" +
+        "      <setting name=\"PassCrypt\" key=\"" + m_PassKey + "\" salt=\"" + m_PassSalt + "\">\n" +
         "        <value>" + m_PassCrypt + "</value>\n" +
         "      </setting>\n" +
         "      <setting name=\"StartWait\">\n" +
@@ -1091,6 +1107,28 @@ namespace RestrictionTrackerGTK
       set
       {
         m_PassCrypt = value;
+      }
+    }
+    public string PassKey
+    {
+      get
+      {
+        return m_PassKey;
+      }
+      set
+      {
+        m_PassKey = value;
+      }
+    }
+    public string PassSalt
+    {
+      get
+      {
+        return m_PassSalt;
+      }
+      set
+      {
+        m_PassSalt = value;
       }
     }
     public int StartWait

@@ -1731,7 +1731,10 @@ namespace RestrictionTrackerGTK
       sAccount = mySettings.Account;
       if (!string.IsNullOrEmpty(mySettings.PassCrypt))
       {
-        sPassword = StoredPassword.DecryptApp(mySettings.PassCrypt);
+        if (string.IsNullOrEmpty(mySettings.PassKey) | string.IsNullOrEmpty(mySettings.PassSalt))
+          sPassword = StoredPasswordLegacy.DecryptApp(mySettings.PassCrypt);
+        else
+          sPassword = StoredPassword.Decrypt(mySettings.PassCrypt, mySettings.PassKey, mySettings.PassSalt);
       }
       if (!string.IsNullOrEmpty(sAccount))
       {
@@ -2034,7 +2037,8 @@ namespace RestrictionTrackerGTK
         {
           sAppend = " (Redirect #" + e.Attempt + ")";
         }
-      } else if (e.Stage > 0)
+      }
+      else if (e.Stage > 0)
       {
         sAppend = " (Stage " + (e.Stage + 1) + ")";
       }

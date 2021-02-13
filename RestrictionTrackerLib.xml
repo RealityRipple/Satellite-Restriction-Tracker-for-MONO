@@ -1138,33 +1138,49 @@ RestrictionTrackerLib
  <param name="ConfigPath">Directory where the user.config file is stored.</param>
  <param name="OnlyLogin">If set to <c>True</c>, this connection will abort after verifying that the Username and Password are valid, without returning data. This value is <c>False</c> by default.</param>
 </member>
-<member name="M:RestrictionLibrary.StoredPassword.DecryptApp(System.String)">
+<member name="M:RestrictionLibrary.StoredPassword.GenerateKey">
+ <summary>
+ Generate a key for encryption.
+ </summary>
+ <returns>The largest number of random bytes that Rijndael will accept for a key.</returns>
+</member>
+<member name="M:RestrictionLibrary.StoredPassword.GenerateSalt">
+ <summary>
+ Generate a salt for encryption.
+ </summary>
+ <returns>Twelve random bytes.</returns>
+</member>
+<member name="M:RestrictionLibrary.StoredPassword.Decrypt(System.String,System.String,System.String)">
+ <summary>
+ Decrypt a password that was encrypted with Rijndael (AES-128).
+ </summary>
+ <param name="PassCrypt">The base64 encoded encrypted password.</param>
+ <param name="PassKey">The base64 encoded encryption key.</param>
+ <param name="PassSalt">The base64 encoded salt.</param>
+ <returns>The raw password which was encrypted.</returns>
+</member>
+<member name="M:RestrictionLibrary.StoredPassword.Encrypt(System.String,System.Byte[],System.Byte[])">
+ <summary>
+ Encrypt a password using Rijndael (AES-128).
+ </summary>
+ <param name="Password">The password to encrypt.</param>
+ <param name="Key">Sixteen random bytes.</param>
+ <param name="Salt">Any number of random bytes.</param>
+ <returns>An base64 output of the encrypted password.</returns>
+</member>
+<member name="M:RestrictionLibrary.StoredPasswordLegacy.DecryptApp(System.String)">
  <summary>
  Decrypt a password that was encrypted with the Tracker EXE GUID.
  </summary>
  <param name="PassCrypt">The base64 encoded encrypted password.</param>
  <returns>The raw password which was encrypted.</returns>
 </member>
-<member name="M:RestrictionLibrary.StoredPassword.EncryptApp(System.String)">
- <summary>
- Encrypt a password using the Tracker EXE GUID.
- </summary>
- <param name="Password">The password to encrypt.</param>
- <returns>An base64 output of the encrypted password.</returns>
-</member>
-<member name="M:RestrictionLibrary.StoredPassword.DecryptLogger(System.String)">
+<member name="M:RestrictionLibrary.StoredPasswordLegacy.DecryptLogger(System.String)">
  <summary>
  Decrypt a password that was encrypted with the Logger EXE GUID.
  </summary>
  <param name="PassCrypt">The base64 encoded encrypted password.</param>
  <returns>The raw password which was encrypted.</returns>
-</member>
-<member name="M:RestrictionLibrary.StoredPassword.EncryptLogger(System.String)">
- <summary>
- Encrypt a password using the Logger EXE GUID.
- </summary>
- <param name="Password">The password to encrypt.</param>
- <returns>An base64 output of the encrypted password.</returns>
 </member>
 <member name="T:RestrictionLibrary.DetermineType">
  <summary>
