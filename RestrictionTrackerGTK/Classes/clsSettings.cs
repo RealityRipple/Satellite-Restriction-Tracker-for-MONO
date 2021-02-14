@@ -266,7 +266,7 @@ namespace RestrictionTrackerGTK
             foreach (XmlAttribute m_attrib in m_node.Attributes)
             {
               if (m_attrib.Name.CompareTo("key") == 0)
-                m_PassKey  = m_attrib.InnerText ;
+                m_PassKey = m_attrib.InnerText;
               else if (m_attrib.Name.CompareTo("salt") == 0)
                 m_PassSalt = m_attrib.InnerText;
             }

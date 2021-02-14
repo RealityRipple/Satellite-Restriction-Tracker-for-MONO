@@ -17,16 +17,16 @@ namespace RestrictionTrackerGTK
     {
       IntPtr nsapp = GetClass("NSApplication");
       if (nsapp.ToInt64() == 0)
-       return false;
+        return false;
       IntPtr shapp = GetSelector("sharedApplication");
       if (shapp.ToInt64() == 0)
-       return false;
+        return false;
       IntPtr h = SendIntPtr(nsapp, shapp);
       if (h.ToInt64() == 0)
-       return false;
+        return false;
       IntPtr sap = GetSelector("setActivationPolicy:");
       if (sap.ToInt64() == 0)
-       return false;
+        return false;
       return SendBool(h, sap, (int)policy);
     }
   }

@@ -101,9 +101,9 @@ namespace RestrictionTrackerGTK
       {
         return lRet.ToArray();
       }
-      UInt64 kStart = (UInt64) Math.Floor((double) (dtStart.Ticks / 600000000));
-      UInt64 kEnd = (UInt64) Math.Floor((double) (dtEnd.Ticks / 600000000));
-      foreach(System.Collections.Generic.KeyValuePair<UInt64,DataBase.DataRow> dRow in usageDB)
+      UInt64 kStart = (UInt64)Math.Floor((double)(dtStart.Ticks / 600000000));
+      UInt64 kEnd = (UInt64)Math.Floor((double)(dtEnd.Ticks / 600000000));
+      foreach (System.Collections.Generic.KeyValuePair<UInt64, DataBase.DataRow> dRow in usageDB)
       {
         if (dRow.Key >= kStart && dRow.Key <= kEnd)
         {
