@@ -921,6 +921,8 @@ namespace RestrictionTrackerGTK
           firstRestore = true;
           ((Gtk.Label)mnuRestore.Child).TextWithMnemonic = "_Hide";
           this.SkipTaskbarHint = false;
+          if (CurrentOS.IsMac)
+            ActivationPolicy.setPolicy(ApplicationActivationPolicy.Regular);
           if (tmrIcon != 0)
           {
             GLib.Source.Remove(tmrIcon);
@@ -1319,6 +1321,8 @@ namespace RestrictionTrackerGTK
               TrayState = true;
             ((Gtk.Label)mnuRestore.Child).TextWithMnemonic = "_Restore";
             this.SkipTaskbarHint = true;
+            if (CurrentOS.IsMac)
+              ActivationPolicy.setPolicy(ApplicationActivationPolicy.Accessory);
           }
           else
           {
@@ -1326,6 +1330,8 @@ namespace RestrictionTrackerGTK
               TrayState = false;
             ((Gtk.Label)mnuRestore.Child).TextWithMnemonic = "_Hide";
             this.SkipTaskbarHint = false;
+            if (CurrentOS.IsMac)
+              ActivationPolicy.setPolicy(ApplicationActivationPolicy.Regular);
             if (!firstRestore)
             {
               firstRestore = true;
@@ -1346,6 +1352,8 @@ namespace RestrictionTrackerGTK
               TrayState = true;
             ((Gtk.Label)mnuRestore.Child).TextWithMnemonic = "_Restore";
             this.SkipTaskbarHint = true;
+            if (CurrentOS.IsMac)
+              ActivationPolicy.setPolicy(ApplicationActivationPolicy.Accessory);
           }
         }
       }

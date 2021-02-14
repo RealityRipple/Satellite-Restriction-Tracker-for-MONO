@@ -197,6 +197,8 @@
     <Compile Include="Enums\BugReport\Mantis_Reproducibility.cs" />
     <Compile Include="Classes\MacInterop\CarbonEventTypeSpec.cs" />
     <Compile Include="Classes\MacInterop\clsGtkOSXApplication.cs" />
+    <Compile Include="Classes\MacInterop\clsActivationPolicy.cs" />
+    <Compile Include="Classes\MacInterop\Enums\ApplicationActivationPolicy.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
