@@ -233,6 +233,9 @@ namespace RestrictionTrackerGTK
               };
               appGroup.AddMenuItem(mnuConfig);
               mnuConfig.Show();
+              SeparatorMenuItem mnuAppSpace2 = new SeparatorMenuItem();
+              appGroup.AddMenuItem(mnuAppSpace2);
+              mnuAppSpace2.Show();
             }
             bMenu = true;
           }
