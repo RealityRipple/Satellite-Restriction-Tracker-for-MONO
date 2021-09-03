@@ -798,7 +798,7 @@ RestrictionTrackerLib
 </member>
 <member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.LoadAJAX">
  <summary>
- AJAX data off the home page is being loaded. Only Exede uses this step.
+ The Code parameter from the home page URL is being loaded. Only Exede uses this step.
  </summary>
 </member>
 <member name="F:RestrictionLibrary.localRestrictionTracker.ConnectionSubStates.LoadTable">
