@@ -1996,6 +1996,8 @@ namespace RestrictionTrackerGTK
         }
         DisplayResults(lDown, lDLim, lUp, lULim);
       }
+      if ((this.SkipTaskbarHint == true) && CurrentOS.IsMac)
+        ActivationPolicy.setPolicy(ApplicationActivationPolicy.Accessory);
     }
     private void SetNextLoginTime()
     {
