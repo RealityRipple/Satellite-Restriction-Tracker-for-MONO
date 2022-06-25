@@ -437,6 +437,11 @@ RestrictionTrackerLib
  <returns><c>True</c> if both arrays are binary equal, <c>False</c> otherwise.</returns>
  <remarks>If the lengths of the arrays is different, the result will be <c>False</c>.</remarks>
 </member>
+<member name="M:RestrictionLibrary.srlFunctions.GetCLRRelease">
+ <summary>
+ Registry-stored Release number.
+ </summary>
+</member>
 <member name="M:RestrictionLibrary.srlFunctions.GetCLRVersion">
  <summary>
  Common Language Runtime exact version number.
@@ -1446,7 +1451,7 @@ RestrictionTrackerLib
  <summary>
  Specifies the security protocols that are supported by the Schannel security package.
  </summary>
- <remarks>This contains the additional TLS 1.1 and 1.2 standards lacking in <see cref="T:System.Net.SecurityProtocolType" />, which require newer .NET Framework versions.</remarks>
+ <remarks>This contains the additional TLS 1.1, 1.2, and 1.3 standards lacking in <see cref="T:System.Net.SecurityProtocolType" />, which require newer .NET Framework versions.</remarks>
 </member>
 <member name="F:RestrictionLibrary.SecurityProtocolTypeEx.None">
  <summary>
@@ -1472,6 +1477,11 @@ RestrictionTrackerLib
 <member name="F:RestrictionLibrary.SecurityProtocolTypeEx.Tls12">
  <summary>
  Specifies the Transport Layer Security (TLS) 1.2 security protocol.
+ </summary>
+</member>
+<member name="F:RestrictionLibrary.SecurityProtocolTypeEx.Tls13">
+ <summary>
+ Specifies the Transport Layer Security (TLS) 1.3 security protocol.
  </summary>
 </member>
 </members>
