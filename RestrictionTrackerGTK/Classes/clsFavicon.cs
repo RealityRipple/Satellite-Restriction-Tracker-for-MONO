@@ -203,7 +203,7 @@ namespace RestrictionTrackerGTK
         {
           g.DrawImage(fromImage, 0, 0, width, height);
         }
-        return (Bitmap)newImage.Clone();
+        return (Bitmap)newImage.Clone(new System.Drawing.Rectangle(0, 0, width, height), fromImage.PixelFormat);
       }
     }
     private Bitmap GenerateCloneImage(System.Drawing.Icon fromIcon)
@@ -214,7 +214,7 @@ namespace RestrictionTrackerGTK
         {
           g.DrawIcon(fromIcon, 0, 0);
         }
-        return (Bitmap)newImage.Clone();
+        return (Bitmap)newImage.Clone(new System.Drawing.Rectangle(0, 0, fromIcon.Width, fromIcon.Height), System.Drawing.Imaging.PixelFormat.Format32bppArgb);
       }
     }
     void wsFile_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
@@ -293,7 +293,7 @@ namespace RestrictionTrackerGTK
         File.Delete(imgFile);
       if (didOK)
       {
-        c_callback.Invoke(modFunctions.ImageToPixbuf((System.Drawing.Image)pctPNG16.Clone()), modFunctions.ImageToPixbuf((System.Drawing.Image)pctPNG32.Clone()), Token, null);
+        c_callback.Invoke(modFunctions.ImageToPixbuf((System.Drawing.Image)pctPNG16.Clone(new System.Drawing.Rectangle(0, 0, 16, 16), System.Drawing.Imaging.PixelFormat.Format32bppArgb)), modFunctions.ImageToPixbuf((System.Drawing.Image)pctPNG32.Clone(new System.Drawing.Rectangle(0, 0, 32, 32), System.Drawing.Imaging.PixelFormat.Format32bppArgb)), Token, null);
       }
       else
       {
