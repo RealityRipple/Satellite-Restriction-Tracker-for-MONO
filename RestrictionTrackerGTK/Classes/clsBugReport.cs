@@ -1,113 +1,147 @@
 using System;
 using RestrictionTrackerGTK;
 using RestrictionLibrary;
-namespace MantisBugTracker
+internal class GitHubReporter
 {
-  internal class MantisReporter
+  public const string ProjectID = "Satellite-Restriction-Tracker-for-MONO";
+  private const string Token = "";
+  private static string JSONEscape(string sInput)
   {
-    public const int ProjectID = 2;
-    private static System.Net.CookieContainer cJar;
-    private static string GetToken(int Project_ID)
+    if (sInput.Contains("\\"))
+      sInput = sInput.Replace("\\", "\\\\");
+    if (sInput.Contains("\""))
+      sInput = sInput.Replace("\"", "\\\"");
+    if (sInput.Contains("/"))
+      sInput = sInput.Replace("/", "\\/");
+    if (sInput.Contains("\n"))
+      sInput = sInput.Replace("\n", "\\n");
+    if (sInput.Contains("\r"))
+      sInput = sInput.Replace("\r", "\\r");
+    for (ushort i = 1; i < 32; i++)
     {
-      System.Collections.Specialized.NameValueCollection pD1 = new System.Collections.Specialized.NameValueCollection();
-      pD1.Add("ref", "bug_report_page.php");
-      pD1.Add("project_id", Project_ID.ToString().Trim());
-      pD1.Add("make_default", string.Empty);
-      WebClientEx httpToken = new WebClientEx();
-      cJar = new System.Net.CookieContainer();
-      httpToken.KeepAlive = false;
-      httpToken.CookieJar = cJar;
-      httpToken.SendHeaders = new System.Net.WebHeaderCollection();
-      httpToken.SendHeaders.Add(System.Net.HttpRequestHeader.Referer, "http://bugs.realityripple.com/login_select_proj_page.php?bug_report_page.php");
-      string sTok = httpToken.UploadValues("http://bugs.realityripple.com/set_project.php", "POST", pD1);
-      if (sTok.StartsWith("Error: "))
-        return null;
-      if (sTok.Contains("bug_report_token"))
+      if (sInput.Contains(Convert.ToChar(i).ToString()))
+        sInput = sInput.Replace(Convert.ToChar(i).ToString(), "\\u" + srlFunctions.PadHex(i, 4));
+    }
+    for (ushort i = 127; i < 65535; i++)
+    {
+      if (sInput.Contains(Convert.ToChar(i).ToString()))
+        sInput = sInput.Replace(Convert.ToChar(i).ToString(), "\\u" + srlFunctions.PadHex(i, 4));
+    }
+    return sInput;
+  }
+  static internal string MakeIssueTitle(Exception e)
+  {
+    string sSum = e.Message;
+    if (sSum.Contains("\r\n"))
+      sSum = sSum.Substring(0, sSum.IndexOf("\r\n"));
+    else if (sSum.Contains("\r"))
+      sSum = sSum.Substring(0, sSum.IndexOf("\r"));
+    else if (sSum.Contains("\n"))
+      sSum = sSum.Substring(0, sSum.IndexOf("\n"));
+    if (sSum.Length > 80)
+      sSum = sSum.Substring(0, 77) + "...";
+    return sSum;
+  }
+  static internal string MakeIssueBody(Exception e)
+  {
+    string sPlat = Environment.Is64BitProcess ? "x64" : Environment.Is64BitOperatingSystem ? "x86-64" : "x86";
+    string sVer = modFunctions.ProductVersion;
+    int iParts = (sVer.Split('.')).Length;
+    if (iParts > 3)
+      sVer = sVer.Substring(0, sVer.LastIndexOf('.'));
+    string sRet = "Error in " + modFunctions.ProductName + " v" + sVer + ":\r\n";
+    sRet += "```\r\n";
+    sRet += e.ToString() + "\r\n";
+    sRet += "```\r\n\r\n";
+    sRet += "OS: " + CurrentOS.Name + " (" + sPlat + ") v" + Environment.OSVersion.VersionString + "\r\n";
+    sRet += "CLR: " + srlFunctions.GetCLRCleanVersion();
+    return sRet;
+  }
+  private static string ReportBug(string Title, string Body)
+  {
+    string sSend = "{";
+    sSend += "\"title\": \"" + JSONEscape(Title) + "\",";
+    sSend += "\"body\": \"" + JSONEscape(Body) + "\"";
+    sSend += "}";
+    WebClientEx httpReport = new WebClientEx();
+    httpReport.KeepAlive = false;
+    httpReport.ErrorBypass = true;
+    httpReport.SendHeaders = new System.Net.WebHeaderCollection();
+    httpReport.SendHeaders.Add("Accept", "application/vnd.github+json");
+    httpReport.SendHeaders.Add("Authorization", "token " + Token);
+    string sRet = httpReport.UploadString("https://api.github.com/repos/RealityRipple/" + ProjectID + "/issues", "POST", sSend);
+    if (httpReport.ResponseCode == System.Net.HttpStatusCode.Created)
+    {
+      try
       {
-        sTok = sTok.Substring(sTok.IndexOf("bug_report_token") + 25);
-        sTok = sTok.Substring(0, sTok.IndexOf("\"/"));
-        return sTok;
+        JSONReader jRet = new JSONReader(new System.IO.MemoryStream(httpReport.Encoding.GetBytes(sRet), false), false);
+        foreach (JSONReader.JSElement jNode in jRet.Serial)
+        {
+          if (jNode.Type != JSONReader.ElementType.Group)
+            continue;
+          foreach (JSONReader.JSElement jEl in jNode.SubElements)
+          {
+            if (jEl.Type != JSONReader.ElementType.KeyValue)
+              continue;
+            if (jEl.Key == "html_url")
+              return jEl.Value;
+          }
+        }
       }
-      else
+      catch (Exception)
       {
-        return null;
+      }
+      return "https://github.com/RealityRipple/" + ProjectID + "/issues";
+    }
+    switch (httpReport.ResponseCode)
+    {
+      case System.Net.HttpStatusCode.Forbidden:
+        return "HTTP Error 403: Forbidden\r\nYou are forbidden from reporting this error.";
+      case System.Net.HttpStatusCode.NotFound:
+        return "HTTP Error 404: Not Found\r\nThe " + ProjectID + " GitHub repository is not available.";
+      case System.Net.HttpStatusCode.Gone:
+        return "HTTP Error 410: Gone\r\nThe " + ProjectID + " GitHub repository does not have issues enabled at this time.";
+      case (System.Net.HttpStatusCode)422:
+        return "HTTP Error 422: Validation Failed\r\nThe error you attempted to report was invalid.";
+      case System.Net.HttpStatusCode.ServiceUnavailable:
+        return "HTTP Error 503: Service Unavailable\r\nThe GitHub service is not available at this time.";
+    }
+    string msg = "Unknown Error";
+    try
+    {
+      JSONReader jRet = new JSONReader(new System.IO.MemoryStream(httpReport.Encoding.GetBytes(sRet), false), false);
+      foreach (JSONReader.JSElement jNode in jRet.Serial)
+      {
+        if (jNode.Type != JSONReader.ElementType.Group)
+          continue;
+        foreach (JSONReader.JSElement jEl in jNode.SubElements)
+        {
+          if (jEl.Type != JSONReader.ElementType.KeyValue)
+            continue;
+          if (jEl.Key == "message")
+          {
+            msg = jEl.Value;
+            break;
+          }
+        }
+        if (msg != "Unknown Error")
+          break;
       }
     }
-    private static string ReportBug(string Token, int Project_ID, Mantis_Category Category, Mantis_Reproducibility Reproducable, Mantis_Severity Severity, Mantis_Priority Priority, string Platform, string OS, string OS_Build, string Product_Version, string Summary, string Description, string Steps, string Info, bool Public)
+    catch (Exception)
     {
-      System.Collections.Specialized.NameValueCollection pData = new System.Collections.Specialized.NameValueCollection();
-      pData.Add("bug_report_token", Token);
-      pData.Add("m_id", "0");
-      pData.Add("project_id", Project_ID.ToString());
-      pData.Add("category_id", Category.ToString("d"));
-      pData.Add("reproducibility", Reproducable.ToString("d"));
-      pData.Add("severity", Severity.ToString("d"));
-      pData.Add("priority", Priority.ToString("d"));
-      pData.Add("platform", Platform);
-      pData.Add("os", OS);
-      pData.Add("os_build", OS_Build);
-      pData.Add("product_version", Product_Version);
-      pData.Add("summary", Summary);
-      pData.Add("description", Description);
-      pData.Add("steps_to_reproduce", Steps);
-      pData.Add("additional_info", Info);
-      if (Public)
-      {
-        pData.Add("view_state", "10");
-      }
-      else
-      {
-        pData.Add("view_state", "50");
-      }
-      pData.Add("report_stay", string.Empty);
-      string sRet;
-      WebClientEx httpReport = new WebClientEx();
-      httpReport.KeepAlive = false;
-      httpReport.CookieJar = cJar;
-      sRet = httpReport.UploadValues("http://bugs.realityripple.com/bug_report.php", "POST", pData);
-      if (sRet.StartsWith("Error: "))
-        return null;
-      if (sRet.Contains("Operation successful."))
-      {
-        return "OK";
-      }
-      else
-      {
-        sRet = sRet.Substring(sRet.IndexOf("width50") - 14);
-        sRet = sRet.Substring(0, sRet.IndexOf("</table>") + 8);
-        return sRet;
-      }
+      msg = "Unknown Error (Invalid JSON)";
     }
-    static internal string ReportIssue(Exception e)
-    {
-      string sTok = GetToken(ProjectID);
-      if (string.IsNullOrEmpty(sTok))
-      {
-        return "No token was supplied by the server.";
-      }
-      string sPlat = null;
-      if (CurrentOS.Is64BitProcess)
-        sPlat = "x64";
-      else
-      {
-        if (CurrentOS.Is64bit)
-          sPlat = "x86-64";
-        else
-          sPlat = "x86";
-      }
-      string sSum = e.Message;
-      if (sSum.Length > 80)
-      {
-        sSum = sSum.Substring(0, 77) + "...";
-      }
-      string sDesc = e.ToString();
-      string MyOS = CurrentOS.Name;
-      string MyOSVer = Environment.OSVersion.VersionString;
-      string sVer = modFunctions.ProductVersion;
-      int iParts = (sVer.Split('.')).Length;
-      if (iParts > 3)
-        sVer = sVer.Substring(0, sVer.LastIndexOf('.'));
-      return ReportBug(sTok, ProjectID, Mantis_Category.General, Mantis_Reproducibility.Have_Not_Tried, Mantis_Severity.Minor, Mantis_Priority.Normal, sPlat, MyOS, MyOSVer, sVer, sSum, sDesc, string.Empty, string.Empty, true);
-    }
+    if (Enum.IsDefined(httpReport.ResponseCode.GetType(), httpReport.ResponseCode))
+      return "HTTP Error " + ((int)httpReport.ResponseCode) + ": " + Enum.GetName(httpReport.ResponseCode.GetType(), httpReport.ResponseCode) + "\n" + msg;
+    return "HTTP Error " + ((int)httpReport.ResponseCode) + "\n" + msg;
+  }
+  static internal string ReportIssue(Exception e)
+  {
+    if (Token == "")
+      return "Unable to Report: GitHub Account Token Not Provided";
+    string sSum = MakeIssueTitle(e);
+    string sBod = MakeIssueBody(e);
+    return ReportBug(sSum, sBod);
   }
 }

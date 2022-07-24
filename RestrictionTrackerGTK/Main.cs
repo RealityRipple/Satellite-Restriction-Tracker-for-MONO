@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using Gtk;
 using MacInterop;
-using MantisBugTracker;
 using RestrictionLibrary;
 namespace RestrictionTrackerGTK
 {
@@ -255,79 +254,25 @@ namespace RestrictionTrackerGTK
       ResponseType ret = showErrDialog(ex, !args.IsTerminating);
       if (ret == ResponseType.Ok)
       {
-        string sRet = MantisReporter.ReportIssue(ex);
-        if (sRet == "OK")
+        string sRet = GitHubReporter.ReportIssue(ex);
+        if (sRet.StartsWith("https://") || sRet.StartsWith("http://"))
         {
           if (modFunctions.ShowMessageBox(null, "Thank you for reporting the error.\nYou can find details on the Bug Report page.\n\nDo you wish to visit the Bug Report?", modFunctions.ProductName + " Error Report Sent!", (DialogFlags)0, MessageType.Question, ButtonsType.YesNo) == ResponseType.Yes)
-            System.Diagnostics.Process.Start("http://bugs.realityripple.com/set_project.php?project_id=2");
+            System.Diagnostics.Process.Start(sRet);
+          return;
         }
-        else
+        string sErrRep = "https://github.com/RealityRipple/" + GitHubReporter.ProjectID + "/issues/new";
+        sErrRep += "?title=" + srlFunctions.PercentEncode(GitHubReporter.MakeIssueTitle(ex));
+        sErrRep += "&body=" + srlFunctions.PercentEncode(GitHubReporter.MakeIssueBody(ex));
+        if (modFunctions.ShowMessageBox(null, sRet + "\n\nWould you like to report the error manually?", modFunctions.ProductName + " Error Report Failed!", (DialogFlags)0, MessageType.Error, ButtonsType.YesNo) == ResponseType.Yes)
         {
-          string sErrRep = "http://bugs.realityripple.com/set_project.php?project_id=2&make_default=no&ref=bug_report_page.php";
-          if (CurrentOS.Is32bit)
-          {
-            sErrRep += "?platform=x86";
-          }
-          else if (CurrentOS.Is64bit)
-          {
-            if (CurrentOS.Is32BitProcess)
-            {
-              sErrRep += "?platform=x86-64";
-            }
-            else if (CurrentOS.Is64BitProcess)
-            {
-              sErrRep += "?platform=x64";
-            }
-            else
-            {
-              sErrRep += "?platform=x86 OS, Unknown Process";
-            }
-          }
-          else
-          {
-            sErrRep += "?platform=Unknown";
-          }
-          sErrRep += "%2526os=" + DoubleEncode(CurrentOS.Name);
-          sErrRep += "%2526os_build=" + DoubleEncode(Environment.OSVersion.VersionString);
-          sErrRep += "%2526product_version=" + DoubleEncode(modFunctions.ProductVersion);
-          string sDesc = ex.Message;
-          string sSum = sDesc;
-          if (sSum.Length > 80)
-            sSum = sSum.Substring(0, 77) + "...";
-          sErrRep += "%2526summary=" + DoubleEncode(sSum);
-          if (!string.IsNullOrEmpty(ex.StackTrace))
-          {
-            sDesc += "\n" + ex.StackTrace.Substring(0, ex.StackTrace.IndexOf("\n"));
-          }
-          else
-          {
-            if (!string.IsNullOrEmpty(ex.Source))
-            {
-              sDesc += "\n @ " + ex.Source;
-              if (ex.TargetSite != null)
-                sDesc += "." + ex.TargetSite.Name;
-            }
-            else
-            {
-              if (ex.TargetSite != null)
-                sDesc += "\n @ " + ex.TargetSite.Name;
-            }
-          }
-          sErrRep += "%2526description=" + DoubleEncode(sDesc);
-          if (modFunctions.ShowMessageBox(null, sRet + "\n\nWould you like to report the error manually?", modFunctions.ProductName + " Error Report Failed!", (DialogFlags)0, MessageType.Error, ButtonsType.YesNo) == ResponseType.Yes)
-          {
-            System.Diagnostics.Process.Start(sErrRep);
-          }
+          System.Diagnostics.Process.Start(sErrRep);
         }
       }
       else if (ret == ResponseType.Reject)
       {
         Application.Quit();
       }
-    }
-    private static string DoubleEncode(string inString)
-    {
-      return srlFunctions.PercentEncode(srlFunctions.PercentEncode(inString));
     }
     static void SizeAllocateLabel(object o, SizeAllocatedArgs e)
     {

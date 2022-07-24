@@ -186,15 +186,11 @@
     <Compile Include="Enums\TrayStyles.cs" />
     <Compile Include="Enums\DateInterval.cs" />
     <Compile Include="Enums\ResultType.cs" />
-    <Compile Include="Enums\BugReport\Mantis_Category.cs" />
-    <Compile Include="Enums\BugReport\Mantis_Priority.cs" />
-    <Compile Include="Enums\BugReport\Mantis_Severity.cs" />
     <Compile Include="Enums\TaskbarStates.cs" />
     <Compile Include="Classes\MacInterop\Enums\EventStatus.cs" />
     <Compile Include="Classes\MacInterop\Enums\CarbonEventApple.cs" />
     <Compile Include="Classes\MacInterop\Enums\CarbonEventClass.cs" />
     <Compile Include="Classes\MacInterop\Enums\CarbonEventHandlerStatus.cs" />
-    <Compile Include="Enums\BugReport\Mantis_Reproducibility.cs" />
     <Compile Include="Classes\MacInterop\CarbonEventTypeSpec.cs" />
     <Compile Include="Classes\MacInterop\clsGtkOSXApplication.cs" />
     <Compile Include="Classes\MacInterop\clsActivationPolicy.cs" />
@@ -210,7 +206,6 @@
     <Folder Include="Forms\Dialogs\" />
     <Folder Include="Resources\config\" />
     <Folder Include="Enums\" />
-    <Folder Include="Enums\BugReport\" />
     <Folder Include="Classes\MacInterop\Enums\" />
   </ItemGroup>
 </Project>
