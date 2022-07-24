@@ -36,7 +36,7 @@ public class NotifierStyle
         {
           g.DrawImage(iBG, 0, 0);
         }
-        Background = (Image)bg.Clone();
+        Background = (Image)bg.Clone(new Rectangle(0, 0, iBG.Width, iBG.Height), iBG.PixelFormat);
       }
     }
 
@@ -48,7 +48,7 @@ public class NotifierStyle
         {
           g.DrawImage(iClose, 0, 0);
         }
-        CloseButton = (Image)close.Clone();
+        CloseButton = (Image)close.Clone(new Rectangle(0, 0, iClose.Width, iClose.Height), iClose.PixelFormat);
       }
     }
 

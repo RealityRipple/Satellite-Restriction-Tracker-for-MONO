@@ -14,17 +14,17 @@ namespace RestrictionTrackerGTK
     public static NotifierStyle NOTIFIER_STYLE = null;
     public static NotifierStyle LoadAlertStyle(string Path)
     {
-      if (File.Exists(AppDataPath + Path + ".tgz"))
+      if (File.Exists(System.IO.Path.Combine(AppDataPath, Path + ".tgz")))
       {
-        Path = AppDataPath + Path + ".tgz";
+        Path = System.IO.Path.Combine(AppDataPath, Path + ".tgz");
       }
-      else if (File.Exists(AppDataPath + Path + ".tar.gz"))
+      else if (File.Exists(System.IO.Path.Combine(AppDataPath, Path + ".tar.gz")))
       {
-        Path = AppDataPath + Path + ".tar.gz";
+        Path = System.IO.Path.Combine(AppDataPath, Path + ".tar.gz");
       }
-      else if (File.Exists(AppDataPath + Path + ".tar"))
+      else if (File.Exists(System.IO.Path.Combine(AppDataPath, Path + ".tar")))
       {
-        Path = AppDataPath + Path + ".tar";
+        Path = System.IO.Path.Combine(AppDataPath, Path + ".tar");
       }
       else
       {
@@ -32,8 +32,8 @@ namespace RestrictionTrackerGTK
       }
       try
       {
-        string TempAlertDir = AppData + "/notifier/";
-        string TempAlertTAR = AppData + "/notifier.tar";
+        string TempAlertDir = System.IO.Path.Combine(AppData, "notifier");
+        string TempAlertTAR = System.IO.Path.Combine(AppData, "notifier.tar");
         if (Path.EndsWith(".tar"))
         {
           ExtractTar(Path, TempAlertDir);
@@ -51,7 +51,7 @@ namespace RestrictionTrackerGTK
             ExtractTar(Path, TempAlertDir);
           }
         }
-        NotifierStyle ns = new NotifierStyle(TempAlertDir + "alert.png", TempAlertDir + "close.png", TempAlertDir + "loc");
+        NotifierStyle ns = new NotifierStyle(System.IO.Path.Combine(TempAlertDir, "alert.png"), System.IO.Path.Combine(TempAlertDir, "close.png"), System.IO.Path.Combine(TempAlertDir, "loc"));
         Directory.Delete(TempAlertDir, true);
         return ns;
       }
