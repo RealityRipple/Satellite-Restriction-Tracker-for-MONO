@@ -14,7 +14,6 @@ namespace RestrictionTrackerGTK
   public partial class frmMain:
     Gtk.Window
   {
-    private localRestrictionTracker.SatHostTypes myPanel;
     public static StatusIcon trayIcon;
     public static AppIndicator.ApplicationIndicator appIcon;
     private bool mTrayState = false;
@@ -61,7 +60,7 @@ namespace RestrictionTrackerGTK
       {
         if (string.IsNullOrEmpty(_IconFolder))
         {
-          _IconFolder = System.IO.Path.Combine(modFunctions.AppData, "trayIcons") + System.IO.Path.DirectorySeparatorChar.ToString();
+          _IconFolder = System.IO.Path.Combine(modFunctions.AppData, "trayIcons");
         }
         if (!Directory.Exists(_IconFolder))
         {
@@ -122,7 +121,7 @@ namespace RestrictionTrackerGTK
         taskNotifier.CloseClick -= taskNotifier_CloseClick;
       }
     }
-    private remoteRestrictionTracker remoteData;
+    private RestrictionLibrary.Remote.ServiceConnection remoteData;
     private void remoteDataEvent(bool Add)
     {
       if (Add)
@@ -138,32 +137,22 @@ namespace RestrictionTrackerGTK
         remoteData.Success -= remoteData_Success;
       }
     }
-    private localRestrictionTracker localData;
+    private RestrictionLibrary.Local.SiteConnection localData;
     private void localDataEvent(bool Add)
     {
       if (Add)
       {
         localData.ConnectionStatus += localData_ConnectionStatus;
         localData.ConnectionFailure += localData_ConnectionFailure;
-        localData.ConnectionDNXResult += localData_ConnectionDNXResult;
-        localData.ConnectionWBXResult += localData_ConnectionWBXResult;
-        localData.ConnectionRPXResult += localData_ConnectionRPXResult;
-        localData.ConnectionRPLResult += localData_ConnectionRPLResult;
-        localData.ConnectionWBLResult += localData_ConnectionWBLResult;
+        localData.ConnectionResult += localData_ConnectionResult;
       }
       else
       {
         localData.ConnectionStatus -= localData_ConnectionStatus;
         localData.ConnectionFailure -= localData_ConnectionFailure;
-        localData.ConnectionDNXResult -= localData_ConnectionDNXResult;
-        localData.ConnectionWBXResult -= localData_ConnectionWBXResult;
-        localData.ConnectionRPXResult -= localData_ConnectionRPXResult;
-        localData.ConnectionRPLResult -= localData_ConnectionRPLResult;
-        localData.ConnectionWBLResult -= localData_ConnectionWBLResult;
+        localData.ConnectionResult -= localData_ConnectionResult;
       }
     }
-    private const string sWB = "https://myaccount.{0}/wbisp/{2}/{1}.jsp";
-    private const string sRP = "https://{0}.ruralportal.net/us/{1}.do";
     private const string sDISPLAY = "Usage Levels (%lt)";
     private const string sDISPLAY_LT_NONE = "No History";
     private const string sDISPLAY_LT_BUSY = "Please Wait";
@@ -183,7 +172,6 @@ namespace RestrictionTrackerGTK
     private AppSettings mySettings;
     private string sAccount;
     private string sPassword;
-    private string sProvider;
     private bool imSlowed;
     private bool imFree = false;
     private bool FullCheck = true;
@@ -192,12 +180,10 @@ namespace RestrictionTrackerGTK
     private bool ClosingTime;
     private string sFailTray;
     private byte bAlert;
-    private long typeA_down, typeA_up, typeA_dlim, typeA_ulim;
-    private long typeB_used, typeB_lim;
+    private long uCache_used, uCache_lim;
     private bool updateFull;
     private long lastBalloon;
     private bool firstRestore;
-    private bool checkedAJAX;
     private Dictionary<string, string> markupList = new Dictionary<string, string>();
     private Gtk.Menu mnuTray;
     private Gtk.MenuItem mnuRestore;
@@ -208,274 +194,6 @@ namespace RestrictionTrackerGTK
     private Gtk.MenuItem mnuGraphRefresh;
     private Gtk.SeparatorMenuItem mnuGraphSpace;
     private Gtk.MenuItem mnuGraphColors;
-    #region "Server Type Determination"
-    private class DetermineTypeOffline
-    {
-      public delegate void TypeDeterminedOfflineCallback(localRestrictionTracker.SatHostTypes HostType);
-      private TypeDeterminedOfflineCallback c_callback;
-      public DetermineTypeOffline(string Provider, TypeDeterminedOfflineCallback callback)
-      {
-        c_callback = callback;
-        BeginTestInvoker beginInvoker = new BeginTestInvoker(BeginTest);
-        beginInvoker.BeginInvoke(Provider, null, null);
-      }
-      private delegate void BeginTestInvoker(string Provider);
-      private void BeginTest(string Provider)
-      {
-        if (Provider.ToLower() == "mydish.com" | Provider.ToLower() == "dish.com" | Provider.ToLower() == "dish.net")
-        {
-          if (c_callback == null)
-          {
-            System.Threading.Thread.Sleep(0);
-            System.Threading.Thread.Sleep(100);
-            System.Threading.Thread.Sleep(0);
-          }
-          if (c_callback != null)
-          {
-            c_callback.Invoke(localRestrictionTracker.SatHostTypes.Dish_EXEDE);
-          }
-        }
-        else if (Provider.ToLower() == "exede.com" | Provider.ToLower() == "exede.net")
-        {
-          if (c_callback == null)
-          {
-            System.Threading.Thread.Sleep(0);
-            System.Threading.Thread.Sleep(100);
-            System.Threading.Thread.Sleep(0);
-          }
-          if (c_callback != null)
-          {
-            c_callback.Invoke(localRestrictionTracker.SatHostTypes.WildBlue_EXEDE);
-          }
-        }
-        else if (Provider.ToLower() == "satelliteinternetco.com")
-        {
-          if (c_callback == null)
-          {
-            System.Threading.Thread.Sleep(0);
-            System.Threading.Thread.Sleep(100);
-            System.Threading.Thread.Sleep(0);
-          }
-          if (c_callback != null)
-          {
-            c_callback.Invoke(localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER);
-          }
-        }
-        else
-        {
-          OfflineCheck();
-        }
-      }
-      private void OfflineStats(ref float rpP, ref float exP, ref float wbP)
-      {
-        if (modDB.LOG_GetCount() > 0)
-        {
-          int TotalCount = 0;
-          int RPGuess = 0;
-          int ExGuess = 0;
-          int WBGuess = 0;
-          int logStep = 1;
-          if (modDB.LOG_GetCount() > 50)
-          {
-            logStep = 10;
-          }
-          else if (modDB.LOG_GetCount() > 10)
-          {
-            logStep = 5;
-          }
-          else
-          {
-            logStep = 1;
-          }
-          for (int I = 0; I <= modDB.LOG_GetCount() - 1; I += logStep)
-          {
-            System.DateTime dtDate = default(System.DateTime);
-            long lDown = 0;
-            long lDLim = 0;
-            long lUp = 0;
-            long lULim = 0;
-            modDB.LOG_Get(I, out dtDate, out lDown, out lDLim, out lUp, out lULim);
-            if (lDLim == lULim)
-            {
-              if (lDown == lUp)
-              {
-                RPGuess += 1;
-              }
-              else
-              {
-                ExGuess += 1;
-              }
-            }
-            else if (lULim == 0)
-            {
-              ExGuess += 1;
-            }
-            else
-            {
-              WBGuess += 1;
-            }
-            TotalCount += 1;
-          }
-          rpP = (float)RPGuess / TotalCount;
-          exP = (float)ExGuess / TotalCount;
-          wbP = (float)WBGuess / TotalCount;
-        }
-      }
-      private void OfflineCheck()
-      {
-        float rpP = 0;
-        float exP = 0;
-        float wbP = 0;
-        OfflineStats(ref rpP, ref exP, ref wbP);
-        if (rpP == 0 & exP == 0 & wbP == 0)
-        {
-          if (c_callback != null)
-          {
-            c_callback.Invoke(localRestrictionTracker.SatHostTypes.Other);
-          }
-        }
-        else
-        {
-          if (rpP > exP & rpP > wbP)
-          {
-            if (c_callback != null)
-            {
-              c_callback.Invoke(localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE);
-            }
-          }
-          else if (exP > rpP & exP > wbP)
-          {
-            if (c_callback != null)
-            {
-              c_callback.Invoke(localRestrictionTracker.SatHostTypes.WildBlue_EXEDE);
-            }
-          }
-          else if (wbP > rpP & wbP > exP)
-          {
-            if (c_callback != null)
-            {
-              c_callback.Invoke(localRestrictionTracker.SatHostTypes.WildBlue_LEGACY);
-            }
-          }
-          else
-          {
-            if (rpP > wbP & exP > wbP & rpP == exP)
-            {
-              if (c_callback != null)
-              {
-                c_callback.Invoke(localRestrictionTracker.SatHostTypes.WildBlue_EXEDE);
-              }
-            }
-            else
-            {
-              if (c_callback != null)
-              {
-                c_callback.Invoke(localRestrictionTracker.SatHostTypes.Other);
-              }
-              System.Diagnostics.Debugger.Break();
-            }
-          }
-        }
-      }
-    }
-    private class TypeDeterminedEventArgs
-      : EventArgs
-    {
-      public DetermineType.SatHostGroup HostGroup;
-      public TypeDeterminedEventArgs(DetermineType.SatHostGroup Type)
-      {
-        HostGroup = Type;
-      }
-    }
-    private void TypeDetermination_TypeDetermined(DetermineType.SatHostGroup hostGroup)
-    {
-      Gtk.Application.Invoke(this, new TypeDeterminedEventArgs(hostGroup), Main_TypeDetermined);
-    }
-    private void Main_TypeDetermined(object sender, EventArgs ea)
-    {
-      TypeDeterminedEventArgs e = (TypeDeterminedEventArgs)ea;
-      NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
-      if (e.HostGroup == DetermineType.SatHostGroup.Other)
-      {
-        if (tmrIcon != 0)
-        {
-          GLib.Source.Remove(tmrIcon);
-          tmrIcon = 0;
-        }
-        DetermineTypeOffline TypeDeterminationOffline = new DetermineTypeOffline(sProvider, TypeDeterminationOffline_TypeDetermined);
-        TypeDeterminationOffline.GetType();
-      }
-      else
-      {
-        if (e.HostGroup == DetermineType.SatHostGroup.Dish)
-          mySettings.AccountType = localRestrictionTracker.SatHostTypes.Dish_EXEDE;
-        else if (e.HostGroup == DetermineType.SatHostGroup.WildBlue)
-          mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
-        else if (e.HostGroup == DetermineType.SatHostGroup.RuralPortal)
-          mySettings.AccountType = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
-        else if (e.HostGroup == DetermineType.SatHostGroup.Exede)
-          mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
-        else if (e.HostGroup == DetermineType.SatHostGroup.Exede)
-          mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER;
-        modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
-        mySettings.Save();
-        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Connection...", false);
-        if (localData != null)
-        {
-          localDataEvent(false);
-          localData.Dispose();
-          localData = null;
-        }
-        GrabAttempt = 0;
-        localData = new localRestrictionTracker(modFunctions.AppData);
-        localDataEvent(true);
-      }
-    }
-    private class TypeDeterminedOfflineEventArgs
-      : EventArgs
-    {
-      public localRestrictionTracker.SatHostTypes HostType;
-      public TypeDeterminedOfflineEventArgs(localRestrictionTracker.SatHostTypes Type)
-      {
-        HostType = Type;
-      }
-    }
-    private void TypeDeterminationOffline_TypeDetermined(localRestrictionTracker.SatHostTypes hostType)
-    {
-      Gtk.Application.Invoke(this, new TypeDeterminedOfflineEventArgs(hostType), Main_TypeDeterminedOffline);
-    }
-    private void Main_TypeDeterminedOffline(object sender, EventArgs ea)
-    {
-      TypeDeterminedOfflineEventArgs e = (TypeDeterminedOfflineEventArgs)ea;
-      NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
-      if (e.HostType == localRestrictionTracker.SatHostTypes.Other)
-      {
-        if (tmrIcon != 0)
-        {
-          GLib.Source.Remove(tmrIcon);
-          tmrIcon = 0;
-        }
-        DisplayUsage(false, true);
-        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Please connect to the Internet.", true);
-      }
-      else
-      {
-        mySettings.AccountType = e.HostType;
-        modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
-        mySettings.Save();
-        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Connection...", false);
-        if (localData != null)
-        {
-          localDataEvent(false);
-          localData.Dispose();
-          localData = null;
-        }
-        GrabAttempt = 0;
-        localData = new localRestrictionTracker(modFunctions.AppData);
-        localDataEvent(true);
-      }
-    }
-    #endregion
     #region "Form Events"
     public frmMain() :
       base(Gtk.WindowType.Toplevel)
@@ -522,7 +240,6 @@ namespace RestrictionTrackerGTK
       this.SizeAllocated += Form_SizeAllocated;
       this.DeleteEvent += Form_Closed;
 
-      checkedAJAX = false;
       if (mySettings == null)
       {
         ReLoadSettings();
@@ -534,14 +251,12 @@ namespace RestrictionTrackerGTK
       cmdHistory.Clicked += cmdHistory_Click;
       cmdConfig.Clicked += cmdConfig_Click;
       cmdAbout.Clicked += cmdAbout_Click;
-      evnTypeADld.ButtonReleaseEvent += evnGraph_Click;
-      evnTypeAUld.ButtonReleaseEvent += evnGraph_Click;
-      evnTypeB.ButtonReleaseEvent += evnGraph_Click;
+      evnUsage.ButtonReleaseEvent += evnGraph_Click;
 
       pbMainStatus.Visible = false;
       lblMainStatus.Visible = false;
 
-      DisplayResults(0, 0, 0, 0);
+      DisplayResults(0, 0);
 
       this.Resize(mySettings.MainSize.Width, mySettings.MainSize.Height);
       Main_SizeChanged(null, null);
@@ -646,7 +361,7 @@ namespace RestrictionTrackerGTK
           MakeIconListing();
           try
           {
-            appIcon = new AppIndicator.ApplicationIndicator("restriction-tracker", "norm", AppIndicator.Category.Communications, IconFolder);
+            appIcon = new AppIndicator.ApplicationIndicator("restriction-tracker", "norm", AppIndicator.Category.Communications, IconFolder + System.IO.Path.DirectorySeparatorChar);
             mTraySupport = TraySupport.AppIndicator;
             appIcon.Menu = mnuTray;
             SetTrayText(modFunctions.ProductName);
@@ -670,15 +385,15 @@ namespace RestrictionTrackerGTK
       string[] sFiles = Directory.GetFiles(IconFolder);
       foreach (string sFile in sFiles)
       {
-        if (System.IO.Path.GetExtension(sFile).ToLower() == ".png")
+        if (String.Compare(System.IO.Path.GetExtension(sFile),".png", StringComparison.OrdinalIgnoreCase) == 0)
           File.Delete(sFile);
       }
       string[][] icoNames = new string[][] { new string[] { "norm.ico", "norm.png" }, new string[] { "free.ico", "free.png" }, new string[] { "restricted.ico", "restricted.png" }, new string[] { "error.png", "error.png" }, new string[] { "throbsprite.0.ico", "throb_0.png" }, new string[] { "throbsprite.1.ico", "throb_1.png" }, new string[] { "throbsprite.2.ico", "throb_2.png" }, new string[] { "throbsprite.3.ico", "throb_3.png" }, new string[] { "throbsprite.4.ico", "throb_4.png" }, new string[] { "throbsprite.5.ico", "throb_5.png" }, new string[] { "throbsprite.6.ico", "throb_6.png" }, new string[] { "throbsprite.7.ico", "throb_7.png" }, new string[] { "throbsprite.8.ico", "throb_8.png" }, new string[] { "throbsprite.9.ico", "throb_9.png" }, new string[] { "throbsprite.10.ico", "throb_10.png" }, new string[] { "throbsprite.11.ico", "throb_11.png" } };
       foreach (string[] ico in icoNames)
       {
-        if (System.IO.Path.GetExtension(ico[0]).ToLower() == ".ico")
+        if (String.Compare(System.IO.Path.GetExtension(ico[0]), ".ico", StringComparison.OrdinalIgnoreCase) == 0)
           ResizeIcon(ico[0]).Save(System.IO.Path.Combine(IconFolder, ico[1]), System.Drawing.Imaging.ImageFormat.Png);
-        else if (System.IO.Path.GetExtension(ico[0]).ToLower() == ".png")
+        else if (String.Compare(System.IO.Path.GetExtension(ico[0]), ".png", StringComparison.OrdinalIgnoreCase) == 0)
           ResizePng(ico[0]).Save(System.IO.Path.Combine(IconFolder, ico[1]), System.Drawing.Imaging.ImageFormat.Png);
       }
       long iStart = RestrictionLibrary.srlFunctions.TickCount();
@@ -733,139 +448,30 @@ namespace RestrictionTrackerGTK
     {
       if (trayRes < 8)
         trayRes = 8;
-      bool doBoth = true;
-      bool doTypeA = false;
       List<string> icoNames = new List<string>();
-      if (mySettings != null)
-      {
-        if (mySettings.AccountType != localRestrictionTracker.SatHostTypes.Other)
-        {
-          doBoth = false;
-          if (mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY | mySettings.AccountType == localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY)
-            doTypeA = true;
-        }
-      }
       string[] sFiles = Directory.GetFiles(IconFolder);
       foreach (string sFile in sFiles)
       {
-        if ((System.IO.Path.GetExtension(sFile).ToLower() == ".png") && (System.IO.Path.GetFileName(sFile).ToLower().Substring(0, 6) == "graph_"))
+        if (String.Compare(System.IO.Path.GetExtension(sFile), ".png", StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(System.IO.Path.GetFileName(sFile).Substring(0, 6), "graph_", StringComparison.OrdinalIgnoreCase) == 0)
           File.Delete(sFile);
       }
-      if (doBoth)
+      for (long used = 0; used <= trayRes; used++)
       {
-        for (long up = 0; up <= trayRes; up++)
+        using (Gdk.Pixbuf pIco = CreateUsageTrayIcon(used, trayRes, false, false))
         {
-          for (long down = 0; down <= trayRes; down++)
-          {
-            using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(down, trayRes, up, trayRes, false, false))
-            {
-              pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_" + down + "x" + up + ".png"), "png");
-              icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_" + down + "x" + up + ".png"));
-            }
-          }
-          using (Gdk.Pixbuf pIco = CreateTypeBTrayIcon(up, trayRes, false, false))
-          {
-            pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typeb_" + up + ".png"), "png");
-            icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typeb_" + up + ".png"));
-          }
-        }
-        using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(0, trayRes, 0, trayRes, false, true))
-        {
-          pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_free.png"), "png");
-          icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_free.png"));
-        }
-        using (Gdk.Pixbuf pIco = CreateTypeBTrayIcon(0, trayRes, false, true))
-        {
-          pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typeb_free.png"), "png");
-          icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typeb_free.png"));
-        }
-        for (long down = 0; down <= trayRes; down++)
-        {
-          using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(down, trayRes, 0, trayRes, true, false))
-          {
-            pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_" + down + "xslow.png"), "png");
-            icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_" + down + "xslow.png"));
-          }
-        }
-        for (long up = 0; up <= trayRes; up++)
-        {
-          using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(0, trayRes, up, trayRes, true, false))
-          {
-            pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_slowx" + up + ".png"), "png");
-            icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_slowx" + up + ".png"));
-          }
-        }
-        using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(0, trayRes, 0, trayRes, true, false))
-        {
-          pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_slowxslow.png"), "png");
-          icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_slowxslow.png"));
-        }
-        using (Gdk.Pixbuf pIco = CreateTypeBTrayIcon(0, trayRes, true, false))
-        {
-          pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typeb_slow.png"), "png");
-          icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typeb_slow.png"));
+          pIco.Save(System.IO.Path.Combine(IconFolder, "graph_" + used + ".png"), "png");
+          icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_" + used + ".png"));
         }
       }
-      else if (doTypeA)
+      using (Gdk.Pixbuf pIco = CreateUsageTrayIcon(0, trayRes, false, true))
       {
-        for (long up = 0; up <= trayRes; up++)
-        {
-          for (long down = 0; down <= trayRes; down++)
-          {
-            using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(down, trayRes, up, trayRes, false, false))
-            {
-              pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_" + down + "x" + up + ".png"), "png");
-              icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_" + down + "x" + up + ".png"));
-            }
-          }
-        }
-        using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(0, trayRes, 0, trayRes, false, true))
-        {
-          pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_free.png"), "png");
-          icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_free.png"));
-        }
-        for (long down = 0; down <= trayRes; down++)
-        {
-          using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(down, trayRes, 0, trayRes, true, false))
-          {
-            pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_" + down + "xslow.png"), "png");
-            icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_" + down + "xslow.png"));
-          }
-        }
-        for (long up = 0; up <= trayRes; up++)
-        {
-          using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(0, trayRes, up, trayRes, true, false))
-          {
-            pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_slowx" + up + ".png"), "png");
-            icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_slowx" + up + ".png"));
-          }
-        }
-        using (Gdk.Pixbuf pIco = CreateTypeATrayIcon(0, trayRes, 0, trayRes, true, false))
-        {
-          pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typea_slowxslow.png"), "png");
-          icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typea_slowxslow.png"));
-        }
+        pIco.Save(System.IO.Path.Combine(IconFolder, "graph_free.png"), "png");
+        icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_free.png"));
       }
-      else
+      using (Gdk.Pixbuf pIco = CreateUsageTrayIcon(0, trayRes, true, false))
       {
-        for (long up = 0; up <= trayRes; up++)
-        {
-          using (Gdk.Pixbuf pIco = CreateTypeBTrayIcon(up, trayRes, false, false))
-          {
-            pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typeb_" + up + ".png"), "png");
-            icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typeb_" + up + ".png"));
-          }
-        }
-        using (Gdk.Pixbuf pIco = CreateTypeBTrayIcon(0, trayRes, false, true))
-        {
-          pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typeb_free.png"), "png");
-          icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typeb_free.png"));
-        }
-        using (Gdk.Pixbuf pIco = CreateTypeBTrayIcon(0, trayRes, true, false))
-        {
-          pIco.Save(System.IO.Path.Combine(IconFolder, "graph_typeb_slow.png"), "png");
-          icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_typeb_slow.png"));
-        }
+        pIco.Save(System.IO.Path.Combine(IconFolder, "graph_slow.png"), "png");
+        icoNames.Add(System.IO.Path.Combine(IconFolder, "graph_slow.png"));
       }
       long iStart = RestrictionLibrary.srlFunctions.TickCount();
       do
@@ -913,8 +519,8 @@ namespace RestrictionTrackerGTK
           SetTrayIcon("norm");
           EnableProgressIcon();
           SetStatusText("Initializing", "Beginning application initialization process...", false);
-          MethodInvoker lookupInvoker = LookupProvider;
-          lookupInvoker.BeginInvoke(null, lookupInvoker);
+          MethodInvoker initDBInvoker = initDB;
+          initDBInvoker.BeginInvoke(null, initDBInvoker);
         }
         else
         {
@@ -1046,11 +652,6 @@ namespace RestrictionTrackerGTK
           SetFontSize(ref baseBox, GetMainFontSize());
         }
         ResizePanels();
-        if (myPanel == localRestrictionTracker.SatHostTypes.Other)
-        {
-          SetFontSize(ref lblRRS, GetFontSize());
-          SetFontSize(ref lblNothing, (int)Math.Ceiling(GetFontSize() * 2.5f));
-        }
         if (myState == LoadStates.Loaded)
         {
           if (alloc.Width > 1 & alloc.Height > 1)
@@ -1061,7 +662,7 @@ namespace RestrictionTrackerGTK
             }
           }
         }
-        else if (myPanel != localRestrictionTracker.SatHostTypes.Other)
+        else 
         {
           SetFontSize(ref lblRRS, GetFontSize());
           SetFontSize(ref lblNothing, (int)Math.Ceiling(GetFontSize() * 2.5f));
@@ -1193,102 +794,31 @@ namespace RestrictionTrackerGTK
       if (trayRes < 8)
         trayRes = 8;
       string trayIcoVal = "";
-      if (myPanel == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY | myPanel == localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY | myPanel == localRestrictionTracker.SatHostTypes.Dish_EXEDE)
-      {
-        if (lblTypeADldUsedVal.Text == " -- ")
+        if (lblUsageUsedVal.Text == " -- ")
         {
-          pctTypeADld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(evnTypeADld.Allocation.Size, 0, 0, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-          pctTypeAUld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(evnTypeAUld.Allocation.Size, 0, 0, mySettings.Accuracy, mySettings.Colors.MainUpA, mySettings.Colors.MainUpB, mySettings.Colors.MainUpC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
+          pctUsage.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctUsage.Allocation.Size, 0, 1, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
           trayIcoVal = "norm";
         }
         else
         {
-          pctTypeADld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(evnTypeADld.Allocation.Size, typeA_down, typeA_dlim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-          pctTypeAUld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(evnTypeADld.Allocation.Size, typeA_up, typeA_ulim, mySettings.Accuracy, mySettings.Colors.MainUpA, mySettings.Colors.MainUpB, mySettings.Colors.MainUpC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
+          pctUsage.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctUsage.Allocation.Size, uCache_used, uCache_lim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
           if (imFree)
           {
-            trayIcoVal = "graph_typea_free";
-          }
-          else
-          {
-            int d = (int)Math.Round(((double)typeA_down / typeA_dlim) * trayRes);
-            int u = (int)Math.Round(((double)typeA_up / typeA_ulim) * trayRes);
-            if (imSlowed)
-            {
-              if (d == trayRes && u == trayRes)
-              {
-                trayIcoVal = "graph_typea_slowxslow";
-              }
-              else if (u == trayRes)
-              {
-                trayIcoVal = "graph_typea_" + d + "xslow";
-              }
-              else if (d == trayRes)
-              {
-                trayIcoVal = "graph_typea_slowx" + u;
-              }
-              else
-              {
-                trayIcoVal = "graph_typea_" + d + "x" + u;
-              }
-            }
-            else
-            {
-              trayIcoVal = "graph_typea_" + d + "x" + u;
-            }
-          }
-        }
-      }
-      else if (myPanel == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE | myPanel == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE | myPanel == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER)
-      {
-        if (lblTypeBUsedVal.Text == " -- ")
-        {
-          pctTypeB.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctTypeB.Allocation.Size, 0, 1, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-          trayIcoVal = "norm";
-        }
-        else
-        {
-          pctTypeB.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctTypeB.Allocation.Size, typeB_used, typeB_lim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-          if (imFree)
-          {
-            trayIcoVal = "graph_typeb_free";
+            trayIcoVal = "graph_free";
           }
           else if (imSlowed)
           {
-            trayIcoVal = "graph_typeb_slow";
+            trayIcoVal = "graph_slow";
           }
           else
           {
-            int u = (int)Math.Round(((double)typeB_used / typeB_lim) * trayRes);
+            int u = (int)Math.Round(((double)uCache_used / uCache_lim) * trayRes);
             if (u > trayRes)
               u = trayRes;
-            trayIcoVal = "graph_typeb_" + u;
+            trayIcoVal = "graph_" + u;
           }
         }
-      }
-      else if (myPanel == localRestrictionTracker.SatHostTypes.Other)
-      {
-        lblNothing.Text = modFunctions.ProductName;
-        modFunctions.PrepareLink(lblRRS);
-        if (markupList.ContainsKey(lblRRS.Name + lblRRS.Handle.ToString("x")))
-        {
-          string markup = markupList[lblRRS.Name + lblRRS.Handle.ToString("x")];
-          string markupColor = "";
-          if (markup.Contains("foreground="))
-          {
-            markupColor = markup.Substring(markup.IndexOf("foreground="));
-            markupColor = " " + markupColor.Substring(0, markupColor.IndexOf("\">") + 1);
-          }
-          markupList[lblRRS.Name + lblRRS.Handle.ToString("x")] = "<a href=\"http://realityripple.com/\"><span size=\"" + GetFontSize() + "\"" + markupColor + ">by " + modFunctions.CompanyName + "</span></a>";
-          lblRRS.Markup = markupList[lblRRS.Name + lblRRS.Handle.ToString("x")];
-        }
-        else
-        {
-          markupList.Add(lblRRS.Name + lblRRS.Handle.ToString("x"), "<a href=\"http://realityripple.com/\">by " + modFunctions.CompanyName + "</a>");
-          lblRRS.Markup = markupList[lblRRS.Name + lblRRS.Handle.ToString("x")];
-        }
-        lblRRS.TooltipText = "Visit RealityRipple.com.";
-      }
+      
       if (trayIcoVal != "")
       {
         if (tmrIcon == 0)
@@ -1493,7 +1023,7 @@ namespace RestrictionTrackerGTK
           }
         }
       }
-      modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
+      modFunctions.ScreenDefaultColors(ref mySettings.Colors);
       modFunctions.NOTIFIER_STYLE = modFunctions.LoadAlertStyle(mySettings.AlertStyle);
       if (TraySupported)
       {
@@ -1532,12 +1062,12 @@ namespace RestrictionTrackerGTK
         else
         {
           ((Gtk.Image)((Gtk.HBox)((Gtk.Alignment)cmdNetTest.Child).Child).Children[0]).PixbufAnimation = new Gdk.PixbufAnimation(null, "RestrictionTrackerGTK.Resources.throbber.gif");
-          clsFavicon wsFavicon = new clsFavicon(mySettings.NetTestURL, wsFavicon_DownloadIconCompleted, mySettings.NetTestURL);
-          wsFavicon.GetType();
+          clsFavicon wsFavicon = new clsFavicon(wsFavicon_DownloadIconCompleted);
+          wsFavicon.Start(mySettings.NetTestURL, mySettings.NetTestURL);
         }
         string sNetTestTitle = mySettings.NetTestURL;
-        if (sNetTestTitle.Contains("://"))
-          sNetTestTitle = sNetTestTitle.Substring(sNetTestTitle.IndexOf("://") + 3);
+        if (sNetTestTitle.Contains(Uri.SchemeDelimiter))
+          sNetTestTitle = sNetTestTitle.Substring(sNetTestTitle.IndexOf(Uri.SchemeDelimiter) + 3);
         if (sNetTestTitle.StartsWith("www."))
           sNetTestTitle = sNetTestTitle.Substring(4);
         if (sNetTestTitle.Contains("/"))
@@ -1654,7 +1184,7 @@ namespace RestrictionTrackerGTK
           return;
         }
         DisplayUsage(false, false);
-        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Connection...", false);
+        SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Preparing Connection...", false);
         GetUsage();
       }
       if (ClosingTime)
@@ -1699,40 +1229,24 @@ namespace RestrictionTrackerGTK
           TrayState = false;
       }
     }
-    private void LookupProvider()
+    private void initDB()
     {
-      SetTag(LoadStates.Lookup);
+      SetTag(LoadStates.DB);
       SetStatusText("Loading History", "Reading usage history into memory...", false);
       modDB.LOG_Initialize(sAccount, false);
       if (ClosingTime)
       {
         return;
       }
-      if (mySettings.AccountType == localRestrictionTracker.SatHostTypes.Other)
+      if (tmrIcon != 0)
       {
-        if (mySettings.AccountTypeForced)
-        {
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Unknown Account Type.", true);
-        }
-        else
-        {
-          SetStatusText("Analyzing Account", "Determining your account type...", false);
-          DetermineType TypeDetermination = new DetermineType(sProvider, mySettings.Timeout, mySettings.Proxy, TypeDetermination_TypeDetermined);
-          TypeDetermination.GetType();
-        }
+        GLib.Source.Remove(tmrIcon);
+        tmrIcon = 0;
       }
-      else
-      {
-        if (tmrIcon != 0)
-        {
-          GLib.Source.Remove(tmrIcon);
-          tmrIcon = 0;
-        }
-        SetStatusText("No History", "", false);
-        DisplayUsage(true, false);
-        MethodInvoker TimerInvoker = StartTimer;
-        TimerInvoker.BeginInvoke(null, TimerInvoker);
-      }
+      SetStatusText("No History", "", false);
+      DisplayUsage(true, false);
+      MethodInvoker TimerInvoker = StartTimer;
+      TimerInvoker.BeginInvoke(null, TimerInvoker);
     }
     private void InitAccount()
     {
@@ -1748,18 +1262,8 @@ namespace RestrictionTrackerGTK
       {
         if (sAccount.Contains("@") & sAccount.Contains("."))
         {
-          sProvider = sAccount.Substring(sAccount.LastIndexOf("@") + 1).ToLower();
+          sAccount = sAccount.Substring(0, sAccount.LastIndexOf("@"));
         }
-        else
-        {
-          sAccount = "";
-          sProvider = "";
-        }
-      }
-      else
-      {
-        sAccount = "";
-        sProvider = "";
       }
     }
     #endregion
@@ -1819,36 +1323,17 @@ namespace RestrictionTrackerGTK
           {
             if (!string.IsNullOrEmpty(sAccount))
             {
-              if (string.IsNullOrEmpty(sProvider))
-              {
-                sProvider = sAccount.Substring(sAccount.LastIndexOf("@") + 1).ToLower();
-                SetStatusText("Reloading", "Reloading History...", false);
-                modDB.LOG_Initialize(sAccount, false);
-                if (ClosingTime)
-                {
-                  return true;
-                }
-              }
               if (Math.Abs(modFunctions.DateDiff(DateInterval.Minute, modDB.LOG_GetLast(), DateTime.Now)) > 10)
               {
-                if (!string.IsNullOrEmpty(sProvider) & !string.IsNullOrEmpty(sPassword))
+                if (!string.IsNullOrEmpty(sPassword))
                 {
                   updateFull = false;
                   NextGrabTick = long.MaxValue;
                   PauseActivity = "Preparing Connection";
                   EnableProgressIcon();
-                  if (!checkedAJAX && mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER)
-                  {
-                    SetStatusText(modDB.LOG_GetLast().ToString("g"), "Checking for AJAX List Update...", false);
-                    UpdateAJAXLists AJAXUpdate = new UpdateAJAXLists(sProvider, mySettings.Timeout, mySettings.Proxy, (object)"GetUsage", UpdateAJAXLists_UpdateChecked);
-                    AJAXUpdate.GetType();
-                  }
-                  else
-                  {
-                    SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Connection...", false);
-                    MethodInvoker UsageInvoker = GetUsage;
-                    UsageInvoker.BeginInvoke(null, null);
-                  }
+                  SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Preparing Connection...", false);
+                  MethodInvoker UsageInvoker = GetUsage;
+                  UsageInvoker.BeginInvoke(null, null); 
                   return true;
                 }
               }
@@ -1865,7 +1350,7 @@ namespace RestrictionTrackerGTK
     }
     private void Main_GetUsage(object o, EventArgs e)
     {
-      if (string.IsNullOrEmpty(sAccount) | string.IsNullOrEmpty(sPassword) | !sAccount.Contains("@"))
+      if (string.IsNullOrEmpty(sAccount) | string.IsNullOrEmpty(sPassword))
       {
         if (((Gtk.Label)mnuRestore.Child).Text == "Restore")
         {
@@ -1894,7 +1379,7 @@ namespace RestrictionTrackerGTK
               localData = null;
             }
             GrabAttempt = 0;
-            localData = new localRestrictionTracker(modFunctions.AppData);
+            localData = new RestrictionLibrary.Local.SiteConnection(modFunctions.AppData);
             localDataEvent(true);
           }
         }
@@ -1912,13 +1397,13 @@ namespace RestrictionTrackerGTK
             localData.Dispose();
             localData = null;
           }
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "", false);
+          SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "", false);
           DisplayUsage(false, false);
           NextGrabTick = srlFunctions.TickCount() + 5000;
         }
       }
     }
-    private bool KeyCheck(string TestKey)
+    private static bool KeyCheck(string TestKey)
     {
       if (string.IsNullOrEmpty(TestKey.Trim()))
       {
@@ -1944,7 +1429,7 @@ namespace RestrictionTrackerGTK
       {
         syncTime = new DateTime(2001, 1, 1);
       }
-      remoteData = new remoteRestrictionTracker(sAccount, sPassword, mySettings.RemoteKey, mySettings.Proxy, mySettings.Timeout, syncTime, modFunctions.AppData);
+      remoteData = new RestrictionLibrary.Remote.ServiceConnection(sAccount, sPassword, mySettings.RemoteKey, mySettings.Proxy, mySettings.Timeout, syncTime, modFunctions.AppData);
       remoteDataEvent(true);
     }
     private class DisplayUsageEventArgs
@@ -1985,16 +1470,14 @@ namespace RestrictionTrackerGTK
       if (modDB.LOG_GetCount() > 0)
       {
         DateTime dtDate;
-        long lDown;
-        long lDLim;
-        long lUp;
-        long lULim;
-        modDB.LOG_Get(modDB.LOG_GetCount() - 1, out dtDate, out lDown, out lDLim, out lUp, out lULim);
+        long lUsed;
+        long lLimit;
+        modDB.LOG_Get(modDB.LOG_GetCount() - 1, out dtDate, out lUsed, out lLimit);
         if (e.StatusText)
         {
-          SetStatusText(dtDate.ToString("g"), "", false);
+          SetStatusText(srlFunctions.TimeToString(dtDate), "", false);
         }
-        DisplayResults(lDown, lDLim, lUp, lULim);
+        DisplayResults(lUsed, lLimit);
       }
       if ((this.SkipTaskbarHint == true) && CurrentOS.IsMac)
         ActivationPolicy.setPolicy(ApplicationActivationPolicy.Accessory);
@@ -2028,13 +1511,13 @@ namespace RestrictionTrackerGTK
     }
     #endregion
     #region "Local Usage Events"
-    private void localData_ConnectionStatus(object sender, localRestrictionTracker.ConnectionStatusEventArgs e)
+    private void localData_ConnectionStatus(object sender, RestrictionLibrary.Local.SiteConnectionStatusEventArgs e)
     {
       Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionStatus);
     }
     private void Main_LocalDataConnectionStatus(object o, EventArgs ea)
     {
-      localRestrictionTracker.ConnectionStatusEventArgs e = (localRestrictionTracker.ConnectionStatusEventArgs)ea;
+      RestrictionLibrary.Local.SiteConnectionStatusEventArgs e = (RestrictionLibrary.Local.SiteConnectionStatusEventArgs)ea;
       NextGrabTick = srlFunctions.TickCount() + ((mySettings.Timeout + 15) * 1000);
       string sAppend = "";
       if (e.Attempt > 0)
@@ -2054,123 +1537,114 @@ namespace RestrictionTrackerGTK
       }
       switch (e.Status)
       {
-        case localRestrictionTracker.ConnectionStates.Initialize:
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Initializing Connection" + sAppend + "...", false);
+        case RestrictionLibrary.Local.SiteConnectionStates.Initialize:
+          SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Initializing Connection" + sAppend + "...", false);
           break;
-        case localRestrictionTracker.ConnectionStates.Prepare:
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing to Log In" + sAppend + "...", false);
+        case RestrictionLibrary.Local.SiteConnectionStates.Prepare:
+          SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Preparing to Log In" + sAppend + "...", false);
           break;
-        case localRestrictionTracker.ConnectionStates.Login:
+        case RestrictionLibrary.Local.SiteConnectionStates.Login:
           switch (e.SubState)
           {
-            case localRestrictionTracker.ConnectionSubStates.ReadLogin:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Reading Login Page" + sAppend + "...", false);
+            case RestrictionLibrary.Local.SiteConnectionSubStates.ReadLogin:
+              SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Reading Login Page" + sAppend + "...", false);
               break;
-            case localRestrictionTracker.ConnectionSubStates.Authenticate:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Authenticating" + sAppend + "...", false);
-              break;
-            case localRestrictionTracker.ConnectionSubStates.Verify:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Verifying Authentication" + sAppend + "...", false);
+            case RestrictionLibrary.Local.SiteConnectionSubStates.Authenticate:
+              SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Authenticating" + sAppend + "...", false);
               break;
             default:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Logging In" + sAppend + "...", false);
+              SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Logging In" + sAppend + "...", false);
               break;
           }
           break;
-        case localRestrictionTracker.ConnectionStates.TableDownload:
+        case RestrictionLibrary.Local.SiteConnectionStates.TableDownload:
           switch (e.SubState)
           {
-            case localRestrictionTracker.ConnectionSubStates.LoadHome:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Home Page" + sAppend + "...", false);
+            case RestrictionLibrary.Local.SiteConnectionSubStates.LoadHome:
+              SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Downloading Home Page" + sAppend + "...", false);
               break;
-            case localRestrictionTracker.ConnectionSubStates.LoadAJAX:
-              if (e.Attempt == 0)
-                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading AJAX Data (" + e.Stage + " of " + localData.ExedeResellerAJAXFirstTryRequests + ")...", false);
-              else
-                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading AJAX Data (" + e.Stage + " of " + localData.ExedeResellerAJAXSecondTryRequests + ")...", false);
-              break;
-            case localRestrictionTracker.ConnectionSubStates.LoadTable:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Usage Table" + sAppend + "...", false);
+            case RestrictionLibrary.Local.SiteConnectionSubStates.LoadTable:
+              SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Downloading Usage Table" + sAppend + "...", false);
               break;
             default:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Usage Table" + sAppend + "...", false);
+              SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Downloading Usage Table" + sAppend + "...", false);
               break;
           }
           break;
-        case localRestrictionTracker.ConnectionStates.TableRead:
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Reading Usage Table" + sAppend + "...", false);
+        case RestrictionLibrary.Local.SiteConnectionStates.TableRead:
+          SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Reading Usage Table" + sAppend + "...", false);
           break;
       }
     }
-    private void localData_ConnectionFailure(object sender, localRestrictionTracker.ConnectionFailureEventArgs e)
+    private void localData_ConnectionFailure(object sender, RestrictionLibrary.Local.SiteConnectionFailureEventArgs e)
     {
       Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionFailure);
     }
     private void Main_LocalDataConnectionFailure(object o, EventArgs ea)
     {
-      localRestrictionTracker.ConnectionFailureEventArgs e = (localRestrictionTracker.ConnectionFailureEventArgs)ea;
+      RestrictionLibrary.Local.SiteConnectionFailureEventArgs e = (RestrictionLibrary.Local.SiteConnectionFailureEventArgs)ea;
       switch (e.Type)
       {
-        case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.LoginIssue:
+        case RestrictionLibrary.Local.SiteConnectionFailureType.LoginIssue:
           GrabAttempt = 0;
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), e.Message, true);
+          SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), e.Message, true);
           if (!string.IsNullOrEmpty(e.Fail))
           {
             FailFile(e.Fail, true);
           }
           DisplayUsage(false, false);
           return;
-        case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.ConnectionTimeout:
+        case RestrictionLibrary.Local.SiteConnectionFailureType.ConnectionTimeout:
           if (GrabAttempt < mySettings.Retries)
           {
             GrabAttempt++;
             string sMessage = "Connection Timed Out! Retry " + GrabAttempt + " of " + mySettings.Retries + "...";
-            SetStatusText(modDB.LOG_GetLast().ToString("g"), sMessage, true);
+            SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), sMessage, true);
             if (localData != null)
             {
               localDataEvent(false);
               localData.Dispose();
               localData = null;
             }
-            localData = new localRestrictionTracker(modFunctions.AppData);
+            localData = new RestrictionLibrary.Local.SiteConnection(modFunctions.AppData);
             localDataEvent(true);
             return;
           }
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Connection Timed Out!", true);
+          SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Connection Timed Out!", true);
           DisplayUsage(false, false);
           break;
-        case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.TLSTooOld:
+        case RestrictionLibrary.Local.SiteConnectionFailureType.TLSTooOld:
           GrabAttempt = 0;
           if (mySettings.TLSProxy)
           {
-            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Please enable TLS 1.1 or 1.2 under Security Protocol in the Network tab of the Config window to connect.", true);
+            SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Please enable TLS 1.1 or 1.2 under Security Protocol in the Network tab of the Config window to connect.", true);
             DisplayUsage(false, false);
           }
           else
           {
-            string clrVer = RestrictionLibrary.srlFunctions.GetCLRCleanVersion();
+            string clrVer = RestrictionLibrary.srlFunctions.CLRCleanVersion;
             Version clr = new Version(clrVer.Substring(5));
             if (clr.Major < 4 || (clr.Major == 4 & clr.Minor < 8))
             {
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), "Security Protocol requires MONO 4.8 or newer. If you can't install MONO 4.8, please use the TLS Proxy feature for now.", true);
+              SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Security Protocol requires MONO 4.8 or newer. If you can't install MONO 4.8, please use the TLS Proxy feature for now.", true);
               DisplayUsage(false, false);
             }
             else
             {
               if (e.Message == "VER")
               {
-                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Please enable TLS 1.1 or 1.2 under Security Protocol in the Network tab of the Config window to connect.", true);
+                SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Please enable TLS 1.1 or 1.2 under Security Protocol in the Network tab of the Config window to connect.", true);
                 DisplayUsage(false, false);
               }
               else if (e.Message == "PROXY")
               {
-                SetStatusText(modDB.LOG_GetLast().ToString("g"), "Even though TLS 1.1 or 1.2 was enabled, the server still didn't like the request. Please let me know you got this message. You can use the TLS Proxy feature under Security Protocol in the Network tab of the Config window to bypass this problem for now.", true);
+                SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Even though TLS 1.1 or 1.2 was enabled, the server still didn't like the request. Please use the TLS Proxy feature under Security Protocol in the Network tab of the Config window to bypass this problem.", true);
                 DisplayUsage(false, false);
               }
             }
           }
           break;
-        case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.LoginFailure:
+        case RestrictionLibrary.Local.SiteConnectionFailureType.LoginFailure:
           if (!string.IsNullOrEmpty(e.Fail))
           {
             FailFile(e.Fail);
@@ -2179,48 +1653,23 @@ namespace RestrictionTrackerGTK
           {
             GrabAttempt++;
             string sMessage = e.Message.Substring(0, e.Message.IndexOf("Please try again.")) + "Retry " + GrabAttempt + " of " + mySettings.Retries + "...";
-            SetStatusText(modDB.LOG_GetLast().ToString("g"), sMessage, true);
+            SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), sMessage, true);
             if (localData != null)
             {
               localDataEvent(false);
               localData.Dispose();
               localData = null;
             }
-            localData = new localRestrictionTracker(modFunctions.AppData);
+            localData = new RestrictionLibrary.Local.SiteConnection(modFunctions.AppData);
             localDataEvent(true);
             return;
           }
-          if ((e.Message == "AJAX failed to yield data table." || e.Message == "Can't determine AJAX order.") && GrabAttempt < 1)
-          {
-            GrabAttempt++;
-            if (localData != null)
-            {
-              localDataEvent(false);
-              localData.Dispose();
-              localData = null;
-            }
-            string sMessage = e.Message + " Attempting to Update AJAX Lists...";
-            SetStatusText(modDB.LOG_GetLast().ToString("g"), sMessage, false);
-            UpdateAJAXLists AJAXUpdate = new UpdateAJAXLists(sProvider, mySettings.Timeout, mySettings.Proxy, GrabAttempt, UpdateAJAXLists_ListUpdated);
-            AJAXUpdate.GetType();
-            return;
-          }
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), e.Message, true);
+          SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), e.Message, true);
           DisplayUsage(false, true);
           break;
-        case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.FatalLoginFailure:
+        case RestrictionLibrary.Local.SiteConnectionFailureType.UnknownAccountDetails:
           GrabAttempt = 0;
-          mySettings.AccountType = localRestrictionTracker.SatHostTypes.Other;
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), e.Message, true);
-          if (!string.IsNullOrEmpty(e.Fail))
-          {
-            FailFile(e.Fail);
-          }
-          DisplayUsage(false, false);
-          break;
-        case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.UnknownAccountDetails:
-          GrabAttempt = 0;
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Please enter your account details in the Config window.", true);
+          SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Please enter your account details in the Config window.", true);
           DisplayUsage(false, false);
           if ((this.GdkWindow.State & Gdk.WindowState.Iconified) == Gdk.WindowState.Iconified)
           {
@@ -2229,19 +1678,6 @@ namespace RestrictionTrackerGTK
           cmdConfig.GrabFocus();
           modFunctions.ShowMessageBox(null, "You haven't entered your account details.\nPlease enter your account details in the Config window by clicking Configuration.", "Account Details Required", Gtk.DialogFlags.Modal, Gtk.MessageType.Warning, Gtk.ButtonsType.Ok);
           break;
-        case localRestrictionTracker.ConnectionFailureEventArgs.FailureType.UnknownAccountType:
-          GrabAttempt = 0;
-          if (mySettings.AccountTypeForced)
-          {
-            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Unknown Account Type.", true);
-          }
-          else
-          {
-            SetStatusText("Analyzing Account", "Determining your account type...", false);
-            DetermineType TypeDetermination = new DetermineType(sProvider, mySettings.Timeout, mySettings.Proxy, TypeDetermination_TypeDetermined);
-            TypeDetermination.GetType();
-          }
-          break;
       }
       if (localData != null)
       {
@@ -2250,129 +1686,18 @@ namespace RestrictionTrackerGTK
         localData = null;
       }
     }
-    private void localData_ConnectionDNXResult(object sender, localRestrictionTracker.TYPEA2ResultEventArgs e)
+    private void localData_ConnectionResult(object sender, RestrictionLibrary.Local.SiteResultEventArgs e)
     {
-      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionDNXResult);
+      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionResult);
     }
-    private void Main_LocalDataConnectionDNXResult(object o, EventArgs ea)
+    private void Main_LocalDataConnectionResult(object o, EventArgs ea)
     {
-      localRestrictionTracker.TYPEA2ResultEventArgs e = (localRestrictionTracker.TYPEA2ResultEventArgs)ea;
+      RestrictionLibrary.Local.SiteResultEventArgs e = (RestrictionLibrary.Local.SiteResultEventArgs)ea;
       GrabAttempt = 0;
-      SetStatusText(e.Update.ToString("g"), "Saving History...", false);
+      SetStatusText(srlFunctions.TimeToString(e.Update), "Saving History...", false);
       NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
-      modDB.LOG_Add(e.Update, e.AnyTime, e.AnyTimeLimit, e.OffPeak, e.OffPeakLimit, true);
-      myPanel = localRestrictionTracker.SatHostTypes.Dish_EXEDE;
-      mySettings.AccountType = localRestrictionTracker.SatHostTypes.Dish_EXEDE;
-      mySettings.Save();
-      modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
-      if (e.SlowedDetected)
-        imSlowed = true;
-      imFree = e.FreeDetected;
-      DisplayUsage(true, true);
-      if (localData != null)
-      {
-        localDataEvent(false);
-        localData.Dispose();
-        localData = null;
-      }
-      SaveToHostList();
-    }
-    private void localData_ConnectionRPXResult(object sender, localRestrictionTracker.TYPEBResultEventArgs e)
-    {
-      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionRPXResult);
-    }
-    private void Main_LocalDataConnectionRPXResult(object o, EventArgs ea)
-    {
-      localRestrictionTracker.TYPEBResultEventArgs e = (localRestrictionTracker.TYPEBResultEventArgs)ea;
-      GrabAttempt = 0;
-      SetStatusText(e.Update.ToString("g"), "Saving History...", false);
-      NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
-      modDB.LOG_Add(e.Update, e.Used, e.Limit, e.Used, e.Limit, true);
-      myPanel = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
-      mySettings.AccountType = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
-      mySettings.Save();
-      modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
-      if (e.SlowedDetected)
-        imSlowed = true;
-      imFree = e.FreeDetected;
-      DisplayUsage(true, true);
-      if (localData != null)
-      {
-        localDataEvent(false);
-        localData.Dispose();
-        localData = null;
-      }
-      SaveToHostList();
-    }
-    private void localData_ConnectionRPLResult(object sender, localRestrictionTracker.TYPEAResultEventArgs e)
-    {
-      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionRPLResult);
-    }
-    private void Main_LocalDataConnectionRPLResult(object o, EventArgs ea)
-    {
-      localRestrictionTracker.TYPEAResultEventArgs e = (localRestrictionTracker.TYPEAResultEventArgs)ea;
-      GrabAttempt = 0;
-      SetStatusText(e.Update.ToString("g"), "Saving History...", false);
-      NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
-      modDB.LOG_Add(e.Update, e.Download, e.DownloadLimit, e.Upload, e.UploadLimit, true);
-      myPanel = localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY;
-      mySettings.AccountType = localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY;
-      mySettings.Save();
-      modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
-      if (e.SlowedDetected)
-        imSlowed = true;
-      imFree = e.FreeDetected;
-      DisplayUsage(true, true);
-      if (localData != null)
-      {
-        localDataEvent(false);
-        localData.Dispose();
-        localData = null;
-      }
-      SaveToHostList();
-    }
-    private void localData_ConnectionWBLResult(object sender, localRestrictionTracker.TYPEAResultEventArgs e)
-    {
-      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionWBLResult);
-    }
-    private void Main_LocalDataConnectionWBLResult(object o, EventArgs ea)
-    {
-      localRestrictionTracker.TYPEAResultEventArgs e = (localRestrictionTracker.TYPEAResultEventArgs)ea;
-      GrabAttempt = 0;
-      SetStatusText(e.Update.ToString("g"), "Saving History...", false);
-      NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
-      modDB.LOG_Add(e.Update, e.Download, e.DownloadLimit, e.Upload, e.UploadLimit, true);
-      myPanel = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
-      mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
-      mySettings.Save();
-      modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
-      if (e.SlowedDetected)
-        imSlowed = true;
-      imFree = e.FreeDetected;
-      DisplayUsage(true, true);
-      if (localData != null)
-      {
-        localDataEvent(false);
-        localData.Dispose();
-        localData = null;
-      }
-      SaveToHostList();
-    }
-    private void localData_ConnectionWBXResult(object sender, localRestrictionTracker.TYPEBResultEventArgs e)
-    {
-      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionWBXResult);
-    }
-    private void Main_LocalDataConnectionWBXResult(object o, EventArgs ea)
-    {
-      localRestrictionTracker.TYPEBResultEventArgs e = (localRestrictionTracker.TYPEBResultEventArgs)ea;
-      GrabAttempt = 0;
-      SetStatusText(e.Update.ToString("g"), "Saving History...", false);
-      NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
-      modDB.LOG_Add(e.Update, e.Used, e.Limit, e.Used, e.Limit, true);
-      myPanel = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
-      mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE;
-      mySettings.Save();
-      modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
+      modDB.LOG_Add(e.Update, e.Used, e.Limit, true);
+      modFunctions.ScreenDefaultColors(ref mySettings.Colors );
       if (e.SlowedDetected)
         imSlowed = true;
       imFree = e.FreeDetected;
@@ -2384,98 +1709,49 @@ namespace RestrictionTrackerGTK
         localData = null;
       }
     }
-    private void localData_ConnectionWXRResult(object sender, localRestrictionTracker.TYPEBResultEventArgs e)
-    {
-      Gtk.Application.Invoke(sender, (EventArgs)e, Main_LocalDataConnectionWXRResult);
-    }
-    private void Main_LocalDataConnectionWXRResult(object o, EventArgs ea)
-    {
-      localRestrictionTracker.TYPEBResultEventArgs e = (localRestrictionTracker.TYPEBResultEventArgs)ea;
-      GrabAttempt = 0;
-      SetStatusText(e.Update.ToString("g"), "Saving History...", false);
-      NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
-      modDB.LOG_Add(e.Update, e.Used, e.Limit, e.Used, e.Limit, true);
-      myPanel = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER;
-      mySettings.AccountType = localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER;
-      mySettings.Save();
-      modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
-      if (e.SlowedDetected)
-        imSlowed = true;
-      imFree = e.FreeDetected;
-      DisplayUsage(true, true);
-      if (localData != null)
-      {
-        localDataEvent(false);
-        localData.Dispose();
-        localData = null;
-      }
-    }
-    #region "HostList"
-    private bool didHostListSave = false;
-    private void SaveToHostList()
-    {
-      Gtk.Application.Invoke(new object(), new EventArgs(), Main_SaveToHostList);
-    }
-    private void Main_SaveToHostList(object o, EventArgs ea)
-    {
-      if (didHostListSave)
-        return;
-      try
-      {
-        string myProvider = mySettings.Account.Substring(mySettings.Account.LastIndexOf("@") + 1).ToLower();
-        System.Net.WebRequest sckHostList = System.Net.HttpWebRequest.Create("http://wb.realityripple.com/hosts/?add=" + myProvider);
-        sckHostList.BeginGetResponse(null, null);
-        didHostListSave = true;
-      }
-      catch (Exception)
-      {
-        didHostListSave = false;
-      }
-    }
-    #endregion
     #endregion
     #region "Remote Usage Events"
-    private void remoteData_Failure(object sender, remoteRestrictionTracker.FailureEventArgs e)
+    private void remoteData_Failure(object sender, RestrictionLibrary.Remote.ServiceFailureEventArgs e)
     {
       Gtk.Application.Invoke(sender, (EventArgs)e, Main_RemoteDataFailure);
     }
     private void Main_RemoteDataFailure(object o, EventArgs ea)
     {
-      remoteRestrictionTracker.FailureEventArgs e = (remoteRestrictionTracker.FailureEventArgs)ea;
+      RestrictionLibrary.Remote.ServiceFailureEventArgs e = (RestrictionLibrary.Remote.ServiceFailureEventArgs)ea;
       string sErr = "There was an error verifying your Product Key.";
       switch (e.Type)
       {
-        case remoteRestrictionTracker.FailureEventArgs.FailType.BadLogin:
+        case RestrictionLibrary.Remote.ServiceFailType.BadLogin:
           sErr = "There was a server error. Please try again later.";
           break;
-        case remoteRestrictionTracker.FailureEventArgs.FailType.BadPassword:
+        case RestrictionLibrary.Remote.ServiceFailType.BadPassword:
           sErr = "Your Password is incorrect.";
           break;
-        case remoteRestrictionTracker.FailureEventArgs.FailType.BadProduct:
+        case RestrictionLibrary.Remote.ServiceFailType.BadProduct:
           sErr = "Your Product Key has been disabled.";
           mySettings.RemoteKey = string.Empty;
           MethodInvoker UsageInvoker = GetUsage;
           UsageInvoker.BeginInvoke(null, null);
           break;
-        case remoteRestrictionTracker.FailureEventArgs.FailType.BadServer:
+        case RestrictionLibrary.Remote.ServiceFailType.BadServer:
           sErr = "There was a fault double-checking the server. You may have a security issue.";
           break;
-        case remoteRestrictionTracker.FailureEventArgs.FailType.NoData:
+        case RestrictionLibrary.Remote.ServiceFailType.NoData:
           sErr = "There is no usage data." + (string.IsNullOrEmpty(e.Details) ? "Please wait 15 minutes." : " " + e.Details);
           break;
-        case remoteRestrictionTracker.FailureEventArgs.FailType.NoPassword:
+        case RestrictionLibrary.Remote.ServiceFailType.NoPassword:
           sErr = "Your Password has not been Registered on the Remote Service.";
           break;
-        case remoteRestrictionTracker.FailureEventArgs.FailType.NoUsername:
+        case RestrictionLibrary.Remote.ServiceFailType.NoUsername:
           sErr = "Your Account is not Registered for the Remote Service.";
           mySettings.RemoteKey = string.Empty;
           MethodInvoker GetUsageInvoker = GetUsage;
           GetUsageInvoker.BeginInvoke(null, null);
           break;
-        case remoteRestrictionTracker.FailureEventArgs.FailType.Network:
+        case RestrictionLibrary.Remote.ServiceFailType.Network:
           sErr = "Network Connection Error" + (string.IsNullOrEmpty(e.Details) ? "." : ": " + e.Details);
           break;
-        case remoteRestrictionTracker.FailureEventArgs.FailType.NotBase64:
+        case RestrictionLibrary.Remote.ServiceFailType.NotBase64:
           sErr = "The server did not respond in the right manner. Please check your Internet connection" + (string.IsNullOrEmpty(e.Details) ? "." : ": " + e.Details);
           break;
       }
@@ -2486,7 +1762,7 @@ namespace RestrictionTrackerGTK
         remoteData = null;
       }
       DisplayUsage(false, true);
-      SetStatusText(modDB.LOG_GetLast().ToString("g"), "Service Failure: " + sErr, true);
+      SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Service Failure: " + sErr, true);
     }
     private void remoteData_OKKey(object sender, System.EventArgs e)
     {
@@ -2495,16 +1771,16 @@ namespace RestrictionTrackerGTK
     private void Main_RemoteDataOKKey(object o, EventArgs e)
     {
       NextGrabTick = srlFunctions.TickCount() + (mySettings.Timeout * 1000);
-      SetStatusText(modDB.LOG_GetLast().ToString("g"), "Account Accessed! Getting Usage...", false);
+      SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Account Accessed! Getting Usage...", false);
     }
-    private void remoteData_Success(object sender, remoteRestrictionTracker.SuccessEventArgs e)
+    private void remoteData_Success(object sender, RestrictionLibrary.Remote.ServiceSuccessEventArgs e)
     {
       Gtk.Application.Invoke(sender, (EventArgs)e, Main_RemoteDataSuccess);
     }
     private void Main_RemoteDataSuccess(object o, EventArgs ea)
     {
-      remoteRestrictionTracker.SuccessEventArgs e = (remoteRestrictionTracker.SuccessEventArgs)ea;
-      string LastTime = modDB.LOG_GetLast().ToString("g");
+      RestrictionLibrary.Remote.ServiceSuccessEventArgs e = (RestrictionLibrary.Remote.ServiceSuccessEventArgs)ea;
+      string LastTime = srlFunctions.TimeToString(modDB.LOG_GetLast());
       NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       if (FullCheck)
       {
@@ -2516,20 +1792,19 @@ namespace RestrictionTrackerGTK
       }
       if (e != null)
       {
-        mySettings.AccountType = (localRestrictionTracker.SatHostTypes)e.Provider;
-        modFunctions.ScreenDefaultColors(ref mySettings.Colors, mySettings.AccountType);
+        modFunctions.ScreenDefaultColors(ref mySettings.Colors);
         mySettings.Save();
         int iPercent = 0;
         int iInterval = 1;
         long iStart = srlFunctions.TickCount();
-        for (int I = 0; I <= e.Results.Length - 1; I++)
+        for (int I = 0; I <= e.Results.Count - 1; I++)
         {
-          remoteRestrictionTracker.SuccessEventArgs.Result Row = e.Results[I];
+          RestrictionLibrary.Remote.ServiceResult Row = e.Results[I];
           if (FullCheck)
           {
-            if (Math.Abs(iPercent - Math.Floor(((double)I / (e.Results.Length - 1)) * 100d)) >= iInterval)
+            if (Math.Abs(iPercent - Math.Floor(((double)I / (e.Results.Count - 1)) * 100d)) >= iInterval)
             {
-              iPercent = (int)Math.Floor(((double)I / (e.Results.Length - 1)) * 100d);
+              iPercent = (int)Math.Floor(((double)I / (e.Results.Count - 1)) * 100d);
               Gtk.Main.Iteration();
               SetStatusText(LastTime, "Synchronizing History [" + iPercent + "%]...", false);
               Gtk.Main.Iteration();
@@ -2545,13 +1820,13 @@ namespace RestrictionTrackerGTK
                 }
               }
             }
-            modDB.LOG_Add(Row.Time, Row.Down, Row.DownMax, Row.Up, Row.UpMax, (I == e.Results.Length - 1));
+            modDB.LOG_Add(Row.Time, Row.Used, Row.Limit, (I == e.Results.Count - 1));
           }
           else
           {
             if (modFunctions.DateDiff(DateInterval.Minute, modDB.LOG_GetLast(), Row.Time) > 1)
             {
-              modDB.LOG_Add(Row.Time, Row.Down, Row.DownMax, Row.Up, Row.UpMax, (I == e.Results.Length - 1));
+              modDB.LOG_Add(Row.Time, Row.Used, Row.Limit, (I == e.Results.Count - 1));
             }
           }
         }
@@ -2572,7 +1847,6 @@ namespace RestrictionTrackerGTK
         remoteData.Dispose();
         remoteData = null;
       }
-      SaveToHostList();
     }
     #endregion
     #region "Graphs"
@@ -2593,47 +1867,19 @@ namespace RestrictionTrackerGTK
       {
         return;
       }
-      switch (state)
+      long lUsed = uCache_used;
+      long lLim = uCache_lim;
+      long lFree = lLim - lUsed;
+      if (lUsed != 0 | lLim > 0 | lFree != 0)
       {
-        case "TYPEA":
-          long wDown = typeA_down;
-          long wDLim = typeA_dlim;
-          long wUp = typeA_up;
-          long wULim = typeA_ulim;
-          long wDFree = typeA_dlim - typeA_down;
-          long wUFree = typeA_ulim - typeA_up;
-          if (wDown > 0 | wDFree != 0 | wDLim > 0 | wUp > 0 | wUFree != 0 | wULim > 0)
-          {
-            DoChange(ref lblTypeADldUsedVal, ref wDown, false);
-            DoChange(ref lblTypeADldFreeVal, ref wDFree, (wDFree <= 0));
-            DoChange(ref lblTypeADldLimitVal, ref wDLim, imSlowed);
-            DoChange(ref lblTypeAUldUsedVal, ref wUp, false);
-            DoChange(ref lblTypeAUldFreeVal, ref wUFree, (wUFree <= 0));
-            DoChange(ref lblTypeAUldLimitVal, ref wULim, imSlowed);
-          }
-          ResizePanels();
-          if (wDown == 0 & wDFree == 0 & wDLim == 0 & wUp == 0 & wUFree == 0 & wULim == 0)
-          {
-            this.SizeAllocate(new Gdk.Rectangle(Gdk.Point.Zero, mySettings.MainSize));
-            return;
-          }
-          break;
-        case "TYPEB":
-          long lUsed = typeB_used;
-          long lLim = typeB_lim;
-          long lFree = lLim - lUsed;
-          if (lUsed != 0 | lLim > 0 | lFree != 0)
-          {
-            DoChange(ref lblTypeBUsedVal, ref lUsed, false);
-            DoChange(ref lblTypeBFreeVal, ref lFree, (lFree <= 0));
-            DoChange(ref lblTypeBLimitVal, ref lLim, imSlowed);
-          }
-          ResizePanels();
-          if (lUsed == 0 & lLim == 0 & lFree == 0)
-          {
-            return;
-          }
-          break;
+        DoChange(ref lblUsageUsedVal, ref lUsed, false);
+        DoChange(ref lblUsageFreeVal, ref lFree, (lFree <= 0));
+        DoChange(ref lblUsageLimitVal, ref lLim, imSlowed);
+      }
+      ResizePanels();
+      if (lUsed == 0 & lLim == 0 & lFree == 0)
+      {
+        return;
       }
       if (tmrChanges != null)
       {
@@ -2653,7 +1899,7 @@ namespace RestrictionTrackerGTK
           tmpS = tmpS.Replace(",", "");
         if (modFunctions.IsNumeric(tmpS))
         {
-          tmpVal = long.Parse(tmpS);
+          tmpVal = long.Parse(tmpS, System.Globalization.CultureInfo.InvariantCulture);
         }
         else
         {
@@ -2699,22 +1945,22 @@ namespace RestrictionTrackerGTK
         if (tmpVal > toVal)
         {
           tmpVal -= majorDif;
-          tmpStr = tmpVal.ToString("N0").Trim() + " MB";
+          tmpStr = tmpVal.ToString("N0", System.Globalization.CultureInfo.InvariantCulture) + " MB";
         }
         else if (tmpVal < toVal)
         {
           tmpVal += majorDif;
-          tmpStr = tmpVal.ToString("N0").Trim() + " MB";
+          tmpStr = tmpVal.ToString("N0", System.Globalization.CultureInfo.InvariantCulture) + " MB";
         }
         else
         {
-          tmpStr = toVal.ToString("N0").Trim() + " MB";
+          tmpStr = toVal.ToString("N0", System.Globalization.CultureInfo.InvariantCulture) + " MB";
           toVal = 0;
         }
       }
       else
       {
-        tmpStr = toVal.ToString("N0").Trim() + " MB";
+        tmpStr = toVal.ToString("N0", System.Globalization.CultureInfo.InvariantCulture) + " MB";
         toVal = 0;
       }
       if (red)
@@ -2794,430 +2040,66 @@ namespace RestrictionTrackerGTK
     {
       return modFunctions.FormatPercent(value, mySettings.Accuracy);
     }
-    private void DisplayTypeAResults(long lDown, long lDownLim, long lUp, long lUpLim, string sLastUpdate)
+    private void DisplayUsageResults(long lUsed, long lLimit, string sLastUpdate)
     {
       string sTTT = this.Title;
-      bool overDown, overUp;
-      overDown = (lDown >= lDownLim);
-      overUp = (lUp >= lUpLim);
-      if (overDown | overUp)
+      imSlowed = (lUsed >= lLimit);
+      if (!pnlUsage.Visible)
       {
-        imSlowed = true;
-      }
-      else if ((lDown < (lDownLim * 0.7)) & (lUp < (lUpLim * 0.7)))
-      {
-        imSlowed = false;
-      }
-      if (!pnlTypeA.Visible)
-      {
-        pnlTypeA.Visible = true;
-        pnlDisplays.Add(pnlTypeA);
-      }
-      if (pnlTypeB.Visible)
-      {
-        pnlTypeB.Visible = false;
-        pnlDisplays.Remove(pnlTypeB);
+        pnlUsage.Visible = true;
+        pnlDisplays.Add(pnlUsage);
       }
       if (pnlNothing.Visible)
       {
         pnlNothing.Visible = false;
         pnlDisplays.Remove(pnlNothing);
       }
-      typeA_down = lDown;
-      typeA_dlim = lDownLim;
-      typeA_up = lUp;
-      typeA_ulim = lUpLim;
+      uCache_used = lUsed;
+      uCache_lim = lLimit;
       if (tmrChanges != null)
       {
         tmrChanges.Dispose();
         tmrChanges = null;
       }
-      tmrChanges = new System.Threading.Timer(DisplayChangeInterval, (object)"TYPEA", 75, System.Threading.Timeout.Infinite);
-      if (overDown)
-        lblTypeADldFreeVal.TooltipText = "You are over your Download limit!";
-      else
-        lblTypeADldFreeVal.TooltipText = null;
-      if (overUp)
-        lblTypeAUldFreeVal.TooltipText = "You are over your Upload limit!";
-      else
-        lblTypeAUldFreeVal.TooltipText = null;
+      tmrChanges = new System.Threading.Timer(DisplayChangeInterval, null, 75, System.Threading.Timeout.Infinite);
       if (imSlowed)
       {
-        lblTypeADldLimitVal.TooltipText = "Your connection has been restricted!";
-        lblTypeAUldLimitVal.TooltipText = "Your connection has been restricted!";
+        lblUsageFreeVal.TooltipText = "You are over your usage limit!";
+        lblUsageLimitVal.TooltipText = "Your connection has been restricted!";
       }
       else
       {
-        lblTypeADldLimitVal.TooltipText = null;
-        lblTypeAUldLimitVal.TooltipText = null;
+        lblUsageFreeVal.TooltipText = null;
+        lblUsageLimitVal.TooltipText = null;
       }
-      pctTypeADld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(pctTypeADld.Allocation.Size, lDown, lDownLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-      pctTypeAUld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(pctTypeAUld.Allocation.Size, lUp, lUpLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-      lblTypeADld.Text = "Download (" + AccuratePercent((double)lDown / lDownLim) + ")";
-      lblTypeAUld.Text = "Upload (" + AccuratePercent((double)lUp / lUpLim) + ")";
-      SetFontSize(ref lblTypeADld, GetFontSize());
-      SetFontSize(ref lblTypeAUld, GetFontSize());
-      pctTypeADld.TooltipText = "Graph representing your download usage.";
-      pctTypeAUld.TooltipText = "Graph representing your upload usage.";
-      string dFree, uFree;
-      if (lDownLim > lDown)
-      {
-        dFree = ", " + MBorGB(lDownLim - lDown) + " Free";
-      }
-      else if (lDownLim < lDown)
-      {
-        dFree = ", " + MBorGB(lDown - lDownLim) + " Over";
-      }
-      else
-      {
-        dFree = "";
-      }
-      if (lUpLim > lUp)
-      {
-        uFree = ", " + MBorGB(lUpLim - lUp) + " Free";
-      }
-      else if (lUpLim < lUp)
-      {
-        uFree = ", " + MBorGB(lUp - lUpLim) + " Over";
-      }
-      else
-      {
-        uFree = "";
-      }
+      pctUsage.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctUsage.Allocation.Size, lUsed, lLimit, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
       sTTT = "Satellite Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
-        "Last Updated " + sLastUpdate + "\n" +
-        "Download: " + MBorGB(lDown) + " (" + AccuratePercent((double)lDown / lDownLim) + ")" + dFree + "\n" +
-        "Upload: " + MBorGB(lUp) + " (" + AccuratePercent((double)lUp / lUpLim) + ")" + uFree;
-      if (imFree)
+        "Updated " + sLastUpdate + "\n" +
+        MBorGB(lUsed) + " of " + MBorGB(lLimit) + " (" + AccuratePercent((double)lUsed / lLimit) + ")";
+      if (lLimit > lUsed)
       {
-        sIconBefore = "graph_typea_free";
+        sTTT += "\n" + MBorGB(lLimit - lUsed) + " Free";
       }
-      else
+      else if (lLimit < lUsed)
       {
-        if (trayRes < 8)
-          trayRes = 8;
-        int d = (int)Math.Round(((double)lDown / lDownLim) * trayRes);
-        int u = (int)Math.Round(((double)lUp / lUpLim) * trayRes);
-        if (imSlowed)
-        {
-          if (d == trayRes && u == trayRes)
-          {
-            sIconBefore = "graph_typea_slowxslow";
-          }
-          else if (u == trayRes)
-          {
-            sIconBefore = "graph_typea_" + d + "xslow";
-          }
-          else if (d == trayRes)
-          {
-            sIconBefore = "graph_typea_slowx" + u;
-          }
-          else
-          {
-            sIconBefore = "graph_typea_" + d + "x" + u;
-          }
-        }
-        else
-        {
-          sIconBefore = "graph_typea_" + d + "x" + u;
-        }
-      }
-      bIconStop = true;
-      SetTrayText(sTTT);
-      if (mySettings.Overuse > 0)
-      {
-        if (lastBalloon > 0 && srlFunctions.TickCount() - lastBalloon < mySettings.Overtime * 60 * 1000)
-        {
-          return;
-        }
-        int timeCheck = -mySettings.Overtime;
-        if (timeCheck <= -15)
-        {
-          DataBase.DataRow[] lItems = Array.FindAll(modDB.usageDB.ToArray(), (DataBase.DataRow satRow) => satRow.DATETIME.CompareTo(DateTime.Now.AddMinutes(timeCheck)) >= 0 & satRow.DATETIME.CompareTo(DateTime.Now) <= 0);
-          for (int I = lItems.Length - 2; I >= 0; I += -1)
-          {
-            if (lDown - lItems[I].DOWNLOAD >= mySettings.Overuse)
-            {
-              long ChangeSize = Math.Abs(lDown - lItems[I].DOWNLOAD);
-              ulong ChangeTime = (ulong)Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
-              modFunctions.MakeNotifier(ref taskNotifier, false);
-              if (taskNotifier != null)
-              {
-                taskNotifierEvent(true);
-                taskNotifier.Show("Excessive Download Detected", modFunctions.ProductName + " has logged a download of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
-              }
-              lastBalloon = srlFunctions.TickCount();
-              break;
-            }
-            else if (lUp - lItems[I].UPLOAD >= mySettings.Overuse)
-            {
-              long ChangeSize = Math.Abs(lDown - lItems[I].DOWNLOAD);
-              ulong ChangeTime = (ulong)Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
-              modFunctions.MakeNotifier(ref taskNotifier, false);
-              if (taskNotifier != null)
-              {
-                taskNotifierEvent(true);
-                taskNotifier.Show("Excessive Upload Detected", modFunctions.ProductName + " has logged an upload usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
-              }
-              lastBalloon = srlFunctions.TickCount();
-              break;
-            }
-          }
-        }
-      }
-    }
-    private void DisplayTypeA2Results(long lDown, long lDownLim, long lUp, long lUpLim, string sLastUpdate)
-    {
-      string sTTT = this.Title;
-      if (lDown >= lDownLim)
-      {
-        imSlowed = true;
-      }
-      if ((mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE) | (mySettings.AccountType == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE) | (mySettings.AccountType == localRestrictionTracker.SatHostTypes.Dish_EXEDE))
-      {
-        if (lDown < lDownLim)
-        {
-          imSlowed = false;
-        }
-      }
-      else
-      {
-        if (lDown < lDownLim * 0.7)
-        {
-          imSlowed = false;
-        }
-      }
-      if (!pnlTypeA.Visible)
-      {
-        pnlTypeA.Visible = true;
-        pnlDisplays.Add(pnlTypeA);
-      }
-      if (pnlTypeB.Visible)
-      {
-        pnlTypeB.Visible = false;
-        pnlDisplays.Remove(pnlTypeB);
-      }
-      if (pnlNothing.Visible)
-      {
-        pnlNothing.Visible = false;
-        pnlDisplays.Remove(pnlNothing);
-      }
-
-      typeA_down = lDown;
-      typeA_dlim = lDownLim;
-      typeA_up = lUp;
-      typeA_ulim = lUpLim;
-      if (tmrChanges != null)
-      {
-        tmrChanges.Dispose();
-        tmrChanges = null;
-      }
-      tmrChanges = new System.Threading.Timer(DisplayChangeInterval, (object)"TYPEA", 75, System.Threading.Timeout.Infinite);
-      if (imSlowed)
-      {
-        lblTypeADldFreeVal.TooltipText = "You are over your Anytime limit!";
-        lblTypeADldLimitVal.TooltipText = "Your Anytime connection has been restricted!";
-      }
-      else
-      {
-        lblTypeADldFreeVal.TooltipText = null;
-        lblTypeADldLimitVal.TooltipText = null;
-      }
-      if (lUp >= lUpLim)
-      {
-        lblTypeAUldFreeVal.TooltipText = "You are over your Off-Peak limit!";
-        lblTypeAUldLimitVal.TooltipText = "Your Off-Peak connection has been restricted!";
-      }
-      else
-      {
-        lblTypeAUldFreeVal.TooltipText = null;
-        lblTypeAUldLimitVal.TooltipText = null;
-      }
-      pctTypeADld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(pctTypeADld.Allocation.Size, lDown, lDownLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-      pctTypeAUld.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayProgress(pctTypeAUld.Allocation.Size, lUp, lUpLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-      lblTypeADld.Text = "Anytime (" + AccuratePercent((double)lDown / lDownLim) + ")";
-      lblTypeAUld.Text = "Off-Peak (" + AccuratePercent((double)lUp / lUpLim) + ")";
-      SetFontSize(ref lblTypeADld, GetFontSize());
-      SetFontSize(ref lblTypeAUld, GetFontSize());
-      pctTypeADld.TooltipText = "Graph representing your Anytime usage.";
-      pctTypeAUld.TooltipText = "Graph representing your Off-Peak usage (used between 2 AM and 8 AM).";
-      string atFree, opFree;
-      if (lDownLim > lDown)
-      {
-        atFree = ", " + MBorGB(lDownLim - lDown) + " Free";
-      }
-      else if (lDownLim < lDown)
-      {
-        atFree = ", " + MBorGB(lDown - lDownLim) + " Over";
-      }
-      else
-      {
-        atFree = "";
-      }
-      if (lUpLim > lUp)
-      {
-        opFree = ", " + MBorGB(lUpLim - lUp) + " Free";
-      }
-      else if (lUpLim < lUp)
-      {
-        opFree = ", " + MBorGB(lUp - lUpLim) + " Over";
-      }
-      else
-      {
-        opFree = "";
-      }
-      sTTT = "Satellite Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
-        "Last Updated " + sLastUpdate + "\n" +
-        "Anytime: " + MBorGB(lDown) + " (" + AccuratePercent((double)lDown / lDownLim) + ")" + atFree + "\n" +
-        "Off-Peak: " + MBorGB(lUp) + " (" + AccuratePercent((double)lUp / lUpLim) + ")" + opFree;
-      if (imFree)
-      {
-        sIconBefore = "graph_typea_free";
-      }
-      else
-      {
-        if (trayRes < 8)
-          trayRes = 8;
-        int d = (int)Math.Round(((double)lDown / lDownLim) * trayRes);
-        int u = (int)Math.Round(((double)lUp / lUpLim) * trayRes);
-        if (imSlowed)
-        {
-          if (d == trayRes && u == trayRes)
-          {
-            sIconBefore = "graph_typea_slowxslow";
-          }
-          else if (u == trayRes)
-          {
-            sIconBefore = "graph_typea_" + d + "xslow";
-          }
-          else if (d == trayRes)
-          {
-            sIconBefore = "graph_typea_slowx" + u;
-          }
-          else
-          {
-            sIconBefore = "graph_typea_" + d + "x" + u;
-          }
-        }
-        else
-        {
-          sIconBefore = "graph_typea_" + d + "x" + u;
-        }
-      }
-      bIconStop = true;
-      SetTrayText(sTTT);
-      if (mySettings.Overuse > 0)
-      {
-        if (lastBalloon > 0 && srlFunctions.TickCount() - lastBalloon < mySettings.Overtime * 60 * 1000)
-        {
-          return;
-        }
-        int timeCheck = -mySettings.Overtime;
-        if (timeCheck <= -15)
-        {
-          DataBase.DataRow[] lItems = modDB.LOG_GetRange(DateTime.Now.AddMinutes(timeCheck), DateTime.Now);
-          for (int I = lItems.Length - 2; I >= 0; I += -1)
-          {
-            if (lDown - lItems[I].DOWNLOAD >= mySettings.Overuse)
-            {
-              long ChangeSize = Math.Abs(lDown - lItems[I].DOWNLOAD);
-              ulong ChangeTime = (ulong)Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
-              modFunctions.MakeNotifier(ref taskNotifier, false);
-              if (taskNotifier != null)
-              {
-                taskNotifierEvent(true);
-                taskNotifier.Show("Excessive Usage Detected", modFunctions.ProductName + " has logged a usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
-              }
-              lastBalloon = srlFunctions.TickCount();
-              break;
-            }
-            else if (lUp - lItems[I].UPLOAD >= mySettings.Overuse)
-            {
-              long ChangeSize = Math.Abs(lDown - lItems[I].DOWNLOAD);
-              ulong ChangeTime = (ulong)Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
-              modFunctions.MakeNotifier(ref taskNotifier, false);
-              if (taskNotifier != null)
-              {
-                taskNotifierEvent(true);
-                taskNotifier.Show("Excessive Off-Peak Usage Detected", modFunctions.ProductName + " has logged an Off-Peak usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
-              }
-              lastBalloon = srlFunctions.TickCount();
-              break;
-            }
-          }
-        }
-      }
-    }
-    private void DisplayTypeBResults(long lDown, long lDownLim, long lUp, long lUpLim, string sLastUpdate)
-    {
-      if (lDown != lUp & lDownLim != lUpLim)
-      {
-        DisplayTypeAResults(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
-        return;
-      }
-      string sTTT = this.Title;
-      imSlowed = (lDown >= lDownLim);
-      if (pnlTypeA.Visible)
-      {
-        pnlTypeA.Visible = false;
-        pnlDisplays.Remove(pnlTypeA);
-      }
-      if (!pnlTypeB.Visible)
-      {
-        pnlTypeB.Visible = true;
-        pnlDisplays.Add(pnlTypeB);
-      }
-      if (pnlNothing.Visible)
-      {
-        pnlNothing.Visible = false;
-        pnlDisplays.Remove(pnlNothing);
-      }
-      typeB_used = lDown;
-      typeB_lim = lDownLim;
-      if (tmrChanges != null)
-      {
-        tmrChanges.Dispose();
-        tmrChanges = null;
-      }
-      tmrChanges = new System.Threading.Timer(DisplayChangeInterval, (object)"TYPEB", 75, System.Threading.Timeout.Infinite);
-      if (imSlowed)
-      {
-        lblTypeBFreeVal.TooltipText = "You are over your usage limit!";
-        lblTypeBLimitVal.TooltipText = "Your connection has been restricted!";
-      }
-      else
-      {
-        lblTypeBFreeVal.TooltipText = null;
-        lblTypeBLimitVal.TooltipText = null;
-      }
-      pctTypeB.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctTypeB.Allocation.Size, lDown, lDownLim, mySettings.Accuracy, mySettings.Colors.MainDownA, mySettings.Colors.MainDownB, mySettings.Colors.MainDownC, mySettings.Colors.MainText, mySettings.Colors.MainBackground));
-      sTTT = "Satellite Usage" + (imSlowed ? " (Slowed) " : "") + "\n" +
-        "Last Updated " + sLastUpdate + "\n" +
-        "Using " + MBorGB(lDown) + " of " + MBorGB(lDownLim) + " (" + AccuratePercent((double)lDown / lDownLim) + ")";
-      if (lDownLim > lDown)
-      {
-        sTTT += "\n" + MBorGB(lDownLim - lDown) + " Free";
-      }
-      else if (lDownLim < lDown)
-      {
-        sTTT += "\n" + MBorGB(lDown - lDownLim) + " Over";
+        sTTT += "\n" + MBorGB(lUsed - lLimit) + " Over";
       }
       if (imFree)
       {
-        sIconBefore = "graph_typeb_free";
+        sIconBefore = "graph_free";
       }
       else if (imSlowed)
       {
-        sIconBefore = "graph_typeb_slow";
+        sIconBefore = "graph_slow";
       }
       else
       {
         if (trayRes < 8)
           trayRes = 8;
-        int u = (int)Math.Round(((double)lDown / lDownLim) * trayRes);
+        int u = (int)Math.Round(((double)lUsed / lLimit) * trayRes);
         if (u > trayRes)
           u = trayRes;
-        sIconBefore = "graph_typeb_" + u;
+        sIconBefore = "graph_" + u;
       }
       bIconStop = true;
       SetTrayText(sTTT);
@@ -3230,12 +2112,12 @@ namespace RestrictionTrackerGTK
         int timeCheck = -mySettings.Overtime;
         if (timeCheck <= -15)
         {
-          DataBase.DataRow[] lItems = Array.FindAll(modDB.usageDB.ToArray(), (DataBase.DataRow satRow) => satRow.DATETIME.CompareTo(DateTime.Now.AddMinutes(timeCheck)) >= 0 & satRow.DATETIME.CompareTo(DateTime.Now) <= 0);
+          DataRow[] lItems = Array.FindAll(modDB.usageDB.ToArray(), (DataRow satRow) => satRow.DATETIME.CompareTo(DateTime.Now.AddMinutes(timeCheck)) >= 0 & satRow.DATETIME.CompareTo(DateTime.Now) <= 0);
           for (int I = lItems.Length - 2; I >= 0; I += -1)
           {
-            if (lDown - lItems[I].DOWNLOAD >= mySettings.Overuse)
+            if (lUsed - lItems[I].USED >= mySettings.Overuse)
             {
-              long ChangeSize = Math.Abs(lDown - lItems[I].DOWNLOAD);
+              long ChangeSize = Math.Abs(lUsed - lItems[I].USED);
               ulong ChangeTime = (ulong)Math.Abs(modFunctions.DateDiff(DateInterval.Minute, lItems[I].DATETIME, DateTime.Now) * 60 * 1000);
               modFunctions.MakeNotifier(ref taskNotifier, false);
               if (taskNotifier != null)
@@ -3250,39 +2132,20 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-    private void DisplayResults(long lDown, long lDownLim, long lUp, long lUpLim)
+    private void DisplayResults(long lUsed, long lLimit)
     {
-      if ((lDownLim > 0) | (lUpLim > 0))
+      if (lLimit > 0)
       {
         DateTime lastUpdate = modDB.LOG_GetLast();
-        string sLastUpdate = lastUpdate.ToString("M/d h:mm tt");
-        myPanel = mySettings.AccountType;
-        switch (mySettings.AccountType)
-        {
-          case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
-          case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
-          case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER:
-            DisplayTypeBResults(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
-            break;
-          case localRestrictionTracker.SatHostTypes.Dish_EXEDE:
-            DisplayTypeA2Results(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
-            break;
-          default:
-            DisplayTypeAResults(lDown, lDownLim, lUp, lUpLim, sLastUpdate);
-            break;
-        }
+        string sLastUpdate = lastUpdate.ToString("M/d h:mm tt", System.Globalization.CultureInfo.InvariantCulture);
+        DisplayUsageResults(lUsed, lLimit, sLastUpdate);
       }
       else
       {
-        if (pnlTypeA.Visible)
+        if (pnlUsage.Visible)
         {
-          pnlTypeA.Visible = false;
-          pnlDisplays.Remove(pnlTypeA);
-        }
-        if (pnlTypeB.Visible)
-        {
-          pnlTypeB.Visible = false;
-          pnlDisplays.Remove(pnlTypeB);
+          pnlUsage.Visible = false;
+          pnlDisplays.Remove(pnlUsage);
         }
         if (!pnlNothing.Visible)
         {
@@ -3290,7 +2153,6 @@ namespace RestrictionTrackerGTK
           pnlDisplays.Add(pnlNothing);
         }
 
-        myPanel = localRestrictionTracker.SatHostTypes.Other;
         SetTrayText(this.Title);
         sIconBefore = "norm";
         bIconStop = true;
@@ -3316,7 +2178,7 @@ namespace RestrictionTrackerGTK
           return;
       }
       InitAccount();
-      if ((!string.IsNullOrEmpty(sAccount)) & (!string.IsNullOrEmpty(sProvider)) & (!string.IsNullOrEmpty(sPassword)))
+      if ((!string.IsNullOrEmpty(sAccount)) & (!string.IsNullOrEmpty(sPassword)))
       {
         EnableProgressIcon();
         SetNextLoginTime();
@@ -3346,18 +2208,9 @@ namespace RestrictionTrackerGTK
         {
           updateFull = false;
         }
-        if (!checkedAJAX && mySettings.AccountType == localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER)
-        {
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Checking for AJAX List Update...", false);
-          UpdateAJAXLists AJAXUpdate = new UpdateAJAXLists(sProvider, mySettings.Timeout, mySettings.Proxy, (object)"GetUsage", UpdateAJAXLists_UpdateChecked);
-          AJAXUpdate.GetType();
-        }
-        else
-        {
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Reading Usage...", false);
-          MethodInvoker UsageInvoker = GetUsage;
-          UsageInvoker.BeginInvoke(null, null);
-        }
+        SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Reading Usage...", false);
+        MethodInvoker UsageInvoker = GetUsage;
+        UsageInvoker.BeginInvoke(null, null);
       }
       else
       {
@@ -3428,10 +2281,10 @@ namespace RestrictionTrackerGTK
       long waitTime = srlFunctions.TickCount() + 2000;
       if (myState != LoadStates.Loaded)
       {
-        if (myState != LoadStates.Lookup)
+        if (myState != LoadStates.DB)
         {
-          MethodInvoker lookupInvoker = LookupProvider;
-          lookupInvoker.BeginInvoke(null, null);
+          MethodInvoker initDBInvoker = initDB;
+          initDBInvoker.BeginInvoke(null, null);
         }
         while (myState != LoadStates.Loaded)
         {
@@ -3444,7 +2297,6 @@ namespace RestrictionTrackerGTK
       switch (dRet)
       {
         case ResponseType.Yes:
-          didHostListSave = false;
           mySettings = null;
           ReLoadSettings();
           SetNextLoginTime();
@@ -3453,7 +2305,6 @@ namespace RestrictionTrackerGTK
           ReInitInvoker.BeginInvoke(null, null);
           break;
         case ResponseType.Ok:
-          didHostListSave = false;
           mySettings = null;
           ReLoadSettings();
           MakeCustomIconListing();
@@ -3461,7 +2312,7 @@ namespace RestrictionTrackerGTK
           {
             SetNextLoginTime();
             EnableProgressIcon();
-            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Connection...", false);
+            SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Preparing Connection...", false);
             MethodInvoker UsageInvoker = GetUsage;
             UsageInvoker.BeginInvoke(null, null);
           }
@@ -3473,7 +2324,7 @@ namespace RestrictionTrackerGTK
           if (MainClass.fHistory != null)
           {
             MainClass.fHistory.mySettings = new AppSettings();
-            modFunctions.ScreenDefaultColors(ref MainClass.fHistory.mySettings.Colors, MainClass.fHistory.mySettings.AccountType);
+            modFunctions.ScreenDefaultColors(ref MainClass.fHistory.mySettings.Colors);
             MainClass.fHistory.DoResize(true);
           }
           break;
@@ -3484,7 +2335,7 @@ namespace RestrictionTrackerGTK
           {
             SetNextLoginTime();
             EnableProgressIcon();
-            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Connection...", false);
+            SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Preparing Connection...", false);
             MethodInvoker UsageInvoker = GetUsage;
             UsageInvoker.BeginInvoke(null, null);
           }
@@ -3573,7 +2424,7 @@ namespace RestrictionTrackerGTK
         if (MainClass.fHistory != null)
         {
           MainClass.fHistory.mySettings = new AppSettings();
-          modFunctions.ScreenDefaultColors(ref MainClass.fHistory.mySettings.Colors, MainClass.fHistory.mySettings.AccountType);
+          modFunctions.ScreenDefaultColors(ref MainClass.fHistory.mySettings.Colors);
           MainClass.fHistory.DoResize(true);
         }
         MakeCustomIconListing();
@@ -3857,51 +2708,7 @@ namespace RestrictionTrackerGTK
       sFailTray = "";
     }
     #region "Graphs"
-    private Gdk.Pixbuf CreateTypeATrayIcon(long lDown, long lDownLim, long lUp, long lUpLim, bool bSlow, bool bFree)
-    {
-      if (trayRes < 8)
-        trayRes = 8;
-      Bitmap imgTray = new Bitmap(trayRes, trayRes);
-      Graphics g = Graphics.FromImage(imgTray);
-
-      g.Clear(Color.Transparent);
-      if (bSlow)
-      {
-        string restricted = "Resources.tray_16.restricted.ico";
-        if (trayRes > 16)
-        {
-          restricted = "Resources.tray_32.restricted.ico";
-        }
-        g.DrawIcon(new System.Drawing.Icon(GetType(), restricted), new Rectangle(0, 0, trayRes, trayRes));
-        if (lDown < lDownLim)
-          modFunctions.CreateTrayIcon_Left(ref g, lDown, lDownLim, mySettings.Colors.TrayDownA, mySettings.Colors.TrayDownB, mySettings.Colors.TrayDownC, trayRes);
-        if (lUp < lUpLim)
-          modFunctions.CreateTrayIcon_Right(ref g, lUp, lUpLim, mySettings.Colors.TrayUpA, mySettings.Colors.TrayUpB, mySettings.Colors.TrayUpC, trayRes);
-      }
-      else if (bFree)
-      {
-        string free = "Resources.tray_16.free.ico";
-        if (trayRes > 16)
-        {
-          free = "Resources.tray_32.free.ico";
-        }
-        g.DrawIcon(new System.Drawing.Icon(GetType(), free), new Rectangle(0, 0, trayRes, trayRes));
-      }
-      else
-      {
-        string norm = "Resources.tray_16.norm.ico";
-        if (trayRes > 16)
-        {
-          norm = "Resources.tray_32.norm.ico";
-        }
-        g.DrawIcon(new System.Drawing.Icon(GetType(), norm), new Rectangle(0, 0, trayRes, trayRes));
-        modFunctions.CreateTrayIcon_Left(ref g, lDown, lDownLim, mySettings.Colors.TrayDownA, mySettings.Colors.TrayDownB, mySettings.Colors.TrayDownC, trayRes);
-        modFunctions.CreateTrayIcon_Right(ref g, lUp, lUpLim, mySettings.Colors.TrayUpA, mySettings.Colors.TrayUpB, mySettings.Colors.TrayUpC, trayRes);
-      }
-      g.Dispose();
-      return modFunctions.ImageToPixbuf(imgTray);
-    }
-    private Gdk.Pixbuf CreateTypeBTrayIcon(long lUsed, long lLim, bool bSlow, bool bFree)
+    private Gdk.Pixbuf CreateUsageTrayIcon(long lUsed, long lLim, bool bSlow, bool bFree)
     {
       if (trayRes < 8)
         trayRes = 8;
@@ -3963,7 +2770,7 @@ namespace RestrictionTrackerGTK
           return;
         }
       }
-      SetStatusText(modDB.LOG_GetLast().ToString("g"), "Checking for Software Update...", false);
+      SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Checking for Software Update...", false);
       NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
       if (updateChecker != null)
       {
@@ -4138,7 +2945,7 @@ namespace RestrictionTrackerGTK
               }
               break;
             default:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), string.Empty, false);
+              SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), string.Empty, false);
               if (updateChecker != null)
               {
                 updateCheckerEvent(false);
@@ -4187,7 +2994,7 @@ namespace RestrictionTrackerGTK
               }
               break;
             default:
-              SetStatusText(modDB.LOG_GetLast().ToString("g"), string.Empty, false);
+              SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), string.Empty, false);
               if (updateChecker != null)
               {
                 updateCheckerEvent(false);
@@ -4207,16 +3014,16 @@ namespace RestrictionTrackerGTK
     private void Main_UpdateCheckerDownloadingUpdate(object sender, EventArgs e)
     {
       tmrSpeed = GLib.Timeout.Add(1000, tmrSpeed_Tick);
-      SetStatusText(modDB.LOG_GetLast().ToString("g"), "Downloading Software Update...", false);
+      SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Downloading Software Update...", false);
     }
-    private void updateChecker_DownloadResult(object sender, clsUpdate.DownloadEventArgs e)
+    private void updateChecker_DownloadResult(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
     {
       EventArgs ea = (EventArgs)e;
       Gtk.Application.Invoke(sender, ea, Main_UpdateCheckerDownloadResult);
     }
     private void Main_UpdateCheckerDownloadResult(object sender, EventArgs ea)
     {
-      clsUpdate.DownloadEventArgs e = (clsUpdate.DownloadEventArgs)ea;
+      System.ComponentModel.AsyncCompletedEventArgs e = (System.ComponentModel.AsyncCompletedEventArgs)ea;
       if (tmrSpeed != 0)
       {
         GLib.Source.Remove(tmrSpeed);
@@ -4224,7 +3031,7 @@ namespace RestrictionTrackerGTK
       }
       if (e.Error != null)
       {
-        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Software Update Error: " + e.Error.Message, true);
+        SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Software Update Error: " + e.Error.Message, true);
         NextGrabTick = long.MinValue;
       }
       else if (e.Cancelled)
@@ -4235,7 +3042,7 @@ namespace RestrictionTrackerGTK
           updateChecker.Dispose();
           updateChecker = null;
         }
-        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Software Update Cancelled!", true);
+        SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Software Update Cancelled!", true);
         NextGrabTick = long.MinValue;
       }
       else
@@ -4246,7 +3053,7 @@ namespace RestrictionTrackerGTK
           updateChecker.Dispose();
           updateChecker = null;
         }
-        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Software Update Download Complete", false);
+        SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Software Update Download Complete", false);
         if (File.Exists(sUpdatePath))
         {
           if (CurrentOS.IsLinux)
@@ -4263,7 +3070,7 @@ namespace RestrictionTrackerGTK
         }
         else
         {
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Software Update Failure!", true);
+          SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Software Update Failure!", true);
           NextGrabTick = long.MinValue;
         }
       }
@@ -4303,71 +3110,6 @@ namespace RestrictionTrackerGTK
       if (upTotalSize == 0)
         return true;
       return upCurSize < upTotalSize;
-    }
-    private void UpdateAJAXLists_ListUpdated(object asyncState, string shortList, string fullList)
-    {
-      if (string.IsNullOrEmpty(shortList) || string.IsNullOrEmpty(fullList))
-      {
-        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Unable to Update AJAX Lists.", true);
-        DisplayUsage(false, true);
-        return;
-      }
-      if (mySettings.AJAXOrderShort == shortList && mySettings.AJAXOrderFull == fullList)
-      {
-        SetStatusText(modDB.LOG_GetLast().ToString("g"), "AJAX failed to yield data table. A fix should be available soon.", true);
-        DisplayUsage(false, true);
-        return;
-      }
-      mySettings.AJAXOrderShort = shortList;
-      mySettings.AJAXOrderFull = fullList;
-      mySettings.Save();
-      SetStatusText(modDB.LOG_GetLast().ToString("g"), "Updated AJAX Lists. Reconnecting...", false);
-      if (localData != null)
-      {
-        localDataEvent(false);
-        localData.Dispose();
-        localData = null;
-      }
-      localData = new localRestrictionTracker(modFunctions.AppData);
-    }
-    private void UpdateAJAXLists_UpdateChecked(object asyncState, string shortList, string fullList)
-    {
-      checkedAJAX = true;
-      if (string.IsNullOrEmpty(shortList) || string.IsNullOrEmpty(fullList))
-      {
-        if (!string.IsNullOrEmpty(shortList))
-        {
-          if (shortList.StartsWith("ERR_"))
-            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Error Updating AJAX Lists. Preparing Connection anyway...\nError: " + shortList.Substring(4), false);
-          else if (shortList.StartsWith("URL_"))
-            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Unable to Update AJAX Lists. Preparing Connection anyway...\nRedirected to " + shortList.Substring(4) + ".", false);
-          else if (shortList == "DATA_EMPTY")
-            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Unable to Update AJAX Lists. Preparing Connection anyway...\nNo Data from Server.", false);
-          else if (shortList.StartsWith("DATA_REDIR_"))
-            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Unable to Update AJAX Lists. Preparing Connection anyway...\nRedirection to new URL.\n" + shortList.Substring(11), false);
-          else if (shortList.StartsWith("DATA_SEP_"))
-            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Unable to Update AJAX Lists. Preparing Connection anyway...\nMalformed Data from Server.\n" + shortList.Substring(9), false);
-          else
-            SetStatusText(modDB.LOG_GetLast().ToString("g"), "Unable to Update AJAX Lists. Preparing Connection anyway...\nData: " + shortList, false);
-        }
-        else
-          SetStatusText(modDB.LOG_GetLast().ToString("g"), "Unable to Update AJAX Lists. Preparing Connection anyway...", false);
-        DisplayUsage(false, true);
-        return;
-      }
-      else if (mySettings.AJAXOrderShort == shortList && mySettings.AJAXOrderFull == fullList)
-      {
-        SetStatusText(modDB.LOG_GetLast().ToString("g"), "Preparing Connection...", false);
-      }
-      else
-      {
-        mySettings.AJAXOrderShort = shortList;
-        mySettings.AJAXOrderFull = fullList;
-        mySettings.Save();
-        SetStatusText(modDB.LOG_GetLast().ToString("g"), "AJAX Lists Updated. Preparing Connection...", false);
-      }
-      MethodInvoker UsageInvoker = GetUsage;
-      UsageInvoker.BeginInvoke(null, null);
     }
     #endregion
     #region "Useful Functions"
@@ -4611,7 +3353,7 @@ namespace RestrictionTrackerGTK
     {
       try
       {
-        if (mySettings.NetTestURL.Contains("://"))
+        if (mySettings.NetTestURL.Contains(Uri.SchemeDelimiter))
         {
           System.Diagnostics.Process.Start(mySettings.NetTestURL);
         }

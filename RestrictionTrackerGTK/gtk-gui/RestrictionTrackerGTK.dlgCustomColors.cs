@@ -16,61 +16,33 @@ namespace RestrictionTrackerGTK
 
 		private global::Gtk.Image pctHistory;
 
-		private global::Gtk.Frame grpHistoryDown;
+		private global::Gtk.Frame grpHistoryUsed;
 
-		private global::Gtk.Alignment algnHistoryDown;
+		private global::Gtk.Alignment algnHistoryUsed;
 
-		private global::Gtk.Table pnlHistoryDown;
+		private global::Gtk.Table pnlHistoryUsed;
 
-		private global::Gtk.CheckButton chkHistoryDownB;
+		private global::Gtk.CheckButton chkHistoryUsedB;
 
-		private global::Gtk.ColorButton cmdHistoryDownA;
+		private global::Gtk.ColorButton cmdHistoryUsedA;
 
-		private global::Gtk.ColorButton cmdHistoryDownB;
+		private global::Gtk.ColorButton cmdHistoryUsedB;
 
-		private global::Gtk.ColorButton cmdHistoryDownC;
+		private global::Gtk.ColorButton cmdHistoryUsedC;
 
-		private global::Gtk.ColorButton cmdHistoryDownLine;
+		private global::Gtk.ColorButton cmdHistoryUsedLine;
 
-		private global::Gtk.ColorButton cmdHistoryDownMax;
+		private global::Gtk.ColorButton cmdHistoryUsedMax;
 
-		private global::Gtk.Label lblHistoryDownA;
+		private global::Gtk.Label lblHistoryUsedA;
 
-		private global::Gtk.Label lblHistoryDownC;
+		private global::Gtk.Label lblHistoryUsedC;
 
-		private global::Gtk.Label lblHistoryDownLine;
+		private global::Gtk.Label lblHistoryUsedLine;
 
-		private global::Gtk.Label lblHistoryDownMax;
+		private global::Gtk.Label lblHistoryUsedMax;
 
-		private global::Gtk.Label lblHistoryDownTitle;
-
-		private global::Gtk.Frame grpHistoryUp;
-
-		private global::Gtk.Alignment algnHistoryUp;
-
-		private global::Gtk.Table pnlHistoryUp;
-
-		private global::Gtk.CheckButton chkHistoryUpB;
-
-		private global::Gtk.ColorButton cmdHistoryUpA;
-
-		private global::Gtk.ColorButton cmdHistoryUpB;
-
-		private global::Gtk.ColorButton cmdHistoryUpC;
-
-		private global::Gtk.ColorButton cmdHistoryUpLine;
-
-		private global::Gtk.ColorButton cmdHistoryUpMax;
-
-		private global::Gtk.Label lblHistoryUpA;
-
-		private global::Gtk.Label lblHistoryUpC;
-
-		private global::Gtk.Label lblHistoryUpLine;
-
-		private global::Gtk.Label lblHistoryUpMax;
-
-		private global::Gtk.Label lblHistoryUpTitle;
+		private global::Gtk.Label lblHistoryUsedTitle;
 
 		private global::Gtk.Table pnlHistoryStyle;
 
@@ -102,45 +74,25 @@ namespace RestrictionTrackerGTK
 
 		private global::Gtk.Image pctMain;
 
-		private global::Gtk.Frame grpMainDown;
+		private global::Gtk.Frame grpMainUsed;
 
-		private global::Gtk.Alignment algnMainDown;
+		private global::Gtk.Alignment algnMainUsed;
 
-		private global::Gtk.Table pnlMainDown;
+		private global::Gtk.Table pnlMainUsed;
 
-		private global::Gtk.CheckButton chkMainDownB;
+		private global::Gtk.CheckButton chkMainUsedB;
 
-		private global::Gtk.ColorButton cmdMainDownA;
+		private global::Gtk.ColorButton cmdMainUsedA;
 
-		private global::Gtk.ColorButton cmdMainDownB;
+		private global::Gtk.ColorButton cmdMainUsedB;
 
-		private global::Gtk.ColorButton cmdMainDownC;
+		private global::Gtk.ColorButton cmdMainUsedC;
 
-		private global::Gtk.Label lblMainDownA;
+		private global::Gtk.Label lblMainUsedA;
 
-		private global::Gtk.Label lblMainDownC;
+		private global::Gtk.Label lblMainUsedC;
 
-		private global::Gtk.Label lblMainDownTitle;
-
-		private global::Gtk.Frame grpMainUp;
-
-		private global::Gtk.Alignment algnMainUp;
-
-		private global::Gtk.Table pnlMainUp;
-
-		private global::Gtk.CheckButton chkMainUpB;
-
-		private global::Gtk.ColorButton cmdMainUpA;
-
-		private global::Gtk.ColorButton cmdMainUpB;
-
-		private global::Gtk.ColorButton cmdMainUpC;
-
-		private global::Gtk.Label lblMainUpA;
-
-		private global::Gtk.Label lblMainUpC;
-
-		private global::Gtk.Label lblMainUpTitle;
+		private global::Gtk.Label lblMainUsedTitle;
 
 		private global::Gtk.Table pnlMainStyle;
 
@@ -164,45 +116,25 @@ namespace RestrictionTrackerGTK
 
 		private global::Gtk.Image pctTray;
 
-		private global::Gtk.Frame grpTrayDown;
+		private global::Gtk.Frame grpTrayUsed;
 
-		private global::Gtk.Alignment algnTrayDown;
+		private global::Gtk.Alignment algnTrayUsed;
 
-		private global::Gtk.Table pnlTrayDown;
+		private global::Gtk.Table pnlTrayUsed;
 
-		private global::Gtk.CheckButton chkTrayDownB;
+		private global::Gtk.CheckButton chkTrayUsedB;
 
-		private global::Gtk.ColorButton cmdTrayDownA;
+		private global::Gtk.ColorButton cmdTrayUsedA;
 
-		private global::Gtk.ColorButton cmdTrayDownB;
+		private global::Gtk.ColorButton cmdTrayUsedB;
 
-		private global::Gtk.ColorButton cmdTrayDownC;
+		private global::Gtk.ColorButton cmdTrayUsedC;
 
-		private global::Gtk.Label lblTrayDownA;
+		private global::Gtk.Label lblTrayUsedA;
 
-		private global::Gtk.Label lblTrayDownC;
+		private global::Gtk.Label lblTrayUsedC;
 
-		private global::Gtk.Label lblTrayDownTitle;
-
-		private global::Gtk.Frame grpTrayUp;
-
-		private global::Gtk.Alignment algnTrayUp;
-
-		private global::Gtk.Table pnlTrayUp;
-
-		private global::Gtk.CheckButton chkTrayUpB;
-
-		private global::Gtk.ColorButton cmdTrayUpA;
-
-		private global::Gtk.ColorButton cmdTrayUpB;
-
-		private global::Gtk.ColorButton cmdTrayUpC;
-
-		private global::Gtk.Label lblTrayUpA;
-
-		private global::Gtk.Label lblTrayUpC;
-
-		private global::Gtk.Label lblTrayUpTitle;
+		private global::Gtk.Label lblTrayUsedTitle;
 
 		private global::Gtk.Label lblTrayTitle;
 
@@ -228,7 +160,7 @@ namespace RestrictionTrackerGTK
 			w1.Name = "pnlColors";
 			w1.BorderWidth = ((uint)(2));
 			// Container child pnlColors.Gtk.Box+BoxChild
-			this.pnlCustomColors = new global::Gtk.Table(((uint)(3)), ((uint)(1)), false);
+			this.pnlCustomColors = new global::Gtk.Table(((uint)(1)), ((uint)(3)), false);
 			this.pnlCustomColors.Name = "pnlCustomColors";
 			this.pnlCustomColors.RowSpacing = ((uint)(3));
 			this.pnlCustomColors.ColumnSpacing = ((uint)(3));
@@ -243,7 +175,7 @@ namespace RestrictionTrackerGTK
 			this.algnHistory.RightPadding = ((uint)(3));
 			this.algnHistory.BottomPadding = ((uint)(3));
 			// Container child algnHistory.Gtk.Container+ContainerChild
-			this.pnlHistory = new global::Gtk.Table(((uint)(2)), ((uint)(3)), false);
+			this.pnlHistory = new global::Gtk.Table(((uint)(3)), ((uint)(1)), false);
 			this.pnlHistory.Name = "pnlHistory";
 			this.pnlHistory.RowSpacing = ((uint)(3));
 			this.pnlHistory.ColumnSpacing = ((uint)(3));
@@ -252,325 +184,171 @@ namespace RestrictionTrackerGTK
 			this.evnHistory.Name = "evnHistory";
 			// Container child evnHistory.Gtk.Container+ContainerChild
 			this.pctHistory = new global::Gtk.Image();
-			this.pctHistory.WidthRequest = 75;
-			this.pctHistory.HeightRequest = 75;
+			this.pctHistory.WidthRequest = 100;
+			this.pctHistory.HeightRequest = 55;
 			this.pctHistory.Name = "pctHistory";
 			this.evnHistory.Add(this.pctHistory);
 			this.pnlHistory.Add(this.evnHistory);
 			global::Gtk.Table.TableChild w3 = ((global::Gtk.Table.TableChild)(this.pnlHistory[this.evnHistory]));
-			w3.BottomAttach = ((uint)(2));
-			w3.LeftAttach = ((uint)(2));
-			w3.RightAttach = ((uint)(3));
 			w3.XOptions = ((global::Gtk.AttachOptions)(4));
 			w3.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlHistory.Gtk.Table+TableChild
-			this.grpHistoryDown = new global::Gtk.Frame();
-			this.grpHistoryDown.Name = "grpHistoryDown";
-			this.grpHistoryDown.ShadowType = ((global::Gtk.ShadowType)(2));
-			// Container child grpHistoryDown.Gtk.Container+ContainerChild
-			this.algnHistoryDown = new global::Gtk.Alignment(0.5F, 0F, 1F, 1F);
-			this.algnHistoryDown.Name = "algnHistoryDown";
-			this.algnHistoryDown.LeftPadding = ((uint)(3));
-			this.algnHistoryDown.TopPadding = ((uint)(3));
-			this.algnHistoryDown.RightPadding = ((uint)(3));
-			this.algnHistoryDown.BottomPadding = ((uint)(3));
-			// Container child algnHistoryDown.Gtk.Container+ContainerChild
-			this.pnlHistoryDown = new global::Gtk.Table(((uint)(5)), ((uint)(3)), false);
-			this.pnlHistoryDown.Name = "pnlHistoryDown";
-			this.pnlHistoryDown.RowSpacing = ((uint)(3));
-			this.pnlHistoryDown.ColumnSpacing = ((uint)(3));
-			// Container child pnlHistoryDown.Gtk.Table+TableChild
-			this.chkHistoryDownB = new global::Gtk.CheckButton();
-			this.chkHistoryDownB.CanFocus = true;
-			this.chkHistoryDownB.Name = "chkHistoryDownB";
-			this.chkHistoryDownB.Label = global::Mono.Unix.Catalog.GetString("50% :");
-			this.chkHistoryDownB.Active = true;
-			this.chkHistoryDownB.DrawIndicator = true;
-			this.chkHistoryDownB.UseUnderline = true;
-			this.chkHistoryDownB.Xalign = 1F;
-			this.pnlHistoryDown.Add(this.chkHistoryDownB);
-			global::Gtk.Table.TableChild w4 = ((global::Gtk.Table.TableChild)(this.pnlHistoryDown[this.chkHistoryDownB]));
-			w4.TopAttach = ((uint)(2));
-			w4.BottomAttach = ((uint)(3));
+			this.grpHistoryUsed = new global::Gtk.Frame();
+			this.grpHistoryUsed.Name = "grpHistoryUsed";
+			this.grpHistoryUsed.ShadowType = ((global::Gtk.ShadowType)(2));
+			// Container child grpHistoryUsed.Gtk.Container+ContainerChild
+			this.algnHistoryUsed = new global::Gtk.Alignment(0.5F, 0F, 1F, 1F);
+			this.algnHistoryUsed.Name = "algnHistoryUsed";
+			this.algnHistoryUsed.LeftPadding = ((uint)(3));
+			this.algnHistoryUsed.TopPadding = ((uint)(3));
+			this.algnHistoryUsed.RightPadding = ((uint)(3));
+			this.algnHistoryUsed.BottomPadding = ((uint)(3));
+			// Container child algnHistoryUsed.Gtk.Container+ContainerChild
+			this.pnlHistoryUsed = new global::Gtk.Table(((uint)(3)), ((uint)(7)), false);
+			this.pnlHistoryUsed.Name = "pnlHistoryUsed";
+			this.pnlHistoryUsed.RowSpacing = ((uint)(3));
+			this.pnlHistoryUsed.ColumnSpacing = ((uint)(3));
+			// Container child pnlHistoryUsed.Gtk.Table+TableChild
+			this.chkHistoryUsedB = new global::Gtk.CheckButton();
+			this.chkHistoryUsedB.CanFocus = true;
+			this.chkHistoryUsedB.Name = "chkHistoryUsedB";
+			this.chkHistoryUsedB.Label = global::Mono.Unix.Catalog.GetString("50% :");
+			this.chkHistoryUsedB.Active = true;
+			this.chkHistoryUsedB.DrawIndicator = true;
+			this.chkHistoryUsedB.UseUnderline = true;
+			this.chkHistoryUsedB.Xalign = 1F;
+			this.pnlHistoryUsed.Add(this.chkHistoryUsedB);
+			global::Gtk.Table.TableChild w4 = ((global::Gtk.Table.TableChild)(this.pnlHistoryUsed[this.chkHistoryUsedB]));
+			w4.TopAttach = ((uint)(1));
+			w4.BottomAttach = ((uint)(2));
+			w4.LeftAttach = ((uint)(4));
+			w4.RightAttach = ((uint)(5));
 			w4.XOptions = ((global::Gtk.AttachOptions)(4));
 			w4.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlHistoryDown.Gtk.Table+TableChild
-			this.cmdHistoryDownA = new global::Gtk.ColorButton();
-			this.cmdHistoryDownA.CanFocus = true;
-			this.cmdHistoryDownA.Events = ((global::Gdk.EventMask)(784));
-			this.cmdHistoryDownA.Name = "cmdHistoryDownA";
-			this.cmdHistoryDownA.Title = global::Mono.Unix.Catalog.GetString("History Graph Download 0% Color");
-			this.pnlHistoryDown.Add(this.cmdHistoryDownA);
-			global::Gtk.Table.TableChild w5 = ((global::Gtk.Table.TableChild)(this.pnlHistoryDown[this.cmdHistoryDownA]));
-			w5.TopAttach = ((uint)(1));
-			w5.BottomAttach = ((uint)(2));
-			w5.LeftAttach = ((uint)(2));
-			w5.RightAttach = ((uint)(3));
+			// Container child pnlHistoryUsed.Gtk.Table+TableChild
+			this.cmdHistoryUsedA = new global::Gtk.ColorButton();
+			this.cmdHistoryUsedA.CanFocus = true;
+			this.cmdHistoryUsedA.Events = ((global::Gdk.EventMask)(784));
+			this.cmdHistoryUsedA.Name = "cmdHistoryUsedA";
+			this.cmdHistoryUsedA.Title = global::Mono.Unix.Catalog.GetString("History Graph Download 0% Color");
+			this.pnlHistoryUsed.Add(this.cmdHistoryUsedA);
+			global::Gtk.Table.TableChild w5 = ((global::Gtk.Table.TableChild)(this.pnlHistoryUsed[this.cmdHistoryUsedA]));
+			w5.LeftAttach = ((uint)(6));
+			w5.RightAttach = ((uint)(7));
 			w5.XOptions = ((global::Gtk.AttachOptions)(4));
 			w5.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlHistoryDown.Gtk.Table+TableChild
-			this.cmdHistoryDownB = new global::Gtk.ColorButton();
-			this.cmdHistoryDownB.CanFocus = true;
-			this.cmdHistoryDownB.Events = ((global::Gdk.EventMask)(784));
-			this.cmdHistoryDownB.Name = "cmdHistoryDownB";
-			this.cmdHistoryDownB.Title = global::Mono.Unix.Catalog.GetString("History Graph Download 50% Color");
-			this.pnlHistoryDown.Add(this.cmdHistoryDownB);
-			global::Gtk.Table.TableChild w6 = ((global::Gtk.Table.TableChild)(this.pnlHistoryDown[this.cmdHistoryDownB]));
-			w6.TopAttach = ((uint)(2));
-			w6.BottomAttach = ((uint)(3));
-			w6.LeftAttach = ((uint)(2));
-			w6.RightAttach = ((uint)(3));
+			// Container child pnlHistoryUsed.Gtk.Table+TableChild
+			this.cmdHistoryUsedB = new global::Gtk.ColorButton();
+			this.cmdHistoryUsedB.CanFocus = true;
+			this.cmdHistoryUsedB.Events = ((global::Gdk.EventMask)(784));
+			this.cmdHistoryUsedB.Name = "cmdHistoryUsedB";
+			this.cmdHistoryUsedB.Title = global::Mono.Unix.Catalog.GetString("History Graph Download 50% Color");
+			this.pnlHistoryUsed.Add(this.cmdHistoryUsedB);
+			global::Gtk.Table.TableChild w6 = ((global::Gtk.Table.TableChild)(this.pnlHistoryUsed[this.cmdHistoryUsedB]));
+			w6.TopAttach = ((uint)(1));
+			w6.BottomAttach = ((uint)(2));
+			w6.LeftAttach = ((uint)(6));
+			w6.RightAttach = ((uint)(7));
 			w6.XOptions = ((global::Gtk.AttachOptions)(4));
 			w6.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlHistoryDown.Gtk.Table+TableChild
-			this.cmdHistoryDownC = new global::Gtk.ColorButton();
-			this.cmdHistoryDownC.CanFocus = true;
-			this.cmdHistoryDownC.Events = ((global::Gdk.EventMask)(784));
-			this.cmdHistoryDownC.Name = "cmdHistoryDownC";
-			this.cmdHistoryDownC.Title = global::Mono.Unix.Catalog.GetString("History Graph Download 100% Color");
-			this.pnlHistoryDown.Add(this.cmdHistoryDownC);
-			global::Gtk.Table.TableChild w7 = ((global::Gtk.Table.TableChild)(this.pnlHistoryDown[this.cmdHistoryDownC]));
-			w7.TopAttach = ((uint)(3));
-			w7.BottomAttach = ((uint)(4));
-			w7.LeftAttach = ((uint)(2));
-			w7.RightAttach = ((uint)(3));
+			// Container child pnlHistoryUsed.Gtk.Table+TableChild
+			this.cmdHistoryUsedC = new global::Gtk.ColorButton();
+			this.cmdHistoryUsedC.CanFocus = true;
+			this.cmdHistoryUsedC.Events = ((global::Gdk.EventMask)(784));
+			this.cmdHistoryUsedC.Name = "cmdHistoryUsedC";
+			this.cmdHistoryUsedC.Title = global::Mono.Unix.Catalog.GetString("History Graph Download 100% Color");
+			this.pnlHistoryUsed.Add(this.cmdHistoryUsedC);
+			global::Gtk.Table.TableChild w7 = ((global::Gtk.Table.TableChild)(this.pnlHistoryUsed[this.cmdHistoryUsedC]));
+			w7.TopAttach = ((uint)(2));
+			w7.BottomAttach = ((uint)(3));
+			w7.LeftAttach = ((uint)(6));
+			w7.RightAttach = ((uint)(7));
 			w7.XOptions = ((global::Gtk.AttachOptions)(4));
 			w7.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlHistoryDown.Gtk.Table+TableChild
-			this.cmdHistoryDownLine = new global::Gtk.ColorButton();
-			this.cmdHistoryDownLine.CanFocus = true;
-			this.cmdHistoryDownLine.Events = ((global::Gdk.EventMask)(784));
-			this.cmdHistoryDownLine.Name = "cmdHistoryDownLine";
-			this.cmdHistoryDownLine.Title = global::Mono.Unix.Catalog.GetString("History Download Data Line");
-			this.pnlHistoryDown.Add(this.cmdHistoryDownLine);
-			global::Gtk.Table.TableChild w8 = ((global::Gtk.Table.TableChild)(this.pnlHistoryDown[this.cmdHistoryDownLine]));
+			// Container child pnlHistoryUsed.Gtk.Table+TableChild
+			this.cmdHistoryUsedLine = new global::Gtk.ColorButton();
+			this.cmdHistoryUsedLine.CanFocus = true;
+			this.cmdHistoryUsedLine.Events = ((global::Gdk.EventMask)(784));
+			this.cmdHistoryUsedLine.Name = "cmdHistoryUsedLine";
+			this.cmdHistoryUsedLine.Title = global::Mono.Unix.Catalog.GetString("History Download Data Line");
+			this.pnlHistoryUsed.Add(this.cmdHistoryUsedLine);
+			global::Gtk.Table.TableChild w8 = ((global::Gtk.Table.TableChild)(this.pnlHistoryUsed[this.cmdHistoryUsedLine]));
 			w8.LeftAttach = ((uint)(2));
 			w8.RightAttach = ((uint)(3));
 			w8.XOptions = ((global::Gtk.AttachOptions)(4));
 			w8.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlHistoryDown.Gtk.Table+TableChild
-			this.cmdHistoryDownMax = new global::Gtk.ColorButton();
-			this.cmdHistoryDownMax.CanFocus = true;
-			this.cmdHistoryDownMax.Events = ((global::Gdk.EventMask)(784));
-			this.cmdHistoryDownMax.Name = "cmdHistoryDownMax";
-			this.cmdHistoryDownMax.Title = global::Mono.Unix.Catalog.GetString("History Graph Download Maximum Limit Color");
-			this.pnlHistoryDown.Add(this.cmdHistoryDownMax);
-			global::Gtk.Table.TableChild w9 = ((global::Gtk.Table.TableChild)(this.pnlHistoryDown[this.cmdHistoryDownMax]));
-			w9.TopAttach = ((uint)(4));
-			w9.BottomAttach = ((uint)(5));
+			// Container child pnlHistoryUsed.Gtk.Table+TableChild
+			this.cmdHistoryUsedMax = new global::Gtk.ColorButton();
+			this.cmdHistoryUsedMax.CanFocus = true;
+			this.cmdHistoryUsedMax.Events = ((global::Gdk.EventMask)(784));
+			this.cmdHistoryUsedMax.Name = "cmdHistoryUsedMax";
+			this.cmdHistoryUsedMax.Title = global::Mono.Unix.Catalog.GetString("History Graph Download Maximum Limit Color");
+			this.pnlHistoryUsed.Add(this.cmdHistoryUsedMax);
+			global::Gtk.Table.TableChild w9 = ((global::Gtk.Table.TableChild)(this.pnlHistoryUsed[this.cmdHistoryUsedMax]));
+			w9.TopAttach = ((uint)(2));
+			w9.BottomAttach = ((uint)(3));
 			w9.LeftAttach = ((uint)(2));
 			w9.RightAttach = ((uint)(3));
 			w9.XOptions = ((global::Gtk.AttachOptions)(4));
 			w9.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlHistoryDown.Gtk.Table+TableChild
-			this.lblHistoryDownA = new global::Gtk.Label();
-			this.lblHistoryDownA.Name = "lblHistoryDownA";
-			this.lblHistoryDownA.Xalign = 1F;
-			this.lblHistoryDownA.LabelProp = global::Mono.Unix.Catalog.GetString("0% :");
-			this.pnlHistoryDown.Add(this.lblHistoryDownA);
-			global::Gtk.Table.TableChild w10 = ((global::Gtk.Table.TableChild)(this.pnlHistoryDown[this.lblHistoryDownA]));
-			w10.TopAttach = ((uint)(1));
-			w10.BottomAttach = ((uint)(2));
+			// Container child pnlHistoryUsed.Gtk.Table+TableChild
+			this.lblHistoryUsedA = new global::Gtk.Label();
+			this.lblHistoryUsedA.Name = "lblHistoryUsedA";
+			this.lblHistoryUsedA.Xalign = 1F;
+			this.lblHistoryUsedA.LabelProp = global::Mono.Unix.Catalog.GetString("0% :");
+			this.pnlHistoryUsed.Add(this.lblHistoryUsedA);
+			global::Gtk.Table.TableChild w10 = ((global::Gtk.Table.TableChild)(this.pnlHistoryUsed[this.lblHistoryUsedA]));
+			w10.LeftAttach = ((uint)(4));
+			w10.RightAttach = ((uint)(5));
 			w10.XOptions = ((global::Gtk.AttachOptions)(4));
 			w10.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlHistoryDown.Gtk.Table+TableChild
-			this.lblHistoryDownC = new global::Gtk.Label();
-			this.lblHistoryDownC.Name = "lblHistoryDownC";
-			this.lblHistoryDownC.Xalign = 1F;
-			this.lblHistoryDownC.LabelProp = global::Mono.Unix.Catalog.GetString("100% :");
-			this.pnlHistoryDown.Add(this.lblHistoryDownC);
-			global::Gtk.Table.TableChild w11 = ((global::Gtk.Table.TableChild)(this.pnlHistoryDown[this.lblHistoryDownC]));
-			w11.TopAttach = ((uint)(3));
-			w11.BottomAttach = ((uint)(4));
+			// Container child pnlHistoryUsed.Gtk.Table+TableChild
+			this.lblHistoryUsedC = new global::Gtk.Label();
+			this.lblHistoryUsedC.Name = "lblHistoryUsedC";
+			this.lblHistoryUsedC.Xalign = 1F;
+			this.lblHistoryUsedC.LabelProp = global::Mono.Unix.Catalog.GetString("100% :");
+			this.pnlHistoryUsed.Add(this.lblHistoryUsedC);
+			global::Gtk.Table.TableChild w11 = ((global::Gtk.Table.TableChild)(this.pnlHistoryUsed[this.lblHistoryUsedC]));
+			w11.TopAttach = ((uint)(2));
+			w11.BottomAttach = ((uint)(3));
+			w11.LeftAttach = ((uint)(4));
+			w11.RightAttach = ((uint)(5));
 			w11.XOptions = ((global::Gtk.AttachOptions)(4));
 			w11.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlHistoryDown.Gtk.Table+TableChild
-			this.lblHistoryDownLine = new global::Gtk.Label();
-			this.lblHistoryDownLine.Name = "lblHistoryDownLine";
-			this.lblHistoryDownLine.Xalign = 1F;
-			this.lblHistoryDownLine.LabelProp = global::Mono.Unix.Catalog.GetString("Line :");
-			this.pnlHistoryDown.Add(this.lblHistoryDownLine);
-			global::Gtk.Table.TableChild w12 = ((global::Gtk.Table.TableChild)(this.pnlHistoryDown[this.lblHistoryDownLine]));
+			// Container child pnlHistoryUsed.Gtk.Table+TableChild
+			this.lblHistoryUsedLine = new global::Gtk.Label();
+			this.lblHistoryUsedLine.Name = "lblHistoryUsedLine";
+			this.lblHistoryUsedLine.Xalign = 1F;
+			this.lblHistoryUsedLine.LabelProp = global::Mono.Unix.Catalog.GetString("Line :");
+			this.pnlHistoryUsed.Add(this.lblHistoryUsedLine);
+			global::Gtk.Table.TableChild w12 = ((global::Gtk.Table.TableChild)(this.pnlHistoryUsed[this.lblHistoryUsedLine]));
 			w12.XOptions = ((global::Gtk.AttachOptions)(4));
 			w12.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlHistoryDown.Gtk.Table+TableChild
-			this.lblHistoryDownMax = new global::Gtk.Label();
-			this.lblHistoryDownMax.Name = "lblHistoryDownMax";
-			this.lblHistoryDownMax.Xalign = 1F;
-			this.lblHistoryDownMax.LabelProp = global::Mono.Unix.Catalog.GetString("Max :");
-			this.pnlHistoryDown.Add(this.lblHistoryDownMax);
-			global::Gtk.Table.TableChild w13 = ((global::Gtk.Table.TableChild)(this.pnlHistoryDown[this.lblHistoryDownMax]));
-			w13.TopAttach = ((uint)(4));
-			w13.BottomAttach = ((uint)(5));
+			// Container child pnlHistoryUsed.Gtk.Table+TableChild
+			this.lblHistoryUsedMax = new global::Gtk.Label();
+			this.lblHistoryUsedMax.Name = "lblHistoryUsedMax";
+			this.lblHistoryUsedMax.Xalign = 1F;
+			this.lblHistoryUsedMax.LabelProp = global::Mono.Unix.Catalog.GetString("Max :");
+			this.pnlHistoryUsed.Add(this.lblHistoryUsedMax);
+			global::Gtk.Table.TableChild w13 = ((global::Gtk.Table.TableChild)(this.pnlHistoryUsed[this.lblHistoryUsedMax]));
+			w13.TopAttach = ((uint)(2));
+			w13.BottomAttach = ((uint)(3));
 			w13.XOptions = ((global::Gtk.AttachOptions)(4));
 			w13.YOptions = ((global::Gtk.AttachOptions)(4));
-			this.algnHistoryDown.Add(this.pnlHistoryDown);
-			this.grpHistoryDown.Add(this.algnHistoryDown);
-			this.lblHistoryDownTitle = new global::Gtk.Label();
-			this.lblHistoryDownTitle.Name = "lblHistoryDownTitle";
-			this.lblHistoryDownTitle.Xalign = 0F;
-			this.lblHistoryDownTitle.LabelProp = global::Mono.Unix.Catalog.GetString("Download Colors");
-			this.lblHistoryDownTitle.UseMarkup = true;
-			this.grpHistoryDown.LabelWidget = this.lblHistoryDownTitle;
-			this.pnlHistory.Add(this.grpHistoryDown);
-			global::Gtk.Table.TableChild w16 = ((global::Gtk.Table.TableChild)(this.pnlHistory[this.grpHistoryDown]));
+			this.algnHistoryUsed.Add(this.pnlHistoryUsed);
+			this.grpHistoryUsed.Add(this.algnHistoryUsed);
+			this.lblHistoryUsedTitle = new global::Gtk.Label();
+			this.lblHistoryUsedTitle.Name = "lblHistoryUsedTitle";
+			this.lblHistoryUsedTitle.Xalign = 0F;
+			this.lblHistoryUsedTitle.LabelProp = global::Mono.Unix.Catalog.GetString("History Colors and Gradient");
+			this.lblHistoryUsedTitle.UseMarkup = true;
+			this.grpHistoryUsed.LabelWidget = this.lblHistoryUsedTitle;
+			this.pnlHistory.Add(this.grpHistoryUsed);
+			global::Gtk.Table.TableChild w16 = ((global::Gtk.Table.TableChild)(this.pnlHistory[this.grpHistoryUsed]));
+			w16.TopAttach = ((uint)(1));
+			w16.BottomAttach = ((uint)(2));
 			w16.XOptions = ((global::Gtk.AttachOptions)(1));
 			w16.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlHistory.Gtk.Table+TableChild
-			this.grpHistoryUp = new global::Gtk.Frame();
-			this.grpHistoryUp.Name = "grpHistoryUp";
-			this.grpHistoryUp.ShadowType = ((global::Gtk.ShadowType)(2));
-			// Container child grpHistoryUp.Gtk.Container+ContainerChild
-			this.algnHistoryUp = new global::Gtk.Alignment(0F, 0F, 1F, 1F);
-			this.algnHistoryUp.Name = "algnHistoryUp";
-			this.algnHistoryUp.LeftPadding = ((uint)(3));
-			this.algnHistoryUp.TopPadding = ((uint)(3));
-			this.algnHistoryUp.RightPadding = ((uint)(3));
-			this.algnHistoryUp.BottomPadding = ((uint)(3));
-			// Container child algnHistoryUp.Gtk.Container+ContainerChild
-			this.pnlHistoryUp = new global::Gtk.Table(((uint)(5)), ((uint)(3)), false);
-			this.pnlHistoryUp.Name = "pnlHistoryUp";
-			this.pnlHistoryUp.RowSpacing = ((uint)(3));
-			this.pnlHistoryUp.ColumnSpacing = ((uint)(3));
-			// Container child pnlHistoryUp.Gtk.Table+TableChild
-			this.chkHistoryUpB = new global::Gtk.CheckButton();
-			this.chkHistoryUpB.CanFocus = true;
-			this.chkHistoryUpB.Name = "chkHistoryUpB";
-			this.chkHistoryUpB.Label = global::Mono.Unix.Catalog.GetString("50% :");
-			this.chkHistoryUpB.Active = true;
-			this.chkHistoryUpB.DrawIndicator = true;
-			this.chkHistoryUpB.UseUnderline = true;
-			this.chkHistoryUpB.Xalign = 1F;
-			this.pnlHistoryUp.Add(this.chkHistoryUpB);
-			global::Gtk.Table.TableChild w17 = ((global::Gtk.Table.TableChild)(this.pnlHistoryUp[this.chkHistoryUpB]));
-			w17.TopAttach = ((uint)(2));
-			w17.BottomAttach = ((uint)(3));
-			w17.XOptions = ((global::Gtk.AttachOptions)(4));
-			w17.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlHistoryUp.Gtk.Table+TableChild
-			this.cmdHistoryUpA = new global::Gtk.ColorButton();
-			this.cmdHistoryUpA.CanFocus = true;
-			this.cmdHistoryUpA.Events = ((global::Gdk.EventMask)(784));
-			this.cmdHistoryUpA.Name = "cmdHistoryUpA";
-			this.cmdHistoryUpA.Title = global::Mono.Unix.Catalog.GetString("History Graph Upload 0% Color");
-			this.pnlHistoryUp.Add(this.cmdHistoryUpA);
-			global::Gtk.Table.TableChild w18 = ((global::Gtk.Table.TableChild)(this.pnlHistoryUp[this.cmdHistoryUpA]));
-			w18.TopAttach = ((uint)(1));
-			w18.BottomAttach = ((uint)(2));
-			w18.LeftAttach = ((uint)(2));
-			w18.RightAttach = ((uint)(3));
-			w18.XOptions = ((global::Gtk.AttachOptions)(4));
-			w18.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlHistoryUp.Gtk.Table+TableChild
-			this.cmdHistoryUpB = new global::Gtk.ColorButton();
-			this.cmdHistoryUpB.CanFocus = true;
-			this.cmdHistoryUpB.Events = ((global::Gdk.EventMask)(784));
-			this.cmdHistoryUpB.Name = "cmdHistoryUpB";
-			this.cmdHistoryUpB.Title = global::Mono.Unix.Catalog.GetString("History Graph Upload 50% Color");
-			this.pnlHistoryUp.Add(this.cmdHistoryUpB);
-			global::Gtk.Table.TableChild w19 = ((global::Gtk.Table.TableChild)(this.pnlHistoryUp[this.cmdHistoryUpB]));
-			w19.TopAttach = ((uint)(2));
-			w19.BottomAttach = ((uint)(3));
-			w19.LeftAttach = ((uint)(2));
-			w19.RightAttach = ((uint)(3));
-			w19.XOptions = ((global::Gtk.AttachOptions)(4));
-			w19.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlHistoryUp.Gtk.Table+TableChild
-			this.cmdHistoryUpC = new global::Gtk.ColorButton();
-			this.cmdHistoryUpC.CanFocus = true;
-			this.cmdHistoryUpC.Events = ((global::Gdk.EventMask)(784));
-			this.cmdHistoryUpC.Name = "cmdHistoryUpC";
-			this.cmdHistoryUpC.Title = global::Mono.Unix.Catalog.GetString("History Graph Upload 100% Color");
-			this.pnlHistoryUp.Add(this.cmdHistoryUpC);
-			global::Gtk.Table.TableChild w20 = ((global::Gtk.Table.TableChild)(this.pnlHistoryUp[this.cmdHistoryUpC]));
-			w20.TopAttach = ((uint)(3));
-			w20.BottomAttach = ((uint)(4));
-			w20.LeftAttach = ((uint)(2));
-			w20.RightAttach = ((uint)(3));
-			w20.XOptions = ((global::Gtk.AttachOptions)(4));
-			w20.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlHistoryUp.Gtk.Table+TableChild
-			this.cmdHistoryUpLine = new global::Gtk.ColorButton();
-			this.cmdHistoryUpLine.CanFocus = true;
-			this.cmdHistoryUpLine.Events = ((global::Gdk.EventMask)(784));
-			this.cmdHistoryUpLine.Name = "cmdHistoryUpLine";
-			this.cmdHistoryUpLine.Title = global::Mono.Unix.Catalog.GetString("History Upload Data Line");
-			this.pnlHistoryUp.Add(this.cmdHistoryUpLine);
-			global::Gtk.Table.TableChild w21 = ((global::Gtk.Table.TableChild)(this.pnlHistoryUp[this.cmdHistoryUpLine]));
-			w21.LeftAttach = ((uint)(2));
-			w21.RightAttach = ((uint)(3));
-			w21.XOptions = ((global::Gtk.AttachOptions)(4));
-			w21.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlHistoryUp.Gtk.Table+TableChild
-			this.cmdHistoryUpMax = new global::Gtk.ColorButton();
-			this.cmdHistoryUpMax.CanFocus = true;
-			this.cmdHistoryUpMax.Events = ((global::Gdk.EventMask)(784));
-			this.cmdHistoryUpMax.Name = "cmdHistoryUpMax";
-			this.cmdHistoryUpMax.Title = global::Mono.Unix.Catalog.GetString("History Graph Upload Maximum Limit Color");
-			this.pnlHistoryUp.Add(this.cmdHistoryUpMax);
-			global::Gtk.Table.TableChild w22 = ((global::Gtk.Table.TableChild)(this.pnlHistoryUp[this.cmdHistoryUpMax]));
-			w22.TopAttach = ((uint)(4));
-			w22.BottomAttach = ((uint)(5));
-			w22.LeftAttach = ((uint)(2));
-			w22.RightAttach = ((uint)(3));
-			w22.XOptions = ((global::Gtk.AttachOptions)(4));
-			w22.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlHistoryUp.Gtk.Table+TableChild
-			this.lblHistoryUpA = new global::Gtk.Label();
-			this.lblHistoryUpA.Name = "lblHistoryUpA";
-			this.lblHistoryUpA.Xalign = 1F;
-			this.lblHistoryUpA.LabelProp = global::Mono.Unix.Catalog.GetString("0% :");
-			this.pnlHistoryUp.Add(this.lblHistoryUpA);
-			global::Gtk.Table.TableChild w23 = ((global::Gtk.Table.TableChild)(this.pnlHistoryUp[this.lblHistoryUpA]));
-			w23.TopAttach = ((uint)(1));
-			w23.BottomAttach = ((uint)(2));
-			w23.XOptions = ((global::Gtk.AttachOptions)(4));
-			w23.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlHistoryUp.Gtk.Table+TableChild
-			this.lblHistoryUpC = new global::Gtk.Label();
-			this.lblHistoryUpC.Name = "lblHistoryUpC";
-			this.lblHistoryUpC.Xalign = 1F;
-			this.lblHistoryUpC.LabelProp = global::Mono.Unix.Catalog.GetString("100% :");
-			this.pnlHistoryUp.Add(this.lblHistoryUpC);
-			global::Gtk.Table.TableChild w24 = ((global::Gtk.Table.TableChild)(this.pnlHistoryUp[this.lblHistoryUpC]));
-			w24.TopAttach = ((uint)(3));
-			w24.BottomAttach = ((uint)(4));
-			w24.XOptions = ((global::Gtk.AttachOptions)(4));
-			w24.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlHistoryUp.Gtk.Table+TableChild
-			this.lblHistoryUpLine = new global::Gtk.Label();
-			this.lblHistoryUpLine.Name = "lblHistoryUpLine";
-			this.lblHistoryUpLine.Xalign = 1F;
-			this.lblHistoryUpLine.LabelProp = global::Mono.Unix.Catalog.GetString("Line :");
-			this.pnlHistoryUp.Add(this.lblHistoryUpLine);
-			global::Gtk.Table.TableChild w25 = ((global::Gtk.Table.TableChild)(this.pnlHistoryUp[this.lblHistoryUpLine]));
-			w25.XOptions = ((global::Gtk.AttachOptions)(4));
-			w25.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlHistoryUp.Gtk.Table+TableChild
-			this.lblHistoryUpMax = new global::Gtk.Label();
-			this.lblHistoryUpMax.Name = "lblHistoryUpMax";
-			this.lblHistoryUpMax.Xalign = 1F;
-			this.lblHistoryUpMax.LabelProp = global::Mono.Unix.Catalog.GetString("Max :");
-			this.pnlHistoryUp.Add(this.lblHistoryUpMax);
-			global::Gtk.Table.TableChild w26 = ((global::Gtk.Table.TableChild)(this.pnlHistoryUp[this.lblHistoryUpMax]));
-			w26.TopAttach = ((uint)(4));
-			w26.BottomAttach = ((uint)(5));
-			w26.XOptions = ((global::Gtk.AttachOptions)(4));
-			w26.YOptions = ((global::Gtk.AttachOptions)(4));
-			this.algnHistoryUp.Add(this.pnlHistoryUp);
-			this.grpHistoryUp.Add(this.algnHistoryUp);
-			this.lblHistoryUpTitle = new global::Gtk.Label();
-			this.lblHistoryUpTitle.Name = "lblHistoryUpTitle";
-			this.lblHistoryUpTitle.Xalign = 0F;
-			this.lblHistoryUpTitle.LabelProp = global::Mono.Unix.Catalog.GetString("Upload Colors");
-			this.lblHistoryUpTitle.UseMarkup = true;
-			this.grpHistoryUp.LabelWidget = this.lblHistoryUpTitle;
-			this.pnlHistory.Add(this.grpHistoryUp);
-			global::Gtk.Table.TableChild w29 = ((global::Gtk.Table.TableChild)(this.pnlHistory[this.grpHistoryUp]));
-			w29.LeftAttach = ((uint)(1));
-			w29.RightAttach = ((uint)(2));
-			w29.XOptions = ((global::Gtk.AttachOptions)(1));
-			w29.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlHistory.Gtk.Table+TableChild
 			this.pnlHistoryStyle = new global::Gtk.Table(((uint)(2)), ((uint)(5)), false);
 			this.pnlHistoryStyle.Name = "pnlHistoryStyle";
@@ -582,11 +360,13 @@ namespace RestrictionTrackerGTK
 			this.cmdHistoryBG.Events = ((global::Gdk.EventMask)(784));
 			this.cmdHistoryBG.Name = "cmdHistoryBG";
 			this.pnlHistoryStyle.Add(this.cmdHistoryBG);
-			global::Gtk.Table.TableChild w30 = ((global::Gtk.Table.TableChild)(this.pnlHistoryStyle[this.cmdHistoryBG]));
-			w30.LeftAttach = ((uint)(4));
-			w30.RightAttach = ((uint)(5));
-			w30.XOptions = ((global::Gtk.AttachOptions)(4));
-			w30.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w17 = ((global::Gtk.Table.TableChild)(this.pnlHistoryStyle[this.cmdHistoryBG]));
+			w17.TopAttach = ((uint)(1));
+			w17.BottomAttach = ((uint)(2));
+			w17.LeftAttach = ((uint)(1));
+			w17.RightAttach = ((uint)(2));
+			w17.XOptions = ((global::Gtk.AttachOptions)(4));
+			w17.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlHistoryStyle.Gtk.Table+TableChild
 			this.cmdHistoryDarkGrid = new global::Gtk.ColorButton();
 			this.cmdHistoryDarkGrid.CanFocus = true;
@@ -594,13 +374,13 @@ namespace RestrictionTrackerGTK
 			this.cmdHistoryDarkGrid.Name = "cmdHistoryDarkGrid";
 			this.cmdHistoryDarkGrid.Title = global::Mono.Unix.Catalog.GetString("History Grid Lines Dark Color");
 			this.pnlHistoryStyle.Add(this.cmdHistoryDarkGrid);
-			global::Gtk.Table.TableChild w31 = ((global::Gtk.Table.TableChild)(this.pnlHistoryStyle[this.cmdHistoryDarkGrid]));
-			w31.TopAttach = ((uint)(1));
-			w31.BottomAttach = ((uint)(2));
-			w31.LeftAttach = ((uint)(4));
-			w31.RightAttach = ((uint)(5));
-			w31.XOptions = ((global::Gtk.AttachOptions)(4));
-			w31.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w18 = ((global::Gtk.Table.TableChild)(this.pnlHistoryStyle[this.cmdHistoryDarkGrid]));
+			w18.TopAttach = ((uint)(1));
+			w18.BottomAttach = ((uint)(2));
+			w18.LeftAttach = ((uint)(4));
+			w18.RightAttach = ((uint)(5));
+			w18.XOptions = ((global::Gtk.AttachOptions)(4));
+			w18.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlHistoryStyle.Gtk.Table+TableChild
 			this.cmdHistoryLightGrid = new global::Gtk.ColorButton();
 			this.cmdHistoryLightGrid.CanFocus = true;
@@ -608,13 +388,11 @@ namespace RestrictionTrackerGTK
 			this.cmdHistoryLightGrid.Name = "cmdHistoryLightGrid";
 			this.cmdHistoryLightGrid.Title = global::Mono.Unix.Catalog.GetString("History Grid Lines Light Color");
 			this.pnlHistoryStyle.Add(this.cmdHistoryLightGrid);
-			global::Gtk.Table.TableChild w32 = ((global::Gtk.Table.TableChild)(this.pnlHistoryStyle[this.cmdHistoryLightGrid]));
-			w32.TopAttach = ((uint)(1));
-			w32.BottomAttach = ((uint)(2));
-			w32.LeftAttach = ((uint)(1));
-			w32.RightAttach = ((uint)(2));
-			w32.XOptions = ((global::Gtk.AttachOptions)(4));
-			w32.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w19 = ((global::Gtk.Table.TableChild)(this.pnlHistoryStyle[this.cmdHistoryLightGrid]));
+			w19.LeftAttach = ((uint)(4));
+			w19.RightAttach = ((uint)(5));
+			w19.XOptions = ((global::Gtk.AttachOptions)(4));
+			w19.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlHistoryStyle.Gtk.Table+TableChild
 			this.cmdHistoryText = new global::Gtk.ColorButton();
 			this.cmdHistoryText.CanFocus = true;
@@ -622,74 +400,73 @@ namespace RestrictionTrackerGTK
 			this.cmdHistoryText.Name = "cmdHistoryText";
 			this.cmdHistoryText.Title = global::Mono.Unix.Catalog.GetString("History Graph Upload Text Color");
 			this.pnlHistoryStyle.Add(this.cmdHistoryText);
-			global::Gtk.Table.TableChild w33 = ((global::Gtk.Table.TableChild)(this.pnlHistoryStyle[this.cmdHistoryText]));
-			w33.LeftAttach = ((uint)(1));
-			w33.RightAttach = ((uint)(2));
-			w33.XOptions = ((global::Gtk.AttachOptions)(4));
-			w33.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w20 = ((global::Gtk.Table.TableChild)(this.pnlHistoryStyle[this.cmdHistoryText]));
+			w20.LeftAttach = ((uint)(1));
+			w20.RightAttach = ((uint)(2));
+			w20.XOptions = ((global::Gtk.AttachOptions)(4));
+			w20.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlHistoryStyle.Gtk.Table+TableChild
 			this.lblHistoryBG = new global::Gtk.Label();
 			this.lblHistoryBG.Name = "lblHistoryBG";
 			this.lblHistoryBG.Xalign = 1F;
 			this.lblHistoryBG.LabelProp = global::Mono.Unix.Catalog.GetString("Background :");
 			this.pnlHistoryStyle.Add(this.lblHistoryBG);
-			global::Gtk.Table.TableChild w34 = ((global::Gtk.Table.TableChild)(this.pnlHistoryStyle[this.lblHistoryBG]));
-			w34.LeftAttach = ((uint)(3));
-			w34.RightAttach = ((uint)(4));
-			w34.XOptions = ((global::Gtk.AttachOptions)(4));
-			w34.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w21 = ((global::Gtk.Table.TableChild)(this.pnlHistoryStyle[this.lblHistoryBG]));
+			w21.TopAttach = ((uint)(1));
+			w21.BottomAttach = ((uint)(2));
+			w21.XOptions = ((global::Gtk.AttachOptions)(4));
+			w21.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlHistoryStyle.Gtk.Table+TableChild
 			this.lblHistoryGridD = new global::Gtk.Label();
 			this.lblHistoryGridD.Name = "lblHistoryGridD";
 			this.lblHistoryGridD.Xalign = 1F;
 			this.lblHistoryGridD.LabelProp = global::Mono.Unix.Catalog.GetString("Dark Grid :");
 			this.pnlHistoryStyle.Add(this.lblHistoryGridD);
-			global::Gtk.Table.TableChild w35 = ((global::Gtk.Table.TableChild)(this.pnlHistoryStyle[this.lblHistoryGridD]));
-			w35.TopAttach = ((uint)(1));
-			w35.BottomAttach = ((uint)(2));
-			w35.LeftAttach = ((uint)(3));
-			w35.RightAttach = ((uint)(4));
-			w35.XOptions = ((global::Gtk.AttachOptions)(4));
-			w35.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w22 = ((global::Gtk.Table.TableChild)(this.pnlHistoryStyle[this.lblHistoryGridD]));
+			w22.TopAttach = ((uint)(1));
+			w22.BottomAttach = ((uint)(2));
+			w22.LeftAttach = ((uint)(3));
+			w22.RightAttach = ((uint)(4));
+			w22.XOptions = ((global::Gtk.AttachOptions)(4));
+			w22.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlHistoryStyle.Gtk.Table+TableChild
 			this.lblHistoryGridL = new global::Gtk.Label();
 			this.lblHistoryGridL.Name = "lblHistoryGridL";
 			this.lblHistoryGridL.Xalign = 1F;
 			this.lblHistoryGridL.LabelProp = global::Mono.Unix.Catalog.GetString("Light Grid :");
 			this.pnlHistoryStyle.Add(this.lblHistoryGridL);
-			global::Gtk.Table.TableChild w36 = ((global::Gtk.Table.TableChild)(this.pnlHistoryStyle[this.lblHistoryGridL]));
-			w36.TopAttach = ((uint)(1));
-			w36.BottomAttach = ((uint)(2));
-			w36.XOptions = ((global::Gtk.AttachOptions)(4));
-			w36.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w23 = ((global::Gtk.Table.TableChild)(this.pnlHistoryStyle[this.lblHistoryGridL]));
+			w23.LeftAttach = ((uint)(3));
+			w23.RightAttach = ((uint)(4));
+			w23.XOptions = ((global::Gtk.AttachOptions)(4));
+			w23.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlHistoryStyle.Gtk.Table+TableChild
 			this.lblHistoryText = new global::Gtk.Label();
 			this.lblHistoryText.Name = "lblHistoryText";
 			this.lblHistoryText.Xalign = 1F;
 			this.lblHistoryText.LabelProp = global::Mono.Unix.Catalog.GetString("Text Color :");
 			this.pnlHistoryStyle.Add(this.lblHistoryText);
-			global::Gtk.Table.TableChild w37 = ((global::Gtk.Table.TableChild)(this.pnlHistoryStyle[this.lblHistoryText]));
-			w37.XOptions = ((global::Gtk.AttachOptions)(4));
-			w37.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w24 = ((global::Gtk.Table.TableChild)(this.pnlHistoryStyle[this.lblHistoryText]));
+			w24.XOptions = ((global::Gtk.AttachOptions)(4));
+			w24.YOptions = ((global::Gtk.AttachOptions)(4));
 			this.pnlHistory.Add(this.pnlHistoryStyle);
-			global::Gtk.Table.TableChild w38 = ((global::Gtk.Table.TableChild)(this.pnlHistory[this.pnlHistoryStyle]));
-			w38.TopAttach = ((uint)(1));
-			w38.BottomAttach = ((uint)(2));
-			w38.RightAttach = ((uint)(2));
-			w38.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w25 = ((global::Gtk.Table.TableChild)(this.pnlHistory[this.pnlHistoryStyle]));
+			w25.TopAttach = ((uint)(2));
+			w25.BottomAttach = ((uint)(3));
+			w25.YOptions = ((global::Gtk.AttachOptions)(4));
 			this.algnHistory.Add(this.pnlHistory);
 			this.grpHistory.Add(this.algnHistory);
 			this.lblHistoryTitle = new global::Gtk.Label();
 			this.lblHistoryTitle.Name = "lblHistoryTitle";
 			this.lblHistoryTitle.Xalign = 0F;
-			this.lblHistoryTitle.LabelProp = global::Mono.Unix.Catalog.GetString("History Window Graphs");
+			this.lblHistoryTitle.LabelProp = global::Mono.Unix.Catalog.GetString("History Window Graph");
 			this.lblHistoryTitle.UseMarkup = true;
 			this.grpHistory.LabelWidget = this.lblHistoryTitle;
 			this.pnlCustomColors.Add(this.grpHistory);
-			global::Gtk.Table.TableChild w41 = ((global::Gtk.Table.TableChild)(this.pnlCustomColors[this.grpHistory]));
-			w41.TopAttach = ((uint)(2));
-			w41.BottomAttach = ((uint)(3));
-			w41.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w28 = ((global::Gtk.Table.TableChild)(this.pnlCustomColors[this.grpHistory]));
+			w28.LeftAttach = ((uint)(2));
+			w28.RightAttach = ((uint)(3));
+			w28.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlCustomColors.Gtk.Table+TableChild
 			this.grpMain = new global::Gtk.Frame();
 			this.grpMain.Name = "grpMain";
@@ -701,7 +478,7 @@ namespace RestrictionTrackerGTK
 			this.algnMain.RightPadding = ((uint)(3));
 			this.algnMain.BottomPadding = ((uint)(3));
 			// Container child algnMain.Gtk.Container+ContainerChild
-			this.pnlMain = new global::Gtk.Table(((uint)(2)), ((uint)(3)), false);
+			this.pnlMain = new global::Gtk.Table(((uint)(3)), ((uint)(1)), false);
 			this.pnlMain.Name = "pnlMain";
 			this.pnlMain.RowSpacing = ((uint)(3));
 			this.pnlMain.ColumnSpacing = ((uint)(3));
@@ -710,227 +487,121 @@ namespace RestrictionTrackerGTK
 			this.evnMain.Name = "evnMain";
 			// Container child evnMain.Gtk.Container+ContainerChild
 			this.pctMain = new global::Gtk.Image();
-			this.pctMain.WidthRequest = 75;
-			this.pctMain.HeightRequest = 75;
+			this.pctMain.WidthRequest = 100;
+			this.pctMain.HeightRequest = 55;
 			this.pctMain.Name = "pctMain";
 			this.evnMain.Add(this.pctMain);
 			this.pnlMain.Add(this.evnMain);
-			global::Gtk.Table.TableChild w43 = ((global::Gtk.Table.TableChild)(this.pnlMain[this.evnMain]));
-			w43.BottomAttach = ((uint)(2));
-			w43.LeftAttach = ((uint)(2));
-			w43.RightAttach = ((uint)(3));
-			w43.XOptions = ((global::Gtk.AttachOptions)(4));
-			w43.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w30 = ((global::Gtk.Table.TableChild)(this.pnlMain[this.evnMain]));
+			w30.XOptions = ((global::Gtk.AttachOptions)(4));
+			w30.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlMain.Gtk.Table+TableChild
-			this.grpMainDown = new global::Gtk.Frame();
-			this.grpMainDown.Name = "grpMainDown";
-			this.grpMainDown.ShadowType = ((global::Gtk.ShadowType)(2));
-			// Container child grpMainDown.Gtk.Container+ContainerChild
-			this.algnMainDown = new global::Gtk.Alignment(0F, 0F, 1F, 1F);
-			this.algnMainDown.Name = "algnMainDown";
-			this.algnMainDown.LeftPadding = ((uint)(3));
-			this.algnMainDown.TopPadding = ((uint)(3));
-			this.algnMainDown.RightPadding = ((uint)(3));
-			this.algnMainDown.BottomPadding = ((uint)(3));
-			// Container child algnMainDown.Gtk.Container+ContainerChild
-			this.pnlMainDown = new global::Gtk.Table(((uint)(3)), ((uint)(3)), false);
-			this.pnlMainDown.Name = "pnlMainDown";
-			this.pnlMainDown.RowSpacing = ((uint)(3));
-			this.pnlMainDown.ColumnSpacing = ((uint)(3));
-			// Container child pnlMainDown.Gtk.Table+TableChild
-			this.chkMainDownB = new global::Gtk.CheckButton();
-			this.chkMainDownB.CanFocus = true;
-			this.chkMainDownB.Name = "chkMainDownB";
-			this.chkMainDownB.Label = global::Mono.Unix.Catalog.GetString("50% :");
-			this.chkMainDownB.Active = true;
-			this.chkMainDownB.DrawIndicator = true;
-			this.chkMainDownB.UseUnderline = true;
-			this.chkMainDownB.Xalign = 1F;
-			this.pnlMainDown.Add(this.chkMainDownB);
-			global::Gtk.Table.TableChild w44 = ((global::Gtk.Table.TableChild)(this.pnlMainDown[this.chkMainDownB]));
-			w44.TopAttach = ((uint)(1));
-			w44.BottomAttach = ((uint)(2));
-			w44.XOptions = ((global::Gtk.AttachOptions)(4));
-			w44.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlMainDown.Gtk.Table+TableChild
-			this.cmdMainDownA = new global::Gtk.ColorButton();
-			this.cmdMainDownA.CanFocus = true;
-			this.cmdMainDownA.Events = ((global::Gdk.EventMask)(784));
-			this.cmdMainDownA.Name = "cmdMainDownA";
-			this.cmdMainDownA.Title = global::Mono.Unix.Catalog.GetString("Main Graph Download 0% Color");
-			this.pnlMainDown.Add(this.cmdMainDownA);
-			global::Gtk.Table.TableChild w45 = ((global::Gtk.Table.TableChild)(this.pnlMainDown[this.cmdMainDownA]));
-			w45.LeftAttach = ((uint)(2));
-			w45.RightAttach = ((uint)(3));
-			w45.XOptions = ((global::Gtk.AttachOptions)(4));
-			w45.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlMainDown.Gtk.Table+TableChild
-			this.cmdMainDownB = new global::Gtk.ColorButton();
-			this.cmdMainDownB.CanFocus = true;
-			this.cmdMainDownB.Events = ((global::Gdk.EventMask)(784));
-			this.cmdMainDownB.Name = "cmdMainDownB";
-			this.cmdMainDownB.Title = global::Mono.Unix.Catalog.GetString("Main Graph Download 50% Color");
-			this.pnlMainDown.Add(this.cmdMainDownB);
-			global::Gtk.Table.TableChild w46 = ((global::Gtk.Table.TableChild)(this.pnlMainDown[this.cmdMainDownB]));
-			w46.TopAttach = ((uint)(1));
-			w46.BottomAttach = ((uint)(2));
-			w46.LeftAttach = ((uint)(2));
-			w46.RightAttach = ((uint)(3));
-			w46.XOptions = ((global::Gtk.AttachOptions)(4));
-			w46.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlMainDown.Gtk.Table+TableChild
-			this.cmdMainDownC = new global::Gtk.ColorButton();
-			this.cmdMainDownC.CanFocus = true;
-			this.cmdMainDownC.Events = ((global::Gdk.EventMask)(784));
-			this.cmdMainDownC.Name = "cmdMainDownC";
-			this.cmdMainDownC.Title = global::Mono.Unix.Catalog.GetString("Main Graph Download 100% Color");
-			this.pnlMainDown.Add(this.cmdMainDownC);
-			global::Gtk.Table.TableChild w47 = ((global::Gtk.Table.TableChild)(this.pnlMainDown[this.cmdMainDownC]));
-			w47.TopAttach = ((uint)(2));
-			w47.BottomAttach = ((uint)(3));
-			w47.LeftAttach = ((uint)(2));
-			w47.RightAttach = ((uint)(3));
-			w47.XOptions = ((global::Gtk.AttachOptions)(4));
-			w47.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlMainDown.Gtk.Table+TableChild
-			this.lblMainDownA = new global::Gtk.Label();
-			this.lblMainDownA.Name = "lblMainDownA";
-			this.lblMainDownA.Xalign = 1F;
-			this.lblMainDownA.LabelProp = global::Mono.Unix.Catalog.GetString("0% :");
-			this.pnlMainDown.Add(this.lblMainDownA);
-			global::Gtk.Table.TableChild w48 = ((global::Gtk.Table.TableChild)(this.pnlMainDown[this.lblMainDownA]));
-			w48.XOptions = ((global::Gtk.AttachOptions)(4));
-			w48.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlMainDown.Gtk.Table+TableChild
-			this.lblMainDownC = new global::Gtk.Label();
-			this.lblMainDownC.Name = "lblMainDownC";
-			this.lblMainDownC.Xalign = 1F;
-			this.lblMainDownC.LabelProp = global::Mono.Unix.Catalog.GetString("100% :");
-			this.pnlMainDown.Add(this.lblMainDownC);
-			global::Gtk.Table.TableChild w49 = ((global::Gtk.Table.TableChild)(this.pnlMainDown[this.lblMainDownC]));
-			w49.TopAttach = ((uint)(2));
-			w49.BottomAttach = ((uint)(3));
-			w49.XOptions = ((global::Gtk.AttachOptions)(4));
-			w49.YOptions = ((global::Gtk.AttachOptions)(4));
-			this.algnMainDown.Add(this.pnlMainDown);
-			this.grpMainDown.Add(this.algnMainDown);
-			this.lblMainDownTitle = new global::Gtk.Label();
-			this.lblMainDownTitle.Name = "lblMainDownTitle";
-			this.lblMainDownTitle.Xalign = 0F;
-			this.lblMainDownTitle.LabelProp = global::Mono.Unix.Catalog.GetString("Download Colors");
-			this.lblMainDownTitle.UseMarkup = true;
-			this.grpMainDown.LabelWidget = this.lblMainDownTitle;
-			this.pnlMain.Add(this.grpMainDown);
-			global::Gtk.Table.TableChild w52 = ((global::Gtk.Table.TableChild)(this.pnlMain[this.grpMainDown]));
-			w52.XOptions = ((global::Gtk.AttachOptions)(1));
-			w52.YOptions = ((global::Gtk.AttachOptions)(4));
+			this.grpMainUsed = new global::Gtk.Frame();
+			this.grpMainUsed.Name = "grpMainUsed";
+			this.grpMainUsed.ShadowType = ((global::Gtk.ShadowType)(2));
+			// Container child grpMainUsed.Gtk.Container+ContainerChild
+			this.algnMainUsed = new global::Gtk.Alignment(0F, 0F, 1F, 1F);
+			this.algnMainUsed.Name = "algnMainUsed";
+			this.algnMainUsed.LeftPadding = ((uint)(3));
+			this.algnMainUsed.TopPadding = ((uint)(3));
+			this.algnMainUsed.RightPadding = ((uint)(3));
+			this.algnMainUsed.BottomPadding = ((uint)(3));
+			// Container child algnMainUsed.Gtk.Container+ContainerChild
+			this.pnlMainUsed = new global::Gtk.Table(((uint)(3)), ((uint)(3)), false);
+			this.pnlMainUsed.Name = "pnlMainUsed";
+			this.pnlMainUsed.RowSpacing = ((uint)(3));
+			this.pnlMainUsed.ColumnSpacing = ((uint)(3));
+			// Container child pnlMainUsed.Gtk.Table+TableChild
+			this.chkMainUsedB = new global::Gtk.CheckButton();
+			this.chkMainUsedB.CanFocus = true;
+			this.chkMainUsedB.Name = "chkMainUsedB";
+			this.chkMainUsedB.Label = global::Mono.Unix.Catalog.GetString("50% :");
+			this.chkMainUsedB.Active = true;
+			this.chkMainUsedB.DrawIndicator = true;
+			this.chkMainUsedB.UseUnderline = true;
+			this.chkMainUsedB.Xalign = 1F;
+			this.pnlMainUsed.Add(this.chkMainUsedB);
+			global::Gtk.Table.TableChild w31 = ((global::Gtk.Table.TableChild)(this.pnlMainUsed[this.chkMainUsedB]));
+			w31.TopAttach = ((uint)(1));
+			w31.BottomAttach = ((uint)(2));
+			w31.XOptions = ((global::Gtk.AttachOptions)(4));
+			w31.YOptions = ((global::Gtk.AttachOptions)(4));
+			// Container child pnlMainUsed.Gtk.Table+TableChild
+			this.cmdMainUsedA = new global::Gtk.ColorButton();
+			this.cmdMainUsedA.CanFocus = true;
+			this.cmdMainUsedA.Events = ((global::Gdk.EventMask)(784));
+			this.cmdMainUsedA.Name = "cmdMainUsedA";
+			this.cmdMainUsedA.Title = global::Mono.Unix.Catalog.GetString("Main Graph Download 0% Color");
+			this.pnlMainUsed.Add(this.cmdMainUsedA);
+			global::Gtk.Table.TableChild w32 = ((global::Gtk.Table.TableChild)(this.pnlMainUsed[this.cmdMainUsedA]));
+			w32.LeftAttach = ((uint)(2));
+			w32.RightAttach = ((uint)(3));
+			w32.XOptions = ((global::Gtk.AttachOptions)(4));
+			w32.YOptions = ((global::Gtk.AttachOptions)(4));
+			// Container child pnlMainUsed.Gtk.Table+TableChild
+			this.cmdMainUsedB = new global::Gtk.ColorButton();
+			this.cmdMainUsedB.CanFocus = true;
+			this.cmdMainUsedB.Events = ((global::Gdk.EventMask)(784));
+			this.cmdMainUsedB.Name = "cmdMainUsedB";
+			this.cmdMainUsedB.Title = global::Mono.Unix.Catalog.GetString("Main Graph Download 50% Color");
+			this.pnlMainUsed.Add(this.cmdMainUsedB);
+			global::Gtk.Table.TableChild w33 = ((global::Gtk.Table.TableChild)(this.pnlMainUsed[this.cmdMainUsedB]));
+			w33.TopAttach = ((uint)(1));
+			w33.BottomAttach = ((uint)(2));
+			w33.LeftAttach = ((uint)(2));
+			w33.RightAttach = ((uint)(3));
+			w33.XOptions = ((global::Gtk.AttachOptions)(4));
+			w33.YOptions = ((global::Gtk.AttachOptions)(4));
+			// Container child pnlMainUsed.Gtk.Table+TableChild
+			this.cmdMainUsedC = new global::Gtk.ColorButton();
+			this.cmdMainUsedC.CanFocus = true;
+			this.cmdMainUsedC.Events = ((global::Gdk.EventMask)(784));
+			this.cmdMainUsedC.Name = "cmdMainUsedC";
+			this.cmdMainUsedC.Title = global::Mono.Unix.Catalog.GetString("Main Graph Download 100% Color");
+			this.pnlMainUsed.Add(this.cmdMainUsedC);
+			global::Gtk.Table.TableChild w34 = ((global::Gtk.Table.TableChild)(this.pnlMainUsed[this.cmdMainUsedC]));
+			w34.TopAttach = ((uint)(2));
+			w34.BottomAttach = ((uint)(3));
+			w34.LeftAttach = ((uint)(2));
+			w34.RightAttach = ((uint)(3));
+			w34.XOptions = ((global::Gtk.AttachOptions)(4));
+			w34.YOptions = ((global::Gtk.AttachOptions)(4));
+			// Container child pnlMainUsed.Gtk.Table+TableChild
+			this.lblMainUsedA = new global::Gtk.Label();
+			this.lblMainUsedA.Name = "lblMainUsedA";
+			this.lblMainUsedA.Xalign = 1F;
+			this.lblMainUsedA.LabelProp = global::Mono.Unix.Catalog.GetString("0% :");
+			this.pnlMainUsed.Add(this.lblMainUsedA);
+			global::Gtk.Table.TableChild w35 = ((global::Gtk.Table.TableChild)(this.pnlMainUsed[this.lblMainUsedA]));
+			w35.XOptions = ((global::Gtk.AttachOptions)(4));
+			w35.YOptions = ((global::Gtk.AttachOptions)(4));
+			// Container child pnlMainUsed.Gtk.Table+TableChild
+			this.lblMainUsedC = new global::Gtk.Label();
+			this.lblMainUsedC.Name = "lblMainUsedC";
+			this.lblMainUsedC.Xalign = 1F;
+			this.lblMainUsedC.LabelProp = global::Mono.Unix.Catalog.GetString("100% :");
+			this.pnlMainUsed.Add(this.lblMainUsedC);
+			global::Gtk.Table.TableChild w36 = ((global::Gtk.Table.TableChild)(this.pnlMainUsed[this.lblMainUsedC]));
+			w36.TopAttach = ((uint)(2));
+			w36.BottomAttach = ((uint)(3));
+			w36.XOptions = ((global::Gtk.AttachOptions)(4));
+			w36.YOptions = ((global::Gtk.AttachOptions)(4));
+			this.algnMainUsed.Add(this.pnlMainUsed);
+			this.grpMainUsed.Add(this.algnMainUsed);
+			this.lblMainUsedTitle = new global::Gtk.Label();
+			this.lblMainUsedTitle.Name = "lblMainUsedTitle";
+			this.lblMainUsedTitle.Xalign = 0F;
+			this.lblMainUsedTitle.LabelProp = global::Mono.Unix.Catalog.GetString("Usage Gradient");
+			this.lblMainUsedTitle.UseMarkup = true;
+			this.grpMainUsed.LabelWidget = this.lblMainUsedTitle;
+			this.pnlMain.Add(this.grpMainUsed);
+			global::Gtk.Table.TableChild w39 = ((global::Gtk.Table.TableChild)(this.pnlMain[this.grpMainUsed]));
+			w39.TopAttach = ((uint)(1));
+			w39.BottomAttach = ((uint)(2));
+			w39.XOptions = ((global::Gtk.AttachOptions)(1));
+			w39.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlMain.Gtk.Table+TableChild
-			this.grpMainUp = new global::Gtk.Frame();
-			this.grpMainUp.Name = "grpMainUp";
-			this.grpMainUp.ShadowType = ((global::Gtk.ShadowType)(2));
-			// Container child grpMainUp.Gtk.Container+ContainerChild
-			this.algnMainUp = new global::Gtk.Alignment(0.5F, 0F, 1F, 1F);
-			this.algnMainUp.Name = "algnMainUp";
-			this.algnMainUp.LeftPadding = ((uint)(3));
-			this.algnMainUp.TopPadding = ((uint)(3));
-			this.algnMainUp.RightPadding = ((uint)(3));
-			this.algnMainUp.BottomPadding = ((uint)(3));
-			// Container child algnMainUp.Gtk.Container+ContainerChild
-			this.pnlMainUp = new global::Gtk.Table(((uint)(3)), ((uint)(3)), false);
-			this.pnlMainUp.Name = "pnlMainUp";
-			this.pnlMainUp.RowSpacing = ((uint)(3));
-			this.pnlMainUp.ColumnSpacing = ((uint)(3));
-			// Container child pnlMainUp.Gtk.Table+TableChild
-			this.chkMainUpB = new global::Gtk.CheckButton();
-			this.chkMainUpB.CanFocus = true;
-			this.chkMainUpB.Name = "chkMainUpB";
-			this.chkMainUpB.Label = global::Mono.Unix.Catalog.GetString("50% :");
-			this.chkMainUpB.Active = true;
-			this.chkMainUpB.DrawIndicator = true;
-			this.chkMainUpB.UseUnderline = true;
-			this.chkMainUpB.Xalign = 1F;
-			this.pnlMainUp.Add(this.chkMainUpB);
-			global::Gtk.Table.TableChild w53 = ((global::Gtk.Table.TableChild)(this.pnlMainUp[this.chkMainUpB]));
-			w53.TopAttach = ((uint)(1));
-			w53.BottomAttach = ((uint)(2));
-			w53.XOptions = ((global::Gtk.AttachOptions)(4));
-			w53.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlMainUp.Gtk.Table+TableChild
-			this.cmdMainUpA = new global::Gtk.ColorButton();
-			this.cmdMainUpA.CanFocus = true;
-			this.cmdMainUpA.Events = ((global::Gdk.EventMask)(784));
-			this.cmdMainUpA.Name = "cmdMainUpA";
-			this.cmdMainUpA.Title = global::Mono.Unix.Catalog.GetString("Main Graph Upload 0% Color");
-			this.pnlMainUp.Add(this.cmdMainUpA);
-			global::Gtk.Table.TableChild w54 = ((global::Gtk.Table.TableChild)(this.pnlMainUp[this.cmdMainUpA]));
-			w54.LeftAttach = ((uint)(2));
-			w54.RightAttach = ((uint)(3));
-			w54.XOptions = ((global::Gtk.AttachOptions)(4));
-			w54.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlMainUp.Gtk.Table+TableChild
-			this.cmdMainUpB = new global::Gtk.ColorButton();
-			this.cmdMainUpB.CanFocus = true;
-			this.cmdMainUpB.Events = ((global::Gdk.EventMask)(784));
-			this.cmdMainUpB.Name = "cmdMainUpB";
-			this.cmdMainUpB.Title = global::Mono.Unix.Catalog.GetString("Main Graph Upload 50% Color");
-			this.pnlMainUp.Add(this.cmdMainUpB);
-			global::Gtk.Table.TableChild w55 = ((global::Gtk.Table.TableChild)(this.pnlMainUp[this.cmdMainUpB]));
-			w55.TopAttach = ((uint)(1));
-			w55.BottomAttach = ((uint)(2));
-			w55.LeftAttach = ((uint)(2));
-			w55.RightAttach = ((uint)(3));
-			w55.XOptions = ((global::Gtk.AttachOptions)(4));
-			w55.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlMainUp.Gtk.Table+TableChild
-			this.cmdMainUpC = new global::Gtk.ColorButton();
-			this.cmdMainUpC.CanFocus = true;
-			this.cmdMainUpC.Events = ((global::Gdk.EventMask)(784));
-			this.cmdMainUpC.Name = "cmdMainUpC";
-			this.cmdMainUpC.Title = global::Mono.Unix.Catalog.GetString("Main Graph Upload 100% Color");
-			this.pnlMainUp.Add(this.cmdMainUpC);
-			global::Gtk.Table.TableChild w56 = ((global::Gtk.Table.TableChild)(this.pnlMainUp[this.cmdMainUpC]));
-			w56.TopAttach = ((uint)(2));
-			w56.BottomAttach = ((uint)(3));
-			w56.LeftAttach = ((uint)(2));
-			w56.RightAttach = ((uint)(3));
-			w56.XOptions = ((global::Gtk.AttachOptions)(4));
-			w56.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlMainUp.Gtk.Table+TableChild
-			this.lblMainUpA = new global::Gtk.Label();
-			this.lblMainUpA.Name = "lblMainUpA";
-			this.lblMainUpA.Xalign = 1F;
-			this.lblMainUpA.LabelProp = global::Mono.Unix.Catalog.GetString("0% :");
-			this.pnlMainUp.Add(this.lblMainUpA);
-			global::Gtk.Table.TableChild w57 = ((global::Gtk.Table.TableChild)(this.pnlMainUp[this.lblMainUpA]));
-			w57.XOptions = ((global::Gtk.AttachOptions)(4));
-			w57.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlMainUp.Gtk.Table+TableChild
-			this.lblMainUpC = new global::Gtk.Label();
-			this.lblMainUpC.Name = "lblMainUpC";
-			this.lblMainUpC.Xalign = 1F;
-			this.lblMainUpC.LabelProp = global::Mono.Unix.Catalog.GetString("100% :");
-			this.pnlMainUp.Add(this.lblMainUpC);
-			global::Gtk.Table.TableChild w58 = ((global::Gtk.Table.TableChild)(this.pnlMainUp[this.lblMainUpC]));
-			w58.TopAttach = ((uint)(2));
-			w58.BottomAttach = ((uint)(3));
-			w58.XOptions = ((global::Gtk.AttachOptions)(4));
-			w58.YOptions = ((global::Gtk.AttachOptions)(4));
-			this.algnMainUp.Add(this.pnlMainUp);
-			this.grpMainUp.Add(this.algnMainUp);
-			this.lblMainUpTitle = new global::Gtk.Label();
-			this.lblMainUpTitle.Name = "lblMainUpTitle";
-			this.lblMainUpTitle.Xalign = 0F;
-			this.lblMainUpTitle.LabelProp = global::Mono.Unix.Catalog.GetString("Upload Colors");
-			this.lblMainUpTitle.UseMarkup = true;
-			this.grpMainUp.LabelWidget = this.lblMainUpTitle;
-			this.pnlMain.Add(this.grpMainUp);
-			global::Gtk.Table.TableChild w61 = ((global::Gtk.Table.TableChild)(this.pnlMain[this.grpMainUp]));
-			w61.LeftAttach = ((uint)(1));
-			w61.RightAttach = ((uint)(2));
-			w61.XOptions = ((global::Gtk.AttachOptions)(1));
-			w61.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlMain.Gtk.Table+TableChild
-			this.pnlMainStyle = new global::Gtk.Table(((uint)(1)), ((uint)(5)), false);
+			this.pnlMainStyle = new global::Gtk.Table(((uint)(2)), ((uint)(2)), false);
 			this.pnlMainStyle.Name = "pnlMainStyle";
 			this.pnlMainStyle.RowSpacing = ((uint)(3));
 			this.pnlMainStyle.ColumnSpacing = ((uint)(3));
@@ -941,11 +612,13 @@ namespace RestrictionTrackerGTK
 			this.cmdMainBG.Name = "cmdMainBG";
 			this.cmdMainBG.Title = global::Mono.Unix.Catalog.GetString("Main Graph Background Color");
 			this.pnlMainStyle.Add(this.cmdMainBG);
-			global::Gtk.Table.TableChild w62 = ((global::Gtk.Table.TableChild)(this.pnlMainStyle[this.cmdMainBG]));
-			w62.LeftAttach = ((uint)(4));
-			w62.RightAttach = ((uint)(5));
-			w62.XOptions = ((global::Gtk.AttachOptions)(4));
-			w62.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w40 = ((global::Gtk.Table.TableChild)(this.pnlMainStyle[this.cmdMainBG]));
+			w40.TopAttach = ((uint)(1));
+			w40.BottomAttach = ((uint)(2));
+			w40.LeftAttach = ((uint)(1));
+			w40.RightAttach = ((uint)(2));
+			w40.XOptions = ((global::Gtk.AttachOptions)(4));
+			w40.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlMainStyle.Gtk.Table+TableChild
 			this.cmdMainText = new global::Gtk.ColorButton();
 			this.cmdMainText.CanFocus = true;
@@ -953,48 +626,47 @@ namespace RestrictionTrackerGTK
 			this.cmdMainText.Name = "cmdMainText";
 			this.cmdMainText.Title = global::Mono.Unix.Catalog.GetString("Main Graph Text Color");
 			this.pnlMainStyle.Add(this.cmdMainText);
-			global::Gtk.Table.TableChild w63 = ((global::Gtk.Table.TableChild)(this.pnlMainStyle[this.cmdMainText]));
-			w63.LeftAttach = ((uint)(1));
-			w63.RightAttach = ((uint)(2));
-			w63.XOptions = ((global::Gtk.AttachOptions)(4));
-			w63.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w41 = ((global::Gtk.Table.TableChild)(this.pnlMainStyle[this.cmdMainText]));
+			w41.LeftAttach = ((uint)(1));
+			w41.RightAttach = ((uint)(2));
+			w41.XOptions = ((global::Gtk.AttachOptions)(4));
+			w41.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlMainStyle.Gtk.Table+TableChild
 			this.lblMainBG = new global::Gtk.Label();
 			this.lblMainBG.Name = "lblMainBG";
 			this.lblMainBG.Xalign = 1F;
 			this.lblMainBG.LabelProp = global::Mono.Unix.Catalog.GetString("Background :");
 			this.pnlMainStyle.Add(this.lblMainBG);
-			global::Gtk.Table.TableChild w64 = ((global::Gtk.Table.TableChild)(this.pnlMainStyle[this.lblMainBG]));
-			w64.LeftAttach = ((uint)(3));
-			w64.RightAttach = ((uint)(4));
-			w64.XOptions = ((global::Gtk.AttachOptions)(4));
-			w64.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w42 = ((global::Gtk.Table.TableChild)(this.pnlMainStyle[this.lblMainBG]));
+			w42.TopAttach = ((uint)(1));
+			w42.BottomAttach = ((uint)(2));
+			w42.XOptions = ((global::Gtk.AttachOptions)(4));
+			w42.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlMainStyle.Gtk.Table+TableChild
 			this.lblMainText = new global::Gtk.Label();
 			this.lblMainText.Name = "lblMainText";
 			this.lblMainText.Xalign = 1F;
 			this.lblMainText.LabelProp = global::Mono.Unix.Catalog.GetString("Text Color :");
 			this.pnlMainStyle.Add(this.lblMainText);
-			global::Gtk.Table.TableChild w65 = ((global::Gtk.Table.TableChild)(this.pnlMainStyle[this.lblMainText]));
-			w65.XOptions = ((global::Gtk.AttachOptions)(4));
-			w65.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w43 = ((global::Gtk.Table.TableChild)(this.pnlMainStyle[this.lblMainText]));
+			w43.XOptions = ((global::Gtk.AttachOptions)(4));
+			w43.YOptions = ((global::Gtk.AttachOptions)(4));
 			this.pnlMain.Add(this.pnlMainStyle);
-			global::Gtk.Table.TableChild w66 = ((global::Gtk.Table.TableChild)(this.pnlMain[this.pnlMainStyle]));
-			w66.TopAttach = ((uint)(1));
-			w66.BottomAttach = ((uint)(2));
-			w66.RightAttach = ((uint)(2));
-			w66.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w44 = ((global::Gtk.Table.TableChild)(this.pnlMain[this.pnlMainStyle]));
+			w44.TopAttach = ((uint)(2));
+			w44.BottomAttach = ((uint)(3));
+			w44.YOptions = ((global::Gtk.AttachOptions)(4));
 			this.algnMain.Add(this.pnlMain);
 			this.grpMain.Add(this.algnMain);
 			this.lblMainTitle = new global::Gtk.Label();
 			this.lblMainTitle.Name = "lblMainTitle";
 			this.lblMainTitle.Xalign = 0F;
-			this.lblMainTitle.LabelProp = global::Mono.Unix.Catalog.GetString("Main Window Current Usage Graphs");
+			this.lblMainTitle.LabelProp = global::Mono.Unix.Catalog.GetString("Main Window Graph");
 			this.lblMainTitle.UseMarkup = true;
 			this.grpMain.LabelWidget = this.lblMainTitle;
 			this.pnlCustomColors.Add(this.grpMain);
-			global::Gtk.Table.TableChild w69 = ((global::Gtk.Table.TableChild)(this.pnlCustomColors[this.grpMain]));
-			w69.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w47 = ((global::Gtk.Table.TableChild)(this.pnlCustomColors[this.grpMain]));
+			w47.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlCustomColors.Gtk.Table+TableChild
 			this.grpTray = new global::Gtk.Frame();
 			this.grpTray.Name = "grpTray";
@@ -1006,7 +678,7 @@ namespace RestrictionTrackerGTK
 			this.algnTray.RightPadding = ((uint)(3));
 			this.algnTray.BottomPadding = ((uint)(3));
 			// Container child algnTray.Gtk.Container+ContainerChild
-			this.pnlTray = new global::Gtk.Table(((uint)(1)), ((uint)(3)), false);
+			this.pnlTray = new global::Gtk.Table(((uint)(2)), ((uint)(1)), false);
 			this.pnlTray.Name = "pnlTray";
 			this.pnlTray.RowSpacing = ((uint)(3));
 			this.pnlTray.ColumnSpacing = ((uint)(3));
@@ -1015,248 +687,143 @@ namespace RestrictionTrackerGTK
 			this.evnTray.Name = "evnTray";
 			// Container child evnTray.Gtk.Container+ContainerChild
 			this.pctTray = new global::Gtk.Image();
-			this.pctTray.WidthRequest = 75;
-			this.pctTray.HeightRequest = 75;
+			this.pctTray.WidthRequest = 100;
+			this.pctTray.HeightRequest = 55;
 			this.pctTray.Name = "pctTray";
 			this.evnTray.Add(this.pctTray);
 			this.pnlTray.Add(this.evnTray);
-			global::Gtk.Table.TableChild w71 = ((global::Gtk.Table.TableChild)(this.pnlTray[this.evnTray]));
-			w71.LeftAttach = ((uint)(2));
-			w71.RightAttach = ((uint)(3));
-			w71.XOptions = ((global::Gtk.AttachOptions)(4));
-			w71.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w49 = ((global::Gtk.Table.TableChild)(this.pnlTray[this.evnTray]));
+			w49.XOptions = ((global::Gtk.AttachOptions)(4));
+			w49.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child pnlTray.Gtk.Table+TableChild
-			this.grpTrayDown = new global::Gtk.Frame();
-			this.grpTrayDown.Name = "grpTrayDown";
-			this.grpTrayDown.ShadowType = ((global::Gtk.ShadowType)(2));
-			// Container child grpTrayDown.Gtk.Container+ContainerChild
-			this.algnTrayDown = new global::Gtk.Alignment(0F, 0F, 1F, 1F);
-			this.algnTrayDown.Name = "algnTrayDown";
-			this.algnTrayDown.LeftPadding = ((uint)(3));
-			this.algnTrayDown.TopPadding = ((uint)(3));
-			this.algnTrayDown.RightPadding = ((uint)(3));
-			this.algnTrayDown.BottomPadding = ((uint)(3));
-			// Container child algnTrayDown.Gtk.Container+ContainerChild
-			this.pnlTrayDown = new global::Gtk.Table(((uint)(3)), ((uint)(3)), false);
-			this.pnlTrayDown.Name = "pnlTrayDown";
-			this.pnlTrayDown.RowSpacing = ((uint)(3));
-			this.pnlTrayDown.ColumnSpacing = ((uint)(3));
-			// Container child pnlTrayDown.Gtk.Table+TableChild
-			this.chkTrayDownB = new global::Gtk.CheckButton();
-			this.chkTrayDownB.CanFocus = true;
-			this.chkTrayDownB.Name = "chkTrayDownB";
-			this.chkTrayDownB.Label = global::Mono.Unix.Catalog.GetString("50% :");
-			this.chkTrayDownB.Active = true;
-			this.chkTrayDownB.DrawIndicator = true;
-			this.chkTrayDownB.UseUnderline = true;
-			this.chkTrayDownB.Xalign = 1F;
-			this.pnlTrayDown.Add(this.chkTrayDownB);
-			global::Gtk.Table.TableChild w72 = ((global::Gtk.Table.TableChild)(this.pnlTrayDown[this.chkTrayDownB]));
-			w72.TopAttach = ((uint)(1));
-			w72.BottomAttach = ((uint)(2));
-			w72.XOptions = ((global::Gtk.AttachOptions)(4));
-			w72.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlTrayDown.Gtk.Table+TableChild
-			this.cmdTrayDownA = new global::Gtk.ColorButton();
-			this.cmdTrayDownA.CanFocus = true;
-			this.cmdTrayDownA.Events = ((global::Gdk.EventMask)(784));
-			this.cmdTrayDownA.Name = "cmdTrayDownA";
-			this.cmdTrayDownA.Title = global::Mono.Unix.Catalog.GetString("Tray Graph Download 0% Color");
-			this.pnlTrayDown.Add(this.cmdTrayDownA);
-			global::Gtk.Table.TableChild w73 = ((global::Gtk.Table.TableChild)(this.pnlTrayDown[this.cmdTrayDownA]));
-			w73.LeftAttach = ((uint)(2));
-			w73.RightAttach = ((uint)(3));
-			w73.XOptions = ((global::Gtk.AttachOptions)(4));
-			w73.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlTrayDown.Gtk.Table+TableChild
-			this.cmdTrayDownB = new global::Gtk.ColorButton();
-			this.cmdTrayDownB.CanFocus = true;
-			this.cmdTrayDownB.Events = ((global::Gdk.EventMask)(784));
-			this.cmdTrayDownB.Name = "cmdTrayDownB";
-			this.cmdTrayDownB.Title = global::Mono.Unix.Catalog.GetString("Tray Graph Download 50% Color");
-			this.pnlTrayDown.Add(this.cmdTrayDownB);
-			global::Gtk.Table.TableChild w74 = ((global::Gtk.Table.TableChild)(this.pnlTrayDown[this.cmdTrayDownB]));
-			w74.TopAttach = ((uint)(1));
-			w74.BottomAttach = ((uint)(2));
-			w74.LeftAttach = ((uint)(2));
-			w74.RightAttach = ((uint)(3));
-			w74.XOptions = ((global::Gtk.AttachOptions)(4));
-			w74.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlTrayDown.Gtk.Table+TableChild
-			this.cmdTrayDownC = new global::Gtk.ColorButton();
-			this.cmdTrayDownC.CanFocus = true;
-			this.cmdTrayDownC.Events = ((global::Gdk.EventMask)(784));
-			this.cmdTrayDownC.Name = "cmdTrayDownC";
-			this.cmdTrayDownC.Title = global::Mono.Unix.Catalog.GetString("Tray Graph Download 100% Color");
-			this.pnlTrayDown.Add(this.cmdTrayDownC);
-			global::Gtk.Table.TableChild w75 = ((global::Gtk.Table.TableChild)(this.pnlTrayDown[this.cmdTrayDownC]));
-			w75.TopAttach = ((uint)(2));
-			w75.BottomAttach = ((uint)(3));
-			w75.LeftAttach = ((uint)(2));
-			w75.RightAttach = ((uint)(3));
-			w75.XOptions = ((global::Gtk.AttachOptions)(4));
-			w75.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlTrayDown.Gtk.Table+TableChild
-			this.lblTrayDownA = new global::Gtk.Label();
-			this.lblTrayDownA.Name = "lblTrayDownA";
-			this.lblTrayDownA.Xalign = 1F;
-			this.lblTrayDownA.LabelProp = global::Mono.Unix.Catalog.GetString("0% :");
-			this.pnlTrayDown.Add(this.lblTrayDownA);
-			global::Gtk.Table.TableChild w76 = ((global::Gtk.Table.TableChild)(this.pnlTrayDown[this.lblTrayDownA]));
-			w76.XOptions = ((global::Gtk.AttachOptions)(4));
-			w76.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlTrayDown.Gtk.Table+TableChild
-			this.lblTrayDownC = new global::Gtk.Label();
-			this.lblTrayDownC.Name = "lblTrayDownC";
-			this.lblTrayDownC.Xalign = 1F;
-			this.lblTrayDownC.LabelProp = global::Mono.Unix.Catalog.GetString("100% :");
-			this.pnlTrayDown.Add(this.lblTrayDownC);
-			global::Gtk.Table.TableChild w77 = ((global::Gtk.Table.TableChild)(this.pnlTrayDown[this.lblTrayDownC]));
-			w77.TopAttach = ((uint)(2));
-			w77.BottomAttach = ((uint)(3));
-			w77.XOptions = ((global::Gtk.AttachOptions)(4));
-			w77.YOptions = ((global::Gtk.AttachOptions)(4));
-			this.algnTrayDown.Add(this.pnlTrayDown);
-			this.grpTrayDown.Add(this.algnTrayDown);
-			this.lblTrayDownTitle = new global::Gtk.Label();
-			this.lblTrayDownTitle.Name = "lblTrayDownTitle";
-			this.lblTrayDownTitle.Xalign = 0F;
-			this.lblTrayDownTitle.LabelProp = global::Mono.Unix.Catalog.GetString("Download Colors");
-			this.lblTrayDownTitle.UseMarkup = true;
-			this.grpTrayDown.LabelWidget = this.lblTrayDownTitle;
-			this.pnlTray.Add(this.grpTrayDown);
-			global::Gtk.Table.TableChild w80 = ((global::Gtk.Table.TableChild)(this.pnlTray[this.grpTrayDown]));
-			w80.XOptions = ((global::Gtk.AttachOptions)(1));
-			w80.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlTray.Gtk.Table+TableChild
-			this.grpTrayUp = new global::Gtk.Frame();
-			this.grpTrayUp.Name = "grpTrayUp";
-			this.grpTrayUp.ShadowType = ((global::Gtk.ShadowType)(2));
-			// Container child grpTrayUp.Gtk.Container+ContainerChild
-			this.algnTrayUp = new global::Gtk.Alignment(0F, 0F, 1F, 1F);
-			this.algnTrayUp.Name = "algnTrayUp";
-			this.algnTrayUp.LeftPadding = ((uint)(3));
-			this.algnTrayUp.TopPadding = ((uint)(3));
-			this.algnTrayUp.RightPadding = ((uint)(3));
-			this.algnTrayUp.BottomPadding = ((uint)(3));
-			// Container child algnTrayUp.Gtk.Container+ContainerChild
-			this.pnlTrayUp = new global::Gtk.Table(((uint)(3)), ((uint)(3)), false);
-			this.pnlTrayUp.Name = "pnlTrayUp";
-			this.pnlTrayUp.RowSpacing = ((uint)(3));
-			this.pnlTrayUp.ColumnSpacing = ((uint)(3));
-			// Container child pnlTrayUp.Gtk.Table+TableChild
-			this.chkTrayUpB = new global::Gtk.CheckButton();
-			this.chkTrayUpB.CanFocus = true;
-			this.chkTrayUpB.Name = "chkTrayUpB";
-			this.chkTrayUpB.Label = global::Mono.Unix.Catalog.GetString("50% :");
-			this.chkTrayUpB.Active = true;
-			this.chkTrayUpB.DrawIndicator = true;
-			this.chkTrayUpB.UseUnderline = true;
-			this.chkTrayUpB.Xalign = 1F;
-			this.pnlTrayUp.Add(this.chkTrayUpB);
-			global::Gtk.Table.TableChild w81 = ((global::Gtk.Table.TableChild)(this.pnlTrayUp[this.chkTrayUpB]));
-			w81.TopAttach = ((uint)(1));
-			w81.BottomAttach = ((uint)(2));
-			w81.XOptions = ((global::Gtk.AttachOptions)(4));
-			w81.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlTrayUp.Gtk.Table+TableChild
-			this.cmdTrayUpA = new global::Gtk.ColorButton();
-			this.cmdTrayUpA.CanFocus = true;
-			this.cmdTrayUpA.Events = ((global::Gdk.EventMask)(784));
-			this.cmdTrayUpA.Name = "cmdTrayUpA";
-			this.cmdTrayUpA.Title = global::Mono.Unix.Catalog.GetString("Tray Graph Upload 0% Color");
-			this.pnlTrayUp.Add(this.cmdTrayUpA);
-			global::Gtk.Table.TableChild w82 = ((global::Gtk.Table.TableChild)(this.pnlTrayUp[this.cmdTrayUpA]));
-			w82.LeftAttach = ((uint)(2));
-			w82.RightAttach = ((uint)(3));
-			w82.XOptions = ((global::Gtk.AttachOptions)(4));
-			w82.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlTrayUp.Gtk.Table+TableChild
-			this.cmdTrayUpB = new global::Gtk.ColorButton();
-			this.cmdTrayUpB.CanFocus = true;
-			this.cmdTrayUpB.Events = ((global::Gdk.EventMask)(784));
-			this.cmdTrayUpB.Name = "cmdTrayUpB";
-			this.cmdTrayUpB.Title = global::Mono.Unix.Catalog.GetString("Tray Graph Upload 50% Color");
-			this.pnlTrayUp.Add(this.cmdTrayUpB);
-			global::Gtk.Table.TableChild w83 = ((global::Gtk.Table.TableChild)(this.pnlTrayUp[this.cmdTrayUpB]));
-			w83.TopAttach = ((uint)(1));
-			w83.BottomAttach = ((uint)(2));
-			w83.LeftAttach = ((uint)(2));
-			w83.RightAttach = ((uint)(3));
-			w83.XOptions = ((global::Gtk.AttachOptions)(4));
-			w83.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlTrayUp.Gtk.Table+TableChild
-			this.cmdTrayUpC = new global::Gtk.ColorButton();
-			this.cmdTrayUpC.CanFocus = true;
-			this.cmdTrayUpC.Events = ((global::Gdk.EventMask)(784));
-			this.cmdTrayUpC.Name = "cmdTrayUpC";
-			this.cmdTrayUpC.Title = global::Mono.Unix.Catalog.GetString("Tray Graph Upload 100% Color");
-			this.pnlTrayUp.Add(this.cmdTrayUpC);
-			global::Gtk.Table.TableChild w84 = ((global::Gtk.Table.TableChild)(this.pnlTrayUp[this.cmdTrayUpC]));
-			w84.TopAttach = ((uint)(2));
-			w84.BottomAttach = ((uint)(3));
-			w84.LeftAttach = ((uint)(2));
-			w84.RightAttach = ((uint)(3));
-			w84.XOptions = ((global::Gtk.AttachOptions)(4));
-			w84.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlTrayUp.Gtk.Table+TableChild
-			this.lblTrayUpA = new global::Gtk.Label();
-			this.lblTrayUpA.Name = "lblTrayUpA";
-			this.lblTrayUpA.Xalign = 1F;
-			this.lblTrayUpA.LabelProp = global::Mono.Unix.Catalog.GetString("0% :");
-			this.pnlTrayUp.Add(this.lblTrayUpA);
-			global::Gtk.Table.TableChild w85 = ((global::Gtk.Table.TableChild)(this.pnlTrayUp[this.lblTrayUpA]));
-			w85.XOptions = ((global::Gtk.AttachOptions)(4));
-			w85.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child pnlTrayUp.Gtk.Table+TableChild
-			this.lblTrayUpC = new global::Gtk.Label();
-			this.lblTrayUpC.Name = "lblTrayUpC";
-			this.lblTrayUpC.Xalign = 1F;
-			this.lblTrayUpC.LabelProp = global::Mono.Unix.Catalog.GetString("100% :");
-			this.pnlTrayUp.Add(this.lblTrayUpC);
-			global::Gtk.Table.TableChild w86 = ((global::Gtk.Table.TableChild)(this.pnlTrayUp[this.lblTrayUpC]));
-			w86.TopAttach = ((uint)(2));
-			w86.BottomAttach = ((uint)(3));
-			w86.XOptions = ((global::Gtk.AttachOptions)(4));
-			w86.YOptions = ((global::Gtk.AttachOptions)(4));
-			this.algnTrayUp.Add(this.pnlTrayUp);
-			this.grpTrayUp.Add(this.algnTrayUp);
-			this.lblTrayUpTitle = new global::Gtk.Label();
-			this.lblTrayUpTitle.Name = "lblTrayUpTitle";
-			this.lblTrayUpTitle.Xalign = 0F;
-			this.lblTrayUpTitle.LabelProp = global::Mono.Unix.Catalog.GetString("Upload Colors");
-			this.lblTrayUpTitle.UseMarkup = true;
-			this.grpTrayUp.LabelWidget = this.lblTrayUpTitle;
-			this.pnlTray.Add(this.grpTrayUp);
-			global::Gtk.Table.TableChild w89 = ((global::Gtk.Table.TableChild)(this.pnlTray[this.grpTrayUp]));
-			w89.LeftAttach = ((uint)(1));
-			w89.RightAttach = ((uint)(2));
-			w89.XOptions = ((global::Gtk.AttachOptions)(1));
-			w89.YOptions = ((global::Gtk.AttachOptions)(4));
+			this.grpTrayUsed = new global::Gtk.Frame();
+			this.grpTrayUsed.Name = "grpTrayUsed";
+			this.grpTrayUsed.ShadowType = ((global::Gtk.ShadowType)(2));
+			// Container child grpTrayUsed.Gtk.Container+ContainerChild
+			this.algnTrayUsed = new global::Gtk.Alignment(0F, 0F, 1F, 1F);
+			this.algnTrayUsed.Name = "algnTrayUsed";
+			this.algnTrayUsed.LeftPadding = ((uint)(3));
+			this.algnTrayUsed.TopPadding = ((uint)(3));
+			this.algnTrayUsed.RightPadding = ((uint)(3));
+			this.algnTrayUsed.BottomPadding = ((uint)(3));
+			// Container child algnTrayUsed.Gtk.Container+ContainerChild
+			this.pnlTrayUsed = new global::Gtk.Table(((uint)(3)), ((uint)(3)), false);
+			this.pnlTrayUsed.Name = "pnlTrayUsed";
+			this.pnlTrayUsed.RowSpacing = ((uint)(3));
+			this.pnlTrayUsed.ColumnSpacing = ((uint)(3));
+			// Container child pnlTrayUsed.Gtk.Table+TableChild
+			this.chkTrayUsedB = new global::Gtk.CheckButton();
+			this.chkTrayUsedB.CanFocus = true;
+			this.chkTrayUsedB.Name = "chkTrayUsedB";
+			this.chkTrayUsedB.Label = global::Mono.Unix.Catalog.GetString("50% :");
+			this.chkTrayUsedB.Active = true;
+			this.chkTrayUsedB.DrawIndicator = true;
+			this.chkTrayUsedB.UseUnderline = true;
+			this.chkTrayUsedB.Xalign = 1F;
+			this.pnlTrayUsed.Add(this.chkTrayUsedB);
+			global::Gtk.Table.TableChild w50 = ((global::Gtk.Table.TableChild)(this.pnlTrayUsed[this.chkTrayUsedB]));
+			w50.TopAttach = ((uint)(1));
+			w50.BottomAttach = ((uint)(2));
+			w50.XOptions = ((global::Gtk.AttachOptions)(4));
+			w50.YOptions = ((global::Gtk.AttachOptions)(4));
+			// Container child pnlTrayUsed.Gtk.Table+TableChild
+			this.cmdTrayUsedA = new global::Gtk.ColorButton();
+			this.cmdTrayUsedA.CanFocus = true;
+			this.cmdTrayUsedA.Events = ((global::Gdk.EventMask)(784));
+			this.cmdTrayUsedA.Name = "cmdTrayUsedA";
+			this.cmdTrayUsedA.Title = global::Mono.Unix.Catalog.GetString("Tray Graph Download 0% Color");
+			this.pnlTrayUsed.Add(this.cmdTrayUsedA);
+			global::Gtk.Table.TableChild w51 = ((global::Gtk.Table.TableChild)(this.pnlTrayUsed[this.cmdTrayUsedA]));
+			w51.LeftAttach = ((uint)(2));
+			w51.RightAttach = ((uint)(3));
+			w51.XOptions = ((global::Gtk.AttachOptions)(4));
+			w51.YOptions = ((global::Gtk.AttachOptions)(4));
+			// Container child pnlTrayUsed.Gtk.Table+TableChild
+			this.cmdTrayUsedB = new global::Gtk.ColorButton();
+			this.cmdTrayUsedB.CanFocus = true;
+			this.cmdTrayUsedB.Events = ((global::Gdk.EventMask)(784));
+			this.cmdTrayUsedB.Name = "cmdTrayUsedB";
+			this.cmdTrayUsedB.Title = global::Mono.Unix.Catalog.GetString("Tray Graph Download 50% Color");
+			this.pnlTrayUsed.Add(this.cmdTrayUsedB);
+			global::Gtk.Table.TableChild w52 = ((global::Gtk.Table.TableChild)(this.pnlTrayUsed[this.cmdTrayUsedB]));
+			w52.TopAttach = ((uint)(1));
+			w52.BottomAttach = ((uint)(2));
+			w52.LeftAttach = ((uint)(2));
+			w52.RightAttach = ((uint)(3));
+			w52.XOptions = ((global::Gtk.AttachOptions)(4));
+			w52.YOptions = ((global::Gtk.AttachOptions)(4));
+			// Container child pnlTrayUsed.Gtk.Table+TableChild
+			this.cmdTrayUsedC = new global::Gtk.ColorButton();
+			this.cmdTrayUsedC.CanFocus = true;
+			this.cmdTrayUsedC.Events = ((global::Gdk.EventMask)(784));
+			this.cmdTrayUsedC.Name = "cmdTrayUsedC";
+			this.cmdTrayUsedC.Title = global::Mono.Unix.Catalog.GetString("Tray Graph Download 100% Color");
+			this.pnlTrayUsed.Add(this.cmdTrayUsedC);
+			global::Gtk.Table.TableChild w53 = ((global::Gtk.Table.TableChild)(this.pnlTrayUsed[this.cmdTrayUsedC]));
+			w53.TopAttach = ((uint)(2));
+			w53.BottomAttach = ((uint)(3));
+			w53.LeftAttach = ((uint)(2));
+			w53.RightAttach = ((uint)(3));
+			w53.XOptions = ((global::Gtk.AttachOptions)(4));
+			w53.YOptions = ((global::Gtk.AttachOptions)(4));
+			// Container child pnlTrayUsed.Gtk.Table+TableChild
+			this.lblTrayUsedA = new global::Gtk.Label();
+			this.lblTrayUsedA.Name = "lblTrayUsedA";
+			this.lblTrayUsedA.Xalign = 1F;
+			this.lblTrayUsedA.LabelProp = global::Mono.Unix.Catalog.GetString("0% :");
+			this.pnlTrayUsed.Add(this.lblTrayUsedA);
+			global::Gtk.Table.TableChild w54 = ((global::Gtk.Table.TableChild)(this.pnlTrayUsed[this.lblTrayUsedA]));
+			w54.XOptions = ((global::Gtk.AttachOptions)(4));
+			w54.YOptions = ((global::Gtk.AttachOptions)(4));
+			// Container child pnlTrayUsed.Gtk.Table+TableChild
+			this.lblTrayUsedC = new global::Gtk.Label();
+			this.lblTrayUsedC.Name = "lblTrayUsedC";
+			this.lblTrayUsedC.Xalign = 1F;
+			this.lblTrayUsedC.LabelProp = global::Mono.Unix.Catalog.GetString("100% :");
+			this.pnlTrayUsed.Add(this.lblTrayUsedC);
+			global::Gtk.Table.TableChild w55 = ((global::Gtk.Table.TableChild)(this.pnlTrayUsed[this.lblTrayUsedC]));
+			w55.TopAttach = ((uint)(2));
+			w55.BottomAttach = ((uint)(3));
+			w55.XOptions = ((global::Gtk.AttachOptions)(4));
+			w55.YOptions = ((global::Gtk.AttachOptions)(4));
+			this.algnTrayUsed.Add(this.pnlTrayUsed);
+			this.grpTrayUsed.Add(this.algnTrayUsed);
+			this.lblTrayUsedTitle = new global::Gtk.Label();
+			this.lblTrayUsedTitle.Name = "lblTrayUsedTitle";
+			this.lblTrayUsedTitle.Xalign = 0F;
+			this.lblTrayUsedTitle.LabelProp = global::Mono.Unix.Catalog.GetString("Icon Gradient");
+			this.lblTrayUsedTitle.UseMarkup = true;
+			this.grpTrayUsed.LabelWidget = this.lblTrayUsedTitle;
+			this.pnlTray.Add(this.grpTrayUsed);
+			global::Gtk.Table.TableChild w58 = ((global::Gtk.Table.TableChild)(this.pnlTray[this.grpTrayUsed]));
+			w58.TopAttach = ((uint)(1));
+			w58.BottomAttach = ((uint)(2));
+			w58.XOptions = ((global::Gtk.AttachOptions)(1));
+			w58.YOptions = ((global::Gtk.AttachOptions)(4));
 			this.algnTray.Add(this.pnlTray);
 			this.grpTray.Add(this.algnTray);
 			this.lblTrayTitle = new global::Gtk.Label();
 			this.lblTrayTitle.Name = "lblTrayTitle";
 			this.lblTrayTitle.Xalign = 0F;
-			this.lblTrayTitle.LabelProp = global::Mono.Unix.Catalog.GetString("Tray Icon Current Usage Graph Overlay");
+			this.lblTrayTitle.LabelProp = global::Mono.Unix.Catalog.GetString("Tray Icon Graph");
 			this.lblTrayTitle.UseMarkup = true;
 			this.grpTray.LabelWidget = this.lblTrayTitle;
 			this.pnlCustomColors.Add(this.grpTray);
-			global::Gtk.Table.TableChild w92 = ((global::Gtk.Table.TableChild)(this.pnlCustomColors[this.grpTray]));
-			w92.TopAttach = ((uint)(1));
-			w92.BottomAttach = ((uint)(2));
-			w92.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w61 = ((global::Gtk.Table.TableChild)(this.pnlCustomColors[this.grpTray]));
+			w61.LeftAttach = ((uint)(1));
+			w61.RightAttach = ((uint)(2));
+			w61.YOptions = ((global::Gtk.AttachOptions)(4));
 			w1.Add(this.pnlCustomColors);
-			global::Gtk.Box.BoxChild w93 = ((global::Gtk.Box.BoxChild)(w1[this.pnlCustomColors]));
-			w93.Position = 0;
-			w93.Expand = false;
-			w93.Fill = false;
+			global::Gtk.Box.BoxChild w62 = ((global::Gtk.Box.BoxChild)(w1[this.pnlCustomColors]));
+			w62.Position = 0;
+			w62.Expand = false;
+			w62.Fill = false;
 			// Internal child RestrictionTrackerGTK.dlgCustomColors.ActionArea
-			global::Gtk.HButtonBox w94 = this.ActionArea;
-			w94.Name = "pnlColorButtons";
-			w94.Spacing = 10;
-			w94.BorderWidth = ((uint)(3));
-			w94.LayoutStyle = ((global::Gtk.ButtonBoxStyle)(4));
+			global::Gtk.HButtonBox w63 = this.ActionArea;
+			w63.Name = "pnlColorButtons";
+			w63.Spacing = 10;
+			w63.BorderWidth = ((uint)(3));
+			w63.LayoutStyle = ((global::Gtk.ButtonBoxStyle)(4));
 			// Container child pnlColorButtons.Gtk.ButtonBox+ButtonBoxChild
 			this.cmdSave = new global::Gtk.Button();
 			this.cmdSave.CanDefault = true;
@@ -1264,10 +831,10 @@ namespace RestrictionTrackerGTK
 			this.cmdSave.Name = "cmdSave";
 			this.cmdSave.UseUnderline = true;
 			this.cmdSave.Label = global::Mono.Unix.Catalog.GetString("_Save");
-			w94.Add(this.cmdSave);
-			global::Gtk.ButtonBox.ButtonBoxChild w95 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w94[this.cmdSave]));
-			w95.Expand = false;
-			w95.Fill = false;
+			w63.Add(this.cmdSave);
+			global::Gtk.ButtonBox.ButtonBoxChild w64 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w63[this.cmdSave]));
+			w64.Expand = false;
+			w64.Fill = false;
 			// Container child pnlColorButtons.Gtk.ButtonBox+ButtonBoxChild
 			this.cmdClose = new global::Gtk.Button();
 			this.cmdClose.CanDefault = true;
@@ -1275,17 +842,17 @@ namespace RestrictionTrackerGTK
 			this.cmdClose.Name = "cmdClose";
 			this.cmdClose.UseUnderline = true;
 			this.cmdClose.Label = global::Mono.Unix.Catalog.GetString("_Close");
-			w94.Add(this.cmdClose);
-			global::Gtk.ButtonBox.ButtonBoxChild w96 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w94[this.cmdClose]));
-			w96.Position = 1;
-			w96.Expand = false;
-			w96.Fill = false;
+			w63.Add(this.cmdClose);
+			global::Gtk.ButtonBox.ButtonBoxChild w65 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w63[this.cmdClose]));
+			w65.Position = 1;
+			w65.Expand = false;
+			w65.Fill = false;
 			if ((this.Child != null))
 			{
 				this.Child.ShowAll();
 			}
-			this.DefaultWidth = 360;
-			this.DefaultHeight = 585;
+			this.DefaultWidth = 729;
+			this.DefaultHeight = 327;
 			this.Hide();
 			this.evnTray.ButtonReleaseEvent += new global::Gtk.ButtonReleaseEventHandler(this.pctTray_MouseUp);
 			this.evnMain.ButtonReleaseEvent += new global::Gtk.ButtonReleaseEventHandler(this.pctMain_MouseUp);

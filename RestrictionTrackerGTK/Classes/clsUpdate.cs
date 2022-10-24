@@ -8,53 +8,68 @@ namespace RestrictionTrackerGTK
     private const string VersionURL = "http://update.realityripple.com/Satellite_Restriction_Tracker/ver";
     public class ProgressEventArgs: EventArgs
     {
-      public long BytesReceived;
-      public int ProgressPercentage;
-      public long TotalBytesToReceive;
+      private long mBytesReceived;
+      public long BytesReceived
+      {
+        get
+        {
+          return mBytesReceived;
+        }
+      }
+      private int mProgressPercentage;
+      public int ProgressPercentage
+      {
+        get
+        {
+          return mProgressPercentage;
+        }
+      }
+      private long mTotalBytesToReceive;
+      public long TotalBytesToReceive
+      {
+        get
+        {
+          return mTotalBytesToReceive;
+        }
+      }
       internal ProgressEventArgs(long bReceived, long bToReceive, int iPercentage)
       {
-        BytesReceived = bReceived;
-        TotalBytesToReceive = bToReceive;
-        ProgressPercentage = iPercentage;
+        mBytesReceived = bReceived;
+        mTotalBytesToReceive = bToReceive;
+        mProgressPercentage = iPercentage;
       }
     }
     public class CheckEventArgs: System.ComponentModel.AsyncCompletedEventArgs
     {
-      public ResultType Result;
-      public string Version;
+      private ResultType mResult;
+      public ResultType Result
+      {
+        get
+        {
+          return mResult;
+        }
+      }
+      private string mVersion;
+      public string Version
+      {
+        get
+        {
+          return mVersion;
+        }
+      }
       internal CheckEventArgs(ResultType rtResult, string sVersion, Exception ex, bool bCancelled, object state) :
         base(ex, bCancelled, state)
       {
-        Version = sVersion;
-        Result = rtResult;
+        mVersion = sVersion;
+        mResult = rtResult;
       }
     }
-    public class DownloadEventArgs: System.ComponentModel.AsyncCompletedEventArgs
-    {
-      public string Version;
-      internal DownloadEventArgs(string sVersion, Exception ex, bool bCancelled, object state) :
-        base(ex, bCancelled, state)
-      {
-        Version = sVersion;
-      }
-      internal DownloadEventArgs(string sVersion, System.ComponentModel.AsyncCompletedEventArgs e) :
-        base(e.Error, e.Cancelled, e.UserState)
-      {
-        Version = sVersion;
-      }
-    }
-    public event CheckingVersionEventHandler CheckingVersion;
-    public delegate void CheckingVersionEventHandler(object sender, EventArgs e);
-    public event CheckProgressChangedEventHandler CheckProgressChanged;
-    public delegate void CheckProgressChangedEventHandler(object sender, ProgressEventArgs e);
-    public event CheckResultEventHandler CheckResult;
-    public delegate void CheckResultEventHandler(object sender, CheckEventArgs e);
-    public event DownloadingUpdateEventHandler DownloadingUpdate;
-    public delegate void DownloadingUpdateEventHandler(object sender, EventArgs e);
-    public event UpdateProgressChangedEventHandler UpdateProgressChanged;
-    public delegate void UpdateProgressChangedEventHandler(object sender, ProgressEventArgs e);
-    public event DownloadResultEventHandler DownloadResult;
-    public delegate void DownloadResultEventHandler(object sender, DownloadEventArgs e);
+    public event EventHandler CheckingVersion;
+    public event EventHandler<ProgressEventArgs> CheckProgressChanged;
+    public event EventHandler<CheckEventArgs> CheckResult;
+    public event EventHandler DownloadingUpdate;
+    public event EventHandler<ProgressEventArgs> UpdateProgressChanged;
+    public event EventHandler<System.ComponentModel.AsyncCompletedEventArgs> DownloadResult;
     private RestrictionLibrary.WebClientCore wsVer;
     private string DownloadURL;
     private string VerNumber;
@@ -150,7 +165,7 @@ namespace RestrictionTrackerGTK
       else
       {
         if (DownloadResult != null)
-          DownloadResult(this, new DownloadEventArgs(null, new Exception("Version Check was not run."), true, null));
+          DownloadResult(this, new System.ComponentModel.AsyncCompletedEventArgs(new Exception("Version Check was not run."), true, null));
       }
     }
     private void wsVer_DownloadProgressChanged(object sender, System.Net.DownloadProgressChangedEventArgs e)
@@ -254,7 +269,7 @@ namespace RestrictionTrackerGTK
     private void wsVer_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
     {
       if (DownloadResult != null)
-        DownloadResult(sender, new DownloadEventArgs(VerNumber, e));
+        DownloadResult(sender, e);
     }
     #region "IDisposable Support"
     private bool disposedValue;

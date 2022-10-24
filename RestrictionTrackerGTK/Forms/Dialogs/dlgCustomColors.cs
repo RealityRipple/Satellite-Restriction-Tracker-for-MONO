@@ -6,18 +6,13 @@ namespace RestrictionTrackerGTK
   public partial class dlgCustomColors:
     Gtk.Dialog
   {
-    private long lDown;
-    private long lUp;
-    private long lDownLim;
-    private long lUpLim;
+    private long lUsed;
+    private long lLimit;
     private int iD;
-    private int iU;
     private bool dDown;
-    private bool dUp;
     internal AppSettings mySettings;
     private bool HasSaved = false;
-    private localRestrictionTracker.SatHostTypes DisplayAs;
-    private System.Collections.Generic.List<DataBase.DataRow> FakeData;
+    private System.Collections.Generic.List<DataRow> FakeData;
     private Random rGen;
     private Gtk.ColorButton cbSelected;
     private Gtk.Menu mnuColorOpts;
@@ -26,7 +21,6 @@ namespace RestrictionTrackerGTK
     private Gtk.MenuItem mnuThisDefault;
     private Gtk.MenuItem mnuGraphDefault;
     private Gtk.MenuItem mnuAllDefault;
-    private localRestrictionTracker.SatHostTypes useStyle = localRestrictionTracker.SatHostTypes.Other;
     internal dlgCustomColors(AppSettings settings)
     {
       mySettings = settings;
@@ -61,148 +55,44 @@ namespace RestrictionTrackerGTK
       }
       this.WindowStateEvent += HandleWindowStateEvent;
 
-      if (lDownLim == 0 & lUpLim == 0)
+      if (lLimit == 0)
       {
-        lDown = 8;
-        lDownLim = 16;
+        lUsed = 8;
+        lLimit = 16;
         dDown = true;
         iD = 1;
-        lUp = 4;
-        lUpLim = 16;
-        dUp = true;
-        iU = 1;
       }
-      useStyle = mySettings.AccountType;
-      switch (useStyle)
-      {
-        case localRestrictionTracker.SatHostTypes.WildBlue_LEGACY:
-        case localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
-          lblMainTitle.Text = "Main Window Current Usage Graphs";
-          lblMainDownTitle.Text = "Download Colors";
-          lblMainUpTitle.Text = "Upload Colors";
-          grpMainUp.Visible = true;
-          lblTrayTitle.Text = "Tray Icon Current Usage Graph Overlay";
-          lblTrayDownTitle.Text = "Download Colors";
-          lblTrayUpTitle.Text = "Upload Colors";
-          grpTrayUp.Visible = true;
-          lblHistoryTitle.Text = "History Window Graphs";
-          lblHistoryDownTitle.Text = "Download Colors";
-          lblHistoryUpTitle.Text = "Upload Colors";
-          grpHistoryUp.Visible = true;
-          lblHistoryUpMax.Visible = true;
-          cmdHistoryUpMax.Visible = true;
-          DisplayAs = localRestrictionTracker.SatHostTypes.WildBlue_LEGACY;
-          SetTextBGAlignments(true);
-          break;
-        case localRestrictionTracker.SatHostTypes.Dish_EXEDE:
-          lblMainTitle.Text = "Main Window Current Usage Graphs";
-          lblMainDownTitle.Text = "Anytime Colors";
-          lblMainUpTitle.Text = "Off-Peak Colors";
-          grpMainUp.Visible = true;
-          lblTrayTitle.Text = "Tray Icon Current Usage Graph Overlay";
-          lblTrayDownTitle.Text = "Anytime Colors";
-          lblTrayUpTitle.Text = "Off-Peak Colors";
-          grpTrayUp.Visible = true;
-          lblHistoryTitle.Text = "History Window Graphs";
-          lblHistoryDownTitle.Text = "Anytime Colors";
-          lblHistoryUpTitle.Text = "Off-Peak Colors";
-          grpHistoryUp.Visible = true;
-          lblHistoryUpMax.Visible = true;
-          cmdHistoryUpMax.Visible = true;
-          DisplayAs = localRestrictionTracker.SatHostTypes.Dish_EXEDE;
-          SetTextBGAlignments(true);
-          break;
-        case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
-        case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
-          lblMainTitle.Text = "Main Window Graph";
-          lblMainDownTitle.Text = "Usage Colors";
-          grpMainUp.Visible = false;
-          lblTrayTitle.Text = "Tray Icon Graph";
-          lblTrayDownTitle.Text = "Usage Colors";
-          grpTrayUp.Visible = false;
-          lblHistoryTitle.Text = "History Graph";
-          lblHistoryDownTitle.Text = "Usage Colors";
-          grpHistoryUp.Visible = false;
-          lblHistoryUpMax.Visible = false;
-          cmdHistoryUpMax.Visible = false;
-          DisplayAs = localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE;
-          SetTextBGAlignments(false);
-          break;
-        default:
-          lblMainTitle.Text = "Main Window Current Usage Graphs";
-          lblMainDownTitle.Text = "Download Colors";
-          lblMainUpTitle.Text = "Upload Colors";
-          grpMainUp.Visible = true;
-          lblTrayTitle.Text = "Tray Icon Current Usage Graph Overlay";
-          lblTrayDownTitle.Text = "Download Colors";
-          lblTrayUpTitle.Text = "Upload Colors";
-          grpTrayUp.Visible = true;
-          lblHistoryTitle.Text = "History Window Graphs";
-          lblHistoryDownTitle.Text = "Download Colors";
-          lblHistoryUpTitle.Text = "Upload Colors";
-          grpHistoryUp.Visible = true;
-          lblHistoryUpMax.Visible = true;
-          cmdHistoryUpMax.Visible = true;
-          DisplayAs = localRestrictionTracker.SatHostTypes.Other;
-          SetTextBGAlignments(true);
-          break;
-      }
-      cmdMainDownA.ColorSet += cmdColor_SelectedColor;
-      cmdMainDownA.ButtonReleaseEvent += cmdColor_MouseUp;
-      cmdMainDownB.ColorSet += cmdColor_SelectedColor;
-      cmdMainDownB.ButtonReleaseEvent += cmdColor_MouseUp;
-      chkMainDownB.Toggled += chkB_CheckedChanged;
-      cmdMainDownC.ColorSet += cmdColor_SelectedColor;
-      cmdMainDownC.ButtonReleaseEvent += cmdColor_MouseUp;
-      cmdMainUpA.ColorSet += cmdColor_SelectedColor;
-      cmdMainUpA.ButtonReleaseEvent += cmdColor_MouseUp;
-      cmdMainUpB.ColorSet += cmdColor_SelectedColor;
-      cmdMainUpB.ButtonReleaseEvent += cmdColor_MouseUp;
-      chkMainUpB.Toggled += chkB_CheckedChanged;
-      cmdMainUpC.ColorSet += cmdColor_SelectedColor;
-      cmdMainUpC.ButtonReleaseEvent += cmdColor_MouseUp;
+      cmdMainUsedA.ColorSet += cmdColor_SelectedColor;
+      cmdMainUsedA.ButtonReleaseEvent += cmdColor_MouseUp;
+      cmdMainUsedB.ColorSet += cmdColor_SelectedColor;
+      cmdMainUsedB.ButtonReleaseEvent += cmdColor_MouseUp;
+      chkMainUsedB.Toggled += chkB_CheckedChanged;
+      cmdMainUsedC.ColorSet += cmdColor_SelectedColor;
+      cmdMainUsedC.ButtonReleaseEvent += cmdColor_MouseUp;
       cmdMainText.ColorSet += cmdColor_SelectedColor;
       cmdMainText.ButtonReleaseEvent += cmdColor_MouseUp;
       cmdMainBG.ColorSet += cmdColor_SelectedColor;
       cmdMainBG.ButtonReleaseEvent += cmdColor_MouseUp;
 
-      cmdTrayDownA.ColorSet += cmdColor_SelectedColor;
-      cmdTrayDownA.ButtonReleaseEvent += cmdColor_MouseUp;
-      cmdTrayDownB.ColorSet += cmdColor_SelectedColor;
-      cmdTrayDownB.ButtonReleaseEvent += cmdColor_MouseUp;
-      chkTrayDownB.Toggled += chkB_CheckedChanged;
-      cmdTrayDownC.ColorSet += cmdColor_SelectedColor;
-      cmdTrayDownC.ButtonReleaseEvent += cmdColor_MouseUp;
-      cmdTrayUpA.ColorSet += cmdColor_SelectedColor;
-      cmdTrayUpA.ButtonReleaseEvent += cmdColor_MouseUp;
-      cmdTrayUpB.ColorSet += cmdColor_SelectedColor;
-      cmdTrayUpB.ButtonReleaseEvent += cmdColor_MouseUp;
-      chkTrayUpB.Toggled += chkB_CheckedChanged;
-      cmdTrayUpC.ColorSet += cmdColor_SelectedColor;
-      cmdTrayUpC.ButtonReleaseEvent += cmdColor_MouseUp;
+      cmdTrayUsedA.ColorSet += cmdColor_SelectedColor;
+      cmdTrayUsedA.ButtonReleaseEvent += cmdColor_MouseUp;
+      cmdTrayUsedB.ColorSet += cmdColor_SelectedColor;
+      cmdTrayUsedB.ButtonReleaseEvent += cmdColor_MouseUp;
+      chkTrayUsedB.Toggled += chkB_CheckedChanged;
+      cmdTrayUsedC.ColorSet += cmdColor_SelectedColor;
+      cmdTrayUsedC.ButtonReleaseEvent += cmdColor_MouseUp;
 
-      cmdHistoryDownLine.ColorSet += cmdColor_SelectedColor;
-      cmdHistoryDownLine.ButtonReleaseEvent += cmdColor_MouseUp;
-      cmdHistoryDownA.ColorSet += cmdColor_SelectedColor;
-      cmdHistoryDownA.ButtonReleaseEvent += cmdColor_MouseUp;
-      cmdHistoryDownB.ColorSet += cmdColor_SelectedColor;
-      cmdHistoryDownB.ButtonReleaseEvent += cmdColor_MouseUp;
-      chkHistoryDownB.Toggled += chkB_CheckedChanged;
-      cmdHistoryDownC.ColorSet += cmdColor_SelectedColor;
-      cmdHistoryDownC.ButtonReleaseEvent += cmdColor_MouseUp;
-      cmdHistoryDownMax.ColorSet += cmdColor_SelectedColor;
-      cmdHistoryDownMax.ButtonReleaseEvent += cmdColor_MouseUp;
-      cmdHistoryUpLine.ColorSet += cmdColor_SelectedColor;
-      cmdHistoryUpLine.ButtonReleaseEvent += cmdColor_MouseUp;
-      cmdHistoryUpA.ColorSet += cmdColor_SelectedColor;
-      cmdHistoryUpA.ButtonReleaseEvent += cmdColor_MouseUp;
-      cmdHistoryUpB.ColorSet += cmdColor_SelectedColor;
-      cmdHistoryUpB.ButtonReleaseEvent += cmdColor_MouseUp;
-      chkHistoryUpB.Toggled += chkB_CheckedChanged;
-      cmdHistoryUpC.ColorSet += cmdColor_SelectedColor;
-      cmdHistoryUpC.ButtonReleaseEvent += cmdColor_MouseUp;
-      cmdHistoryUpMax.ColorSet += cmdColor_SelectedColor;
-      cmdHistoryUpMax.ButtonReleaseEvent += cmdColor_MouseUp;
+      cmdHistoryUsedLine.ColorSet += cmdColor_SelectedColor;
+      cmdHistoryUsedLine.ButtonReleaseEvent += cmdColor_MouseUp;
+      cmdHistoryUsedA.ColorSet += cmdColor_SelectedColor;
+      cmdHistoryUsedA.ButtonReleaseEvent += cmdColor_MouseUp;
+      cmdHistoryUsedB.ColorSet += cmdColor_SelectedColor;
+      cmdHistoryUsedB.ButtonReleaseEvent += cmdColor_MouseUp;
+      chkHistoryUsedB.Toggled += chkB_CheckedChanged;
+      cmdHistoryUsedC.ColorSet += cmdColor_SelectedColor;
+      cmdHistoryUsedC.ButtonReleaseEvent += cmdColor_MouseUp;
+      cmdHistoryUsedMax.ColorSet += cmdColor_SelectedColor;
+      cmdHistoryUsedMax.ButtonReleaseEvent += cmdColor_MouseUp;
       cmdHistoryText.ColorSet += cmdColor_SelectedColor;
       cmdHistoryText.ButtonReleaseEvent += cmdColor_MouseUp;
       cmdHistoryBG.ColorSet += cmdColor_SelectedColor;
@@ -219,32 +109,21 @@ namespace RestrictionTrackerGTK
       }
       else
       {
-        SetElColor(ref cmdMainDownA, mySettings.Colors.MainDownA);
-        SetElColor(ref cmdMainDownB, mySettings.Colors.MainDownB);
-        SetElColor(ref cmdMainDownC, mySettings.Colors.MainDownC);
-        SetElColor(ref cmdMainUpA, mySettings.Colors.MainUpA);
-        SetElColor(ref cmdMainUpB, mySettings.Colors.MainUpB);
-        SetElColor(ref cmdMainUpC, mySettings.Colors.MainUpC);
+        SetElColor(ref cmdMainUsedA, mySettings.Colors.MainDownA);
+        SetElColor(ref cmdMainUsedB, mySettings.Colors.MainDownB);
+        SetElColor(ref cmdMainUsedC, mySettings.Colors.MainDownC);
         SetElColor(ref cmdMainText, mySettings.Colors.MainText);
         SetElColor(ref cmdMainBG, mySettings.Colors.MainBackground);
 
-        SetElColor(ref cmdTrayDownA, mySettings.Colors.TrayDownA);
-        SetElColor(ref cmdTrayDownB, mySettings.Colors.TrayDownB);
-        SetElColor(ref cmdTrayDownC, mySettings.Colors.TrayDownC);
-        SetElColor(ref cmdTrayUpA, mySettings.Colors.TrayUpA);
-        SetElColor(ref cmdTrayUpB, mySettings.Colors.TrayUpB);
-        SetElColor(ref cmdTrayUpC, mySettings.Colors.TrayUpC);
+        SetElColor(ref cmdTrayUsedA, mySettings.Colors.TrayDownA);
+        SetElColor(ref cmdTrayUsedB, mySettings.Colors.TrayDownB);
+        SetElColor(ref cmdTrayUsedC, mySettings.Colors.TrayDownC);
 
-        SetElColor(ref cmdHistoryDownLine, mySettings.Colors.HistoryDownLine);
-        SetElColor(ref cmdHistoryDownA, mySettings.Colors.HistoryDownA);
-        SetElColor(ref cmdHistoryDownB, mySettings.Colors.HistoryDownB);
-        SetElColor(ref cmdHistoryDownC, mySettings.Colors.HistoryDownC);
-        SetElColor(ref cmdHistoryDownMax, mySettings.Colors.HistoryDownMax);
-        SetElColor(ref cmdHistoryUpLine, mySettings.Colors.HistoryUpLine);
-        SetElColor(ref cmdHistoryUpA, mySettings.Colors.HistoryUpA);
-        SetElColor(ref cmdHistoryUpB, mySettings.Colors.HistoryUpB);
-        SetElColor(ref cmdHistoryUpC, mySettings.Colors.HistoryUpC);
-        SetElColor(ref cmdHistoryUpMax, mySettings.Colors.HistoryUpMax);
+        SetElColor(ref cmdHistoryUsedLine, mySettings.Colors.HistoryDownLine);
+        SetElColor(ref cmdHistoryUsedA, mySettings.Colors.HistoryDownA);
+        SetElColor(ref cmdHistoryUsedB, mySettings.Colors.HistoryDownB);
+        SetElColor(ref cmdHistoryUsedC, mySettings.Colors.HistoryDownC);
+        SetElColor(ref cmdHistoryUsedMax, mySettings.Colors.HistoryDownMax);
         SetElColor(ref cmdHistoryText, mySettings.Colors.HistoryText);
         SetElColor(ref cmdHistoryBG, mySettings.Colors.HistoryBackground);
         SetElColor(ref cmdHistoryLightGrid, mySettings.Colors.HistoryLightGrid);
@@ -304,61 +183,35 @@ namespace RestrictionTrackerGTK
       if (pctMain.Allocation.Width == 1 & pctMain.Allocation.Height == 1 &
         pctHistory.Allocation.Width == 1 & pctHistory.Allocation.Height == 1)
         return;
-      Color mda = modFunctions.GdkColorToDrawingColor(cmdMainDownA.Color);
-      Color mdb = modFunctions.GdkColorToDrawingColor(cmdMainDownB.Color);
-      if (!chkMainDownB.Active)
+      Color mda = modFunctions.GdkColorToDrawingColor(cmdMainUsedA.Color);
+      Color mdb = modFunctions.GdkColorToDrawingColor(cmdMainUsedB.Color);
+      if (!chkMainUsedB.Active)
       {
         mdb = Color.Transparent;
       }
-      Color mdc = modFunctions.GdkColorToDrawingColor(cmdMainDownC.Color);
-
-      Color mua = modFunctions.GdkColorToDrawingColor(cmdMainUpA.Color);
-      Color mub = modFunctions.GdkColorToDrawingColor(cmdMainUpB.Color);
-      if (!chkMainUpB.Active)
-      {
-        mub = Color.Transparent;
-      }
-      Color muc = modFunctions.GdkColorToDrawingColor(cmdMainUpC.Color);
+      Color mdc = modFunctions.GdkColorToDrawingColor(cmdMainUsedC.Color);
 
       Color mt = modFunctions.GdkColorToDrawingColor(cmdMainText.Color);
       Color mbg = modFunctions.GdkColorToDrawingColor(cmdMainBG.Color);
 
 
-      Color tda = modFunctions.GdkColorToDrawingColor(cmdTrayDownA.Color);
-      Color tdb = modFunctions.GdkColorToDrawingColor(cmdTrayDownB.Color);
-      if (!chkTrayDownB.Active)
+      Color tda = modFunctions.GdkColorToDrawingColor(cmdTrayUsedA.Color);
+      Color tdb = modFunctions.GdkColorToDrawingColor(cmdTrayUsedB.Color);
+      if (!chkTrayUsedB.Active)
       {
         tdb = Color.Transparent;
       }
-      Color tdc = modFunctions.GdkColorToDrawingColor(cmdTrayDownC.Color);
+      Color tdc = modFunctions.GdkColorToDrawingColor(cmdTrayUsedC.Color);
 
-      Color tua = modFunctions.GdkColorToDrawingColor(cmdTrayUpA.Color);
-      Color tub = modFunctions.GdkColorToDrawingColor(cmdTrayUpB.Color);
-      if (!chkTrayUpB.Active)
-      {
-        tub = Color.Transparent;
-      }
-      Color tuc = modFunctions.GdkColorToDrawingColor(cmdTrayUpC.Color);
-
-      Color hdl = modFunctions.GdkColorToDrawingColor(cmdHistoryDownLine.Color);
-      Color hda = modFunctions.GdkColorToDrawingColor(cmdHistoryDownA.Color);
-      Color hdb = modFunctions.GdkColorToDrawingColor(cmdHistoryDownB.Color);
-      if (!chkHistoryDownB.Active)
+      Color hdl = modFunctions.GdkColorToDrawingColor(cmdHistoryUsedLine.Color);
+      Color hda = modFunctions.GdkColorToDrawingColor(cmdHistoryUsedA.Color);
+      Color hdb = modFunctions.GdkColorToDrawingColor(cmdHistoryUsedB.Color);
+      if (!chkHistoryUsedB.Active)
       {
         hdb = Color.Transparent;
       }
-      Color hdc = modFunctions.GdkColorToDrawingColor(cmdHistoryDownC.Color);
-      Color hdm = modFunctions.GdkColorToDrawingColor(cmdHistoryDownMax.Color);
-
-      Color hul = modFunctions.GdkColorToDrawingColor(cmdHistoryUpLine.Color);
-      Color hua = modFunctions.GdkColorToDrawingColor(cmdHistoryUpA.Color);
-      Color hub = modFunctions.GdkColorToDrawingColor(cmdHistoryUpB.Color);
-      if (!chkHistoryUpB.Active)
-      {
-        hub = Color.Transparent;
-      }
-      Color huc = modFunctions.GdkColorToDrawingColor(cmdHistoryUpC.Color);
-      Color hum = modFunctions.GdkColorToDrawingColor(cmdHistoryUpMax.Color);
+      Color hdc = modFunctions.GdkColorToDrawingColor(cmdHistoryUsedC.Color);
+      Color hdm = modFunctions.GdkColorToDrawingColor(cmdHistoryUsedMax.Color);
 
       Color ht = modFunctions.GdkColorToDrawingColor(cmdHistoryText.Color);
       Color hbg = modFunctions.GdkColorToDrawingColor(cmdHistoryBG.Color);
@@ -376,102 +229,24 @@ namespace RestrictionTrackerGTK
       int iHalfH = (int)Math.Floor(iHeight / 2d);
 
       Graphics g;
-      if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY)
-      {
-        Rectangle FakeMRect = new Rectangle(0, 0, iWidth - 1, iHeight * 2);
-        Image FakeD = modFunctions.DisplayProgress(modFunctions.DrawingSizeToGdkSize(FakeMRect.Size), lDown, lDownLim, mySettings.Accuracy, mda, mdb, mdc, mt, mbg);
-        Image FakeU = modFunctions.DisplayProgress(modFunctions.DrawingSizeToGdkSize(FakeMRect.Size), lUp, lUpLim, mySettings.Accuracy, mua, mub, muc, mt, mbg);
-        Bitmap fakeI = new Bitmap(iWidth, iHeight);
-        g = Graphics.FromImage(fakeI);
-        g.Clear(Color.Black);
-        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-        g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-        System.Drawing.Rectangle dRect = new System.Drawing.Rectangle(0, 0, iHalfW, iHeight);
-        System.Drawing.Rectangle uRect = new System.Drawing.Rectangle(iHalfW + 1, 0, iHalfW, iHeight);
-        g.DrawImage(FakeD, dRect, FakeMRect, GraphicsUnit.Pixel);
-        g.DrawImage(FakeU, uRect, FakeMRect, GraphicsUnit.Pixel);
-        pctMain.Pixbuf = modFunctions.ImageToPixbuf(fakeI);
-      }
-      else if (DisplayAs == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE)
-      {
-        pctMain.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctMain.Allocation.Size, lDown, lDownLim, mySettings.Accuracy, mda, mdb, mdc, mt, mbg));
-      }
-      else if (DisplayAs == localRestrictionTracker.SatHostTypes.Dish_EXEDE)
-      {
-        Rectangle FakeMRect = new Rectangle(0, 0, (iWidth - 1), (iHeight * 2));
-        Image FakeD = modFunctions.DisplayProgress(modFunctions.DrawingSizeToGdkSize(FakeMRect.Size), lDown, lDownLim, mySettings.Accuracy, mda, mdb, mdc, mt, mbg);
-        Image FakeU = modFunctions.DisplayProgress(modFunctions.DrawingSizeToGdkSize(FakeMRect.Size), lUp, lUpLim, mySettings.Accuracy, mua, mub, muc, mt, mbg);
-        Bitmap fakeI = new Bitmap(iWidth, iHeight);
-        g = Graphics.FromImage(fakeI);
-        g.Clear(Color.Black);
-        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-        g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-        Rectangle dRect = new Rectangle(0, 0, iHalfW, iHeight);
-        Rectangle uRect = new Rectangle(iHalfW + 1, 0, iHalfW, iHeight);
-        g.DrawImage(FakeD, dRect, FakeMRect, GraphicsUnit.Pixel);
-        g.DrawImage(FakeU, uRect, FakeMRect, GraphicsUnit.Pixel);
-        pctMain.Pixbuf = modFunctions.ImageToPixbuf(fakeI);
-      }
-      else
-      {
-        pctMain.SetFromStock(Gtk.Stock.DialogError, Gtk.IconSize.Dialog);
-      }
+      pctMain.Pixbuf = modFunctions.ImageToPixbuf(modFunctions.DisplayRProgress(pctMain.Allocation.Size, lUsed, lLimit, mySettings.Accuracy, mda, mdb, mdc, mt, mbg));
       Bitmap imgTray = new Bitmap(16, 16);
       g = Graphics.FromImage(imgTray);
 
       g.Clear(Color.Transparent);
-      if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY)
+
+      if (lUsed >= lLimit)
       {
-        if (lDown >= lDownLim | lUp >= lUpLim)
-        {
-          g.DrawIconUnstretched(new System.Drawing.Icon(GetType(), "Resources.tray_16.restricted.ico"), new Rectangle(0, 0, 16, 16));
-          if (lDown < lDownLim)
-            modFunctions.CreateTrayIcon_Left(ref g, lDown, lDownLim, tda, tdb, tdc, 16);
-          if (lUp < lUpLim)
-            modFunctions.CreateTrayIcon_Right(ref g, lUp, lUpLim, tua, tub, tuc, 16);
-        }
-        else
-        {
-          g.DrawIconUnstretched(new System.Drawing.Icon(GetType(), "Resources.tray_16.norm.ico"), new Rectangle(0, 0, 16, 16));
-          modFunctions.CreateTrayIcon_Left(ref g, lDown, lDownLim, tda, tdb, tdc, 16);
-          modFunctions.CreateTrayIcon_Right(ref g, lUp, lUpLim, tua, tub, tuc, 16);
-        }
-        pctTray.Pixbuf = modFunctions.ImageToPixbuf(imgTray);
-      }
-      else if (DisplayAs == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE)
-      {
-        if (lDown >= lDownLim)
-        {
-          g.DrawIconUnstretched(new System.Drawing.Icon(GetType(), "Resources.tray_16.restricted.ico"), new Rectangle(0, 0, 16, 16));
-        }
-        else
-        {
-          g.DrawIconUnstretched(new System.Drawing.Icon(GetType(), "Resources.tray_16.norm.ico"), new Rectangle(0, 0, 16, 16));
-          modFunctions.CreateTrayIcon_Left(ref g, lDown, lDownLim, tda, tdb, tdc, 16);
-          modFunctions.CreateTrayIcon_Right(ref g, lDown, lDownLim, tda, tdb, tdc, 16);
-        }
-        pctTray.Pixbuf = modFunctions.ImageToPixbuf(imgTray);
-      }
-      else if (DisplayAs == localRestrictionTracker.SatHostTypes.Dish_EXEDE)
-      {
-        if (lDown >= lDownLim)
-        {
-          g.DrawIconUnstretched(new System.Drawing.Icon(GetType(), "Resources.tray_16.restricted.ico"), new Rectangle(0, 0, 16, 16));
-        }
-        else
-        {
-          g.DrawIconUnstretched(new System.Drawing.Icon(GetType(), "Resources.tray_16.norm.ico"), new Rectangle(0, 0, 16, 16));
-          modFunctions.CreateTrayIcon_Left(ref g, lDown, lDownLim, tda, tdb, tdc, 16);
-          modFunctions.CreateTrayIcon_Right(ref g, lDown, lDownLim, tda, tdb, tdc, 16);
-        }
-        pctTray.Pixbuf = modFunctions.ImageToPixbuf(imgTray);
+        g.DrawIconUnstretched(new System.Drawing.Icon(GetType(), "Resources.tray_16.restricted.ico"), new Rectangle(0, 0, 16, 16));
       }
       else
       {
-        pctTray.SetFromStock(Gtk.Stock.DialogError, Gtk.IconSize.Dialog);
+        g.DrawIconUnstretched(new System.Drawing.Icon(GetType(), "Resources.tray_16.norm.ico"), new Rectangle(0, 0, 16, 16));
+        modFunctions.CreateTrayIcon_Left(ref g, lUsed, lLimit, tda, tdb, tdc, 16);
+        modFunctions.CreateTrayIcon_Right(ref g, lUsed, lLimit, tda, tdb, tdc, 16);
       }
+      pctTray.Pixbuf = modFunctions.ImageToPixbuf(imgTray);
+    
 
       iWidth = pctHistory.WidthRequest;
       if (iWidth > pctHistory.Allocation.Width)
@@ -486,139 +261,66 @@ namespace RestrictionTrackerGTK
         MakeFakeData();
       }
       Rectangle FakeHRect = new Rectangle(0, 0, 500, 200);
-      if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY)
-      {
-        Image FakeD = modFunctions.DrawLineGraph(FakeData.ToArray(), true, FakeHRect.Size, hdl, hda, hdb, hdc, ht, hbg, hdm, hgl, hgd);
-        Image FakeU = modFunctions.DrawLineGraph(FakeData.ToArray(), false, FakeHRect.Size, hul, hua, hub, huc, ht, hbg, hum, hgl, hgd);
-        Bitmap fakeI = new Bitmap(iWidth, iHeight);
-        g = Graphics.FromImage(fakeI);
 
-        g.Clear(Color.Black);
-        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-        g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-        int iHistH = (int)(iHalfH * 0.85d);
-        Rectangle dRect = new Rectangle(0, (int)((double)iHalfH * 0.1d), iWidth, iHistH);
-        Rectangle uRect = new Rectangle(0, (int)((double)iHalfH + ((double)iHalfH * 0.05d)), iWidth, iHistH);
-        g.DrawImage(FakeD, dRect, FakeHRect, GraphicsUnit.Pixel);
-        g.DrawImage(FakeU, uRect, FakeHRect, GraphicsUnit.Pixel);
+      Image FakeR = modFunctions.DrawRGraph(FakeData.ToArray(), FakeHRect.Size, hdl, hda, hdb, hdc, ht, hbg, hdm, hgl, hgd);
 
-        pctHistory.Pixbuf = modFunctions.ImageToPixbuf(fakeI);
-      }
-      else if (DisplayAs == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE)
-      {
-        Image FakeR = modFunctions.DrawRGraph(FakeData.ToArray(), FakeHRect.Size, hdl, hda, hdb, hdc, ht, hbg, hdm, hgl, hgd);
-
-        Rectangle dRect;
-        if (iWidth / FakeR.Width > iHeight / FakeR.Height)
-          dRect = new Rectangle((iWidth - (int)(iHeight * (FakeR.Width / (double)FakeR.Height))) / 2, 0, (int)(iHeight * (FakeR.Width / (double)FakeR.Height)), iHeight);
-        else
-          dRect = new Rectangle(0, (iHeight - (int)(iWidth * (FakeR.Height / (double)FakeR.Width))) / 2, iWidth, (int)(iWidth * (FakeR.Height / (double)FakeR.Width)));
-
-        Bitmap fakeI = new Bitmap(dRect.Width, dRect.Height);
-        g = Graphics.FromImage(fakeI);
-
-        g.Clear(Color.Black);
-        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-        g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-
-
-
-        g.DrawImage(FakeR, new Rectangle(0, 0, dRect.Width, dRect.Height), FakeHRect, GraphicsUnit.Pixel);
-        pctHistory.Pixbuf = modFunctions.ImageToPixbuf(fakeI);
-      }
-      else if (DisplayAs == localRestrictionTracker.SatHostTypes.Dish_EXEDE)
-      {
-        Image FakeD = modFunctions.DrawLineGraph(FakeData.ToArray(), true, FakeHRect.Size, hdl, hda, hdb, hdc, ht, hbg, hdm, hgl, hgd);
-        Image FakeU = modFunctions.DrawLineGraph(FakeData.ToArray(), false, FakeHRect.Size, hul, hua, hub, huc, ht, hbg, hum, hgl, hgd);
-        Bitmap fakeI = new Bitmap(iWidth, iHeight);
-        g = Graphics.FromImage(fakeI);
-
-        g.Clear(Color.Black);
-        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-        g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-        Rectangle dRect = new Rectangle(0, (int)(iHalfH * 0.1d), iWidth, (int)(iHalfH * 0.85d));
-        Rectangle uRect = new Rectangle(0, (int)(iHalfH + (iHalfH * 0.05d)), iWidth, (int)(iHalfH * 0.85d));
-        g.DrawImage(FakeD, dRect, FakeHRect, GraphicsUnit.Pixel);
-        g.DrawImage(FakeU, uRect, FakeHRect, GraphicsUnit.Pixel);
-        pctHistory.Pixbuf = modFunctions.ImageToPixbuf(fakeI);
-      }
+      Rectangle dRect;
+      if (iWidth / FakeR.Width > iHeight / FakeR.Height)
+        dRect = new Rectangle((iWidth - (int)(iHeight * (FakeR.Width / (double)FakeR.Height))) / 2, 0, (int)(iHeight * (FakeR.Width / (double)FakeR.Height)), iHeight);
       else
-      {
-        pctHistory.SetFromStock(Gtk.Stock.DialogError, Gtk.IconSize.Dialog);
-      }
+        dRect = new Rectangle(0, (iHeight - (int)(iWidth * (FakeR.Height / (double)FakeR.Width))) / 2, iWidth, (int)(iWidth * (FakeR.Height / (double)FakeR.Width)));
+
+      Bitmap fakeI = new Bitmap(dRect.Width, dRect.Height);
+      g = Graphics.FromImage(fakeI);
+
+      g.Clear(Color.Black);
+      g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+      g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+      g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+
+
+
+      g.DrawImage(FakeR, new Rectangle(0, 0, dRect.Width, dRect.Height), FakeHRect, GraphicsUnit.Pixel);
+      pctHistory.Pixbuf = modFunctions.ImageToPixbuf(fakeI);
+      
     }
     #region "Buttons"
     private void cmdSave_Click(System.Object sender, System.EventArgs e)
     {
-      mySettings.Colors.MainDownA = modFunctions.GdkColorToDrawingColor(cmdMainDownA.Color);
-      if (chkMainDownB.Active)
+      mySettings.Colors.MainDownA = modFunctions.GdkColorToDrawingColor(cmdMainUsedA.Color);
+      if (chkMainUsedB.Active)
       {
-        mySettings.Colors.MainDownB = modFunctions.GdkColorToDrawingColor(cmdMainDownB.Color);
+        mySettings.Colors.MainDownB = modFunctions.GdkColorToDrawingColor(cmdMainUsedB.Color);
       }
       else
       {
         mySettings.Colors.MainDownB = Color.Transparent;
       }
-      mySettings.Colors.MainDownC = modFunctions.GdkColorToDrawingColor(cmdMainDownC.Color);
-      mySettings.Colors.MainUpA = modFunctions.GdkColorToDrawingColor(cmdMainUpA.Color);
-      if (chkMainUpB.Active)
-      {
-        mySettings.Colors.MainUpB = modFunctions.GdkColorToDrawingColor(cmdMainUpB.Color);
-      }
-      else
-      {
-        mySettings.Colors.MainUpB = Color.Transparent;
-      }
-      mySettings.Colors.MainUpC = modFunctions.GdkColorToDrawingColor(cmdMainUpC.Color);
+      mySettings.Colors.MainDownC = modFunctions.GdkColorToDrawingColor(cmdMainUsedC.Color);
       mySettings.Colors.MainText = modFunctions.GdkColorToDrawingColor(cmdMainText.Color);
       mySettings.Colors.MainBackground = modFunctions.GdkColorToDrawingColor(cmdMainBG.Color);
-      mySettings.Colors.TrayDownA = modFunctions.GdkColorToDrawingColor(cmdTrayDownA.Color);
-      if (chkTrayDownB.Active)
+      mySettings.Colors.TrayDownA = modFunctions.GdkColorToDrawingColor(cmdTrayUsedA.Color);
+      if (chkTrayUsedB.Active)
       {
-        mySettings.Colors.TrayDownB = modFunctions.GdkColorToDrawingColor(cmdTrayDownB.Color);
+        mySettings.Colors.TrayDownB = modFunctions.GdkColorToDrawingColor(cmdTrayUsedB.Color);
       }
       else
       {
         mySettings.Colors.TrayDownB = Color.Transparent;
       }
-      mySettings.Colors.TrayDownC = modFunctions.GdkColorToDrawingColor(cmdTrayDownC.Color);
-      mySettings.Colors.TrayUpA = modFunctions.GdkColorToDrawingColor(cmdTrayUpA.Color);
-      if (chkTrayUpB.Active)
+      mySettings.Colors.TrayDownC = modFunctions.GdkColorToDrawingColor(cmdTrayUsedC.Color);
+      mySettings.Colors.HistoryDownLine = modFunctions.GdkColorToDrawingColor(cmdHistoryUsedLine.Color);
+      mySettings.Colors.HistoryDownA = modFunctions.GdkColorToDrawingColor(cmdHistoryUsedA.Color);
+      if (chkHistoryUsedB.Active)
       {
-        mySettings.Colors.TrayUpB = modFunctions.GdkColorToDrawingColor(cmdTrayUpB.Color);
-      }
-      else
-      {
-        mySettings.Colors.TrayUpB = Color.Transparent;
-      }
-      mySettings.Colors.TrayUpC = modFunctions.GdkColorToDrawingColor(cmdTrayUpC.Color);
-      mySettings.Colors.HistoryDownLine = modFunctions.GdkColorToDrawingColor(cmdHistoryDownLine.Color);
-      mySettings.Colors.HistoryDownA = modFunctions.GdkColorToDrawingColor(cmdHistoryDownA.Color);
-      if (chkHistoryDownB.Active)
-      {
-        mySettings.Colors.HistoryDownB = modFunctions.GdkColorToDrawingColor(cmdHistoryDownB.Color);
+        mySettings.Colors.HistoryDownB = modFunctions.GdkColorToDrawingColor(cmdHistoryUsedB.Color);
       }
       else
       {
         mySettings.Colors.HistoryDownB = Color.Transparent;
       }
-      mySettings.Colors.HistoryDownC = modFunctions.GdkColorToDrawingColor(cmdHistoryDownC.Color);
-      mySettings.Colors.HistoryDownMax = modFunctions.GdkColorToDrawingColor(cmdHistoryDownMax.Color);
-      mySettings.Colors.HistoryUpLine = modFunctions.GdkColorToDrawingColor(cmdHistoryUpLine.Color);
-      mySettings.Colors.HistoryUpA = modFunctions.GdkColorToDrawingColor(cmdHistoryUpA.Color);
-      if (chkHistoryUpB.Active)
-      {
-        mySettings.Colors.HistoryUpB = modFunctions.GdkColorToDrawingColor(cmdHistoryUpB.Color);
-      }
-      else
-      {
-        mySettings.Colors.HistoryUpB = Color.Transparent;
-      }
-      mySettings.Colors.HistoryUpC = modFunctions.GdkColorToDrawingColor(cmdHistoryUpC.Color);
-      mySettings.Colors.HistoryUpMax = modFunctions.GdkColorToDrawingColor(cmdHistoryUpMax.Color);
+      mySettings.Colors.HistoryDownC = modFunctions.GdkColorToDrawingColor(cmdHistoryUsedC.Color);
+      mySettings.Colors.HistoryDownMax = modFunctions.GdkColorToDrawingColor(cmdHistoryUsedMax.Color);
       mySettings.Colors.HistoryText = modFunctions.GdkColorToDrawingColor(cmdHistoryText.Color);
       mySettings.Colors.HistoryBackground = modFunctions.GdkColorToDrawingColor(cmdHistoryBG.Color);
       mySettings.Colors.HistoryLightGrid = modFunctions.GdkColorToDrawingColor(cmdHistoryLightGrid.Color);
@@ -655,37 +357,18 @@ namespace RestrictionTrackerGTK
       {
         if (dDown)
         {
-          lDown += iD;
-          if (lDown >= lDownLim)
+          lUsed += iD;
+          if (lUsed >= lLimit)
           {
             dDown = false;
           }
         }
         else
         {
-          lDown -= iD;
-          if (lDown <= 0)
+          lUsed -= iD;
+          if (lUsed <= 0)
           {
             dDown = true;
-          }
-        }
-      }
-      else if (e.Event.Button == 3)
-      {
-        if (dUp)
-        {
-          lUp += iU;
-          if (lUp >= lUpLim)
-          {
-            dUp = false;
-          }
-        }
-        else
-        {
-          lUp -= iU;
-          if (lUp <= 0)
-          {
-            dUp = true;
           }
         }
       }
@@ -697,37 +380,18 @@ namespace RestrictionTrackerGTK
       {
         if (dDown)
         {
-          lDown += iD;
-          if (lDown >= lDownLim)
+          lUsed += iD;
+          if (lUsed >= lLimit)
           {
             dDown = false;
           }
         }
         else
         {
-          lDown -= iD;
-          if (lDown <= 0)
+          lUsed -= iD;
+          if (lUsed <= 0)
           {
             dDown = true;
-          }
-        }
-      }
-      else if (e.Event.Button == 3)
-      {
-        if (dUp)
-        {
-          lUp += iU;
-          if (lUp >= lUpLim)
-          {
-            dUp = false;
-          }
-        }
-        else
-        {
-          lUp -= iU;
-          if (lUp <= 0)
-          {
-            dUp = true;
           }
         }
       }
@@ -767,7 +431,7 @@ namespace RestrictionTrackerGTK
       Gtk.ColorButton cmdColor = cbSelected;
       if (cmdColor != null)
       {
-        SetElColor(ref cmdColor, DefaultColorForElement(cmdColor.Name, useStyle));
+        SetElColor(ref cmdColor, DefaultColorForElement(cmdColor.Name));
         cmdSave.Sensitive = SettingsChanged();
       }
       RedrawImages();
@@ -778,20 +442,20 @@ namespace RestrictionTrackerGTK
       Gtk.ColorButton[] ColorList = null;
       if (cmdColor.Name.StartsWith("cmdMain"))
       {
-        ColorList = new Gtk.ColorButton[] { cmdMainDownA, cmdMainDownB, cmdMainDownC, cmdMainUpA, cmdMainUpB, cmdMainUpC, cmdMainText, cmdMainBG };
+        ColorList = new Gtk.ColorButton[] { cmdMainUsedA, cmdMainUsedB, cmdMainUsedC, cmdMainText, cmdMainBG };
       }
       else if (cmdColor.Name.StartsWith("cmdTray"))
       {
-        ColorList = new Gtk.ColorButton[] { cmdTrayDownA, cmdTrayDownB, cmdTrayDownC, cmdTrayUpA, cmdTrayUpB, cmdTrayUpC };
+        ColorList = new Gtk.ColorButton[] { cmdTrayUsedA, cmdTrayUsedB, cmdTrayUsedC };
       }
       else
       {
-        ColorList = new Gtk.ColorButton[] { cmdHistoryDownLine, cmdHistoryDownA, cmdHistoryDownB, cmdHistoryDownC, cmdHistoryDownMax, cmdHistoryUpLine, cmdHistoryUpA, cmdHistoryUpB, cmdHistoryUpC, cmdHistoryUpMax, cmdHistoryText, cmdHistoryBG, cmdHistoryLightGrid, cmdHistoryDarkGrid };
+        ColorList = new Gtk.ColorButton[] { cmdHistoryUsedLine, cmdHistoryUsedA, cmdHistoryUsedB, cmdHistoryUsedC, cmdHistoryUsedMax, cmdHistoryText, cmdHistoryBG, cmdHistoryLightGrid, cmdHistoryDarkGrid };
       }
       for (int i = 0; i < ColorList.Length; i++)
       {
         Gtk.ColorButton pColor = ColorList[i];
-        Color bColor = DefaultColorForElement(pColor.Name, useStyle);
+        Color bColor = DefaultColorForElement(pColor.Name);
         SetElColor(ref pColor, bColor);
       }
       RedrawImages();
@@ -800,11 +464,11 @@ namespace RestrictionTrackerGTK
     private void mnuAllDefault_Click(System.Object sender, System.EventArgs e)
     {
       Gtk.ColorButton[] ColorList = null;
-      ColorList = new Gtk.ColorButton[] { cmdMainDownA, cmdMainDownB, cmdMainDownC, cmdMainUpA, cmdMainUpB, cmdMainUpC, cmdMainText, cmdMainBG, cmdTrayDownA, cmdTrayDownB, cmdTrayDownC, cmdTrayUpA, cmdTrayUpB, cmdTrayUpC, cmdHistoryDownLine, cmdHistoryDownA, cmdHistoryDownB, cmdHistoryDownC, cmdHistoryDownMax, cmdHistoryUpLine, cmdHistoryUpA, cmdHistoryUpB, cmdHistoryUpC, cmdHistoryUpMax, cmdHistoryText, cmdHistoryBG, cmdHistoryLightGrid, cmdHistoryDarkGrid };
+      ColorList = new Gtk.ColorButton[] { cmdMainUsedA, cmdMainUsedB, cmdMainUsedC, cmdMainText, cmdMainBG, cmdTrayUsedA, cmdTrayUsedB, cmdTrayUsedC, cmdHistoryUsedLine, cmdHistoryUsedA, cmdHistoryUsedB, cmdHistoryUsedC, cmdHistoryUsedMax, cmdHistoryText, cmdHistoryBG, cmdHistoryLightGrid, cmdHistoryDarkGrid };
       for (int i = 0; i < ColorList.Length; i++)
       {
         Gtk.ColorButton pColor = ColorList[i];
-        Color bColor = DefaultColorForElement(pColor.Name, useStyle);
+        Color bColor = DefaultColorForElement(pColor.Name);
         SetElColor(ref pColor, bColor);
       }
       RedrawImages();
@@ -814,11 +478,11 @@ namespace RestrictionTrackerGTK
     #region "Functions"
     private bool SettingsChanged()
     {
-      if (!modFunctions.CompareColors(mySettings.Colors.MainDownA, cmdMainDownA.Color))
+      if (!modFunctions.CompareColors(mySettings.Colors.MainDownA, cmdMainUsedA.Color))
         return true;
-      if (chkMainDownB.Active)
+      if (chkMainUsedB.Active)
       {
-        if (!modFunctions.CompareColors(mySettings.Colors.MainDownB, cmdMainDownB.Color))
+        if (!modFunctions.CompareColors(mySettings.Colors.MainDownB, cmdMainUsedB.Color))
           return true;
       }
       else
@@ -826,31 +490,17 @@ namespace RestrictionTrackerGTK
         if (mySettings.Colors.MainDownB != Color.Transparent)
           return true;
       }
-      if (!modFunctions.CompareColors(mySettings.Colors.MainDownC, cmdMainDownC.Color))
-        return true;
-      if (!modFunctions.CompareColors(mySettings.Colors.MainUpA, cmdMainUpA.Color))
-        return true;
-      if (chkMainUpB.Active)
-      {
-        if (!modFunctions.CompareColors(mySettings.Colors.MainUpB, cmdMainUpB.Color))
-          return true;
-      }
-      else
-      {
-        if (mySettings.Colors.MainUpB != Color.Transparent)
-          return true;
-      }
-      if (!modFunctions.CompareColors(mySettings.Colors.MainUpC, cmdMainUpC.Color))
+      if (!modFunctions.CompareColors(mySettings.Colors.MainDownC, cmdMainUsedC.Color))
         return true;
       if (!modFunctions.CompareColors(mySettings.Colors.MainText, cmdMainText.Color))
         return true;
       if (!modFunctions.CompareColors(mySettings.Colors.MainBackground, cmdMainBG.Color))
         return true;
-      if (!modFunctions.CompareColors(mySettings.Colors.TrayDownA, cmdTrayDownA.Color))
+      if (!modFunctions.CompareColors(mySettings.Colors.TrayDownA, cmdTrayUsedA.Color))
         return true;
-      if (chkTrayDownB.Active)
+      if (chkTrayUsedB.Active)
       {
-        if (!modFunctions.CompareColors(mySettings.Colors.TrayDownB, cmdTrayDownB.Color))
+        if (!modFunctions.CompareColors(mySettings.Colors.TrayDownB, cmdTrayUsedB.Color))
           return true;
       }
       else
@@ -858,29 +508,15 @@ namespace RestrictionTrackerGTK
         if (mySettings.Colors.TrayDownB != Color.Transparent)
           return true;
       }
-      if (!modFunctions.CompareColors(mySettings.Colors.TrayDownC, cmdTrayDownC.Color))
+      if (!modFunctions.CompareColors(mySettings.Colors.TrayDownC, cmdTrayUsedC.Color))
         return true;
-      if (!modFunctions.CompareColors(mySettings.Colors.TrayUpA, cmdTrayUpA.Color))
+      if (!modFunctions.CompareColors(mySettings.Colors.HistoryDownLine, cmdHistoryUsedLine.Color))
         return true;
-      if (chkTrayUpB.Active)
+      if (!modFunctions.CompareColors(mySettings.Colors.HistoryDownA, cmdHistoryUsedA.Color))
+        return true;
+      if (chkHistoryUsedB.Active)
       {
-        if (!modFunctions.CompareColors(mySettings.Colors.TrayUpB, cmdTrayUpB.Color))
-          return true;
-      }
-      else
-      {
-        if (mySettings.Colors.TrayUpB != Color.Transparent)
-          return true;
-      }
-      if (!modFunctions.CompareColors(mySettings.Colors.TrayUpC, cmdTrayUpC.Color))
-        return true;
-      if (!modFunctions.CompareColors(mySettings.Colors.HistoryDownLine, cmdHistoryDownLine.Color))
-        return true;
-      if (!modFunctions.CompareColors(mySettings.Colors.HistoryDownA, cmdHistoryDownA.Color))
-        return true;
-      if (chkHistoryDownB.Active)
-      {
-        if (!modFunctions.CompareColors(mySettings.Colors.HistoryDownB, cmdHistoryDownB.Color))
+        if (!modFunctions.CompareColors(mySettings.Colors.HistoryDownB, cmdHistoryUsedB.Color))
           return true;
       }
       else
@@ -888,27 +524,9 @@ namespace RestrictionTrackerGTK
         if (mySettings.Colors.HistoryDownB != Color.Transparent)
           return true;
       }
-      if (!modFunctions.CompareColors(mySettings.Colors.HistoryDownC, cmdHistoryDownC.Color))
+      if (!modFunctions.CompareColors(mySettings.Colors.HistoryDownC, cmdHistoryUsedC.Color))
         return true;
-      if (!modFunctions.CompareColors(mySettings.Colors.HistoryDownMax, cmdHistoryDownMax.Color))
-        return true;
-      if (!modFunctions.CompareColors(mySettings.Colors.HistoryUpLine, cmdHistoryUpLine.Color))
-        return true;
-      if (!modFunctions.CompareColors(mySettings.Colors.HistoryUpA, cmdHistoryUpA.Color))
-        return true;
-      if (chkHistoryUpB.Active)
-      {
-        if (!modFunctions.CompareColors(mySettings.Colors.HistoryUpB, cmdHistoryUpB.Color))
-          return true;
-      }
-      else
-      {
-        if (mySettings.Colors.HistoryUpB != Color.Transparent)
-          return true;
-      }
-      if (!modFunctions.CompareColors(mySettings.Colors.HistoryUpC, cmdHistoryUpC.Color))
-        return true;
-      if (!modFunctions.CompareColors(mySettings.Colors.HistoryUpMax, cmdHistoryUpMax.Color))
+      if (!modFunctions.CompareColors(mySettings.Colors.HistoryDownMax, cmdHistoryUsedMax.Color))
         return true;
       if (!modFunctions.CompareColors(mySettings.Colors.HistoryText, cmdHistoryText.Color))
         return true;
@@ -925,7 +543,7 @@ namespace RestrictionTrackerGTK
     {
       try
       {
-        if (wIn.Name.ToUpper().Trim() == name.ToUpper().Trim())
+        if (String.Compare(wIn.Name.Trim(), name.Trim()) == 0)
         {
           return wIn;
         }
@@ -958,7 +576,7 @@ namespace RestrictionTrackerGTK
     {
       try
       {
-        if (wIn.Name.ToUpper().Trim() == name.ToUpper().Trim())
+        if (String.Compare(wIn.Name.Trim(), name.Trim(), StringComparison.OrdinalIgnoreCase) == 0)
         {
           return wIn;
         }
@@ -997,271 +615,68 @@ namespace RestrictionTrackerGTK
         cmdColor.Sensitive = !(color == Color.Transparent);
       }
     }
-    private Color DefaultColorForElement(string Element, localRestrictionTracker.SatHostTypes Provider)
+    private Color DefaultColorForElement(string Element)
     {
-      switch (Provider)
+      switch (Element)
       {
-        case localRestrictionTracker.SatHostTypes.WildBlue_LEGACY:
-        case localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
-          switch (Element)
-          {
-            case "cmdMainDownA":
-              return Color.DarkBlue;
-            case "cmdMainDownB":
-              return Color.Blue;
-            case "cmdMainDownC":
-              return Color.Aqua;
-            case "cmdMainUpA":
-              return Color.DarkBlue;
-            case "cmdMainUpB":
-              return Color.Blue;
-            case "cmdMainUpC":
-              return Color.Aqua;
-            case "cmdMainText":
-              return Color.White;
-            case "cmdMainBG":
-              return Color.Black;
+        case "cmdMainUsedA":
+          return Color.DarkBlue;
+        case "cmdMainUsedB":
+          return Color.Blue;
+        case "cmdMainUsedC":
+          return Color.Aqua;
+        case "cmdMainText":
+          return Color.White;
+        case "cmdMainBG":
+          return Color.Black;
 
-            case "cmdTrayDownA":
-              return Color.DarkBlue;
-            case "cmdTrayDownB":
-              return Color.Blue;
-            case "cmdTrayDownC":
-              return Color.Aqua;
-            case "cmdTrayUpA":
-              return Color.DarkBlue;
-            case "cmdTrayUpB":
-              return Color.Blue;
-            case "cmdTrayUpC":
-              return Color.Aqua;
+        case "cmdTrayUsedA":
+          return Color.DarkBlue;
+        case "cmdTrayUsedB":
+          return Color.Blue;
+        case "cmdTrayUsedC":
+          return Color.Aqua;
 
-            case "cmdHistoryDownLine":
-              return Color.DarkBlue;
-            case "cmdHistoryDownA":
-              return Color.DarkBlue;
-            case "cmdHistoryDownB":
-              return Color.Blue;
-            case "cmdHistoryDownC":
-              return Color.Aqua;
-            case "cmdHistoryDownMax":
-              return Color.Yellow;
-            case "cmdHistoryUpLine":
-              return Color.DarkBlue;
-            case "cmdHistoryUpA":
-              return Color.DarkBlue;
-            case "cmdHistoryUpB":
-              return Color.Blue;
-            case "cmdHistoryUpC":
-              return Color.Aqua;
-            case "cmdHistoryUpMax":
-              return Color.Yellow;
-            case "cmdHistoryText":
-              return Color.Black;
-            case "cmdHistoryBG":
-              return Color.White;
-            case "cmdHistoryLightGrid":
-              return Color.LightGray;
-            case "cmdHistoryDarkGrid":
-              return Color.DarkGray;
-            default:
-              return Color.Transparent;
-          }
-        case localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
-        case localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
-          switch (Element)
-          {
-            case "cmdMainDownA":
-              return Color.DarkBlue;
-            case "cmdMainDownB":
-              return Color.Blue;
-            case "cmdMainDownC":
-              return Color.Aqua;
-            case "cmdMainUpA":
-              return Color.Transparent;
-            case "cmdMainUpB":
-              return Color.Transparent;
-            case "cmdMainUpC":
-              return Color.Transparent;
-            case "cmdMainText":
-              return Color.White;
-            case "cmdMainBG":
-              return Color.Black;
-
-            case "cmdTrayDownA":
-              return Color.DarkBlue;
-            case "cmdTrayDownB":
-              return Color.Blue;
-            case "cmdTrayDownC":
-              return Color.Aqua;
-            case "cmdTrayUpA":
-              return Color.Transparent;
-            case "cmdTrayUpB":
-              return Color.Transparent;
-            case "cmdTrayUpC":
-              return Color.Transparent;
-
-            case "cmdHistoryDownLine":
-              return Color.DarkBlue;
-            case "cmdHistoryDownA":
-              return Color.DarkBlue;
-            case "cmdHistoryDownB":
-              return Color.Blue;
-            case "cmdHistoryDownC":
-              return Color.Aqua;
-            case "cmdHistoryDownMax":
-              return Color.Yellow;
-            case "cmdHistoryUpLine":
-              return Color.DarkBlue;
-            case "cmdHistoryUpA":
-              return Color.Transparent;
-            case "cmdHistoryUpB":
-              return Color.Transparent;
-            case "cmdHistoryUpC":
-              return Color.Transparent;
-            case "cmdHistoryUpMax":
-              return Color.Transparent;
-            case "cmdHistoryText":
-              return Color.Black;
-            case "cmdHistoryBG":
-              return Color.White;
-            case "cmdHistoryLightGrid":
-              return Color.LightGray;
-            case "cmdHistoryDarkGrid":
-              return Color.DarkGray;
-            default:
-              return Color.Transparent;
-          }
-        case localRestrictionTracker.SatHostTypes.Dish_EXEDE:
-          switch (Element)
-          {
-            case "cmdMainDownA":
-              return Color.DarkBlue;
-            case "cmdMainDownB":
-              return Color.Blue;
-            case "cmdMainDownC":
-              return Color.Aqua;
-            case "cmdMainUpA":
-              return Color.DarkBlue;
-            case "cmdMainUpB":
-              return Color.Blue;
-            case "cmdMainUpC":
-              return Color.Aqua;
-            case "cmdMainText":
-              return Color.White;
-            case "cmdMainBG":
-              return Color.Black;
-
-            case "cmdTrayDownA":
-              return Color.DarkBlue;
-            case "cmdTrayDownB":
-              return Color.Blue;
-            case "cmdTrayDownC":
-              return Color.Aqua;
-            case "cmdTrayUpA":
-              return Color.DarkBlue;
-            case "cmdTrayUpB":
-              return Color.Blue;
-            case "cmdTrayUpC":
-              return Color.Aqua;
-
-            case "cmdHistoryDownLine":
-              return Color.DarkBlue;
-            case "cmdHistoryDownA":
-              return Color.DarkBlue;
-            case "cmdHistoryDownB":
-              return Color.Blue;
-            case "cmdHistoryDownC":
-              return Color.Aqua;
-            case "cmdHistoryDownMax":
-              return Color.Yellow;
-            case "cmdHistoryUpLine":
-              return Color.DarkBlue;
-            case "cmdHistoryUpA":
-              return Color.DarkBlue;
-            case "cmdHistoryUpB":
-              return Color.Blue;
-            case "cmdHistoryUpC":
-              return Color.Aqua;
-            case "cmdHistoryUpMax":
-              return Color.Yellow;
-            case "cmdHistoryText":
-              return Color.Black;
-            case "cmdHistoryBG":
-              return Color.White;
-            case "cmdHistoryLightGrid":
-              return Color.LightGray;
-            case "cmdHistoryDarkGrid":
-              return Color.DarkGray;
-            default:
-              return Color.Transparent;
-          }
+        case "cmdHistoryUsedLine":
+          return Color.DarkBlue;
+        case "cmdHistoryUsedA":
+          return Color.DarkBlue;
+        case "cmdHistoryUsedB":
+          return Color.Blue;
+        case "cmdHistoryUsedC":
+          return Color.Aqua;
+        case "cmdHistoryUsedMax":
+          return Color.Yellow;
+        case "cmdHistoryText":
+          return Color.Black;
+        case "cmdHistoryBG":
+          return Color.White;
+        case "cmdHistoryLightGrid":
+          return Color.LightGray;
+        case "cmdHistoryDarkGrid":
+          return Color.DarkGray;
         default:
           return Color.Transparent;
       }
     }
     private void MakeFakeData()
     {
-      FakeData = new System.Collections.Generic.List<DataBase.DataRow>();
-      System.Collections.Generic.List<int> DownList = new System.Collections.Generic.List<int>();
-      System.Collections.Generic.List<int> UpList = new System.Collections.Generic.List<int>();
+      FakeData = new System.Collections.Generic.List<DataRow>();
+      System.Collections.Generic.List<int> UsedList = new System.Collections.Generic.List<int>();
       System.DateTime startDate = new System.DateTime(2000, 1, 1, 0, 0, 0);
-      int startDown = 0;
-      int startUp = 0;
-      if (DisplayAs == localRestrictionTracker.SatHostTypes.WildBlue_LEGACY)
+      int startUsed = 0;
+      for (int I = 1; I <= 90; I++)
       {
-        for (int I = 1; I <= 90; I++)
+        DataRow dRow = new DataRow(startDate, startUsed, 15000);
+        int iUsed = RandSel(50, 500);
+        UsedList.Add(iUsed);
+        startUsed += iUsed;
+        startDate = startDate.AddDays(1);
+        if (I > 29)
         {
-          DataBase.DataRow dRow = new DataBase.DataRow(startDate, startDown, 12000, startUp, 3000);
-          int DownUsed = RandSel(50, 500);
-          int UpUsed = RandSel(10, 120);
-          DownList.Add(DownUsed);
-          UpList.Add(UpUsed);
-          startDown += DownUsed;
-          startUp += UpUsed;
-          startDate = startDate.AddDays(1);
-          if (I > 29)
-          {
-            startDown -= DownList[I - 30];
-            startUp -= UpList[I - 30];
-          }
-          FakeData.Add(dRow);
+          startUsed -= UsedList[I - 30];
         }
-      }
-      else if (DisplayAs == localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE)
-      {
-        for (int I = 1; I <= 90; I++)
-        {
-          DataBase.DataRow dRow = new DataBase.DataRow(startDate, startDown, 15000, startDown, 15000);
-          int DownUsed = RandSel(50, 500);
-          DownList.Add(DownUsed);
-          startDown += DownUsed;
-          startDate = startDate.AddDays(1);
-          if (I > 29)
-          {
-            startDown -= DownList[I - 30];
-          }
-          FakeData.Add(dRow);
-        }
-      }
-      else if (DisplayAs == localRestrictionTracker.SatHostTypes.Dish_EXEDE)
-      {
-        for (int I = 1; I <= 90; I++)
-        {
-          DataBase.DataRow dRow = new DataBase.DataRow(startDate, startDown, 10000, startUp, 10000);
-          int DownUsed = RandSel(50, 500);
-          int UpUsed = RandSel(50, 450);
-          DownList.Add(DownUsed);
-          UpList.Add(UpUsed);
-          startDown += DownUsed;
-          startUp += UpUsed;
-          startDate = startDate.AddDays(1);
-          if (I % 30 == 0)
-          {
-            startDown = 0;
-            startUp = 0;
-          }
-          FakeData.Add(dRow);
-        }
+        FakeData.Add(dRow);
       }
     }
     private int RandSel(int Low, int High)
@@ -1272,160 +687,6 @@ namespace RestrictionTrackerGTK
         I = High;
       }
       return I;
-    }
-    private void SetTextBGAlignments(bool Horizontal)
-    {
-      if (Horizontal)
-      {
-        Size preSize = new Size(75, 75);
-        pctMain.WidthRequest = preSize.Width;
-        pctMain.HeightRequest = preSize.Height;
-        pctTray.WidthRequest = preSize.Width;
-        pctTray.HeightRequest = preSize.Height;
-        pctHistory.WidthRequest = preSize.Width;
-        pctHistory.HeightRequest = preSize.Height;
-      }
-      else
-      {
-        Size preSize = new Size(100, 55);
-        pnlMain.NRows = 3;
-        ((Gtk.Table.TableChild)pnlMain[pnlMainStyle]).TopAttach = 2;
-        ((Gtk.Table.TableChild)pnlMain[pnlMainStyle]).BottomAttach = 3;
-        pnlMain.Remove(grpMainUp);
-        ((Gtk.Table.TableChild)pnlMain[grpMainDown]).TopAttach = 1;
-        ((Gtk.Table.TableChild)pnlMain[grpMainDown]).BottomAttach = 2;
-
-        ((Gtk.Table.TableChild)pnlMain[evnMain]).TopAttach = 0;
-        ((Gtk.Table.TableChild)pnlMain[evnMain]).LeftAttach = 0;
-        ((Gtk.Table.TableChild)pnlMain[evnMain]).BottomAttach = 1;
-        ((Gtk.Table.TableChild)pnlMain[evnMain]).RightAttach = 1;
-        pnlMain.NColumns = 1;
-        pctMain.WidthRequest = preSize.Width;
-        pctMain.HeightRequest = preSize.Height;
-
-        pnlMainStyle.NRows = 4;
-        ((Gtk.Table.TableChild)pnlMainStyle[lblMainBG]).TopAttach = 1;
-        ((Gtk.Table.TableChild)pnlMainStyle[lblMainBG]).BottomAttach = 2;
-        ((Gtk.Table.TableChild)pnlMainStyle[lblMainBG]).LeftAttach = 0;
-        ((Gtk.Table.TableChild)pnlMainStyle[lblMainBG]).RightAttach = 1;
-
-        ((Gtk.Table.TableChild)pnlMainStyle[cmdMainBG]).TopAttach = 1;
-        ((Gtk.Table.TableChild)pnlMainStyle[cmdMainBG]).BottomAttach = 2;
-        ((Gtk.Table.TableChild)pnlMainStyle[cmdMainBG]).LeftAttach = 1;
-        ((Gtk.Table.TableChild)pnlMainStyle[cmdMainBG]).RightAttach = 2;
-        pnlMainStyle.NColumns = 2;
-
-        pnlTray.NRows = 2;
-        pnlTray.Remove(grpTrayUp);
-        ((Gtk.Table.TableChild)pnlTray[grpTrayDown]).TopAttach = 1;
-        ((Gtk.Table.TableChild)pnlTray[grpTrayDown]).BottomAttach = 2;
-
-        ((Gtk.Table.TableChild)pnlTray[evnTray]).TopAttach = 0;
-        ((Gtk.Table.TableChild)pnlTray[evnTray]).LeftAttach = 0;
-        ((Gtk.Table.TableChild)pnlTray[evnTray]).BottomAttach = 1;
-        ((Gtk.Table.TableChild)pnlTray[evnTray]).RightAttach = 2;
-        pnlTray.NColumns = 1;
-        pctTray.WidthRequest = preSize.Width;
-        pctTray.HeightRequest = preSize.Height;
-
-
-        pnlHistory.NRows = 3;
-        ((Gtk.Table.TableChild)pnlHistory[pnlHistoryStyle]).TopAttach = 2;
-        ((Gtk.Table.TableChild)pnlHistory[pnlHistoryStyle]).BottomAttach = 3;
-        pnlHistory.Remove(grpHistoryUp);
-        ((Gtk.Table.TableChild)pnlHistory[grpHistoryDown]).TopAttach = 1;
-        ((Gtk.Table.TableChild)pnlHistory[grpHistoryDown]).BottomAttach = 2;
-
-        pnlHistoryDown.NColumns = 7;
-
-        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownA]).TopAttach = 0;
-        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownA]).BottomAttach = 1;
-        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownA]).LeftAttach = 4;
-        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownA]).RightAttach = 5;
-
-        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownA]).TopAttach = 0;
-        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownA]).BottomAttach = 1;
-        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownA]).LeftAttach = 6;
-        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownA]).RightAttach = 7;
-
-        ((Gtk.Table.TableChild)pnlHistoryDown[chkHistoryDownB]).TopAttach = 1;
-        ((Gtk.Table.TableChild)pnlHistoryDown[chkHistoryDownB]).BottomAttach = 2;
-        ((Gtk.Table.TableChild)pnlHistoryDown[chkHistoryDownB]).LeftAttach = 4;
-        ((Gtk.Table.TableChild)pnlHistoryDown[chkHistoryDownB]).RightAttach = 5;
-
-        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownB]).TopAttach = 1;
-        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownB]).BottomAttach = 2;
-        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownB]).LeftAttach = 6;
-        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownB]).RightAttach = 7;
-
-        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownC]).TopAttach = 2;
-        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownC]).BottomAttach = 3;
-        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownC]).LeftAttach = 4;
-        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownC]).RightAttach = 5;
-
-        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownC]).TopAttach = 2;
-        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownC]).BottomAttach = 3;
-        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownC]).LeftAttach = 6;
-        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownC]).RightAttach = 7;
-
-        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownMax]).TopAttach = 2;
-        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownMax]).BottomAttach = 3;
-        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownMax]).LeftAttach = 0;
-        ((Gtk.Table.TableChild)pnlHistoryDown[lblHistoryDownMax]).RightAttach = 1;
-
-        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownMax]).TopAttach = 2;
-        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownMax]).BottomAttach = 3;
-        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownMax]).LeftAttach = 2;
-        ((Gtk.Table.TableChild)pnlHistoryDown[cmdHistoryDownMax]).RightAttach = 3;
-        pnlHistoryDown.NRows = 3;
-
-        ((Gtk.Table.TableChild)pnlHistory[evnHistory]).TopAttach = 0;
-        ((Gtk.Table.TableChild)pnlHistory[evnHistory]).LeftAttach = 0;
-        ((Gtk.Table.TableChild)pnlHistory[evnHistory]).BottomAttach = 1;
-        ((Gtk.Table.TableChild)pnlHistory[evnHistory]).RightAttach = 2;
-        pnlHistory.NColumns = 1;
-        pctHistory.WidthRequest = preSize.Width;
-        pctHistory.HeightRequest = preSize.Height;
-
-        pnlHistoryStyle.NColumns = 5;
-        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryBG]).TopAttach = 1;
-        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryBG]).BottomAttach = 2;
-        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryBG]).LeftAttach = 0;
-        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryBG]).RightAttach = 1;
-
-        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryBG]).TopAttach = 1;
-        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryBG]).BottomAttach = 2;
-        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryBG]).LeftAttach = 1;
-        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryBG]).RightAttach = 2;
-
-        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryGridL]).TopAttach = 0;
-        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryGridL]).BottomAttach = 1;
-        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryGridL]).LeftAttach = 3;
-        ((Gtk.Table.TableChild)pnlHistoryStyle[lblHistoryGridL]).RightAttach = 4;
-
-        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryLightGrid]).TopAttach = 0;
-        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryLightGrid]).BottomAttach = 1;
-        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryLightGrid]).LeftAttach = 4;
-        ((Gtk.Table.TableChild)pnlHistoryStyle[cmdHistoryLightGrid]).RightAttach = 5;
-        pnlHistoryStyle.NRows = 2;
-
-        pnlCustomColors.NColumns = 3;
-        ((Gtk.Table.TableChild)pnlCustomColors[grpHistory]).RightAttach = 3;
-        ((Gtk.Table.TableChild)pnlCustomColors[grpHistory]).LeftAttach = 2;
-        ((Gtk.Table.TableChild)pnlCustomColors[grpHistory]).TopAttach = 0;
-        ((Gtk.Table.TableChild)pnlCustomColors[grpHistory]).BottomAttach = 1;
-
-        ((Gtk.Table.TableChild)pnlCustomColors[grpTray]).RightAttach = 2;
-        ((Gtk.Table.TableChild)pnlCustomColors[grpTray]).LeftAttach = 1;
-        ((Gtk.Table.TableChild)pnlCustomColors[grpTray]).TopAttach = 0;
-        ((Gtk.Table.TableChild)pnlCustomColors[grpTray]).BottomAttach = 1;
-
-        ((Gtk.Table.TableChild)pnlCustomColors[grpMain]).RightAttach = 1;
-        ((Gtk.Table.TableChild)pnlCustomColors[grpMain]).LeftAttach = 0;
-        ((Gtk.Table.TableChild)pnlCustomColors[grpMain]).TopAttach = 0;
-        ((Gtk.Table.TableChild)pnlCustomColors[grpMain]).BottomAttach = 1;
-        pnlCustomColors.NRows = 1;
-      }
     }
     #endregion
   }

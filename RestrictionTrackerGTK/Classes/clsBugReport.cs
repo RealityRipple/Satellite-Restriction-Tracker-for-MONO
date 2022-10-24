@@ -5,6 +5,9 @@ internal class GitHubReporter
 {
   public const string ProjectID = "Satellite-Restriction-Tracker-for-MONO";
   private const string Token = "";
+  private GitHubReporter()
+  { 
+  }
   private static string JSONEscape(string sInput)
   {
     if (sInput.Contains("\\"))
@@ -54,7 +57,7 @@ internal class GitHubReporter
     sRet += e.ToString() + "\r\n";
     sRet += "```\r\n\r\n";
     sRet += "OS: " + CurrentOS.Name + " (" + sPlat + ") v" + Environment.OSVersion.VersionString + "\r\n";
-    sRet += "CLR: " + srlFunctions.GetCLRCleanVersion();
+    sRet += "CLR: " + srlFunctions.CLRCleanVersion;
     return sRet;
   }
   private static string ReportBug(string Title, string Body)
@@ -66,7 +69,6 @@ internal class GitHubReporter
     WebClientEx httpReport = new WebClientEx();
     httpReport.KeepAlive = false;
     httpReport.ErrorBypass = true;
-    httpReport.SendHeaders = new System.Net.WebHeaderCollection();
     httpReport.SendHeaders.Add("Accept", "application/vnd.github+json");
     httpReport.SendHeaders.Add("Authorization", "token " + Token);
     string sRet = httpReport.UploadString("https://api.github.com/repos/RealityRipple/" + ProjectID + "/issues", "POST", sSend);
@@ -75,16 +77,14 @@ internal class GitHubReporter
       try
       {
         JSONReader jRet = new JSONReader(new System.IO.MemoryStream(httpReport.Encoding.GetBytes(sRet), false), false);
-        foreach (JSONReader.JSElement jNode in jRet.Serial)
+        if (jRet.JSON.GetType() == typeof(JSONObject))
         {
-          if (jNode.Type != JSONReader.ElementType.Group)
-            continue;
-          foreach (JSONReader.JSElement jEl in jNode.SubElements)
+          foreach (JSONElement jEl in ((JSONObject) jRet.JSON).SubElements)
           {
-            if (jEl.Type != JSONReader.ElementType.KeyValue)
+            if (jEl.GetType() != typeof(JSONString))
               continue;
             if (jEl.Key == "html_url")
-              return jEl.Value;
+              return ((JSONString)jEl).Value;
           }
         }
       }
@@ -110,22 +110,20 @@ internal class GitHubReporter
     try
     {
       JSONReader jRet = new JSONReader(new System.IO.MemoryStream(httpReport.Encoding.GetBytes(sRet), false), false);
-      foreach (JSONReader.JSElement jNode in jRet.Serial)
+      if (jRet.JSON.GetType() == typeof(JSONObject))
       {
-        if (jNode.Type != JSONReader.ElementType.Group)
-          continue;
-        foreach (JSONReader.JSElement jEl in jNode.SubElements)
+        foreach (JSONElement jEl in ((JSONObject)jRet.JSON).SubElements)
         {
-          if (jEl.Type != JSONReader.ElementType.KeyValue)
+          if (jEl.GetType() != typeof(JSONString))
             continue;
           if (jEl.Key == "message")
           {
-            msg = jEl.Value;
+            msg = ((JSONString)jEl).Value;
             break;
           }
+          if (msg != "Unknown Error")
+            break;
         }
-        if (msg != "Unknown Error")
-          break;
       }
     }
     catch (Exception)

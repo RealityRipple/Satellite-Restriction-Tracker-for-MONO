@@ -12,8 +12,6 @@ namespace RestrictionTrackerGTK
   class AppSettings
   {
     private string m_Account;
-    private localRestrictionTracker.SatHostTypes m_AccountType;
-    private bool m_AccountTypeF;
     private int m_StartWait;
     private int m_Interval;
     private string m_Gr;
@@ -44,22 +42,20 @@ namespace RestrictionTrackerGTK
     private string m_NetTest;
     private SecurityProtocolType m_SecurProtocol;
     private bool m_SecurEnforced;
-    private string m_AJAXShort;
-    private string m_AJAXFull;
     public bool Loaded;
     public AppColors Colors;
-    private string ConfigFile
+    private static string ConfigFile
     {
       get
       {
-        return modFunctions.AppData + "user.config";
+        return System.IO.Path.Combine(modFunctions.AppData, "user.config");
       }
     }
-    private string ConfigFileBackup
+    private static string ConfigFileBackup
     {
       get
       {
-        return modFunctions.AppData + "backup.config";
+        return System.IO.Path.Combine(modFunctions.AppData, "backup.config");
       }
     }
     public AppSettings()
@@ -136,23 +132,6 @@ namespace RestrictionTrackerGTK
         if (xName.CompareTo("Account") == 0)
         {
           m_Account = xValue;
-          if (m_node.Attributes.Count > 1)
-          {
-            m_AccountType = localRestrictionTracker.SatHostTypes.Other;
-            m_AccountTypeF = false;
-            foreach (XmlAttribute m_attrib in m_node.Attributes)
-            {
-              if (m_attrib.Name.CompareTo("type") == 0)
-                m_AccountType = srlFunctions.StringToHostType(m_attrib.InnerText);
-              else if (m_attrib.Name.CompareTo("forceType") == 0)
-                m_AccountTypeF = (m_attrib.InnerText == "True");
-            }
-          }
-          else
-          {
-            m_AccountType = localRestrictionTracker.SatHostTypes.Other;
-            m_AccountTypeF = false;
-          }
         }
         else if (xName.CompareTo("StartWait") == 0)
         {
@@ -367,23 +346,6 @@ namespace RestrictionTrackerGTK
         {
           m_NetTest = xValue;
         }
-        else if (xName.CompareTo("AJAXOrder") == 0)
-        {
-          XmlNodeList xOrderList = m_node.ChildNodes;
-          foreach (XmlNode m_order in xOrderList)
-          {
-            string oName = m_order.Attributes[0].InnerText;
-            string oValue = m_order.FirstChild.InnerText;
-            if (oName.CompareTo("Short") == 0)
-            {
-              m_AJAXShort = oValue;
-            }
-            else if (oName.CompareTo("Full") == 0)
-            {
-              m_AJAXFull = oValue;
-            }
-          }
-        }
       }
       Colors = new AppColors();
       if (xConfig.ChildNodes.Count < 2)
@@ -478,77 +440,6 @@ namespace RestrictionTrackerGTK
                     }
                   }
                 }
-                else if (nodeName.CompareTo("Upload") == 0)
-                {
-                  //Upload Section
-                  if (m_node.HasChildNodes)
-                  {
-                    foreach (XmlNode xSetting in m_node.ChildNodes)
-                    {
-                      string xName = xSetting.Attributes[0].InnerText;
-                      string xValue = xSetting.FirstChild.InnerText;
-                      if (xName.CompareTo("Line") == 0)
-                      {
-                        if (graphName.CompareTo("History") == 0)
-                        {
-                          Colors.HistoryUpLine = StrToColor(xValue);
-                        }
-                      }
-                      else if (xName.CompareTo("Start") == 0)
-                      {
-                        if (graphName.CompareTo("Main") == 0)
-                        {
-                          Colors.MainUpA = StrToColor(xValue);
-                        }
-                        else if (graphName.CompareTo("Tray") == 0)
-                        {
-                          Colors.TrayUpA = StrToColor(xValue);
-                        }
-                        else if (graphName.CompareTo("History") == 0)
-                        {
-                          Colors.HistoryUpA = StrToColor(xValue);
-                        }
-                      }
-                      else if (xName.CompareTo("Mid") == 0)
-                      {
-                        if (graphName.CompareTo("Main") == 0)
-                        {
-                          Colors.MainUpB = StrToColor(xValue);
-                        }
-                        else if (graphName.CompareTo("Tray") == 0)
-                        {
-                          Colors.TrayUpB = StrToColor(xValue);
-                        }
-                        else if (graphName.CompareTo("History") == 0)
-                        {
-                          Colors.HistoryUpB = StrToColor(xValue);
-                        }
-                      }
-                      else if (xName.CompareTo("End") == 0)
-                      {
-                        if (graphName.CompareTo("Main") == 0)
-                        {
-                          Colors.MainUpC = StrToColor(xValue);
-                        }
-                        else if (graphName.CompareTo("Tray") == 0)
-                        {
-                          Colors.TrayUpC = StrToColor(xValue);
-                        }
-                        else if (graphName.CompareTo("History") == 0)
-                        {
-                          Colors.HistoryUpC = StrToColor(xValue);
-                        }
-                      }
-                      else if (xName.CompareTo("Maximum") == 0)
-                      {
-                        if (graphName.CompareTo("History") == 0)
-                        {
-                          Colors.HistoryUpMax = StrToColor(xValue);
-                        }
-                      }
-                    }
-                  }
-                }
                 else if (nodeName.CompareTo("Text") == 0)
                 {
                   //Text setting
@@ -611,8 +502,6 @@ namespace RestrictionTrackerGTK
     private void Reset()
     {
       m_Account = null;
-      m_AccountType = localRestrictionTracker.SatHostTypes.Other;
-      m_AccountTypeF = false;
       m_StartWait = 5;
       m_Interval = 15;
       m_Gr = "aph";
@@ -643,8 +532,6 @@ namespace RestrictionTrackerGTK
       m_SecurProtocol = (System.Net.SecurityProtocolType)(SecurityProtocolTypeEx.Tls11 | SecurityProtocolTypeEx.Tls12);
       m_SecurEnforced = false;
       m_NetTest = null;
-      m_AJAXShort = null;
-      m_AJAXFull = null;
       Colors = new AppColors();
       ResetColors();
     }
@@ -659,9 +546,6 @@ namespace RestrictionTrackerGTK
       Colors.MainDownA = Color.Transparent;
       Colors.MainDownB = Color.Transparent;
       Colors.MainDownC = Color.Transparent;
-      Colors.MainUpA = Color.Transparent;
-      Colors.MainUpB = Color.Transparent;
-      Colors.MainUpC = Color.Transparent;
       Colors.MainText = Color.Transparent;
       Colors.MainBackground = Color.Transparent;
     }
@@ -670,9 +554,6 @@ namespace RestrictionTrackerGTK
       Colors.TrayDownA = Color.Transparent;
       Colors.TrayDownB = Color.Transparent;
       Colors.TrayDownC = Color.Transparent;
-      Colors.TrayUpA = Color.Transparent;
-      Colors.TrayUpB = Color.Transparent;
-      Colors.TrayUpC = Color.Transparent;
     }
     private void ResetHistory()
     {
@@ -680,10 +561,6 @@ namespace RestrictionTrackerGTK
       Colors.HistoryDownB = Color.Transparent;
       Colors.HistoryDownC = Color.Transparent;
       Colors.HistoryDownMax = Color.Transparent;
-      Colors.HistoryUpA = Color.Transparent;
-      Colors.HistoryUpB = Color.Transparent;
-      Colors.HistoryUpC = Color.Transparent;
-      Colors.HistoryUpMax = Color.Transparent;
       Colors.HistoryText = Color.Transparent;
       Colors.HistoryBackground = Color.Transparent;
       Colors.HistoryLightGrid = Color.Transparent;
@@ -709,11 +586,6 @@ namespace RestrictionTrackerGTK
           sUpdateType = "None";
           break;
       }
-      string sAccountTypeF = "False";
-      if (m_AccountTypeF)
-      {
-        sAccountTypeF = "True";
-      }
       string sScaleScreen = "False";
       if (m_ScaleScreen)
       {
@@ -724,7 +596,7 @@ namespace RestrictionTrackerGTK
       {
         if ((((SecurityProtocolTypeEx)m_SecurProtocol) & protocolTest) == protocolTest)
         {
-          sProtocol += Enum.GetName(typeof(SecurityProtocolTypeEx), protocolTest).ToUpper() + ", ";
+          sProtocol += Enum.GetName(typeof(SecurityProtocolTypeEx), protocolTest).ToUpperInvariant() + ", ";
         }
       }
       if (!string.IsNullOrEmpty(sProtocol) && sProtocol.EndsWith(", "))
@@ -734,8 +606,6 @@ namespace RestrictionTrackerGTK
       string sSecurEnforced = "False";
       if (m_SecurEnforced)
         sSecurEnforced = "True";
-      string sAccountType = "Other";
-      sAccountType = srlFunctions.HostTypeToString(m_AccountType);
       string sTrayIcon = "Always";
       if (m_TrayIcon == TrayStyles.Never)
         sTrayIcon = "Never";
@@ -754,7 +624,7 @@ namespace RestrictionTrackerGTK
         "<configuration>\n" +
         "  <userSettings>\n" +
         "    <RestrictionTracker.My.MySettings>\n" +
-        "      <setting name=\"Account\" type=\"" + sAccountType + "\" forceType=\"" + sAccountTypeF + "\">\n" +
+        "      <setting name=\"Account\">\n" +
         "        <value>" + m_Account + "</value>\n" +
         "      </setting>\n" +
         "      <setting name=\"PassCrypt\" key=\"" + m_PassKey + "\" salt=\"" + m_PassSalt + "\">\n" +
@@ -841,14 +711,6 @@ namespace RestrictionTrackerGTK
         "      <setting name=\"NetTestURL\">\n" +
         "        <value>" + m_NetTest + "</value>\n" +
         "      </setting>\n" +
-        "      <section name=\"AJAXOrder\">\n" +
-        "        <setting name=\"Short\">\n" +
-        "          <value>" + m_AJAXShort + "</value>\n" +
-        "        </setting>\n" +
-        "        <setting name=\"Full\">\n" +
-        "          <value>" + m_AJAXFull + "</value>\n" +
-        "        </setting>\n" +
-        "      </section>\n" +
         "    </RestrictionTracker.My.MySettings>\n" +
         "  </userSettings>\n" +
         "  <colorSettings>\n" +
@@ -862,17 +724,6 @@ namespace RestrictionTrackerGTK
         "        </setting>\n" +
         "        <setting name=\"End\">\n" +
         "          <value>" + ColorToStr(Colors.MainDownC) + "</value>\n" +
-        "        </setting>\n" +
-        "      </section>\n" +
-        "      <section name=\"Upload\">\n" +
-        "        <setting name=\"Start\">\n" +
-        "          <value>" + ColorToStr(Colors.MainUpA) + "</value>\n" +
-        "        </setting>\n" +
-        "        <setting name=\"Mid\">\n" +
-        "          <value>" + ColorToStr(Colors.MainUpB) + "</value>\n" +
-        "        </setting>\n" +
-        "        <setting name=\"End\">\n" +
-        "          <value>" + ColorToStr(Colors.MainUpC) + "</value>\n" +
         "        </setting>\n" +
         "      </section>\n" +
         "      <setting name=\"Text\">\n" +
@@ -894,17 +745,6 @@ namespace RestrictionTrackerGTK
         "          <value>" + ColorToStr(Colors.TrayDownC) + "</value>\n" +
         "        </setting>\n" +
         "      </section>\n" +
-        "      <section name=\"Upload\">\n" +
-        "        <setting name=\"Start\">\n" +
-        "          <value>" + ColorToStr(Colors.TrayUpA) + "</value>\n" +
-        "        </setting>\n" +
-        "        <setting name=\"Mid\">\n" +
-        "          <value>" + ColorToStr(Colors.TrayUpB) + "</value>\n" +
-        "        </setting>\n" +
-        "        <setting name=\"End\">\n" +
-        "          <value>" + ColorToStr(Colors.TrayUpC) + "</value>\n" +
-        "        </setting>\n" +
-        "      </section>\n" +
         "    </graph>\n" +
         "    <graph name=\"History\">\n" +
         "      <section name=\"Download\">\n" +
@@ -922,23 +762,6 @@ namespace RestrictionTrackerGTK
         "        </setting>\n" +
         "        <setting name=\"Maximum\">\n" +
         "          <value>" + ColorToStr(Colors.HistoryDownMax) + "</value>\n" +
-        "        </setting>\n" +
-        "      </section>\n" +
-        "      <section name=\"Upload\">\n" +
-        "        <setting name=\"Line\">\n" +
-        "          <value>" + ColorToStr(Colors.HistoryUpLine) + "</value>\n" +
-        "        </setting>\n" +
-        "        <setting name=\"Start\">\n" +
-        "          <value>" + ColorToStr(Colors.HistoryUpA) + "</value>\n" +
-        "        </setting>\n" +
-        "        <setting name=\"Mid\">\n" +
-        "          <value>" + ColorToStr(Colors.HistoryUpB) + "</value>\n" +
-        "        </setting>\n" +
-        "        <setting name=\"End\">\n" +
-        "          <value>" + ColorToStr(Colors.HistoryUpC) + "</value>\n" +
-        "        </setting>\n" +
-        "        <setting name=\"Maximum\">\n" +
-        "          <value>" + ColorToStr(Colors.HistoryUpMax) + "</value>\n" +
         "        </setting>\n" +
         "      </section>\n" +
         "      <setting name=\"Text\">\n" +
@@ -964,7 +787,7 @@ namespace RestrictionTrackerGTK
       SettingsFunctions.SaveErrDlg(saveRet);
       return false;
     }
-    private string ColorToStr(Color c)
+    private static string ColorToStr(Color c)
     {
       string sA = null;
       if (c == Color.Transparent)
@@ -1051,7 +874,7 @@ namespace RestrictionTrackerGTK
       }
       return sA + sR + sG + sB;
     }
-    private Color StrToColor(string s)
+    private static Color StrToColor(string s)
     {
       int iColor = 0;
       if (int.TryParse(s, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out iColor))
@@ -1074,28 +897,6 @@ namespace RestrictionTrackerGTK
       set
       {
         m_Account = value;
-      }
-    }
-    public localRestrictionTracker.SatHostTypes AccountType
-    {
-      get
-      {
-        return m_AccountType;
-      }
-      set
-      {
-        m_AccountType = value;
-      }
-    }
-    public bool AccountTypeForced
-    {
-      get
-      {
-        return m_AccountTypeF;
-      }
-      set
-      {
-        m_AccountTypeF = value;
       }
     }
     public string PassCrypt
@@ -1396,7 +1197,7 @@ namespace RestrictionTrackerGTK
         {
           string[] myProxySettings = m_ProxySetting.Split(':');
           string pType = myProxySettings[0];
-          if (string.Compare(pType.ToLower(), "ip") == 0)
+          if (string.Compare(pType, "ip", StringComparison.OrdinalIgnoreCase) == 0)
           {
             string pIP = myProxySettings[1];
             int pPort = 80;
@@ -1421,7 +1222,7 @@ namespace RestrictionTrackerGTK
               return new WebProxy(pIP, pPort);
             }
           }
-          else if (string.Compare(pType.ToLower(), "url") == 0)
+          else if (string.Compare(pType, "url", StringComparison.OrdinalIgnoreCase) == 0)
           {
             string pURL = myProxySettings[1];
             if (myProxySettings.Length > 2)
@@ -1458,11 +1259,11 @@ namespace RestrictionTrackerGTK
         }
         else
         {
-          if (string.Compare(m_ProxySetting.ToLower(), "none") == 0)
+          if (string.Compare(m_ProxySetting, "none", StringComparison.OrdinalIgnoreCase) == 0)
           {
             return null;
           }
-          else if (string.Compare(m_ProxySetting.ToLower(), "system") == 0)
+          else if (string.Compare(m_ProxySetting, "system", StringComparison.OrdinalIgnoreCase) == 0)
           {
             return WebRequest.DefaultWebProxy;
           }
@@ -1559,54 +1360,21 @@ namespace RestrictionTrackerGTK
         m_NetTest = value;
       }
     }
-    public string AJAXOrderFull
-    {
-      get
-      {
-        return m_AJAXFull;
-      }
-      set
-      {
-        m_AJAXFull = value;
-      }
-    }
-    public string AJAXOrderShort
-    {
-      get
-      {
-        return m_AJAXShort;
-      }
-      set
-      {
-        m_AJAXShort = value;
-      }
-    }
     public class AppColors
     {
       private Color c_MainDA;
       private Color c_MainDB;
       private Color c_MainDC;
-      private Color c_MainUA;
-      private Color c_MainUB;
-      private Color c_MainUC;
       private Color c_MainText;
       private Color c_MainBG;
       private Color c_TrayDA;
       private Color c_TrayDB;
       private Color c_TrayDC;
-      private Color c_TrayUA;
-      private Color c_TrayUB;
-      private Color c_TrayUC;
       private Color c_HistoryDL;
       private Color c_HistoryDA;
       private Color c_HistoryDB;
       private Color c_HistoryDC;
       private Color c_HistoryDM;
-      private Color c_HistoryUL;
-      private Color c_HistoryUA;
-      private Color c_HistoryUB;
-      private Color c_HistoryUC;
-      private Color c_HistoryUM;
       private Color c_HistoryText;
       private Color c_HistoryBG;
       private Color c_HistoryGridL;
@@ -1645,39 +1413,6 @@ namespace RestrictionTrackerGTK
         set
         {
           c_MainDC = value;
-        }
-      }
-      public Color MainUpA
-      {
-        get
-        {
-          return c_MainUA;
-        }
-        set
-        {
-          c_MainUA = value;
-        }
-      }
-      public Color MainUpB
-      {
-        get
-        {
-          return c_MainUB;
-        }
-        set
-        {
-          c_MainUB = value;
-        }
-      }
-      public Color MainUpC
-      {
-        get
-        {
-          return c_MainUC;
-        }
-        set
-        {
-          c_MainUC = value;
         }
       }
       public Color MainText
@@ -1735,39 +1470,6 @@ namespace RestrictionTrackerGTK
           c_TrayDC = value;
         }
       }
-      public Color TrayUpA
-      {
-        get
-        {
-          return c_TrayUA;
-        }
-        set
-        {
-          c_TrayUA = value;
-        }
-      }
-      public Color TrayUpB
-      {
-        get
-        {
-          return c_TrayUB;
-        }
-        set
-        {
-          c_TrayUB = value;
-        }
-      }
-      public Color TrayUpC
-      {
-        get
-        {
-          return c_TrayUC;
-        }
-        set
-        {
-          c_TrayUC = value;
-        }
-      }
       public Color HistoryDownLine
       {
         get
@@ -1821,61 +1523,6 @@ namespace RestrictionTrackerGTK
         set
         {
           c_HistoryDM = value;
-        }
-      }
-      public Color HistoryUpLine
-      {
-        get
-        {
-          return c_HistoryUL;
-        }
-        set
-        {
-          c_HistoryUL = value;
-        }
-      }
-      public Color HistoryUpA
-      {
-        get
-        {
-          return c_HistoryUA;
-        }
-        set
-        {
-          c_HistoryUA = value;
-        }
-      }
-      public Color HistoryUpB
-      {
-        get
-        {
-          return c_HistoryUB;
-        }
-        set
-        {
-          c_HistoryUB = value;
-        }
-      }
-      public Color HistoryUpC
-      {
-        get
-        {
-          return c_HistoryUC;
-        }
-        set
-        {
-          c_HistoryUC = value;
-        }
-      }
-      public Color HistoryUpMax
-      {
-        get
-        {
-          return c_HistoryUM;
-        }
-        set
-        {
-          c_HistoryUM = value;
         }
       }
       public Color HistoryText

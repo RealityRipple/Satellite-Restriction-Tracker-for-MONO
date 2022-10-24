@@ -14,31 +14,34 @@ namespace RestrictionTrackerGTK
     private RestrictionLibrary.WebClientCore wsFile;
     public delegate void DownloadIconCompletedCallback(Gdk.Pixbuf icon16, Gdk.Pixbuf icon32, object token, Exception Error);
     private DownloadIconCompletedCallback c_callback;
-    public clsFavicon(string URL, DownloadIconCompletedCallback callback, object token)
+    public clsFavicon(DownloadIconCompletedCallback callback)
     {
-      if (string.IsNullOrEmpty(URL))
-        return;
       c_callback = callback;
+    }
+    public void Start(string sAddr, object token)
+    {
+      if (string.IsNullOrEmpty(sAddr))
+        return;
       System.Threading.Thread connectThread = new System.Threading.Thread(new System.Threading.ParameterizedThreadStart(BeginConnect));
-      object[] Params = { URL, token };
+      object[] Params = { sAddr, token };
       connectThread.Start(Params);
     }
     private void BeginConnect(object o)
     {
-      string URL = (string)((object[])o)[0];
+      string sAddr = (string)((object[])o)[0];
       object token = ((object[])o)[1];
-      if (!URL.Contains("://"))
-        URL = "http://" + URL;
-      Uri URI;
+      if (!sAddr.Contains(Uri.SchemeDelimiter))
+        sAddr = "http://" + sAddr;
+      Uri uURI;
       try
       {
-        URI = new Uri(URL);
+        uURI = new Uri(sAddr);
       }
       catch (Exception)
       {
         return;
       }
-      ConnectToURL(URI, token);
+      ConnectToURL(uURI, token);
     }
     private void ConnectToURL(Uri URI, object token)
     {
@@ -73,7 +76,7 @@ namespace RestrictionTrackerGTK
         {
           try
           {
-            ConnectToFile(new Uri(URI.Scheme + "://" + URI.Host + "/favicon.ico"), Path.Combine(modFunctions.AppData, "srt_nettest_favicon.ico"), token, false);
+            ConnectToFile(new Uri(URI.Scheme + Uri.SchemeDelimiter + URI.Host + "/favicon.ico"), Path.Combine(modFunctions.AppData, "srt_nettest_favicon.ico"), token, false);
           }
           catch (Exception)
           {
@@ -83,58 +86,56 @@ namespace RestrictionTrackerGTK
         try
         {
           string sHTML = sRet;
-          if (sHTML.ToLower().Contains("shortcut icon"))
+          if (sHTML.ToUpperInvariant().Contains("shortcut icon"))
           {
-            int startsAt = sHTML.ToLower().IndexOf("shortcut icon");
-            int endsAt = startsAt + 13;
-            sHTML = sHTML.Substring(0, startsAt) + "icon" + sHTML.Substring(endsAt);
+            sHTML = System.Text.RegularExpressions.Regex.Replace(sHTML, "shortcut icon", "icon", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
           }
-          if (sHTML.ToLower().Contains("rel=\"icon\""))
+          if (sHTML.ToUpperInvariant().Contains("REL=\"ICON\""))
           {
-            if (sHTML.Substring(0, sHTML.ToLower().IndexOf("rel=\"icon\"")).Contains("<"))
+            if (sHTML.Substring(0, sHTML.ToUpperInvariant().IndexOf("REL=\"ICON\"")).Contains("<"))
             {
-              sHTML = sHTML.Substring(sHTML.Substring(0, sHTML.ToLower().IndexOf("rel=\"icon\"")).LastIndexOf("<"));
+              sHTML = sHTML.Substring(sHTML.Substring(0, sHTML.ToUpperInvariant().IndexOf("REL=\"ICON\"")).LastIndexOf("<"));
               if (sHTML.Contains(">"))
               {
                 sHTML = sHTML.Substring(0, sHTML.IndexOf(">") + 1);
-                if (sHTML.ToLower().Contains("href"))
+                if (sHTML.ToUpperInvariant().Contains("HREF"))
                 {
-                  sHTML = sHTML.Substring(sHTML.IndexOf("href"));
+                  sHTML = sHTML.Substring(sHTML.IndexOf("HREF", StringComparison.OrdinalIgnoreCase));
                   if (sHTML.Contains("\""))
                   {
                     sHTML = sHTML.Substring(sHTML.IndexOf("\"") + 1);
                     if (sHTML.Contains("\""))
                     {
-                      string URL = sHTML.Substring(0, sHTML.IndexOf("\""));
-                      if (URL.Contains("://"))
+                      string sAddr = sHTML.Substring(0, sHTML.IndexOf("\""));
+                      if (sAddr.Contains(Uri.SchemeDelimiter))
                       {
                       }
-                      else if (URL.Contains("//"))
+                      else if (sAddr.Contains("//"))
                       {
                         string oldURL = (string)URI.OriginalString;
-                        if (oldURL.Contains("://"))
-                          oldURL = oldURL.Substring(0, oldURL.IndexOf("://") + 1);
-                        URL = oldURL + URL;
+                        if (oldURL.Contains(Uri.SchemeDelimiter))
+                          oldURL = oldURL.Substring(0, oldURL.IndexOf(Uri.SchemeDelimiter) + 1);
+                        sAddr = oldURL + sAddr;
                       }
                       else
                       {
                         string oldURL = (string)URI.OriginalString;
                         if (!oldURL.EndsWith("/") & oldURL.IndexOf("/", oldURL.IndexOf("//") + 2) > -1)
                           oldURL = oldURL.Substring(0, oldURL.LastIndexOf("/") + 1);
-                        if (URL.StartsWith("/"))
+                        if (sAddr.StartsWith("/"))
                         {
                           if (oldURL.IndexOf("/", oldURL.IndexOf("//") + 2) > -1)
                             oldURL = oldURL.Substring(0, oldURL.IndexOf("/", oldURL.IndexOf("//") + 2));
-                          URL = oldURL + URL;
+                          sAddr = oldURL + sAddr;
                         }
                         else if (oldURL.EndsWith("/"))
-                          URL = oldURL + URL;
+                          sAddr = oldURL + sAddr;
                         else
-                          URL = oldURL + "/" + URL;
+                          sAddr = oldURL + "/" + sAddr;
                       }
                       try
                       {
-                        ConnectToFile(new Uri(URL), Path.Combine(modFunctions.AppData, "srt_nettest_favicon.ico"), token, true);
+                        ConnectToFile(new Uri(sAddr), Path.Combine(modFunctions.AppData, "srt_nettest_favicon.ico"), token, true);
                       }
                       catch (Exception)
                       {
@@ -152,7 +153,7 @@ namespace RestrictionTrackerGTK
         }
         try
         {
-          ConnectToFile(new Uri(URI.Scheme + "://" + URI.Host + "/favicon.ico"), Path.Combine(modFunctions.AppData, "srt_nettest_favicon.ico"), token, true);
+          ConnectToFile(new Uri(URI.Scheme + Uri.SchemeDelimiter + URI.Host + "/favicon.ico"), Path.Combine(modFunctions.AppData, "srt_nettest_favicon.ico"), token, true);
         }
         catch (Exception)
         {
@@ -171,8 +172,8 @@ namespace RestrictionTrackerGTK
         wsFile.KeepAlive = false;
         wsFile.ErrorBypass = true;
         wsFile.ManualRedirect = false;
-        System.Threading.Timer tmrSocket = new System.Threading.Timer(new TimerCallback(DownloadFile), new object[] { URL, Filename, token, trySimpler }, 250, System.Threading.Timeout.Infinite);
-        tmrSocket.GetType();
+        System.Threading.Thread tSocket = new System.Threading.Thread(new ParameterizedThreadStart(DownloadFile));
+        tSocket.Start(new object[] { URL, Filename, token, trySimpler });
       }
       catch
       {
@@ -195,7 +196,7 @@ namespace RestrictionTrackerGTK
         c_callback.Invoke(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.error.png"), Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_error.png"), token, new Exception(" Failed to initialize connection to \"" + URI.OriginalString + "\"!"));
       }
     }
-    private Bitmap GenerateCloneImage(System.Drawing.Image fromImage, int width, int height)
+    private static Bitmap GenerateCloneImage(System.Drawing.Image fromImage, int width, int height)
     {
       using (Bitmap newImage = new Bitmap(width, height))
       {
@@ -206,7 +207,7 @@ namespace RestrictionTrackerGTK
         return (Bitmap)newImage.Clone(new System.Drawing.Rectangle(0, 0, width, height), fromImage.PixelFormat);
       }
     }
-    private Bitmap GenerateCloneImage(System.Drawing.Icon fromIcon)
+    private static Bitmap GenerateCloneImage(System.Drawing.Icon fromIcon)
     {
       using (Bitmap newImage = new Bitmap(fromIcon.Width, fromIcon.Height))
       {
@@ -232,7 +233,7 @@ namespace RestrictionTrackerGTK
         {
           try
           {
-            ConnectToFile(new Uri(URI.Scheme + "://" + URI.Host + "/favicon.ico"), Path.Combine(modFunctions.AppData, "srt_nettest_favicon.ico"), Token, false);
+            ConnectToFile(new Uri(URI.Scheme + Uri.SchemeDelimiter + URI.Host + "/favicon.ico"), Path.Combine(modFunctions.AppData, "srt_nettest_favicon.ico"), Token, false);
           }
           catch (Exception)
           {
@@ -305,7 +306,7 @@ namespace RestrictionTrackerGTK
         {
           try
           {
-            ConnectToFile(new Uri(URI.Scheme + "://" + URI.Host + "/favicon.ico"), imgFile, Token, false);
+            ConnectToFile(new Uri(URI.Scheme + Uri.SchemeDelimiter + URI.Host + "/favicon.ico"), imgFile, Token, false);
           }
           catch (Exception)
           {

@@ -5,6 +5,6 @@ namespace RestrictionTrackerGTK
   {
     Loading,
     Loaded,
-    Lookup
+    DB
   }
 }

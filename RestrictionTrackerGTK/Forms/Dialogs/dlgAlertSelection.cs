@@ -60,7 +60,7 @@ namespace RestrictionTrackerGTK
       TreeIter iter;
       lstStyles.HeadersVisible = false;
       lstStyles.Model.GetIterFirst(out iter);
-      if (AlertStyle.ToLower() == "default")
+      if (String.Compare(AlertStyle, "Default", StringComparison.OrdinalIgnoreCase) == 0)
       {
         lstStyles.Selection.SelectIter(iter);
       }
@@ -68,17 +68,17 @@ namespace RestrictionTrackerGTK
       foreach (string sFile in Directory.GetFiles(modFunctions.AppData))
       {
         string sTitle = System.IO.Path.GetFileNameWithoutExtension(sFile);
-        string sExt = System.IO.Path.GetExtension(sFile).ToLower();
+        string sExt = System.IO.Path.GetExtension(sFile).ToUpperInvariant();
         while (!string.IsNullOrEmpty(System.IO.Path.GetExtension(sTitle)))
         {
-          sExt = System.IO.Path.GetExtension(sTitle).ToLower() + sExt;
+          sExt = System.IO.Path.GetExtension(sTitle).ToUpperInvariant() + sExt;
           sTitle = System.IO.Path.GetFileNameWithoutExtension(sTitle);
         }
-        if (sExt == ".tgz" | sExt == ".tar.gz" | sExt == ".tar")
+        if (sExt == ".TGZ" | sExt == ".TAR.GZ" | sExt == ".TAR")
         {
           lstStyles.AddItem(sTitle);
           lstStyles.Model.IterNext(ref iter);
-          if (sTitle.ToLower() == AlertStyle.ToLower())
+          if (String.Compare(sTitle, AlertStyle, StringComparison.OrdinalIgnoreCase) == 0)
           {
             lstStyles.Selection.SelectIter(iter);
           }
@@ -214,8 +214,8 @@ namespace RestrictionTrackerGTK
       pctPreview.WidthRequest = preview.Width;
       pctPreview.HeightRequest = preview.Height;
       pctPreview.Pixbuf = preview;
-      cmdSave.Sensitive = !(selected[0].ToLower() == AlertStyle.ToLower());
-      cmdRemove.Sensitive = !(selected[0].ToLower() == "default");
+      cmdSave.Sensitive = String.Compare(selected[0], AlertStyle, StringComparison.OrdinalIgnoreCase) != 0;
+      cmdRemove.Sensitive = String.Compare(selected[0], "default", StringComparison.OrdinalIgnoreCase) != 0;
     }
     private void lstStyles_DragMotion(object sender, DragMotionArgs e)
     {
@@ -274,13 +274,13 @@ namespace RestrictionTrackerGTK
           {
             string StylePath = sTP.Substring(7);
             string sTitle = System.IO.Path.GetFileNameWithoutExtension(StylePath);
-            string sExt = System.IO.Path.GetExtension(StylePath).ToLower();
+            string sExt = System.IO.Path.GetExtension(StylePath).ToUpperInvariant();
             while (!string.IsNullOrEmpty(System.IO.Path.GetExtension(sTitle)))
             {
-              sExt = System.IO.Path.GetExtension(sTitle).ToLower() + sExt;
+              sExt = System.IO.Path.GetExtension(sTitle).ToUpperInvariant() + sExt;
               sTitle = System.IO.Path.GetFileNameWithoutExtension(sTitle);
             }
-            if (sExt == ".tgz" | sExt == ".tar.gz" | sExt == ".tar")
+            if (sExt == ".TGZ" | sExt == ".TAR.GZ" | sExt == ".TAR")
             {
               Added = true;
               break;
@@ -311,10 +311,10 @@ namespace RestrictionTrackerGTK
           {
             string StylePath = sTP.Substring(7);
             string sTitle = System.IO.Path.GetFileNameWithoutExtension(StylePath);
-            string sExt = System.IO.Path.GetExtension(StylePath).ToLower();
+            string sExt = System.IO.Path.GetExtension(StylePath).ToUpperInvariant();
             while (!string.IsNullOrEmpty(System.IO.Path.GetExtension(sTitle)))
             {
-              sExt = System.IO.Path.GetExtension(sTitle).ToLower() + sExt;
+              sExt = System.IO.Path.GetExtension(sTitle).ToUpperInvariant() + sExt;
               sTitle = System.IO.Path.GetFileNameWithoutExtension(sTitle);
             }
             if (sExt == ".tgz" | sExt == ".tar.gz" | sExt == ".tar")
@@ -368,13 +368,13 @@ namespace RestrictionTrackerGTK
       }
       else if (e.Event.Button == 2)
       {
-        TaskbarNotifier taskNotifier = null;
-        modFunctions.MakeNotifier(ref taskNotifier, false, modFunctions.LoadAlertStyle(lstStyles.SelectedItems[0]));
-        if (taskNotifier != null)
+        TaskbarNotifier tNotifier = null;
+        modFunctions.MakeNotifier(ref tNotifier, false, modFunctions.LoadAlertStyle(lstStyles.SelectedItems[0]));
+        if (tNotifier != null)
         {
-          taskNotifier.TransientFor = this;
-          taskNotifier.Modal = true;
-          taskNotifier.Show("Hello World", "This alert is a live example of your currently selected alert. What do you think?", 200, 5000, 100);
+          tNotifier.TransientFor = this;
+          tNotifier.Modal = true;
+          tNotifier.Show("Hello World", "This alert is a live example of your currently selected alert. What do you think?", 200, 5000, 100);
         }
       }
     }
@@ -400,10 +400,10 @@ namespace RestrictionTrackerGTK
           foreach (string StylePath in sRet)
           {
             string sTitle = System.IO.Path.GetFileNameWithoutExtension(StylePath);
-            string sExt = System.IO.Path.GetExtension(StylePath).ToLower();
+            string sExt = System.IO.Path.GetExtension(StylePath).ToUpperInvariant();
             while (!string.IsNullOrEmpty(System.IO.Path.GetExtension(sTitle)))
             {
-              sExt = System.IO.Path.GetExtension(sTitle).ToLower() + sExt;
+              sExt = System.IO.Path.GetExtension(sTitle).ToUpperInvariant() + sExt;
               sTitle = System.IO.Path.GetFileNameWithoutExtension(sTitle);
             }
             if (sExt == ".tgz" | sExt == ".tar.gz" | sExt == ".tar")

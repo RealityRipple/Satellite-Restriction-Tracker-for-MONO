@@ -44,20 +44,13 @@ namespace RestrictionTrackerGTK
         return 1;
       }
     }
-    public static string HistoryPath
-    {
-      get
-      {
-        return sFile;
-      }
-    }
-    public static void LOG_Add(System.DateTime dTime, long lDown, long lDownLim, long lUp, long lUpLim, bool Save = true)
+    public static void LOG_Add(System.DateTime dTime, long lUsed, long lLimit, bool Save = true)
     {
       if (!isLoaded)
       {
         return;
       }
-      if (lDownLim <= 0)
+      if (lLimit <= 0)
       {
         return;
       }
@@ -65,45 +58,41 @@ namespace RestrictionTrackerGTK
       {
         usageDB = new DataBase();
       }
-      usageDB.Add(new DataBase.DataRow(dTime, lDown, lDownLim, lUp, lUpLim));
+      usageDB.Add(new DataRow(dTime, lUsed, lLimit));
       if (Save)
       {
         System.Threading.Thread tX = new System.Threading.Thread(new System.Threading.ThreadStart(LOG_Save));
         tX.Start();
       }
     }
-    public static void LOG_Get(long lngIndex, out System.DateTime dtDate, out long lngDown, out long lngDownLim, out long lngUp, out long lngUpLim)
+    public static void LOG_Get(long lngIndex, out System.DateTime dtDate, out long lngUsed, out long lngLimit)
     {
       if (isLoaded)
       {
         if (LOG_GetCount() > lngIndex)
         {
-          DataBase.DataRow[] dArr = usageDB.ToArray();
-          DataBase.DataRow dbRow = dArr[lngIndex];
+          DataRow[] dArr = usageDB.ToArray();
+          DataRow dbRow = dArr[lngIndex];
           dtDate = dbRow.DATETIME;
-          lngDown = dbRow.DOWNLOAD;
-          lngDownLim = dbRow.DOWNLIM;
-          lngUp = dbRow.UPLOAD;
-          lngUpLim = dbRow.UPLIM;
+          lngUsed = dbRow.USED;
+          lngLimit = dbRow.LIMIT;
           return;
         }
       }
       dtDate = new DateTime(1970, 1, 1);
-      lngDown = 0;
-      lngDownLim = 0;
-      lngUp = 0;
-      lngUpLim = 0;
+      lngUsed = 0;
+      lngLimit = 0;
     }
-    public static DataBase.DataRow[] LOG_GetRange(System.DateTime dtStart, System.DateTime dtEnd)
+    public static DataRow[] LOG_GetRange(System.DateTime dtStart, System.DateTime dtEnd)
     {
-      System.Collections.Generic.List<DataBase.DataRow> lRet = new System.Collections.Generic.List<DataBase.DataRow>();
+      System.Collections.Generic.List<DataRow> lRet = new System.Collections.Generic.List<DataRow>();
       if (!isLoaded)
       {
         return lRet.ToArray();
       }
       UInt64 kStart = (UInt64)Math.Floor((double)(dtStart.Ticks / 600000000));
       UInt64 kEnd = (UInt64)Math.Floor((double)(dtEnd.Ticks / 600000000));
-      foreach (System.Collections.Generic.KeyValuePair<UInt64, DataBase.DataRow> dRow in usageDB)
+      foreach (System.Collections.Generic.KeyValuePair<UInt64, DataRow> dRow in usageDB)
       {
         if (dRow.Key >= kStart && dRow.Key <= kEnd)
         {
@@ -138,11 +127,22 @@ namespace RestrictionTrackerGTK
       {
         return new System.DateTime(1970, 1, 1);
       }
-      return usageDB.GetLast().DATETIME;
+      return usageDB.LastRow.DATETIME;
     }
     public static void LOG_Initialize(string sAccount, bool withDisplay)
     {
       isLoaded = false;
+      if (! File.Exists(Path.Combine(modFunctions.MySaveDir(false), "History-" + sAccount + ".wb")) && File.Exists(Path.Combine(modFunctions.MySaveDir(false), "History-" + sAccount + "@exede.net.wb")))
+      {
+        try
+        {
+          File.Move(Path.Combine(modFunctions.MySaveDir(false), "History-" + sAccount + "@exede.net.wb"), Path.Combine(modFunctions.MySaveDir(false), "History-" + sAccount + ".wb"));
+        }
+        catch(Exception)
+        {
+          modFunctions.ShowMessageBox(null, "Your history file could not be renamed because another program is using it!", "File in Use", 0, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+        }
+      }
       sFile = Path.Combine(modFunctions.MySaveDir(true), "History-" + sAccount + ".wb");
       if (!File.Exists(sFile))
       {
@@ -177,7 +177,7 @@ namespace RestrictionTrackerGTK
       {
         if (usageDB != null)
         {
-          usageDB.StopNew = true;
+          usageDB.StopNew();
         }
         return;
       }
@@ -219,15 +219,7 @@ namespace RestrictionTrackerGTK
         isSaving = false;
       }
     }
-    private static long FileLen(string Path)
-    {
-      if (File.Exists(Path))
-      {
-        return new FileInfo(Path).Length;
-      }
-      return -1;
-    }
-    private static void usageDB_ProgressState(object o, DataBase.ProgressStateEventArgs e)
+    private static void usageDB_ProgressState(object o, DataBaseProgressEventArgs e)
     {
       if (MainClass.fHistory != null)
       {

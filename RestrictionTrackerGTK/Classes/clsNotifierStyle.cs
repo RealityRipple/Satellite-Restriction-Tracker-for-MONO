@@ -73,7 +73,7 @@ public class NotifierStyle
     ContentHoverColor = ColorIDToColor(locLines[5]);
     CloseLocation = PointIDToPoint(locLines[6]);
   }
-  private Color ColorIDToColor(string ID)
+  private static Color ColorIDToColor(string ID)
   {
     try
     {
@@ -91,7 +91,7 @@ public class NotifierStyle
       return Color.Transparent;
     }
   }
-  private Rectangle RectIDToRect(string ID)
+  private static Rectangle RectIDToRect(string ID)
   {
     try
     {
@@ -108,7 +108,7 @@ public class NotifierStyle
       return Rectangle.Empty;
     }
   }
-  private Point PointIDToPoint(string ID)
+  private static Point PointIDToPoint(string ID)
   {
     try
     {
@@ -127,27 +127,22 @@ public class NotifierStyle
 public class TarFileData
 {
   public string FileName;
-  public uint FileMode;
-  public uint OwnerID;
-  public uint GroupID;
   public ulong FileSize;
   public ulong LastMod;
-  public uint Checksum;
   public byte LinkIndicator;
-  public string LinkedFile;
   public byte[] FileData;
   public TarFileData(BinaryReader bIn)
   {
     long startAt = bIn.BaseStream.Position;
     FileName = ReadBString(bIn.ReadBytes(100));
-    FileMode = ReadBInt(bIn.ReadBytes(8));
-    OwnerID = ReadBInt(bIn.ReadBytes(8));
-    GroupID = ReadBInt(bIn.ReadBytes(8));
+    ReadBInt(bIn.ReadBytes(8));
+    ReadBInt(bIn.ReadBytes(8));
+    ReadBInt(bIn.ReadBytes(8));
     FileSize = ReadBOct(bIn.ReadBytes(12));
     LastMod = ReadBOct(bIn.ReadBytes(12));
-    Checksum = ReadBInt(bIn.ReadBytes(8));
+    ReadBInt(bIn.ReadBytes(8));
     LinkIndicator = ReadBByte(bIn.ReadBytes(1));
-    LinkedFile = ReadBString(bIn.ReadBytes(100));
+    ReadBString(bIn.ReadBytes(100));
     bIn.BaseStream.Seek(startAt, SeekOrigin.Begin);
     bIn.BaseStream.Seek(512, SeekOrigin.Current);
     if (FileSize > 0)
@@ -161,7 +156,7 @@ public class TarFileData
       }
     }
   }
-  private string ReadBString(byte[] inBytes)
+  private static string ReadBString(byte[] inBytes)
   {
     string sRet = Encoding.ASCII.GetString(inBytes);
     if (sRet.Contains("\0"))
@@ -171,7 +166,7 @@ public class TarFileData
     sRet = sRet.Trim();
     return sRet;
   }
-  private byte ReadBByte(byte[] inBytes)
+  private static byte ReadBByte(byte[] inBytes)
   {
     string sRet = ReadBString(inBytes);
     if (!string.IsNullOrEmpty(sRet))
@@ -183,7 +178,7 @@ public class TarFileData
       return 0;
     }
   }
-  private uint ReadBInt(byte[] inBytes)
+  private static uint ReadBInt(byte[] inBytes)
   {
     string sRet = ReadBString(inBytes);
     if (!string.IsNullOrEmpty(sRet))
@@ -195,7 +190,7 @@ public class TarFileData
       return 0u;
     }
   }
-  private ulong ReadBOct(byte[] inBytes)
+  private static ulong ReadBOct(byte[] inBytes)
   {
     string sRet = ReadBString(inBytes);
     if (!string.IsNullOrEmpty(sRet))

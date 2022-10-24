@@ -9,7 +9,7 @@
     <widget-library name="../../appindicator-sharp.dll" />
     <widget-library name="../bin/Debug/RestrictionTracker.exe" internal="true" />
   </import>
-  <widget class="Gtk.Window" id="RestrictionTrackerGTK.frmMain" design-size="455 245">
+  <widget class="Gtk.Window" id="RestrictionTrackerGTK.frmMain" design-size="455 302">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Satellite Restriction Tracker</property>
     <property name="Icon">resource:RestrictionTrackerGTK.Resources.norm.ico</property>
@@ -145,386 +145,20 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="Gtk.HBox" id="pnlTypeA">
-                        <property name="MemberName" />
-                        <property name="Homogeneous">True</property>
-                        <child>
-                          <widget class="Gtk.Frame" id="gbTypeADld">
-                            <property name="MemberName" />
-                            <property name="ShadowType">Out</property>
-                            <child>
-                              <widget class="Gtk.Alignment" id="algnTypeADld">
-                                <property name="MemberName" />
-                                <property name="Xalign">0</property>
-                                <property name="Yalign">0</property>
-                                <property name="LeftPadding">3</property>
-                                <property name="TopPadding">3</property>
-                                <property name="RightPadding">3</property>
-                                <property name="BottomPadding">3</property>
-                                <child>
-                                  <widget class="Gtk.HBox" id="pnlTypeADld">
-                                    <property name="MemberName" />
-                                    <property name="Spacing">6</property>
-                                    <child>
-                                      <widget class="Gtk.VBox" id="pnlDldText">
-                                        <property name="MemberName" />
-                                        <property name="Homogeneous">True</property>
-                                        <property name="Spacing">6</property>
-                                        <child>
-                                          <widget class="Gtk.HBox" id="pnlDldTextUsed">
-                                            <property name="MemberName" />
-                                            <property name="Spacing">6</property>
-                                            <child>
-                                              <widget class="Gtk.Label" id="lblTypeADldUsed">
-                                                <property name="MemberName" />
-                                                <property name="LabelProp" translatable="yes">Used:</property>
-                                              </widget>
-                                              <packing>
-                                                <property name="Position">0</property>
-                                                <property name="AutoSize">True</property>
-                                                <property name="Expand">False</property>
-                                                <property name="Fill">False</property>
-                                              </packing>
-                                            </child>
-                                            <child>
-                                              <widget class="Gtk.Label" id="lblTypeADldUsedVal">
-                                                <property name="MemberName" />
-                                                <property name="LabelProp" translatable="yes"> -- </property>
-                                              </widget>
-                                              <packing>
-                                                <property name="PackType">End</property>
-                                                <property name="Position">1</property>
-                                                <property name="AutoSize">True</property>
-                                                <property name="Expand">False</property>
-                                                <property name="Fill">False</property>
-                                              </packing>
-                                            </child>
-                                          </widget>
-                                          <packing>
-                                            <property name="Position">0</property>
-                                            <property name="AutoSize">True</property>
-                                            <property name="Expand">False</property>
-                                            <property name="Fill">False</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <widget class="Gtk.HBox" id="pnlDldTextFree">
-                                            <property name="MemberName" />
-                                            <property name="Spacing">6</property>
-                                            <child>
-                                              <widget class="Gtk.Label" id="lblTypeADldFree">
-                                                <property name="MemberName" />
-                                                <property name="LabelProp" translatable="yes">Free:</property>
-                                              </widget>
-                                              <packing>
-                                                <property name="Position">0</property>
-                                                <property name="AutoSize">True</property>
-                                                <property name="Expand">False</property>
-                                                <property name="Fill">False</property>
-                                              </packing>
-                                            </child>
-                                            <child>
-                                              <widget class="Gtk.Label" id="lblTypeADldFreeVal">
-                                                <property name="MemberName" />
-                                                <property name="LabelProp" translatable="yes"> -- </property>
-                                              </widget>
-                                              <packing>
-                                                <property name="PackType">End</property>
-                                                <property name="Position">1</property>
-                                                <property name="AutoSize">True</property>
-                                                <property name="Expand">False</property>
-                                                <property name="Fill">False</property>
-                                              </packing>
-                                            </child>
-                                          </widget>
-                                          <packing>
-                                            <property name="Position">1</property>
-                                            <property name="AutoSize">True</property>
-                                            <property name="Expand">False</property>
-                                            <property name="Fill">False</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <widget class="Gtk.HBox" id="pnlDldTextLimit">
-                                            <property name="MemberName" />
-                                            <property name="Spacing">6</property>
-                                            <child>
-                                              <widget class="Gtk.Label" id="lblTypeADldLimit">
-                                                <property name="MemberName" />
-                                                <property name="LabelProp" translatable="yes">Limit:</property>
-                                              </widget>
-                                              <packing>
-                                                <property name="Position">0</property>
-                                                <property name="AutoSize">True</property>
-                                                <property name="Expand">False</property>
-                                                <property name="Fill">False</property>
-                                              </packing>
-                                            </child>
-                                            <child>
-                                              <widget class="Gtk.Label" id="lblTypeADldLimitVal">
-                                                <property name="MemberName" />
-                                                <property name="LabelProp" translatable="yes"> -- </property>
-                                              </widget>
-                                              <packing>
-                                                <property name="PackType">End</property>
-                                                <property name="Position">1</property>
-                                                <property name="AutoSize">True</property>
-                                                <property name="Expand">False</property>
-                                                <property name="Fill">False</property>
-                                              </packing>
-                                            </child>
-                                          </widget>
-                                          <packing>
-                                            <property name="Position">2</property>
-                                            <property name="AutoSize">True</property>
-                                            <property name="Expand">False</property>
-                                            <property name="Fill">False</property>
-                                          </packing>
-                                        </child>
-                                      </widget>
-                                      <packing>
-                                        <property name="Position">0</property>
-                                        <property name="AutoSize">True</property>
-                                        <property name="Expand">False</property>
-                                        <property name="Fill">False</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.EventBox" id="evnTypeADld">
-                                        <property name="MemberName" />
-                                        <child>
-                                          <widget class="Gtk.Image" id="pctTypeADld">
-                                            <property name="MemberName" />
-                                            <property name="Tooltip" translatable="yes">Graph representing your download usage.</property>
-                                          </widget>
-                                        </child>
-                                      </widget>
-                                      <packing>
-                                        <property name="Position">1</property>
-                                        <property name="AutoSize">False</property>
-                                      </packing>
-                                    </child>
-                                  </widget>
-                                </child>
-                              </widget>
-                            </child>
-                            <child>
-                              <widget class="Gtk.Label" id="lblTypeADld">
-                                <property name="MemberName" />
-                                <property name="Xalign">0</property>
-                                <property name="LabelProp" translatable="yes">Download (X%)</property>
-                                <property name="UseMarkup">True</property>
-                              </widget>
-                              <packing>
-                                <property name="type">label_item</property>
-                              </packing>
-                            </child>
-                          </widget>
-                          <packing>
-                            <property name="Position">0</property>
-                            <property name="AutoSize">False</property>
-                            <property name="Padding">3</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="Gtk.Frame" id="gbTypeAUld">
-                            <property name="MemberName" />
-                            <property name="ShadowType">Out</property>
-                            <child>
-                              <widget class="Gtk.Alignment" id="algnTypeAUld">
-                                <property name="MemberName" />
-                                <property name="Xalign">0</property>
-                                <property name="Yalign">0</property>
-                                <property name="LeftPadding">3</property>
-                                <property name="TopPadding">3</property>
-                                <property name="RightPadding">3</property>
-                                <property name="BottomPadding">3</property>
-                                <child>
-                                  <widget class="Gtk.HBox" id="pnlTypeAUld">
-                                    <property name="MemberName" />
-                                    <property name="Spacing">6</property>
-                                    <child>
-                                      <widget class="Gtk.VBox" id="pnlUldText">
-                                        <property name="MemberName" />
-                                        <property name="Homogeneous">True</property>
-                                        <property name="Spacing">6</property>
-                                        <child>
-                                          <widget class="Gtk.HBox" id="pnlUldTextUsed">
-                                            <property name="MemberName" />
-                                            <property name="Spacing">6</property>
-                                            <child>
-                                              <widget class="Gtk.Label" id="lblTypeAUldUsed">
-                                                <property name="MemberName" />
-                                                <property name="LabelProp" translatable="yes">Used:</property>
-                                              </widget>
-                                              <packing>
-                                                <property name="Position">0</property>
-                                                <property name="AutoSize">True</property>
-                                                <property name="Expand">False</property>
-                                                <property name="Fill">False</property>
-                                              </packing>
-                                            </child>
-                                            <child>
-                                              <widget class="Gtk.Label" id="lblTypeAUldUsedVal">
-                                                <property name="MemberName" />
-                                                <property name="LabelProp" translatable="yes"> -- </property>
-                                              </widget>
-                                              <packing>
-                                                <property name="PackType">End</property>
-                                                <property name="Position">1</property>
-                                                <property name="AutoSize">True</property>
-                                                <property name="Expand">False</property>
-                                                <property name="Fill">False</property>
-                                              </packing>
-                                            </child>
-                                          </widget>
-                                          <packing>
-                                            <property name="Position">0</property>
-                                            <property name="AutoSize">True</property>
-                                            <property name="Expand">False</property>
-                                            <property name="Fill">False</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <widget class="Gtk.HBox" id="pnlUldTextFree">
-                                            <property name="MemberName" />
-                                            <property name="Spacing">6</property>
-                                            <child>
-                                              <widget class="Gtk.Label" id="lblTypeAUldFree">
-                                                <property name="MemberName" />
-                                                <property name="LabelProp" translatable="yes">Free:</property>
-                                              </widget>
-                                              <packing>
-                                                <property name="Position">0</property>
-                                                <property name="AutoSize">True</property>
-                                                <property name="Expand">False</property>
-                                                <property name="Fill">False</property>
-                                              </packing>
-                                            </child>
-                                            <child>
-                                              <widget class="Gtk.Label" id="lblTypeAUldFreeVal">
-                                                <property name="MemberName" />
-                                                <property name="LabelProp" translatable="yes"> -- </property>
-                                              </widget>
-                                              <packing>
-                                                <property name="PackType">End</property>
-                                                <property name="Position">1</property>
-                                                <property name="AutoSize">True</property>
-                                                <property name="Expand">False</property>
-                                                <property name="Fill">False</property>
-                                              </packing>
-                                            </child>
-                                          </widget>
-                                          <packing>
-                                            <property name="Position">1</property>
-                                            <property name="AutoSize">True</property>
-                                            <property name="Expand">False</property>
-                                            <property name="Fill">False</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <widget class="Gtk.HBox" id="pnlUldTextLimit">
-                                            <property name="MemberName" />
-                                            <property name="Spacing">6</property>
-                                            <child>
-                                              <widget class="Gtk.Label" id="lblTypeAUldLimit">
-                                                <property name="MemberName" />
-                                                <property name="LabelProp" translatable="yes">Limit:</property>
-                                              </widget>
-                                              <packing>
-                                                <property name="Position">0</property>
-                                                <property name="AutoSize">True</property>
-                                                <property name="Expand">False</property>
-                                                <property name="Fill">False</property>
-                                              </packing>
-                                            </child>
-                                            <child>
-                                              <widget class="Gtk.Label" id="lblTypeAUldLimitVal">
-                                                <property name="MemberName" />
-                                                <property name="LabelProp" translatable="yes"> -- </property>
-                                              </widget>
-                                              <packing>
-                                                <property name="PackType">End</property>
-                                                <property name="Position">1</property>
-                                                <property name="AutoSize">True</property>
-                                                <property name="Expand">False</property>
-                                                <property name="Fill">False</property>
-                                              </packing>
-                                            </child>
-                                          </widget>
-                                          <packing>
-                                            <property name="Position">2</property>
-                                            <property name="AutoSize">True</property>
-                                            <property name="Expand">False</property>
-                                            <property name="Fill">False</property>
-                                          </packing>
-                                        </child>
-                                      </widget>
-                                      <packing>
-                                        <property name="Position">0</property>
-                                        <property name="AutoSize">True</property>
-                                        <property name="Expand">False</property>
-                                        <property name="Fill">False</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.EventBox" id="evnTypeAUld">
-                                        <property name="MemberName" />
-                                        <child>
-                                          <widget class="Gtk.Image" id="pctTypeAUld">
-                                            <property name="MemberName" />
-                                            <property name="Tooltip" translatable="yes">Graph representing your upload usage.</property>
-                                          </widget>
-                                        </child>
-                                      </widget>
-                                      <packing>
-                                        <property name="Position">1</property>
-                                        <property name="AutoSize">False</property>
-                                      </packing>
-                                    </child>
-                                  </widget>
-                                </child>
-                              </widget>
-                            </child>
-                            <child>
-                              <widget class="Gtk.Label" id="lblTypeAUld">
-                                <property name="MemberName" />
-                                <property name="Xalign">0</property>
-                                <property name="LabelProp" translatable="yes">Upload (X%)</property>
-                                <property name="UseMarkup">True</property>
-                              </widget>
-                              <packing>
-                                <property name="type">label_item</property>
-                              </packing>
-                            </child>
-                          </widget>
-                          <packing>
-                            <property name="Position">1</property>
-                            <property name="AutoSize">False</property>
-                            <property name="Padding">3</property>
-                          </packing>
-                        </child>
-                      </widget>
-                      <packing>
-                        <property name="Position">1</property>
-                        <property name="AutoSize">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="Gtk.HBox" id="pnlTypeB">
+                      <widget class="Gtk.HBox" id="pnlUsage">
                         <property name="MemberName" />
                         <property name="Spacing">6</property>
                         <child>
-                          <widget class="Gtk.VBox" id="pnlRuralNumbers">
+                          <widget class="Gtk.VBox" id="pnlUsageNumbers">
                             <property name="MemberName" />
                             <property name="Homogeneous">True</property>
                             <property name="Spacing">6</property>
                             <child>
-                              <widget class="Gtk.HBox" id="pnlRuralUsed">
+                              <widget class="Gtk.HBox" id="pnlUsageUsed">
                                 <property name="MemberName" />
                                 <property name="Spacing">6</property>
                                 <child>
-                                  <widget class="Gtk.Label" id="lblTypeBUsed">
+                                  <widget class="Gtk.Label" id="lblUsageUsed">
                                     <property name="MemberName" />
                                     <property name="LabelProp" translatable="yes">Used:</property>
                                   </widget>
@@ -536,7 +170,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="Gtk.Label" id="lblTypeBUsedVal">
+                                  <widget class="Gtk.Label" id="lblUsageUsedVal">
                                     <property name="MemberName" />
                                     <property name="LabelProp" translatable="yes"> -- </property>
                                   </widget>
@@ -557,11 +191,11 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="Gtk.HBox" id="pnlRuralFree">
+                              <widget class="Gtk.HBox" id="pnlUsageFree">
                                 <property name="MemberName" />
                                 <property name="Spacing">6</property>
                                 <child>
-                                  <widget class="Gtk.Label" id="lblTypeBFree">
+                                  <widget class="Gtk.Label" id="lblUsageFree">
                                     <property name="MemberName" />
                                     <property name="LabelProp" translatable="yes">Free:</property>
                                   </widget>
@@ -573,7 +207,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="Gtk.Label" id="lblTypeBFreeVal">
+                                  <widget class="Gtk.Label" id="lblUsageFreeVal">
                                     <property name="MemberName" />
                                     <property name="LabelProp" translatable="yes"> -- </property>
                                   </widget>
@@ -594,11 +228,11 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="Gtk.HBox" id="pnlRuralTotal">
+                              <widget class="Gtk.HBox" id="pnlUsageTotal">
                                 <property name="MemberName" />
                                 <property name="Spacing">6</property>
                                 <child>
-                                  <widget class="Gtk.Label" id="lblTypeBLimit">
+                                  <widget class="Gtk.Label" id="lblUsageLimit">
                                     <property name="MemberName" />
                                     <property name="LabelProp" translatable="yes">Limit:</property>
                                   </widget>
@@ -610,7 +244,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="Gtk.Label" id="lblTypeBLimitVal">
+                                  <widget class="Gtk.Label" id="lblUsageLimitVal">
                                     <property name="MemberName" />
                                     <property name="LabelProp" translatable="yes"> -- </property>
                                   </widget>
@@ -639,10 +273,10 @@
                           </packing>
                         </child>
                         <child>
-                          <widget class="Gtk.EventBox" id="evnTypeB">
+                          <widget class="Gtk.EventBox" id="evnUsage">
                             <property name="MemberName" />
                             <child>
-                              <widget class="Gtk.Image" id="pctTypeB">
+                              <widget class="Gtk.Image" id="pctUsage">
                                 <property name="MemberName" />
                                 <property name="Tooltip" translatable="yes">Graph representing your bandwidth usage.</property>
                               </widget>
@@ -655,7 +289,7 @@
                         </child>
                       </widget>
                       <packing>
-                        <property name="Position">2</property>
+                        <property name="Position">1</property>
                         <property name="AutoSize">False</property>
                       </packing>
                     </child>
@@ -1236,7 +870,7 @@
               </widget>
             </child>
             <child>
-              <widget class="Gtk.Label" id="GtkLabel8">
+              <widget class="Gtk.Label" id="lblAgeTitle">
                 <property name="MemberName" />
                 <property name="Xalign">0</property>
                 <property name="LabelProp" translatable="yes">Age Parameters</property>
@@ -1255,37 +889,12 @@
           </packing>
         </child>
         <child>
-          <widget class="Gtk.VBox" id="pnlGraph">
+          <widget class="Gtk.EventBox" id="evnGraph">
             <property name="MemberName" />
-            <property name="Homogeneous">True</property>
-            <property name="Spacing">6</property>
             <child>
-              <widget class="Gtk.EventBox" id="evnDld">
+              <widget class="Gtk.Image" id="pctGraph">
                 <property name="MemberName" />
-                <child>
-                  <widget class="Gtk.Image" id="pctDld">
-                    <property name="MemberName" />
-                  </widget>
-                </child>
               </widget>
-              <packing>
-                <property name="Position">0</property>
-                <property name="AutoSize">False</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="Gtk.EventBox" id="evnUld">
-                <property name="MemberName" />
-                <child>
-                  <widget class="Gtk.Image" id="pctUld">
-                    <property name="MemberName" />
-                  </widget>
-                </child>
-              </widget>
-              <packing>
-                <property name="Position">1</property>
-                <property name="AutoSize">False</property>
-              </packing>
             </child>
           </widget>
           <packing>
@@ -1419,7 +1028,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Dialog" id="RestrictionTrackerGTK.dlgConfig" design-size="376 517">
+  <widget class="Gtk.Dialog" id="RestrictionTrackerGTK.dlgConfig" design-size="422 615">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Satellite Restriction Tracker Configuration</property>
     <property name="Icon">resource:RestrictionTrackerGTK.Resources.norm.ico</property>
@@ -1440,11 +1049,11 @@
           <widget class="Gtk.Notebook" id="tbsConfig">
             <property name="MemberName" />
             <property name="CanFocus">True</property>
-            <property name="CurrentPage">0</property>
+            <property name="CurrentPage">1</property>
             <child>
               <widget class="Gtk.Table" id="pnlAccount">
                 <property name="MemberName" />
-                <property name="NRows">8</property>
+                <property name="NRows">5</property>
                 <property name="RowSpacing">2</property>
                 <property name="ColumnSpacing">2</property>
                 <child>
@@ -1452,27 +1061,6 @@
                     <property name="MemberName" />
                     <property name="Xalign">0</property>
                     <property name="LabelProp" translatable="yes">&lt;span weight="bold"&gt;Remote Usage Service (Optional)&lt;/span&gt;</property>
-                    <property name="UseMarkup">True</property>
-                  </widget>
-                  <packing>
-                    <property name="TopAttach">6</property>
-                    <property name="BottomAttach">7</property>
-                    <property name="AutoSize">True</property>
-                    <property name="XOptions">Fill</property>
-                    <property name="YOptions">Fill</property>
-                    <property name="XExpand">False</property>
-                    <property name="XFill">True</property>
-                    <property name="XShrink">False</property>
-                    <property name="YExpand">False</property>
-                    <property name="YFill">True</property>
-                    <property name="YShrink">False</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="Gtk.Label" id="lblAccountProviderTitle">
-                    <property name="MemberName" />
-                    <property name="Xalign">0</property>
-                    <property name="LabelProp" translatable="yes">&lt;span weight="bold"&gt;Provider / Reseller&lt;/span&gt;</property>
                     <property name="UseMarkup">True</property>
                   </widget>
                   <packing>
@@ -1745,353 +1333,6 @@
                     </child>
                   </widget>
                   <packing>
-                    <property name="TopAttach">7</property>
-                    <property name="BottomAttach">8</property>
-                    <property name="AutoSize">True</property>
-                    <property name="XOptions">Fill</property>
-                    <property name="YOptions">Fill</property>
-                    <property name="XExpand">False</property>
-                    <property name="XFill">True</property>
-                    <property name="XShrink">False</property>
-                    <property name="YExpand">False</property>
-                    <property name="YFill">True</property>
-                    <property name="YShrink">False</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="Gtk.Table" id="pnlAccountProvider">
-                    <property name="MemberName" />
-                    <property name="NRows">4</property>
-                    <property name="NColumns">4</property>
-                    <property name="RowSpacing">2</property>
-                    <property name="ColumnSpacing">2</property>
-                    <child>
-                      <placeholder />
-                    </child>
-                    <child>
-                      <placeholder />
-                    </child>
-                    <child>
-                      <placeholder />
-                    </child>
-                    <child>
-                      <widget class="Gtk.CheckButton" id="chkAccountTypeAuto">
-                        <property name="MemberName" />
-                        <property name="Tooltip" translatable="yes">Satellite Restriction Tracker will automatically determine your account type on connection.
-If you'd like to choose a type manually, you can uncheck this box and select an option below.</property>
-                        <property name="CanFocus">True</property>
-                        <property name="Label" translatable="yes">Auto-Detect (Recommended)</property>
-                        <property name="DrawIndicator">True</property>
-                        <property name="HasLabel">True</property>
-                        <property name="UseUnderline">True</property>
-                      </widget>
-                      <packing>
-                        <property name="TopAttach">2</property>
-                        <property name="BottomAttach">3</property>
-                        <property name="LeftAttach">2</property>
-                        <property name="RightAttach">3</property>
-                        <property name="AutoSize">True</property>
-                        <property name="XOptions">Fill</property>
-                        <property name="YOptions">Fill</property>
-                        <property name="XExpand">False</property>
-                        <property name="XFill">True</property>
-                        <property name="XShrink">False</property>
-                        <property name="YExpand">False</property>
-                        <property name="YFill">True</property>
-                        <property name="YShrink">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="Gtk.ComboBoxEntry" id="cmbProvider">
-                        <property name="MemberName" />
-                        <property name="Tooltip" translatable="yes">Your ViaSat Provider domain.
-If you were given an E-Mail address, this is everything after the @ symbol.
-You can choose a domain from the dropdown or enter your own to add it to the list.</property>
-                        <property name="IsTextCombo">True</property>
-                        <property name="Items" translatable="yes" />
-                      </widget>
-                      <packing>
-                        <property name="TopAttach">1</property>
-                        <property name="BottomAttach">2</property>
-                        <property name="LeftAttach">2</property>
-                        <property name="RightAttach">3</property>
-                        <property name="AutoSize">True</property>
-                        <property name="XOptions">Fill</property>
-                        <property name="YOptions">Fill</property>
-                        <property name="XExpand">False</property>
-                        <property name="XFill">True</property>
-                        <property name="XShrink">False</property>
-                        <property name="YExpand">False</property>
-                        <property name="YFill">True</property>
-                        <property name="YShrink">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="Gtk.Label" id="lblAccountProviderDescription">
-                        <property name="MemberName" />
-                        <property name="Xalign">0</property>
-                        <property name="LabelProp" translatable="yes">The Domain is your meter page URL or E-Mail address host.</property>
-                        <property name="Wrap">True</property>
-                      </widget>
-                      <packing>
-                        <property name="LeftAttach">1</property>
-                        <property name="RightAttach">4</property>
-                        <property name="AutoSize">True</property>
-                        <property name="XOptions">Fill</property>
-                        <property name="YOptions">Fill</property>
-                        <property name="XExpand">False</property>
-                        <property name="XFill">True</property>
-                        <property name="XShrink">False</property>
-                        <property name="YExpand">False</property>
-                        <property name="YFill">True</property>
-                        <property name="YShrink">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="Gtk.Label" id="lblAccountType">
-                        <property name="MemberName" />
-                        <property name="Xalign">0</property>
-                        <property name="LabelProp" translatable="yes">_Account Type:</property>
-                        <property name="UseUnderline">True</property>
-                        <property name="MnemonicWidget">(None)</property>
-                      </widget>
-                      <packing>
-                        <property name="TopAttach">2</property>
-                        <property name="BottomAttach">3</property>
-                        <property name="LeftAttach">1</property>
-                        <property name="RightAttach">2</property>
-                        <property name="AutoSize">True</property>
-                        <property name="XOptions">Fill</property>
-                        <property name="YOptions">Fill</property>
-                        <property name="XExpand">False</property>
-                        <property name="XFill">True</property>
-                        <property name="XShrink">False</property>
-                        <property name="YExpand">False</property>
-                        <property name="YFill">True</property>
-                        <property name="YShrink">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="Gtk.Label" id="lblProvider">
-                        <property name="MemberName" />
-                        <property name="Xalign">0</property>
-                        <property name="LabelProp" translatable="yes">_Domain:</property>
-                        <property name="UseUnderline">True</property>
-                        <property name="MnemonicWidget">cmbProvider</property>
-                      </widget>
-                      <packing>
-                        <property name="TopAttach">1</property>
-                        <property name="BottomAttach">2</property>
-                        <property name="LeftAttach">1</property>
-                        <property name="RightAttach">2</property>
-                        <property name="AutoSize">True</property>
-                        <property name="XOptions">Fill</property>
-                        <property name="YOptions">Fill</property>
-                        <property name="XExpand">False</property>
-                        <property name="XFill">True</property>
-                        <property name="XShrink">False</property>
-                        <property name="YExpand">False</property>
-                        <property name="YFill">True</property>
-                        <property name="YShrink">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="Gtk.Image" id="pctAccountProviderIcon">
-                        <property name="MemberName" />
-                        <property name="WidthRequest">48</property>
-                        <property name="Xpad">4</property>
-                        <property name="Ypad">4</property>
-                        <property name="Xalign">1</property>
-                        <property name="Yalign">0</property>
-                        <property name="Pixbuf">resource:RestrictionTrackerGTK.Resources.config.linux.account_provider.png</property>
-                      </widget>
-                      <packing>
-                        <property name="BottomAttach">4</property>
-                        <property name="AutoSize">False</property>
-                        <property name="XOptions">Fill</property>
-                        <property name="YOptions">Fill</property>
-                        <property name="XExpand">False</property>
-                        <property name="XFill">True</property>
-                        <property name="XShrink">False</property>
-                        <property name="YExpand">False</property>
-                        <property name="YFill">True</property>
-                        <property name="YShrink">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="Gtk.Table" id="pnlAccountTypes">
-                        <property name="MemberName" />
-                        <property name="NRows">3</property>
-                        <property name="NColumns">2</property>
-                        <property name="RowSpacing">6</property>
-                        <property name="ColumnSpacing">6</property>
-                        <child>
-                          <widget class="Gtk.RadioButton" id="optAccountTypeDNX">
-                            <property name="MemberName" />
-                            <property name="Tooltip" translatable="yes">Exede package through Dish.</property>
-                            <property name="CanFocus">True</property>
-                            <property name="Label" translatable="yes">Dish</property>
-                            <property name="Active">True</property>
-                            <property name="DrawIndicator">True</property>
-                            <property name="HasLabel">True</property>
-                            <property name="UseUnderline">True</property>
-                            <property name="Group">grpAccountTypes</property>
-                          </widget>
-                          <packing>
-                            <property name="TopAttach">2</property>
-                            <property name="BottomAttach">3</property>
-                            <property name="AutoSize">True</property>
-                            <property name="YOptions">Fill</property>
-                            <property name="XExpand">True</property>
-                            <property name="XFill">True</property>
-                            <property name="XShrink">False</property>
-                            <property name="YExpand">False</property>
-                            <property name="YFill">True</property>
-                            <property name="YShrink">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="Gtk.RadioButton" id="optAccountTypeNONE">
-                            <property name="MemberName" />
-                            <property name="Visible">False</property>
-                            <property name="Tooltip" translatable="yes">The Account Type is Unknown at this time.</property>
-                            <property name="CanFocus">True</property>
-                            <property name="Label" translatable="yes">Unknown</property>
-                            <property name="DrawIndicator">True</property>
-                            <property name="HasLabel">True</property>
-                            <property name="UseUnderline">True</property>
-                            <property name="Group">grpAccountTypes</property>
-                          </widget>
-                          <packing>
-                            <property name="TopAttach">2</property>
-                            <property name="BottomAttach">3</property>
-                            <property name="LeftAttach">1</property>
-                            <property name="RightAttach">2</property>
-                            <property name="AutoSize">True</property>
-                            <property name="YOptions">Fill</property>
-                            <property name="XExpand">True</property>
-                            <property name="XFill">True</property>
-                            <property name="XShrink">False</property>
-                            <property name="YExpand">False</property>
-                            <property name="YFill">True</property>
-                            <property name="YShrink">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="Gtk.RadioButton" id="optAccountTypeRPL">
-                            <property name="MemberName" />
-                            <property name="Tooltip" translatable="yes">Legacy WildBlue packages through a RuralPortal provider.</property>
-                            <property name="CanFocus">True</property>
-                            <property name="Label" translatable="yes">Rural Portal (WildBlue)</property>
-                            <property name="DrawIndicator">True</property>
-                            <property name="HasLabel">True</property>
-                            <property name="UseUnderline">True</property>
-                            <property name="Group">grpAccountTypes</property>
-                          </widget>
-                          <packing>
-                            <property name="LeftAttach">1</property>
-                            <property name="RightAttach">2</property>
-                            <property name="AutoSize">True</property>
-                            <property name="YOptions">Fill</property>
-                            <property name="XExpand">True</property>
-                            <property name="XFill">True</property>
-                            <property name="XShrink">False</property>
-                            <property name="YExpand">False</property>
-                            <property name="YFill">True</property>
-                            <property name="YShrink">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="Gtk.RadioButton" id="optAccountTypeRPX">
-                            <property name="MemberName" />
-                            <property name="Tooltip" translatable="yes">Exede packages through a RuralPortal provider.</property>
-                            <property name="CanFocus">True</property>
-                            <property name="Label" translatable="yes">Rural Portal (Exede)</property>
-                            <property name="DrawIndicator">True</property>
-                            <property name="HasLabel">True</property>
-                            <property name="UseUnderline">True</property>
-                            <property name="Group">grpAccountTypes</property>
-                          </widget>
-                          <packing>
-                            <property name="TopAttach">1</property>
-                            <property name="BottomAttach">2</property>
-                            <property name="LeftAttach">1</property>
-                            <property name="RightAttach">2</property>
-                            <property name="AutoSize">True</property>
-                            <property name="YOptions">Fill</property>
-                            <property name="XExpand">True</property>
-                            <property name="XFill">True</property>
-                            <property name="XShrink">False</property>
-                            <property name="YExpand">False</property>
-                            <property name="YFill">True</property>
-                            <property name="YShrink">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="Gtk.RadioButton" id="optAccountTypeWBL">
-                            <property name="MemberName" />
-                            <property name="Tooltip" translatable="yes">Legacy WildBlue packages.</property>
-                            <property name="CanFocus">True</property>
-                            <property name="Label" translatable="yes">WildBlue</property>
-                            <property name="DrawIndicator">True</property>
-                            <property name="HasLabel">True</property>
-                            <property name="UseUnderline">True</property>
-                            <property name="Group">grpAccountTypes</property>
-                          </widget>
-                          <packing>
-                            <property name="AutoSize">True</property>
-                            <property name="YOptions">Fill</property>
-                            <property name="XExpand">True</property>
-                            <property name="XFill">True</property>
-                            <property name="XShrink">False</property>
-                            <property name="YExpand">False</property>
-                            <property name="YFill">True</property>
-                            <property name="YShrink">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="Gtk.RadioButton" id="optAccountTypeWBX">
-                            <property name="MemberName" />
-                            <property name="Tooltip" translatable="yes">Exede, Exede Evolution, and Exede Freedom packages.</property>
-                            <property name="CanFocus">True</property>
-                            <property name="Label" translatable="yes">Exede</property>
-                            <property name="DrawIndicator">True</property>
-                            <property name="HasLabel">True</property>
-                            <property name="UseUnderline">True</property>
-                            <property name="Group">grpAccountTypes</property>
-                          </widget>
-                          <packing>
-                            <property name="TopAttach">1</property>
-                            <property name="BottomAttach">2</property>
-                            <property name="AutoSize">True</property>
-                            <property name="YOptions">Fill</property>
-                            <property name="XExpand">True</property>
-                            <property name="XFill">True</property>
-                            <property name="XShrink">False</property>
-                            <property name="YExpand">False</property>
-                            <property name="YFill">True</property>
-                            <property name="YShrink">False</property>
-                          </packing>
-                        </child>
-                      </widget>
-                      <packing>
-                        <property name="TopAttach">3</property>
-                        <property name="BottomAttach">4</property>
-                        <property name="LeftAttach">1</property>
-                        <property name="RightAttach">3</property>
-                        <property name="AutoSize">False</property>
-                        <property name="XOptions">0</property>
-                        <property name="YOptions">0</property>
-                        <property name="XExpand">False</property>
-                        <property name="XFill">False</property>
-                        <property name="XShrink">False</property>
-                        <property name="YExpand">False</property>
-                        <property name="YFill">False</property>
-                        <property name="YShrink">False</property>
-                      </packing>
-                    </child>
-                  </widget>
-                  <packing>
                     <property name="TopAttach">4</property>
                     <property name="BottomAttach">5</property>
                     <property name="AutoSize">True</property>
@@ -2117,29 +1358,6 @@ You can choose a domain from the dropdown or enter your own to add it to the lis
                   <packing>
                     <property name="TopAttach">2</property>
                     <property name="BottomAttach">3</property>
-                    <property name="AutoSize">False</property>
-                    <property name="XOptions">0</property>
-                    <property name="YOptions">Expand</property>
-                    <property name="XExpand">False</property>
-                    <property name="XFill">False</property>
-                    <property name="XShrink">False</property>
-                    <property name="YExpand">True</property>
-                    <property name="YFill">False</property>
-                    <property name="YShrink">False</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="Gtk.Table" id="pnlAccountSpace2">
-                    <property name="MemberName" />
-                    <property name="RowSpacing">2</property>
-                    <property name="ColumnSpacing">2</property>
-                    <child>
-                      <placeholder />
-                    </child>
-                  </widget>
-                  <packing>
-                    <property name="TopAttach">5</property>
-                    <property name="BottomAttach">6</property>
                     <property name="AutoSize">False</property>
                     <property name="XOptions">0</property>
                     <property name="YOptions">Expand</property>
@@ -5336,7 +4554,7 @@ By default, data is stored in the ~/.config directory.</property>
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Dialog" id="RestrictionTrackerGTK.dlgCustomColors" design-size="360 585">
+  <widget class="Gtk.Dialog" id="RestrictionTrackerGTK.dlgCustomColors" design-size="729 327">
     <property name="MemberName" />
     <property name="Visible">False</property>
     <property name="Title" translatable="yes">Graph Color Customization</property>
@@ -5356,7 +4574,7 @@ By default, data is stored in the ~/.config directory.</property>
         <child>
           <widget class="Gtk.Table" id="pnlCustomColors">
             <property name="MemberName" />
-            <property name="NRows">3</property>
+            <property name="NColumns">3</property>
             <property name="RowSpacing">3</property>
             <property name="ColumnSpacing">3</property>
             <child>
@@ -5374,8 +4592,7 @@ By default, data is stored in the ~/.config directory.</property>
                     <child>
                       <widget class="Gtk.Table" id="pnlHistory">
                         <property name="MemberName" />
-                        <property name="NRows">2</property>
-                        <property name="NColumns">3</property>
+                        <property name="NRows">3</property>
                         <property name="RowSpacing">3</property>
                         <property name="ColumnSpacing">3</property>
                         <child>
@@ -5384,15 +4601,12 @@ By default, data is stored in the ~/.config directory.</property>
                             <child>
                               <widget class="Gtk.Image" id="pctHistory">
                                 <property name="MemberName" />
-                                <property name="WidthRequest">75</property>
-                                <property name="HeightRequest">75</property>
+                                <property name="WidthRequest">100</property>
+                                <property name="HeightRequest">55</property>
                               </widget>
                             </child>
                           </widget>
                           <packing>
-                            <property name="BottomAttach">2</property>
-                            <property name="LeftAttach">2</property>
-                            <property name="RightAttach">3</property>
                             <property name="AutoSize">True</property>
                             <property name="XOptions">Fill</property>
                             <property name="YOptions">Fill</property>
@@ -5405,11 +4619,11 @@ By default, data is stored in the ~/.config directory.</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="Gtk.Frame" id="grpHistoryDown">
+                          <widget class="Gtk.Frame" id="grpHistoryUsed">
                             <property name="MemberName" />
                             <property name="ShadowType">Out</property>
                             <child>
-                              <widget class="Gtk.Alignment" id="algnHistoryDown">
+                              <widget class="Gtk.Alignment" id="algnHistoryUsed">
                                 <property name="MemberName" />
                                 <property name="Yalign">0</property>
                                 <property name="LeftPadding">3</property>
@@ -5417,10 +4631,10 @@ By default, data is stored in the ~/.config directory.</property>
                                 <property name="RightPadding">3</property>
                                 <property name="BottomPadding">3</property>
                                 <child>
-                                  <widget class="Gtk.Table" id="pnlHistoryDown">
+                                  <widget class="Gtk.Table" id="pnlHistoryUsed">
                                     <property name="MemberName" />
-                                    <property name="NRows">5</property>
-                                    <property name="NColumns">3</property>
+                                    <property name="NRows">3</property>
+                                    <property name="NColumns">7</property>
                                     <property name="RowSpacing">3</property>
                                     <property name="ColumnSpacing">3</property>
                                     <child>
@@ -5439,7 +4653,25 @@ By default, data is stored in the ~/.config directory.</property>
                                       <placeholder />
                                     </child>
                                     <child>
-                                      <widget class="Gtk.CheckButton" id="chkHistoryDownB">
+                                      <placeholder />
+                                    </child>
+                                    <child>
+                                      <placeholder />
+                                    </child>
+                                    <child>
+                                      <placeholder />
+                                    </child>
+                                    <child>
+                                      <placeholder />
+                                    </child>
+                                    <child>
+                                      <placeholder />
+                                    </child>
+                                    <child>
+                                      <placeholder />
+                                    </child>
+                                    <child>
+                                      <widget class="Gtk.CheckButton" id="chkHistoryUsedB">
                                         <property name="MemberName" />
                                         <property name="CanFocus">True</property>
                                         <property name="Label" translatable="yes">50% :</property>
@@ -5450,8 +4682,10 @@ By default, data is stored in the ~/.config directory.</property>
                                         <property name="Xalign">1</property>
                                       </widget>
                                       <packing>
-                                        <property name="TopAttach">2</property>
-                                        <property name="BottomAttach">3</property>
+                                        <property name="TopAttach">1</property>
+                                        <property name="BottomAttach">2</property>
+                                        <property name="LeftAttach">4</property>
+                                        <property name="RightAttach">5</property>
                                         <property name="AutoSize">True</property>
                                         <property name="XOptions">Fill</property>
                                         <property name="YOptions">Fill</property>
@@ -5464,7 +4698,7 @@ By default, data is stored in the ~/.config directory.</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="Gtk.ColorButton" id="cmdHistoryDownA">
+                                      <widget class="Gtk.ColorButton" id="cmdHistoryUsedA">
                                         <property name="MemberName" />
                                         <property name="CanFocus">True</property>
                                         <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
@@ -5472,10 +4706,8 @@ By default, data is stored in the ~/.config directory.</property>
                                         <property name="Alpha">-1</property>
                                       </widget>
                                       <packing>
-                                        <property name="TopAttach">1</property>
-                                        <property name="BottomAttach">2</property>
-                                        <property name="LeftAttach">2</property>
-                                        <property name="RightAttach">3</property>
+                                        <property name="LeftAttach">6</property>
+                                        <property name="RightAttach">7</property>
                                         <property name="AutoSize">False</property>
                                         <property name="XOptions">Fill</property>
                                         <property name="YOptions">Fill</property>
@@ -5488,7 +4720,7 @@ By default, data is stored in the ~/.config directory.</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="Gtk.ColorButton" id="cmdHistoryDownB">
+                                      <widget class="Gtk.ColorButton" id="cmdHistoryUsedB">
                                         <property name="MemberName" />
                                         <property name="CanFocus">True</property>
                                         <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
@@ -5496,10 +4728,10 @@ By default, data is stored in the ~/.config directory.</property>
                                         <property name="Alpha">-1</property>
                                       </widget>
                                       <packing>
-                                        <property name="TopAttach">2</property>
-                                        <property name="BottomAttach">3</property>
-                                        <property name="LeftAttach">2</property>
-                                        <property name="RightAttach">3</property>
+                                        <property name="TopAttach">1</property>
+                                        <property name="BottomAttach">2</property>
+                                        <property name="LeftAttach">6</property>
+                                        <property name="RightAttach">7</property>
                                         <property name="AutoSize">False</property>
                                         <property name="XOptions">Fill</property>
                                         <property name="YOptions">Fill</property>
@@ -5512,7 +4744,7 @@ By default, data is stored in the ~/.config directory.</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="Gtk.ColorButton" id="cmdHistoryDownC">
+                                      <widget class="Gtk.ColorButton" id="cmdHistoryUsedC">
                                         <property name="MemberName" />
                                         <property name="CanFocus">True</property>
                                         <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
@@ -5520,10 +4752,10 @@ By default, data is stored in the ~/.config directory.</property>
                                         <property name="Alpha">-1</property>
                                       </widget>
                                       <packing>
-                                        <property name="TopAttach">3</property>
-                                        <property name="BottomAttach">4</property>
-                                        <property name="LeftAttach">2</property>
-                                        <property name="RightAttach">3</property>
+                                        <property name="TopAttach">2</property>
+                                        <property name="BottomAttach">3</property>
+                                        <property name="LeftAttach">6</property>
+                                        <property name="RightAttach">7</property>
                                         <property name="AutoSize">True</property>
                                         <property name="XOptions">Fill</property>
                                         <property name="YOptions">Fill</property>
@@ -5536,7 +4768,7 @@ By default, data is stored in the ~/.config directory.</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="Gtk.ColorButton" id="cmdHistoryDownLine">
+                                      <widget class="Gtk.ColorButton" id="cmdHistoryUsedLine">
                                         <property name="MemberName" />
                                         <property name="CanFocus">True</property>
                                         <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
@@ -5558,7 +4790,7 @@ By default, data is stored in the ~/.config directory.</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="Gtk.ColorButton" id="cmdHistoryDownMax">
+                                      <widget class="Gtk.ColorButton" id="cmdHistoryUsedMax">
                                         <property name="MemberName" />
                                         <property name="CanFocus">True</property>
                                         <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
@@ -5566,8 +4798,8 @@ By default, data is stored in the ~/.config directory.</property>
                                         <property name="Alpha">-1</property>
                                       </widget>
                                       <packing>
-                                        <property name="TopAttach">4</property>
-                                        <property name="BottomAttach">5</property>
+                                        <property name="TopAttach">2</property>
+                                        <property name="BottomAttach">3</property>
                                         <property name="LeftAttach">2</property>
                                         <property name="RightAttach">3</property>
                                         <property name="AutoSize">True</property>
@@ -5582,14 +4814,14 @@ By default, data is stored in the ~/.config directory.</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="Gtk.Label" id="lblHistoryDownA">
+                                      <widget class="Gtk.Label" id="lblHistoryUsedA">
                                         <property name="MemberName" />
                                         <property name="Xalign">1</property>
                                         <property name="LabelProp" translatable="yes">0% :</property>
                                       </widget>
                                       <packing>
-                                        <property name="TopAttach">1</property>
-                                        <property name="BottomAttach">2</property>
+                                        <property name="LeftAttach">4</property>
+                                        <property name="RightAttach">5</property>
                                         <property name="AutoSize">True</property>
                                         <property name="XOptions">Fill</property>
                                         <property name="YOptions">Fill</property>
@@ -5602,14 +4834,16 @@ By default, data is stored in the ~/.config directory.</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="Gtk.Label" id="lblHistoryDownC">
+                                      <widget class="Gtk.Label" id="lblHistoryUsedC">
                                         <property name="MemberName" />
                                         <property name="Xalign">1</property>
                                         <property name="LabelProp" translatable="yes">100% :</property>
                                       </widget>
                                       <packing>
-                                        <property name="TopAttach">3</property>
-                                        <property name="BottomAttach">4</property>
+                                        <property name="TopAttach">2</property>
+                                        <property name="BottomAttach">3</property>
+                                        <property name="LeftAttach">4</property>
+                                        <property name="RightAttach">5</property>
                                         <property name="AutoSize">True</property>
                                         <property name="XOptions">Fill</property>
                                         <property name="YOptions">Fill</property>
@@ -5622,7 +4856,7 @@ By default, data is stored in the ~/.config directory.</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="Gtk.Label" id="lblHistoryDownLine">
+                                      <widget class="Gtk.Label" id="lblHistoryUsedLine">
                                         <property name="MemberName" />
                                         <property name="Xalign">1</property>
                                         <property name="LabelProp" translatable="yes">Line :</property>
@@ -5640,14 +4874,14 @@ By default, data is stored in the ~/.config directory.</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="Gtk.Label" id="lblHistoryDownMax">
+                                      <widget class="Gtk.Label" id="lblHistoryUsedMax">
                                         <property name="MemberName" />
                                         <property name="Xalign">1</property>
                                         <property name="LabelProp" translatable="yes">Max :</property>
                                       </widget>
                                       <packing>
-                                        <property name="TopAttach">4</property>
-                                        <property name="BottomAttach">5</property>
+                                        <property name="TopAttach">2</property>
+                                        <property name="BottomAttach">3</property>
                                         <property name="AutoSize">True</property>
                                         <property name="XOptions">Fill</property>
                                         <property name="YOptions">Fill</property>
@@ -5664,10 +4898,10 @@ By default, data is stored in the ~/.config directory.</property>
                               </widget>
                             </child>
                             <child>
-                              <widget class="Gtk.Label" id="lblHistoryDownTitle">
+                              <widget class="Gtk.Label" id="lblHistoryUsedTitle">
                                 <property name="MemberName" />
                                 <property name="Xalign">0</property>
-                                <property name="LabelProp" translatable="yes">Download Colors</property>
+                                <property name="LabelProp" translatable="yes">History Colors and Gradient</property>
                                 <property name="UseMarkup">True</property>
                               </widget>
                               <packing>
@@ -5676,292 +4910,8 @@ By default, data is stored in the ~/.config directory.</property>
                             </child>
                           </widget>
                           <packing>
-                            <property name="AutoSize">False</property>
-                            <property name="XOptions">Expand</property>
-                            <property name="YOptions">Fill</property>
-                            <property name="XExpand">True</property>
-                            <property name="XFill">False</property>
-                            <property name="XShrink">False</property>
-                            <property name="YExpand">False</property>
-                            <property name="YFill">True</property>
-                            <property name="YShrink">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="Gtk.Frame" id="grpHistoryUp">
-                            <property name="MemberName" />
-                            <property name="ShadowType">Out</property>
-                            <child>
-                              <widget class="Gtk.Alignment" id="algnHistoryUp">
-                                <property name="MemberName" />
-                                <property name="Xalign">0</property>
-                                <property name="Yalign">0</property>
-                                <property name="LeftPadding">3</property>
-                                <property name="TopPadding">3</property>
-                                <property name="RightPadding">3</property>
-                                <property name="BottomPadding">3</property>
-                                <child>
-                                  <widget class="Gtk.Table" id="pnlHistoryUp">
-                                    <property name="MemberName" />
-                                    <property name="NRows">5</property>
-                                    <property name="NColumns">3</property>
-                                    <property name="RowSpacing">3</property>
-                                    <property name="ColumnSpacing">3</property>
-                                    <child>
-                                      <placeholder />
-                                    </child>
-                                    <child>
-                                      <placeholder />
-                                    </child>
-                                    <child>
-                                      <placeholder />
-                                    </child>
-                                    <child>
-                                      <placeholder />
-                                    </child>
-                                    <child>
-                                      <placeholder />
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.CheckButton" id="chkHistoryUpB">
-                                        <property name="MemberName" />
-                                        <property name="CanFocus">True</property>
-                                        <property name="Label" translatable="yes">50% :</property>
-                                        <property name="Active">True</property>
-                                        <property name="DrawIndicator">True</property>
-                                        <property name="HasLabel">True</property>
-                                        <property name="UseUnderline">True</property>
-                                        <property name="Xalign">1</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="TopAttach">2</property>
-                                        <property name="BottomAttach">3</property>
-                                        <property name="AutoSize">True</property>
-                                        <property name="XOptions">Fill</property>
-                                        <property name="YOptions">Fill</property>
-                                        <property name="XExpand">False</property>
-                                        <property name="XFill">True</property>
-                                        <property name="XShrink">False</property>
-                                        <property name="YExpand">False</property>
-                                        <property name="YFill">True</property>
-                                        <property name="YShrink">False</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.ColorButton" id="cmdHistoryUpA">
-                                        <property name="MemberName" />
-                                        <property name="CanFocus">True</property>
-                                        <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
-                                        <property name="Title" translatable="yes">History Graph Upload 0% Color</property>
-                                        <property name="Alpha">-1</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="TopAttach">1</property>
-                                        <property name="BottomAttach">2</property>
-                                        <property name="LeftAttach">2</property>
-                                        <property name="RightAttach">3</property>
-                                        <property name="AutoSize">True</property>
-                                        <property name="XOptions">Fill</property>
-                                        <property name="YOptions">Fill</property>
-                                        <property name="XExpand">False</property>
-                                        <property name="XFill">True</property>
-                                        <property name="XShrink">False</property>
-                                        <property name="YExpand">False</property>
-                                        <property name="YFill">True</property>
-                                        <property name="YShrink">False</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.ColorButton" id="cmdHistoryUpB">
-                                        <property name="MemberName" />
-                                        <property name="CanFocus">True</property>
-                                        <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
-                                        <property name="Title" translatable="yes">History Graph Upload 50% Color</property>
-                                        <property name="Alpha">-1</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="TopAttach">2</property>
-                                        <property name="BottomAttach">3</property>
-                                        <property name="LeftAttach">2</property>
-                                        <property name="RightAttach">3</property>
-                                        <property name="AutoSize">True</property>
-                                        <property name="XOptions">Fill</property>
-                                        <property name="YOptions">Fill</property>
-                                        <property name="XExpand">False</property>
-                                        <property name="XFill">True</property>
-                                        <property name="XShrink">False</property>
-                                        <property name="YExpand">False</property>
-                                        <property name="YFill">True</property>
-                                        <property name="YShrink">False</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.ColorButton" id="cmdHistoryUpC">
-                                        <property name="MemberName" />
-                                        <property name="CanFocus">True</property>
-                                        <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
-                                        <property name="Title" translatable="yes">History Graph Upload 100% Color</property>
-                                        <property name="Alpha">-1</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="TopAttach">3</property>
-                                        <property name="BottomAttach">4</property>
-                                        <property name="LeftAttach">2</property>
-                                        <property name="RightAttach">3</property>
-                                        <property name="AutoSize">True</property>
-                                        <property name="XOptions">Fill</property>
-                                        <property name="YOptions">Fill</property>
-                                        <property name="XExpand">False</property>
-                                        <property name="XFill">True</property>
-                                        <property name="XShrink">False</property>
-                                        <property name="YExpand">False</property>
-                                        <property name="YFill">True</property>
-                                        <property name="YShrink">False</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.ColorButton" id="cmdHistoryUpLine">
-                                        <property name="MemberName" />
-                                        <property name="CanFocus">True</property>
-                                        <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
-                                        <property name="Title" translatable="yes">History Upload Data Line</property>
-                                        <property name="Alpha">-1</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="LeftAttach">2</property>
-                                        <property name="RightAttach">3</property>
-                                        <property name="AutoSize">True</property>
-                                        <property name="XOptions">Fill</property>
-                                        <property name="YOptions">Fill</property>
-                                        <property name="XExpand">False</property>
-                                        <property name="XFill">True</property>
-                                        <property name="XShrink">False</property>
-                                        <property name="YExpand">False</property>
-                                        <property name="YFill">True</property>
-                                        <property name="YShrink">False</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.ColorButton" id="cmdHistoryUpMax">
-                                        <property name="MemberName" />
-                                        <property name="CanFocus">True</property>
-                                        <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
-                                        <property name="Title" translatable="yes">History Graph Upload Maximum Limit Color</property>
-                                        <property name="Alpha">-1</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="TopAttach">4</property>
-                                        <property name="BottomAttach">5</property>
-                                        <property name="LeftAttach">2</property>
-                                        <property name="RightAttach">3</property>
-                                        <property name="AutoSize">True</property>
-                                        <property name="XOptions">Fill</property>
-                                        <property name="YOptions">Fill</property>
-                                        <property name="XExpand">False</property>
-                                        <property name="XFill">True</property>
-                                        <property name="XShrink">False</property>
-                                        <property name="YExpand">False</property>
-                                        <property name="YFill">True</property>
-                                        <property name="YShrink">False</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.Label" id="lblHistoryUpA">
-                                        <property name="MemberName" />
-                                        <property name="Xalign">1</property>
-                                        <property name="LabelProp" translatable="yes">0% :</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="TopAttach">1</property>
-                                        <property name="BottomAttach">2</property>
-                                        <property name="AutoSize">True</property>
-                                        <property name="XOptions">Fill</property>
-                                        <property name="YOptions">Fill</property>
-                                        <property name="XExpand">False</property>
-                                        <property name="XFill">True</property>
-                                        <property name="XShrink">False</property>
-                                        <property name="YExpand">False</property>
-                                        <property name="YFill">True</property>
-                                        <property name="YShrink">False</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.Label" id="lblHistoryUpC">
-                                        <property name="MemberName" />
-                                        <property name="Xalign">1</property>
-                                        <property name="LabelProp" translatable="yes">100% :</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="TopAttach">3</property>
-                                        <property name="BottomAttach">4</property>
-                                        <property name="AutoSize">True</property>
-                                        <property name="XOptions">Fill</property>
-                                        <property name="YOptions">Fill</property>
-                                        <property name="XExpand">False</property>
-                                        <property name="XFill">True</property>
-                                        <property name="XShrink">False</property>
-                                        <property name="YExpand">False</property>
-                                        <property name="YFill">True</property>
-                                        <property name="YShrink">False</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.Label" id="lblHistoryUpLine">
-                                        <property name="MemberName" />
-                                        <property name="Xalign">1</property>
-                                        <property name="LabelProp" translatable="yes">Line :</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="AutoSize">True</property>
-                                        <property name="XOptions">Fill</property>
-                                        <property name="YOptions">Fill</property>
-                                        <property name="XExpand">False</property>
-                                        <property name="XFill">True</property>
-                                        <property name="XShrink">False</property>
-                                        <property name="YExpand">False</property>
-                                        <property name="YFill">True</property>
-                                        <property name="YShrink">False</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.Label" id="lblHistoryUpMax">
-                                        <property name="MemberName" />
-                                        <property name="Xalign">1</property>
-                                        <property name="LabelProp" translatable="yes">Max :</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="TopAttach">4</property>
-                                        <property name="BottomAttach">5</property>
-                                        <property name="AutoSize">True</property>
-                                        <property name="XOptions">Fill</property>
-                                        <property name="YOptions">Fill</property>
-                                        <property name="XExpand">False</property>
-                                        <property name="XFill">True</property>
-                                        <property name="XShrink">False</property>
-                                        <property name="YExpand">False</property>
-                                        <property name="YFill">True</property>
-                                        <property name="YShrink">False</property>
-                                      </packing>
-                                    </child>
-                                  </widget>
-                                </child>
-                              </widget>
-                            </child>
-                            <child>
-                              <widget class="Gtk.Label" id="lblHistoryUpTitle">
-                                <property name="MemberName" />
-                                <property name="Xalign">0</property>
-                                <property name="LabelProp" translatable="yes">Upload Colors</property>
-                                <property name="UseMarkup">True</property>
-                              </widget>
-                              <packing>
-                                <property name="type">label_item</property>
-                              </packing>
-                            </child>
-                          </widget>
-                          <packing>
-                            <property name="LeftAttach">1</property>
-                            <property name="RightAttach">2</property>
+                            <property name="TopAttach">1</property>
+                            <property name="BottomAttach">2</property>
                             <property name="AutoSize">False</property>
                             <property name="XOptions">Expand</property>
                             <property name="YOptions">Fill</property>
@@ -5994,8 +4944,10 @@ By default, data is stored in the ~/.config directory.</property>
                                 <property name="Alpha">-1</property>
                               </widget>
                               <packing>
-                                <property name="LeftAttach">4</property>
-                                <property name="RightAttach">5</property>
+                                <property name="TopAttach">1</property>
+                                <property name="BottomAttach">2</property>
+                                <property name="LeftAttach">1</property>
+                                <property name="RightAttach">2</property>
                                 <property name="AutoSize">True</property>
                                 <property name="XOptions">Fill</property>
                                 <property name="YOptions">Fill</property>
@@ -6040,10 +4992,8 @@ By default, data is stored in the ~/.config directory.</property>
                                 <property name="Alpha">-1</property>
                               </widget>
                               <packing>
-                                <property name="TopAttach">1</property>
-                                <property name="BottomAttach">2</property>
-                                <property name="LeftAttach">1</property>
-                                <property name="RightAttach">2</property>
+                                <property name="LeftAttach">4</property>
+                                <property name="RightAttach">5</property>
                                 <property name="AutoSize">True</property>
                                 <property name="XOptions">Fill</property>
                                 <property name="YOptions">Fill</property>
@@ -6084,8 +5034,8 @@ By default, data is stored in the ~/.config directory.</property>
                                 <property name="LabelProp" translatable="yes">Background :</property>
                               </widget>
                               <packing>
-                                <property name="LeftAttach">3</property>
-                                <property name="RightAttach">4</property>
+                                <property name="TopAttach">1</property>
+                                <property name="BottomAttach">2</property>
                                 <property name="AutoSize">True</property>
                                 <property name="XOptions">Fill</property>
                                 <property name="YOptions">Fill</property>
@@ -6126,8 +5076,8 @@ By default, data is stored in the ~/.config directory.</property>
                                 <property name="LabelProp" translatable="yes">Light Grid :</property>
                               </widget>
                               <packing>
-                                <property name="TopAttach">1</property>
-                                <property name="BottomAttach">2</property>
+                                <property name="LeftAttach">3</property>
+                                <property name="RightAttach">4</property>
                                 <property name="AutoSize">True</property>
                                 <property name="XOptions">Fill</property>
                                 <property name="YOptions">Fill</property>
@@ -6159,9 +5109,8 @@ By default, data is stored in the ~/.config directory.</property>
                             </child>
                           </widget>
                           <packing>
-                            <property name="TopAttach">1</property>
-                            <property name="BottomAttach">2</property>
-                            <property name="RightAttach">2</property>
+                            <property name="TopAttach">2</property>
+                            <property name="BottomAttach">3</property>
                             <property name="AutoSize">False</property>
                             <property name="YOptions">Fill</property>
                             <property name="XExpand">True</property>
@@ -6180,7 +5129,7 @@ By default, data is stored in the ~/.config directory.</property>
                   <widget class="Gtk.Label" id="lblHistoryTitle">
                     <property name="MemberName" />
                     <property name="Xalign">0</property>
-                    <property name="LabelProp" translatable="yes">History Window Graphs</property>
+                    <property name="LabelProp" translatable="yes">History Window Graph</property>
                     <property name="UseMarkup">True</property>
                   </widget>
                   <packing>
@@ -6189,8 +5138,8 @@ By default, data is stored in the ~/.config directory.</property>
                 </child>
               </widget>
               <packing>
-                <property name="TopAttach">2</property>
-                <property name="BottomAttach">3</property>
+                <property name="LeftAttach">2</property>
+                <property name="RightAttach">3</property>
                 <property name="AutoSize">False</property>
                 <property name="YOptions">Fill</property>
                 <property name="XExpand">True</property>
@@ -6216,8 +5165,7 @@ By default, data is stored in the ~/.config directory.</property>
                     <child>
                       <widget class="Gtk.Table" id="pnlMain">
                         <property name="MemberName" />
-                        <property name="NRows">2</property>
-                        <property name="NColumns">3</property>
+                        <property name="NRows">3</property>
                         <property name="RowSpacing">3</property>
                         <property name="ColumnSpacing">3</property>
                         <child>
@@ -6227,15 +5175,12 @@ By default, data is stored in the ~/.config directory.</property>
                             <child>
                               <widget class="Gtk.Image" id="pctMain">
                                 <property name="MemberName" />
-                                <property name="WidthRequest">75</property>
-                                <property name="HeightRequest">75</property>
+                                <property name="WidthRequest">100</property>
+                                <property name="HeightRequest">55</property>
                               </widget>
                             </child>
                           </widget>
                           <packing>
-                            <property name="BottomAttach">2</property>
-                            <property name="LeftAttach">2</property>
-                            <property name="RightAttach">3</property>
                             <property name="AutoSize">True</property>
                             <property name="XOptions">Fill</property>
                             <property name="YOptions">Fill</property>
@@ -6248,11 +5193,11 @@ By default, data is stored in the ~/.config directory.</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="Gtk.Frame" id="grpMainDown">
+                          <widget class="Gtk.Frame" id="grpMainUsed">
                             <property name="MemberName" />
                             <property name="ShadowType">Out</property>
                             <child>
-                              <widget class="Gtk.Alignment" id="algnMainDown">
+                              <widget class="Gtk.Alignment" id="algnMainUsed">
                                 <property name="MemberName" />
                                 <property name="Xalign">0</property>
                                 <property name="Yalign">0</property>
@@ -6261,7 +5206,7 @@ By default, data is stored in the ~/.config directory.</property>
                                 <property name="RightPadding">3</property>
                                 <property name="BottomPadding">3</property>
                                 <child>
-                                  <widget class="Gtk.Table" id="pnlMainDown">
+                                  <widget class="Gtk.Table" id="pnlMainUsed">
                                     <property name="MemberName" />
                                     <property name="NRows">3</property>
                                     <property name="NColumns">3</property>
@@ -6277,7 +5222,7 @@ By default, data is stored in the ~/.config directory.</property>
                                       <placeholder />
                                     </child>
                                     <child>
-                                      <widget class="Gtk.CheckButton" id="chkMainDownB">
+                                      <widget class="Gtk.CheckButton" id="chkMainUsedB">
                                         <property name="MemberName" />
                                         <property name="CanFocus">True</property>
                                         <property name="Label" translatable="yes">50% :</property>
@@ -6302,7 +5247,7 @@ By default, data is stored in the ~/.config directory.</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="Gtk.ColorButton" id="cmdMainDownA">
+                                      <widget class="Gtk.ColorButton" id="cmdMainUsedA">
                                         <property name="MemberName" />
                                         <property name="CanFocus">True</property>
                                         <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
@@ -6324,7 +5269,7 @@ By default, data is stored in the ~/.config directory.</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="Gtk.ColorButton" id="cmdMainDownB">
+                                      <widget class="Gtk.ColorButton" id="cmdMainUsedB">
                                         <property name="MemberName" />
                                         <property name="CanFocus">True</property>
                                         <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
@@ -6348,7 +5293,7 @@ By default, data is stored in the ~/.config directory.</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="Gtk.ColorButton" id="cmdMainDownC">
+                                      <widget class="Gtk.ColorButton" id="cmdMainUsedC">
                                         <property name="MemberName" />
                                         <property name="CanFocus">True</property>
                                         <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
@@ -6372,7 +5317,7 @@ By default, data is stored in the ~/.config directory.</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="Gtk.Label" id="lblMainDownA">
+                                      <widget class="Gtk.Label" id="lblMainUsedA">
                                         <property name="MemberName" />
                                         <property name="Xalign">1</property>
                                         <property name="LabelProp" translatable="yes">0% :</property>
@@ -6390,7 +5335,7 @@ By default, data is stored in the ~/.config directory.</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="Gtk.Label" id="lblMainDownC">
+                                      <widget class="Gtk.Label" id="lblMainUsedC">
                                         <property name="MemberName" />
                                         <property name="Xalign">1</property>
                                         <property name="LabelProp" translatable="yes">100% :</property>
@@ -6414,10 +5359,10 @@ By default, data is stored in the ~/.config directory.</property>
                               </widget>
                             </child>
                             <child>
-                              <widget class="Gtk.Label" id="lblMainDownTitle">
+                              <widget class="Gtk.Label" id="lblMainUsedTitle">
                                 <property name="MemberName" />
                                 <property name="Xalign">0</property>
-                                <property name="LabelProp" translatable="yes">Download Colors</property>
+                                <property name="LabelProp" translatable="yes">Usage Gradient</property>
                                 <property name="UseMarkup">True</property>
                               </widget>
                               <packing>
@@ -6426,197 +5371,8 @@ By default, data is stored in the ~/.config directory.</property>
                             </child>
                           </widget>
                           <packing>
-                            <property name="AutoSize">False</property>
-                            <property name="XOptions">Expand</property>
-                            <property name="YOptions">Fill</property>
-                            <property name="XExpand">True</property>
-                            <property name="XFill">False</property>
-                            <property name="XShrink">False</property>
-                            <property name="YExpand">False</property>
-                            <property name="YFill">True</property>
-                            <property name="YShrink">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="Gtk.Frame" id="grpMainUp">
-                            <property name="MemberName" />
-                            <property name="ShadowType">Out</property>
-                            <child>
-                              <widget class="Gtk.Alignment" id="algnMainUp">
-                                <property name="MemberName" />
-                                <property name="Yalign">0</property>
-                                <property name="LeftPadding">3</property>
-                                <property name="TopPadding">3</property>
-                                <property name="RightPadding">3</property>
-                                <property name="BottomPadding">3</property>
-                                <child>
-                                  <widget class="Gtk.Table" id="pnlMainUp">
-                                    <property name="MemberName" />
-                                    <property name="NRows">3</property>
-                                    <property name="NColumns">3</property>
-                                    <property name="RowSpacing">3</property>
-                                    <property name="ColumnSpacing">3</property>
-                                    <child>
-                                      <placeholder />
-                                    </child>
-                                    <child>
-                                      <placeholder />
-                                    </child>
-                                    <child>
-                                      <placeholder />
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.CheckButton" id="chkMainUpB">
-                                        <property name="MemberName" />
-                                        <property name="CanFocus">True</property>
-                                        <property name="Label" translatable="yes">50% :</property>
-                                        <property name="Active">True</property>
-                                        <property name="DrawIndicator">True</property>
-                                        <property name="HasLabel">True</property>
-                                        <property name="UseUnderline">True</property>
-                                        <property name="Xalign">1</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="TopAttach">1</property>
-                                        <property name="BottomAttach">2</property>
-                                        <property name="AutoSize">True</property>
-                                        <property name="XOptions">Fill</property>
-                                        <property name="YOptions">Fill</property>
-                                        <property name="XExpand">False</property>
-                                        <property name="XFill">True</property>
-                                        <property name="XShrink">False</property>
-                                        <property name="YExpand">False</property>
-                                        <property name="YFill">True</property>
-                                        <property name="YShrink">False</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.ColorButton" id="cmdMainUpA">
-                                        <property name="MemberName" />
-                                        <property name="CanFocus">True</property>
-                                        <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
-                                        <property name="Title" translatable="yes">Main Graph Upload 0% Color</property>
-                                        <property name="Alpha">-1</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="LeftAttach">2</property>
-                                        <property name="RightAttach">3</property>
-                                        <property name="AutoSize">True</property>
-                                        <property name="XOptions">Fill</property>
-                                        <property name="YOptions">Fill</property>
-                                        <property name="XExpand">False</property>
-                                        <property name="XFill">True</property>
-                                        <property name="XShrink">False</property>
-                                        <property name="YExpand">False</property>
-                                        <property name="YFill">True</property>
-                                        <property name="YShrink">False</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.ColorButton" id="cmdMainUpB">
-                                        <property name="MemberName" />
-                                        <property name="CanFocus">True</property>
-                                        <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
-                                        <property name="Title" translatable="yes">Main Graph Upload 50% Color</property>
-                                        <property name="Alpha">-1</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="TopAttach">1</property>
-                                        <property name="BottomAttach">2</property>
-                                        <property name="LeftAttach">2</property>
-                                        <property name="RightAttach">3</property>
-                                        <property name="AutoSize">True</property>
-                                        <property name="XOptions">Fill</property>
-                                        <property name="YOptions">Fill</property>
-                                        <property name="XExpand">False</property>
-                                        <property name="XFill">True</property>
-                                        <property name="XShrink">False</property>
-                                        <property name="YExpand">False</property>
-                                        <property name="YFill">True</property>
-                                        <property name="YShrink">False</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.ColorButton" id="cmdMainUpC">
-                                        <property name="MemberName" />
-                                        <property name="CanFocus">True</property>
-                                        <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
-                                        <property name="Title" translatable="yes">Main Graph Upload 100% Color</property>
-                                        <property name="Alpha">-1</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="TopAttach">2</property>
-                                        <property name="BottomAttach">3</property>
-                                        <property name="LeftAttach">2</property>
-                                        <property name="RightAttach">3</property>
-                                        <property name="AutoSize">True</property>
-                                        <property name="XOptions">Fill</property>
-                                        <property name="YOptions">Fill</property>
-                                        <property name="XExpand">False</property>
-                                        <property name="XFill">True</property>
-                                        <property name="XShrink">False</property>
-                                        <property name="YExpand">False</property>
-                                        <property name="YFill">True</property>
-                                        <property name="YShrink">False</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.Label" id="lblMainUpA">
-                                        <property name="MemberName" />
-                                        <property name="Xalign">1</property>
-                                        <property name="LabelProp" translatable="yes">0% :</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="AutoSize">True</property>
-                                        <property name="XOptions">Fill</property>
-                                        <property name="YOptions">Fill</property>
-                                        <property name="XExpand">False</property>
-                                        <property name="XFill">True</property>
-                                        <property name="XShrink">False</property>
-                                        <property name="YExpand">False</property>
-                                        <property name="YFill">True</property>
-                                        <property name="YShrink">False</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.Label" id="lblMainUpC">
-                                        <property name="MemberName" />
-                                        <property name="Xalign">1</property>
-                                        <property name="LabelProp" translatable="yes">100% :</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="TopAttach">2</property>
-                                        <property name="BottomAttach">3</property>
-                                        <property name="AutoSize">True</property>
-                                        <property name="XOptions">Fill</property>
-                                        <property name="YOptions">Fill</property>
-                                        <property name="XExpand">False</property>
-                                        <property name="XFill">True</property>
-                                        <property name="XShrink">False</property>
-                                        <property name="YExpand">False</property>
-                                        <property name="YFill">True</property>
-                                        <property name="YShrink">False</property>
-                                      </packing>
-                                    </child>
-                                  </widget>
-                                </child>
-                              </widget>
-                            </child>
-                            <child>
-                              <widget class="Gtk.Label" id="lblMainUpTitle">
-                                <property name="MemberName" />
-                                <property name="Xalign">0</property>
-                                <property name="LabelProp" translatable="yes">Upload Colors</property>
-                                <property name="UseMarkup">True</property>
-                              </widget>
-                              <packing>
-                                <property name="type">label_item</property>
-                              </packing>
-                            </child>
-                          </widget>
-                          <packing>
-                            <property name="LeftAttach">1</property>
-                            <property name="RightAttach">2</property>
+                            <property name="TopAttach">1</property>
+                            <property name="BottomAttach">2</property>
                             <property name="AutoSize">False</property>
                             <property name="XOptions">Expand</property>
                             <property name="YOptions">Fill</property>
@@ -6631,12 +5387,10 @@ By default, data is stored in the ~/.config directory.</property>
                         <child>
                           <widget class="Gtk.Table" id="pnlMainStyle">
                             <property name="MemberName" />
-                            <property name="NColumns">5</property>
+                            <property name="NRows">2</property>
+                            <property name="NColumns">2</property>
                             <property name="RowSpacing">3</property>
                             <property name="ColumnSpacing">3</property>
-                            <child>
-                              <placeholder />
-                            </child>
                             <child>
                               <widget class="Gtk.ColorButton" id="cmdMainBG">
                                 <property name="MemberName" />
@@ -6646,8 +5400,10 @@ By default, data is stored in the ~/.config directory.</property>
                                 <property name="Alpha">-1</property>
                               </widget>
                               <packing>
-                                <property name="LeftAttach">4</property>
-                                <property name="RightAttach">5</property>
+                                <property name="TopAttach">1</property>
+                                <property name="BottomAttach">2</property>
+                                <property name="LeftAttach">1</property>
+                                <property name="RightAttach">2</property>
                                 <property name="AutoSize">True</property>
                                 <property name="XOptions">Fill</property>
                                 <property name="YOptions">Fill</property>
@@ -6688,8 +5444,8 @@ By default, data is stored in the ~/.config directory.</property>
                                 <property name="LabelProp" translatable="yes">Background :</property>
                               </widget>
                               <packing>
-                                <property name="LeftAttach">3</property>
-                                <property name="RightAttach">4</property>
+                                <property name="TopAttach">1</property>
+                                <property name="BottomAttach">2</property>
                                 <property name="AutoSize">True</property>
                                 <property name="XOptions">Fill</property>
                                 <property name="YOptions">Fill</property>
@@ -6721,9 +5477,8 @@ By default, data is stored in the ~/.config directory.</property>
                             </child>
                           </widget>
                           <packing>
-                            <property name="TopAttach">1</property>
-                            <property name="BottomAttach">2</property>
-                            <property name="RightAttach">2</property>
+                            <property name="TopAttach">2</property>
+                            <property name="BottomAttach">3</property>
                             <property name="AutoSize">False</property>
                             <property name="YOptions">Fill</property>
                             <property name="XExpand">True</property>
@@ -6742,7 +5497,7 @@ By default, data is stored in the ~/.config directory.</property>
                   <widget class="Gtk.Label" id="lblMainTitle">
                     <property name="MemberName" />
                     <property name="Xalign">0</property>
-                    <property name="LabelProp" translatable="yes">Main Window Current Usage Graphs</property>
+                    <property name="LabelProp" translatable="yes">Main Window Graph</property>
                     <property name="UseMarkup">True</property>
                   </widget>
                   <packing>
@@ -6776,7 +5531,7 @@ By default, data is stored in the ~/.config directory.</property>
                     <child>
                       <widget class="Gtk.Table" id="pnlTray">
                         <property name="MemberName" />
-                        <property name="NColumns">3</property>
+                        <property name="NRows">2</property>
                         <property name="RowSpacing">3</property>
                         <property name="ColumnSpacing">3</property>
                         <child>
@@ -6786,14 +5541,12 @@ By default, data is stored in the ~/.config directory.</property>
                             <child>
                               <widget class="Gtk.Image" id="pctTray">
                                 <property name="MemberName" />
-                                <property name="WidthRequest">75</property>
-                                <property name="HeightRequest">75</property>
+                                <property name="WidthRequest">100</property>
+                                <property name="HeightRequest">55</property>
                               </widget>
                             </child>
                           </widget>
                           <packing>
-                            <property name="LeftAttach">2</property>
-                            <property name="RightAttach">3</property>
                             <property name="AutoSize">True</property>
                             <property name="XOptions">Fill</property>
                             <property name="YOptions">Fill</property>
@@ -6806,11 +5559,11 @@ By default, data is stored in the ~/.config directory.</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="Gtk.Frame" id="grpTrayDown">
+                          <widget class="Gtk.Frame" id="grpTrayUsed">
                             <property name="MemberName" />
                             <property name="ShadowType">Out</property>
                             <child>
-                              <widget class="Gtk.Alignment" id="algnTrayDown">
+                              <widget class="Gtk.Alignment" id="algnTrayUsed">
                                 <property name="MemberName" />
                                 <property name="Xalign">0</property>
                                 <property name="Yalign">0</property>
@@ -6819,7 +5572,7 @@ By default, data is stored in the ~/.config directory.</property>
                                 <property name="RightPadding">3</property>
                                 <property name="BottomPadding">3</property>
                                 <child>
-                                  <widget class="Gtk.Table" id="pnlTrayDown">
+                                  <widget class="Gtk.Table" id="pnlTrayUsed">
                                     <property name="MemberName" />
                                     <property name="NRows">3</property>
                                     <property name="NColumns">3</property>
@@ -6835,7 +5588,7 @@ By default, data is stored in the ~/.config directory.</property>
                                       <placeholder />
                                     </child>
                                     <child>
-                                      <widget class="Gtk.CheckButton" id="chkTrayDownB">
+                                      <widget class="Gtk.CheckButton" id="chkTrayUsedB">
                                         <property name="MemberName" />
                                         <property name="CanFocus">True</property>
                                         <property name="Label" translatable="yes">50% :</property>
@@ -6860,7 +5613,7 @@ By default, data is stored in the ~/.config directory.</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="Gtk.ColorButton" id="cmdTrayDownA">
+                                      <widget class="Gtk.ColorButton" id="cmdTrayUsedA">
                                         <property name="MemberName" />
                                         <property name="CanFocus">True</property>
                                         <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
@@ -6882,7 +5635,7 @@ By default, data is stored in the ~/.config directory.</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="Gtk.ColorButton" id="cmdTrayDownB">
+                                      <widget class="Gtk.ColorButton" id="cmdTrayUsedB">
                                         <property name="MemberName" />
                                         <property name="CanFocus">True</property>
                                         <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
@@ -6906,7 +5659,7 @@ By default, data is stored in the ~/.config directory.</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="Gtk.ColorButton" id="cmdTrayDownC">
+                                      <widget class="Gtk.ColorButton" id="cmdTrayUsedC">
                                         <property name="MemberName" />
                                         <property name="CanFocus">True</property>
                                         <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
@@ -6930,7 +5683,7 @@ By default, data is stored in the ~/.config directory.</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="Gtk.Label" id="lblTrayDownA">
+                                      <widget class="Gtk.Label" id="lblTrayUsedA">
                                         <property name="MemberName" />
                                         <property name="Xalign">1</property>
                                         <property name="LabelProp" translatable="yes">0% :</property>
@@ -6948,7 +5701,7 @@ By default, data is stored in the ~/.config directory.</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="Gtk.Label" id="lblTrayDownC">
+                                      <widget class="Gtk.Label" id="lblTrayUsedC">
                                         <property name="MemberName" />
                                         <property name="Xalign">1</property>
                                         <property name="LabelProp" translatable="yes">100% :</property>
@@ -6972,10 +5725,10 @@ By default, data is stored in the ~/.config directory.</property>
                               </widget>
                             </child>
                             <child>
-                              <widget class="Gtk.Label" id="lblTrayDownTitle">
+                              <widget class="Gtk.Label" id="lblTrayUsedTitle">
                                 <property name="MemberName" />
                                 <property name="Xalign">0</property>
-                                <property name="LabelProp" translatable="yes">Download Colors</property>
+                                <property name="LabelProp" translatable="yes">Icon Gradient</property>
                                 <property name="UseMarkup">True</property>
                               </widget>
                               <packing>
@@ -6984,198 +5737,8 @@ By default, data is stored in the ~/.config directory.</property>
                             </child>
                           </widget>
                           <packing>
-                            <property name="AutoSize">False</property>
-                            <property name="XOptions">Expand</property>
-                            <property name="YOptions">Fill</property>
-                            <property name="XExpand">True</property>
-                            <property name="XFill">False</property>
-                            <property name="XShrink">False</property>
-                            <property name="YExpand">False</property>
-                            <property name="YFill">True</property>
-                            <property name="YShrink">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="Gtk.Frame" id="grpTrayUp">
-                            <property name="MemberName" />
-                            <property name="ShadowType">Out</property>
-                            <child>
-                              <widget class="Gtk.Alignment" id="algnTrayUp">
-                                <property name="MemberName" />
-                                <property name="Xalign">0</property>
-                                <property name="Yalign">0</property>
-                                <property name="LeftPadding">3</property>
-                                <property name="TopPadding">3</property>
-                                <property name="RightPadding">3</property>
-                                <property name="BottomPadding">3</property>
-                                <child>
-                                  <widget class="Gtk.Table" id="pnlTrayUp">
-                                    <property name="MemberName" />
-                                    <property name="NRows">3</property>
-                                    <property name="NColumns">3</property>
-                                    <property name="RowSpacing">3</property>
-                                    <property name="ColumnSpacing">3</property>
-                                    <child>
-                                      <placeholder />
-                                    </child>
-                                    <child>
-                                      <placeholder />
-                                    </child>
-                                    <child>
-                                      <placeholder />
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.CheckButton" id="chkTrayUpB">
-                                        <property name="MemberName" />
-                                        <property name="CanFocus">True</property>
-                                        <property name="Label" translatable="yes">50% :</property>
-                                        <property name="Active">True</property>
-                                        <property name="DrawIndicator">True</property>
-                                        <property name="HasLabel">True</property>
-                                        <property name="UseUnderline">True</property>
-                                        <property name="Xalign">1</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="TopAttach">1</property>
-                                        <property name="BottomAttach">2</property>
-                                        <property name="AutoSize">True</property>
-                                        <property name="XOptions">Fill</property>
-                                        <property name="YOptions">Fill</property>
-                                        <property name="XExpand">False</property>
-                                        <property name="XFill">True</property>
-                                        <property name="XShrink">False</property>
-                                        <property name="YExpand">False</property>
-                                        <property name="YFill">True</property>
-                                        <property name="YShrink">False</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.ColorButton" id="cmdTrayUpA">
-                                        <property name="MemberName" />
-                                        <property name="CanFocus">True</property>
-                                        <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
-                                        <property name="Title" translatable="yes">Tray Graph Upload 0% Color</property>
-                                        <property name="Alpha">-1</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="LeftAttach">2</property>
-                                        <property name="RightAttach">3</property>
-                                        <property name="AutoSize">True</property>
-                                        <property name="XOptions">Fill</property>
-                                        <property name="YOptions">Fill</property>
-                                        <property name="XExpand">False</property>
-                                        <property name="XFill">True</property>
-                                        <property name="XShrink">False</property>
-                                        <property name="YExpand">False</property>
-                                        <property name="YFill">True</property>
-                                        <property name="YShrink">False</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.ColorButton" id="cmdTrayUpB">
-                                        <property name="MemberName" />
-                                        <property name="CanFocus">True</property>
-                                        <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
-                                        <property name="Title" translatable="yes">Tray Graph Upload 50% Color</property>
-                                        <property name="Alpha">-1</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="TopAttach">1</property>
-                                        <property name="BottomAttach">2</property>
-                                        <property name="LeftAttach">2</property>
-                                        <property name="RightAttach">3</property>
-                                        <property name="AutoSize">True</property>
-                                        <property name="XOptions">Fill</property>
-                                        <property name="YOptions">Fill</property>
-                                        <property name="XExpand">False</property>
-                                        <property name="XFill">True</property>
-                                        <property name="XShrink">False</property>
-                                        <property name="YExpand">False</property>
-                                        <property name="YFill">True</property>
-                                        <property name="YShrink">False</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.ColorButton" id="cmdTrayUpC">
-                                        <property name="MemberName" />
-                                        <property name="CanFocus">True</property>
-                                        <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
-                                        <property name="Title" translatable="yes">Tray Graph Upload 100% Color</property>
-                                        <property name="Alpha">-1</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="TopAttach">2</property>
-                                        <property name="BottomAttach">3</property>
-                                        <property name="LeftAttach">2</property>
-                                        <property name="RightAttach">3</property>
-                                        <property name="AutoSize">True</property>
-                                        <property name="XOptions">Fill</property>
-                                        <property name="YOptions">Fill</property>
-                                        <property name="XExpand">False</property>
-                                        <property name="XFill">True</property>
-                                        <property name="XShrink">False</property>
-                                        <property name="YExpand">False</property>
-                                        <property name="YFill">True</property>
-                                        <property name="YShrink">False</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.Label" id="lblTrayUpA">
-                                        <property name="MemberName" />
-                                        <property name="Xalign">1</property>
-                                        <property name="LabelProp" translatable="yes">0% :</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="AutoSize">True</property>
-                                        <property name="XOptions">Fill</property>
-                                        <property name="YOptions">Fill</property>
-                                        <property name="XExpand">False</property>
-                                        <property name="XFill">True</property>
-                                        <property name="XShrink">False</property>
-                                        <property name="YExpand">False</property>
-                                        <property name="YFill">True</property>
-                                        <property name="YShrink">False</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="Gtk.Label" id="lblTrayUpC">
-                                        <property name="MemberName" />
-                                        <property name="Xalign">1</property>
-                                        <property name="LabelProp" translatable="yes">100% :</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="TopAttach">2</property>
-                                        <property name="BottomAttach">3</property>
-                                        <property name="AutoSize">True</property>
-                                        <property name="XOptions">Fill</property>
-                                        <property name="YOptions">Fill</property>
-                                        <property name="XExpand">False</property>
-                                        <property name="XFill">True</property>
-                                        <property name="XShrink">False</property>
-                                        <property name="YExpand">False</property>
-                                        <property name="YFill">True</property>
-                                        <property name="YShrink">False</property>
-                                      </packing>
-                                    </child>
-                                  </widget>
-                                </child>
-                              </widget>
-                            </child>
-                            <child>
-                              <widget class="Gtk.Label" id="lblTrayUpTitle">
-                                <property name="MemberName" />
-                                <property name="Xalign">0</property>
-                                <property name="LabelProp" translatable="yes">Upload Colors</property>
-                                <property name="UseMarkup">True</property>
-                              </widget>
-                              <packing>
-                                <property name="type">label_item</property>
-                              </packing>
-                            </child>
-                          </widget>
-                          <packing>
-                            <property name="LeftAttach">1</property>
-                            <property name="RightAttach">2</property>
+                            <property name="TopAttach">1</property>
+                            <property name="BottomAttach">2</property>
                             <property name="AutoSize">False</property>
                             <property name="XOptions">Expand</property>
                             <property name="YOptions">Fill</property>
@@ -7195,7 +5758,7 @@ By default, data is stored in the ~/.config directory.</property>
                   <widget class="Gtk.Label" id="lblTrayTitle">
                     <property name="MemberName" />
                     <property name="Xalign">0</property>
-                    <property name="LabelProp" translatable="yes">Tray Icon Current Usage Graph Overlay</property>
+                    <property name="LabelProp" translatable="yes">Tray Icon Graph</property>
                     <property name="UseMarkup">True</property>
                   </widget>
                   <packing>
@@ -7204,8 +5767,8 @@ By default, data is stored in the ~/.config directory.</property>
                 </child>
               </widget>
               <packing>
-                <property name="TopAttach">1</property>
-                <property name="BottomAttach">2</property>
+                <property name="LeftAttach">1</property>
+                <property name="RightAttach">2</property>
                 <property name="AutoSize">False</property>
                 <property name="YOptions">Fill</property>
                 <property name="XExpand">True</property>

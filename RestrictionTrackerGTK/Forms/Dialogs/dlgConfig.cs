@@ -14,7 +14,7 @@ namespace RestrictionTrackerGTK
   public partial class dlgConfig:
     Gtk.Dialog
   {
-    private RestrictionLibrary.remoteRestrictionTracker remoteTest;
+    private RestrictionLibrary.Remote.ServiceConnection remoteTest;
     private bool bSaved, bAccount, bLoaded, bHardChange, bRemoteAcct;
     private bool bKeyPasting = false;
     private AppSettings mySettings;
@@ -44,7 +44,6 @@ namespace RestrictionTrackerGTK
       {
         pctAccountViaSatIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.account_user.png");
         ((Gtk.Image)((Gtk.HBox)((Gtk.Alignment)cmdPassDisplay.Child).Child).Children[0]).Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.pass.png");
-        pctAccountProviderIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.account_provider.png");
         pctAccountKeyIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.account_key.png");
         pctPrefStartIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.prefs_power.png");
         pctPrefAccuracyIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.prefs_accuracy.png");
@@ -85,21 +84,15 @@ namespace RestrictionTrackerGTK
       optHistoryLocalConfig.Label = sLocalPath;
       AddEventHandlers();
       mySettings = new AppSettings();
-      string sAccount = mySettings.Account;
-      string sUsername, sProvider;
-      if (!string.IsNullOrEmpty(sAccount) && (sAccount.Contains("@") & sAccount.Contains(".")))
+      string Username = mySettings.Account;
+      if (!string.IsNullOrEmpty(Username) && (Username.Contains("@") & Username.Contains(".")))
       {
-        sUsername = sAccount.Substring(0, sAccount.LastIndexOf("@"));
-        sProvider = sAccount.Substring(sAccount.LastIndexOf("@") + 1);
+        txtAccount.Text = Username.Substring(0, Username.LastIndexOf("@"));
       }
       else
       {
-        sUsername = sAccount;
-        sProvider = "";
+        txtAccount.Text = Username;
       }
-      txtAccount.Text = sUsername;
-      UseDefaultHostList();
-      cmbProvider.Entry.Text = sProvider;
       if (mySettings.PassCrypt != null)
       {
         if (string.IsNullOrEmpty(mySettings.PassKey) | string.IsNullOrEmpty(mySettings.PassSalt))
@@ -108,30 +101,6 @@ namespace RestrictionTrackerGTK
           txtPassword.Text = RestrictionLibrary.StoredPassword.Decrypt(mySettings.PassCrypt, mySettings.PassKey, mySettings.PassSalt);
       }
       txtPassword.Visibility = false;
-      switch (mySettings.AccountType)
-      {
-        case RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_LEGACY:
-          optAccountTypeWBL.Active = true;
-          break;
-        case RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
-        case RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER:
-          optAccountTypeWBX.Active = true;
-          break;
-        case RestrictionLibrary.localRestrictionTracker.SatHostTypes.Dish_EXEDE:
-          optAccountTypeDNX.Active = true;
-          break;
-        case RestrictionLibrary.localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
-          optAccountTypeRPL.Active = true;
-          break;
-        case RestrictionLibrary.localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
-          optAccountTypeRPX.Active = true;
-          break;
-        default:
-          optAccountTypeNONE.Active = true;
-          break;
-      }
-      lblAccountType.MnemonicWidget = chkAccountTypeAuto;
-      chkAccountTypeAuto.Active = !mySettings.AccountTypeForced;
       mnuKey = new Menu();
       mnuKeyCut = new MenuItem("C_ut");
       mnuKeyCopy = new MenuItem("_Copy");
@@ -358,10 +327,12 @@ namespace RestrictionTrackerGTK
       System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType) myProtocol;
       */
       useTLSProxy = true;
-      string clrVer = RestrictionLibrary.srlFunctions.GetCLRCleanVersion();
+      /*
+      string clrVer = RestrictionLibrary.srlFunctions.CLRCleanVersion;
       Version clr = new Version(clrVer.Substring(5));
       if (clr.Major > 4 || (clr.Major == 4 & clr.Minor >= 8))
         useTLSProxy = false;
+      */       
       if (useTLSProxy)
       {
         chkTLSProxy.Visible = true;
@@ -433,9 +404,9 @@ namespace RestrictionTrackerGTK
       string hD = mySettings.HistoryDir;
       if (string.IsNullOrEmpty(hD))
         hD = modFunctions.AppDataPath;
-      if (!hD.EndsWith(System.IO.Path.DirectorySeparatorChar.ToString()))
-        hD += System.IO.Path.DirectorySeparatorChar;
-      if (string.Compare(hD, modFunctions.AppDataPath, true) == 0)
+      if (hD.EndsWith(System.IO.Path.DirectorySeparatorChar.ToString()))
+        hD = hD.Substring(0, hD.Length - 1);
+      if (string.Compare(hD, modFunctions.AppDataPath, StringComparison.OrdinalIgnoreCase) == 0)
       {
         optHistoryLocalConfig.Active = true;
       }
@@ -485,8 +456,6 @@ namespace RestrictionTrackerGTK
         bLoaded = true;
       }
       this.Response += dlgConfig_Response;
-      MethodInvoker populateInvoker = PopulateHostList;
-      populateInvoker.BeginInvoke(null, null);
     }
     private void AddEventHandlers()
     {
@@ -498,14 +467,6 @@ namespace RestrictionTrackerGTK
       txtPassword.ClipboardPasted += txtPassword_ClipboardPasted;
       txtPassword.Changed += ValuesChanged;
       cmdPassDisplay.Toggled += cmdPassDisplay_Toggled;
-      //
-      cmbProvider.Changed += ValuesChanged;
-      chkAccountTypeAuto.Clicked += chkAccountTypeAuto_Clicked;
-      optAccountTypeWBL.Clicked += ValuesChanged;
-      optAccountTypeWBX.Clicked += ValuesChanged;
-      optAccountTypeDNX.Clicked += ValuesChanged;
-      optAccountTypeRPL.Clicked += ValuesChanged;
-      optAccountTypeRPX.Clicked += ValuesChanged;
       //
       txtKey1.AddEvents((int)Gdk.EventType.KeyPress);
       txtKey1.Changed += txtProductKey_Changed;
@@ -612,7 +573,7 @@ namespace RestrictionTrackerGTK
       {
         GLib.Source.Remove(pChecker);
         pChecker = 0;
-        remoteTest = new RestrictionLibrary.remoteRestrictionTracker(txtAccount.Text + "@" + cmbProvider.Entry.Text, "", checkKey, mySettings.Proxy, mySettings.Timeout, new DateTime(2001, 1, 1), modFunctions.AppData);
+        remoteTest = new RestrictionLibrary.Remote.ServiceConnection(txtAccount.Text + "@exede.net", "", checkKey, mySettings.Proxy, mySettings.Timeout, new DateTime(2001, 1, 1), modFunctions.AppData);
         remoteTest.Failure += remoteTest_Failure;
         remoteTest.OKKey += remoteTest_OKKey;
       }
@@ -710,7 +671,7 @@ namespace RestrictionTrackerGTK
       {
         canTLS12 = false;
       }
-      string clrVer = RestrictionLibrary.srlFunctions.GetCLRCleanVersion();
+      string clrVer = RestrictionLibrary.srlFunctions.CLRCleanVersion;
       Version clr = new Version(clrVer.Substring(5));
       if (clr.Major < 4 || (clr.Major == 4 & clr.Minor < 8))
       {
@@ -897,7 +858,7 @@ namespace RestrictionTrackerGTK
       e.RetVal = true;
       Gtk.Entry txtSender = (Gtk.Entry)o;
       txtSender.TextInserted -= txtProductKey_InsertText;
-      txtSender.Text = txtSender.Text.ToUpper();
+      txtSender.Text = txtSender.Text.ToUpperInvariant();
       txtSender.TextInserted += txtProductKey_InsertText;
     }
     [GLib.ConnectBefore]
@@ -1097,18 +1058,6 @@ namespace RestrictionTrackerGTK
     {
       txtPassword.Visibility = !(txtPassword.Visibility);
     }
-    protected void chkAccountTypeAuto_Clicked(object sender, EventArgs e)
-    {
-      optAccountTypeWBL.Sensitive = !chkAccountTypeAuto.Active;
-      optAccountTypeDNX.Sensitive = !chkAccountTypeAuto.Active;
-      optAccountTypeWBX.Sensitive = !chkAccountTypeAuto.Active;
-      optAccountTypeRPL.Sensitive = !chkAccountTypeAuto.Active;
-      optAccountTypeRPX.Sensitive = !chkAccountTypeAuto.Active;
-      if (bLoaded)
-      {
-        cmdSave.Sensitive = SettingsChanged();
-      }
-    }
     protected void chkOverAlert_Activated(object sender, EventArgs e)
     {
       txtOverSize.Sensitive = chkOverAlert.Active;
@@ -1269,8 +1218,8 @@ namespace RestrictionTrackerGTK
           SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_load.png"), false, token, null);
         else
           SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_load.png"), false, token, null);
-        clsFavicon wsFavicon = new clsFavicon(txtNetTestCustom.Text, wsFavicon_DownloadIconCompleted, token);
-        wsFavicon.GetType();
+        clsFavicon wsFavicon = new clsFavicon(wsFavicon_DownloadIconCompleted);
+        wsFavicon.Start(txtNetTestCustom.Text, token);
         cmdSave.Sensitive = SettingsChanged();
       }
     }
@@ -1285,8 +1234,8 @@ namespace RestrictionTrackerGTK
           SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_load.png"), false, token, null);
         else
           SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_load.png"), false, token, null);
-        clsFavicon wsFavicon = new clsFavicon(txtNetTestCustom.Text, wsFavicon_DownloadIconCompleted, token);
-        wsFavicon.GetType();
+        clsFavicon wsFavicon = new clsFavicon(wsFavicon_DownloadIconCompleted);
+        wsFavicon.Start(txtNetTestCustom.Text, token);
         cmdSave.Sensitive = SettingsChanged();
       }
     }
@@ -1321,8 +1270,8 @@ namespace RestrictionTrackerGTK
               SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_load.png"), false, token, null);
             else
               SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_load.png"), false, token, null);
-            clsFavicon wsFavicon = new clsFavicon(txtNetTestCustom.Text, wsFavicon_DownloadIconCompleted, token);
-            wsFavicon.GetType();
+            clsFavicon wsFavicon = new clsFavicon(wsFavicon_DownloadIconCompleted);
+            wsFavicon.Start(txtNetTestCustom.Text, token);
           }
         }
       }
@@ -1443,13 +1392,13 @@ namespace RestrictionTrackerGTK
     }
     #endregion
     #region "Remote Service"
-    protected void remoteTest_Failure(object sender, RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs e)
+    protected void remoteTest_Failure(object sender, RestrictionLibrary.Remote.ServiceFailureEventArgs e)
     {
       Gtk.Application.Invoke(sender, (EventArgs)e, Main_RemoteTestFailure);
     }
     private void Main_RemoteTestFailure(object sender, EventArgs ea)
     {
-      RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs e = (RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs)ea;
+      RestrictionLibrary.Remote.ServiceFailureEventArgs e = (RestrictionLibrary.Remote.ServiceFailureEventArgs)ea;
       bool bToSave = true;
       if (!CheckState)
         bToSave = false;
@@ -1461,25 +1410,25 @@ namespace RestrictionTrackerGTK
       string sErr = "There was an error verifying your key!";
       switch (e.Type)
       {
-        case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadLogin:
+        case RestrictionLibrary.Remote.ServiceFailType.BadLogin:
           sErr = "There was a server error. Please try again later.";
           break;
-        case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadProduct:
+        case RestrictionLibrary.Remote.ServiceFailType.BadProduct:
           sErr = "Your Product Key is incorrect!";
           break;
-        case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.BadServer:
+        case RestrictionLibrary.Remote.ServiceFailType.BadServer:
           sErr = "There was a fault double-checking the server. You may have a security issue.";
           break;
-        case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.NoData:
+        case RestrictionLibrary.Remote.ServiceFailType.NoData:
           sErr = "There server did not receive login negotiation data!";
           break;
-        case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.NoUsername:
+        case RestrictionLibrary.Remote.ServiceFailType.NoUsername:
           sErr = "Your account is not registered!";
           break;
-        case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.Network:
+        case RestrictionLibrary.Remote.ServiceFailType.Network:
           sErr = "There was a connection related error. Please check your Internet connection." + (string.IsNullOrEmpty(e.Details) ? "." : ": " + e.Details);
           break;
-        case RestrictionLibrary.remoteRestrictionTracker.FailureEventArgs.FailType.NotBase64:
+        case RestrictionLibrary.Remote.ServiceFailType.NotBase64:
           sErr = "The server did not respond in the right manner. Please check your Internet connection." + (string.IsNullOrEmpty(e.Details) ? "." : ": " + e.Details);
           break;
       }
@@ -1512,7 +1461,7 @@ namespace RestrictionTrackerGTK
       pctKeyState.PixbufAnimation = null;
       pctKeyState.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.ok.png");
       pctKeyState.TooltipText = "Your key has been verified!";
-      lblPurchaseKey.Markup = "<a href=\"http://wb.realityripple.com?wbEMail=" + txtAccount.Text + "@" + cmbProvider.Entry.Text + "&amp;wbKey=" + txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text + "&amp;wbSubmit=\">" + LINK_PANEL + "</a>";
+      lblPurchaseKey.Markup = "<a href=\"http://wb.realityripple.com?wbEMail=" + txtAccount.Text + "@exede.net&amp;wbKey=" + txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text + "&amp;wbSubmit=\">" + LINK_PANEL + "</a>";
       if (pChecker != 0)
       {
         GLib.Source.Remove(pChecker);
@@ -1526,58 +1475,6 @@ namespace RestrictionTrackerGTK
       lblPurchaseKey.TooltipText = LINK_PANEL_TT;
       DoCheck();
       cmdSave.Sensitive = bToSave;
-    }
-    #endregion
-    #region "Providers"
-    private void PopulateHostList()
-    {
-      Gtk.Application.Invoke(this, null, Main_PopulateHostList);
-    }
-    private void Main_PopulateHostList(object sender, EventArgs e)
-    {
-      WebClientEx wsHostList = new WebClientEx();
-      wsHostList.KeepAlive = false;
-      string sHostList = wsHostList.DownloadString("http://wb.realityripple.com/hosts/");
-      if (sHostList.StartsWith("Error: "))
-        return;
-      try
-      {
-        if (sHostList.Contains("\n"))
-        {
-          string[] HostList = sHostList.Split('\n');
-          bLoaded = false;
-          ClearHostList();
-          for (int i = 0; i < HostList.Length; i++)
-          {
-            cmbProvider.AppendText(HostList[i]);
-          }
-          if (mySettings.Account.Contains("@"))
-          {
-            string sProvider = mySettings.Account.Substring(mySettings.Account.LastIndexOf("@") + 1);
-            cmbProvider.Entry.Text = sProvider;
-          }
-          bLoaded = true;
-        }
-      }
-      catch
-      {
-      }
-    }
-    private void ClearHostList()
-    {
-      Gtk.TreeIter ti = new Gtk.TreeIter();
-      bool iter = cmbProvider.Model.GetIterFirst(out ti);
-      while (iter)
-      {
-        cmbProvider.RemoveText(0);
-        iter = cmbProvider.Model.GetIterFirst(out ti);
-      }
-    }
-    private void UseDefaultHostList()
-    {
-      ClearHostList();
-      foreach (string host in modFunctions.HostList())
-        cmbProvider.AppendText(host);
     }
     #endregion
     #region "Net Test"
@@ -1646,8 +1543,8 @@ namespace RestrictionTrackerGTK
             SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.advanced_nettest_load.png"), false, token, null);
           else
             SetNetTestImage(Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.linux.advanced_nettest_load.png"), false, token, null);
-          clsFavicon wsFavicon = new clsFavicon(txtNetTestCustom.Text, wsFavicon_DownloadIconCompleted, token);
-          wsFavicon.GetType();
+          clsFavicon wsFavicon = new clsFavicon(wsFavicon_DownloadIconCompleted);
+          wsFavicon.Start(txtNetTestCustom.Text, token);
         }
         else
         {
@@ -1659,7 +1556,7 @@ namespace RestrictionTrackerGTK
       }
       return false;
     }
-    private int MakeAToken(string fromString)
+    private static int MakeAToken(string fromString)
     {
       Random rand = new Random();
       uint iToken = (uint)(fromString.Length * rand.Next(0, 31) + rand.Next(0, int.MaxValue - 1));
@@ -1763,12 +1660,6 @@ namespace RestrictionTrackerGTK
         txtPassword.GrabFocus();
         return;
       }
-      if (string.IsNullOrEmpty(cmbProvider.Entry.Text))
-      {
-        modFunctions.ShowMessageBox(this, "Please enter your ViaSat Provider address or select one from the list before saving the configuration.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
-        cmbProvider.GrabFocus();
-        return;
-      }
       if (!bRemoteAcct & !(chkNetworkProtocolSSL3.Active | chkNetworkProtocolTLS10.Active | chkNetworkProtocolTLS11.Active | chkNetworkProtocolTLS12.Active))
       {
         modFunctions.ShowMessageBox(this, "Please select at least one Security Protocol type to connect with before saving the configuration.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
@@ -1807,25 +1698,16 @@ namespace RestrictionTrackerGTK
           return;
         }
       }
-      if (cmbProvider.Entry.Text.ToLower().Contains("excede") |
-        cmbProvider.Entry.Text.ToLower().Contains("force") |
-        cmbProvider.Entry.Text.ToLower().Contains("mysso") |
-        cmbProvider.Entry.Text.ToLower().Contains("myexede") |
-        cmbProvider.Entry.Text.ToLower().Contains("my.exede"))
-        cmbProvider.Entry.Text = "exede.net";
-      if (cmbProvider.Entry.Text.ToLower() == "dish.net" |
-        cmbProvider.Entry.Text.ToLower() == "dish.com")
-        cmbProvider.Entry.Text = "mydish.com";
-      if (string.Compare(mySettings.Account, txtAccount.Text + "@" + cmbProvider.Entry.Text, true) != 0)
+      if (string.Compare(mySettings.Account, txtAccount.Text , StringComparison.OrdinalIgnoreCase) != 0)
       {
-        mySettings.Account = txtAccount.Text + "@" + cmbProvider.Entry.Text;
+        mySettings.Account = txtAccount.Text;
         bAccount = true;
       }
       bool newPass = false;
       if (string.IsNullOrEmpty(mySettings.PassKey))
         newPass = true;
       else
-        newPass = (string.Compare(StoredPassword.Decrypt(mySettings.PassCrypt, mySettings.PassKey, mySettings.PassSalt), txtPassword.Text, false) != 0);
+        newPass = (string.Compare(StoredPassword.Decrypt(mySettings.PassCrypt, mySettings.PassKey, mySettings.PassSalt), txtPassword.Text, StringComparison.Ordinal) != 0);
       if (newPass)
       {
         byte[] newKey = StoredPassword.GenerateKey();
@@ -1899,7 +1781,7 @@ namespace RestrictionTrackerGTK
         if (continueChange)
         {
           modDB.LOG_Terminate(true);
-          string[] sSkipFiles = { "user.config", "restrictiontracker-32.png", "restrictiontracker-256.png", "sat.icns", "restrictiontracker.exe", "restrictiontracker.exe.mdb", "restrictiontrackerlib.dll", "appindicator-sharp.dll", "microsoft.visualbasic.dll", "config" };
+          string[] sSkipFiles = { "USER.CONFIG", "RESTRICTIONTRACKER-32.PNG", "RESTRICTIONTRACKER-256.PNG", "SAT.ICNS", "RESTRICTIONTRACKER.EXE", "RESTRICTIONTRACKER.EXE.MDB", "RESTRICTIONTRACKERLIB.DLL", "APPINDICATOR-SHARP.DLL", "MICROSOFT.VISUALBASIC.DLL", "CONFIG" };
           if (sOldFiles.Length > 0)
           {
             if (sNewFiles.Length > 0)
@@ -1914,7 +1796,7 @@ namespace RestrictionTrackerGTK
                     bool doSkip = false;
                     foreach (string sSkip in sSkipFiles)
                     {
-                      if (System.IO.Path.GetFileName(sNew).ToLower() == sSkip)
+                      if (System.IO.Path.GetFileName(sNew).ToUpperInvariant() == sSkip)
                       {
                         doSkip = true;
                         break;
@@ -1922,14 +1804,6 @@ namespace RestrictionTrackerGTK
                     }
                     if (doSkip)
                       continue;
-                    /* if (System.IO.Path.GetFileName(sNew).ToLower() == "user.config")
-                    {
-                      continue;
-                    }
-                    if (System.IO.Path.GetFileName(sNew).ToLower() == "del.bat")
-                    {
-                      continue;
-                    } */
                     sOverWrites.Add(System.IO.Path.GetFileName(sNew));
                   }
                 }
@@ -1943,7 +1817,7 @@ namespace RestrictionTrackerGTK
                     bool doSkip = false;
                     foreach (string sSkip in sSkipFiles)
                     {
-                      if (System.IO.Path.GetFileName(sFile).ToLower() == sSkip)
+                      if (System.IO.Path.GetFileName(sFile).ToUpperInvariant() == sSkip)
                       {
                         doSkip = true;
                         break;
@@ -1951,14 +1825,6 @@ namespace RestrictionTrackerGTK
                     }
                     if (doSkip)
                       continue;
-                    /* if (System.IO.Path.GetFileName(sFile).ToLower() == "user.config")
-                    {
-                      continue;
-                    }
-                    if (System.IO.Path.GetFileName(sFile).ToLower() == "del.bat")
-                    {
-                      continue;
-                    } */
                     File.Move(sFile, System.IO.Path.Combine(txtHistoryDir.CurrentFolder, System.IO.Path.GetFileName(sFile)));
                   }
                 }
@@ -1969,7 +1835,7 @@ namespace RestrictionTrackerGTK
                     bool doSkip = false;
                     foreach (string sSkip in sSkipFiles)
                     {
-                      if (System.IO.Path.GetFileName(sFile).ToLower() == sSkip)
+                      if (System.IO.Path.GetFileName(sFile).ToUpperInvariant() == sSkip)
                       {
                         doSkip = true;
                         break;
@@ -1977,18 +1843,6 @@ namespace RestrictionTrackerGTK
                     }
                     if (doSkip)
                       continue;
-                    /* if (System.IO.Path.GetFileName(sFile).ToLower() == "user.config")
-                    {
-                      continue;
-                    }
-                    if (System.IO.Path.GetFileName(sFile).ToLower() == "del.bat")
-                    {
-                      continue;
-                    }
-                    if (File.Exists(System.IO.Path.Combine(txtHistoryDir.CurrentFolder, System.IO.Path.GetFileName(sFile))))
-                    {
-                      continue;
-                    } */
                     File.Move(sFile, System.IO.Path.Combine(txtHistoryDir.CurrentFolder, System.IO.Path.GetFileName(sFile)));
                   }
                 }
@@ -2000,7 +1854,7 @@ namespace RestrictionTrackerGTK
                   bool doSkip = false;
                   foreach (string sSkip in sSkipFiles)
                   {
-                    if (System.IO.Path.GetFileName(sFile).ToLower() == sSkip)
+                    if (System.IO.Path.GetFileName(sFile).ToUpperInvariant() == sSkip)
                     {
                       doSkip = true;
                       break;
@@ -2008,14 +1862,6 @@ namespace RestrictionTrackerGTK
                   }
                   if (doSkip)
                     continue;
-                  /* if (System.IO.Path.GetFileName(sFile).ToLower() == "user.config")
-                  {
-                    continue;
-                  }
-                  if (System.IO.Path.GetFileName(sFile).ToLower() == "del.bat")
-                  {
-                    continue;
-                  } */
                   File.Move(sFile, System.IO.Path.Combine(txtHistoryDir.CurrentFolder, System.IO.Path.GetFileName(sFile)));
                 }
               }
@@ -2027,7 +1873,7 @@ namespace RestrictionTrackerGTK
                 bool doSkip = false;
                 foreach (string sSkip in sSkipFiles)
                 {
-                  if (System.IO.Path.GetFileName(sFile).ToLower() == sSkip)
+                  if (System.IO.Path.GetFileName(sFile).ToUpperInvariant() == sSkip)
                   {
                     doSkip = true;
                     break;
@@ -2035,14 +1881,6 @@ namespace RestrictionTrackerGTK
                 }
                 if (doSkip)
                   continue;
-                /* if (System.IO.Path.GetFileName(sFile).ToLower() == "user.config")
-                {
-                  continue;
-                }
-                if (System.IO.Path.GetFileName(sFile).ToLower() == "del.bat")
-                {
-                  continue;
-                } */
                 File.Move(sFile, System.IO.Path.Combine(txtHistoryDir.CurrentFolder, System.IO.Path.GetFileName(sFile)));
               }
             }
@@ -2053,9 +1891,9 @@ namespace RestrictionTrackerGTK
         else
         {
           string hD = mySettings.HistoryDir;
-          if (!hD.EndsWith(System.IO.Path.DirectorySeparatorChar.ToString()))
-            hD += System.IO.Path.DirectorySeparatorChar;
-          if (string.Compare(hD, modFunctions.AppDataPath, true) == 0)
+          if (hD.EndsWith(System.IO.Path.DirectorySeparatorChar.ToString()))
+            hD = hD.Substring(0, hD.Length - 1);
+          if (string.Compare(hD, modFunctions.AppDataPath, StringComparison.OrdinalIgnoreCase) == 0)
             optHistoryLocalConfig.Active = true;
           else
             optHistoryCustom.Active = true;
@@ -2239,11 +2077,8 @@ namespace RestrictionTrackerGTK
         return false;
       if (bHardChange)
         return true;
-      if (cmbProvider.Entry != null)
-      {
-        if (string.Compare(mySettings.Account, txtAccount.Text + "@" + cmbProvider.Entry.Text, true) != 0)
-          return true;
-      }
+      if (string.Compare(mySettings.Account, txtAccount.Text, StringComparison.OrdinalIgnoreCase) != 0)
+        return true;
       if (string.IsNullOrEmpty(mySettings.PassKey) | string.IsNullOrEmpty(mySettings.PassSalt))
       {
         return true;
@@ -2253,39 +2088,10 @@ namespace RestrictionTrackerGTK
         if (RestrictionLibrary.StoredPassword.Decrypt(mySettings.PassCrypt, mySettings.PassKey, mySettings.PassSalt) != txtPassword.Text)
           return true;
       }
-      if (mySettings.AccountTypeForced == chkAccountTypeAuto.Active)
-        return true;
-      if (!chkAccountTypeAuto.Active)
-      {
-        switch (mySettings.AccountType)
-        {
-          case RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_LEGACY:
-            if (!optAccountTypeWBL.Active)
-              return true;
-            break;
-          case RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_EXEDE:
-          case RestrictionLibrary.localRestrictionTracker.SatHostTypes.WildBlue_EXEDE_RESELLER:
-            if (!optAccountTypeWBX.Active)
-              return true;
-            break;
-          case RestrictionLibrary.localRestrictionTracker.SatHostTypes.Dish_EXEDE:
-            if (!optAccountTypeDNX.Active)
-              return true;
-            break;
-          case RestrictionLibrary.localRestrictionTracker.SatHostTypes.RuralPortal_LEGACY:
-            if (!optAccountTypeRPL.Active)
-              return true;
-            break;
-          case RestrictionLibrary.localRestrictionTracker.SatHostTypes.RuralPortal_EXEDE:
-            if (!optAccountTypeRPX.Active)
-              return true;
-            break;
-        }
-      }
       string sKey = txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text;
       if (sKey.Contains("--"))
         sKey = "";
-      if (string.Compare(mySettings.RemoteKey, sKey, true) != 0)
+      if (string.Compare(mySettings.RemoteKey, sKey, StringComparison.OrdinalIgnoreCase) != 0)
         return true;
       if ((int)mySettings.StartWait - txtStartWait.Value != 0)
         return true;
@@ -2390,14 +2196,14 @@ namespace RestrictionTrackerGTK
         Uri addr = ((System.Net.WebProxy)mySettings.Proxy).Address;
         if (cmbProxyType.Active == 2)
         {
-          if (string.Compare(txtProxyAddress.Text, addr.Host) != 0)
+          if (string.Compare(txtProxyAddress.Text, addr.Host, StringComparison.OrdinalIgnoreCase) != 0)
             return true;
           if ((int)txtProxyPort.Value - addr.Port != 0)
             return true;
         }
         if (cmbProxyType.Active == 3)
         {
-          if (string.Compare(txtProxyAddress.Text, addr.OriginalString) != 0)
+          if (string.Compare(txtProxyAddress.Text, addr.OriginalString, StringComparison.OrdinalIgnoreCase) != 0)
             return true;
         }
         if (mySettings.Proxy.Credentials == null)

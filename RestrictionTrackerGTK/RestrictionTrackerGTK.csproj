@@ -11,7 +11,7 @@
     <AssemblyName>RestrictionTracker</AssemblyName>
     <StartupObject>RestrictionTrackerGTK.MainClass</StartupObject>
     <ApplicationIcon>Resources\sat.ico</ApplicationIcon>
-    <ReleaseVersion>1.5.97</ReleaseVersion>
+    <ReleaseVersion>1.6</ReleaseVersion>
     <Description>Satellite Restriction Tracker</Description>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>trackergtk.snk</AssemblyOriginatorKeyFile>
@@ -105,7 +105,6 @@
     <EmbeddedResource Include="Resources\default_alert.png" />
     <EmbeddedResource Include="Resources\default_close.png" />
     <EmbeddedResource Include="Resources\config\linux\account_key.png" />
-    <EmbeddedResource Include="Resources\config\linux\account_provider.png" />
     <EmbeddedResource Include="Resources\config\linux\account_user.png" />
     <EmbeddedResource Include="Resources\config\linux\advanced_data.png" />
     <EmbeddedResource Include="Resources\config\linux\advanced_portable.png" />
@@ -119,7 +118,6 @@
     <EmbeddedResource Include="Resources\config\linux\prefs_notify.png" />
     <EmbeddedResource Include="Resources\config\linux\prefs_power.png" />
     <EmbeddedResource Include="Resources\config\os x\account_key.png" />
-    <EmbeddedResource Include="Resources\config\os x\account_provider.png" />
     <EmbeddedResource Include="Resources\config\os x\account_user.png" />
     <EmbeddedResource Include="Resources\config\os x\advanced_data.png" />
     <EmbeddedResource Include="Resources\config\os x\advanced_portable.png" />
