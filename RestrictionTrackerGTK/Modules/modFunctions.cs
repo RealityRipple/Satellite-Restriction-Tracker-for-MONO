@@ -1403,7 +1403,11 @@ namespace RestrictionTrackerGTK
       lTypes[lMaxGraphTime + 3] = (byte)(PathPointType.Line | PathPointType.CloseSubpath);
       g.DrawLines(new Pen(new SolidBrush(ColorMax), 5), lMaxPoints);
       GraphicsPath gPath = new GraphicsPath(lPoints, lTypes);
-      LinearGradientBrush fBrush = TriGradientBrush(new Point(lYWidth, MaxY), new Point(lYWidth, yTop + yHeight), Color.FromArgb(192, ColorA), Color.FromArgb(192, ColorB), Color.FromArgb(192, ColorC));
+      LinearGradientBrush fBrush;
+      if (ColorB == Color.Transparent)
+        fBrush = TriGradientBrush(new Point(lYWidth, MaxY), new Point(lYWidth, yTop + yHeight), Color.FromArgb(192, ColorA), ColorB, Color.FromArgb(192, ColorC));
+      else
+        fBrush = TriGradientBrush(new Point(lYWidth, MaxY), new Point(lYWidth, yTop + yHeight), Color.FromArgb(192, ColorA), Color.FromArgb(192, ColorB), Color.FromArgb(192, ColorC));
       fBrush.WrapMode = WrapMode.TileFlipX;
       g.FillPath(fBrush, gPath);
       g.SetClip(gPath);
