@@ -165,9 +165,9 @@ namespace RestrictionTrackerGTK
     {
       get
       {
-        if (!Directory.Exists(LocalAppData + CompanyName))
+        if (!Directory.Exists(Path.Combine(LocalAppData, CompanyName)))
         {
-          Directory.CreateDirectory(LocalAppData + CompanyName);
+          Directory.CreateDirectory(Path.Combine(LocalAppData, CompanyName));
         }
         if (!Directory.Exists(AppDataPath))
         {
