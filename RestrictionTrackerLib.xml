@@ -799,6 +799,11 @@ RestrictionTrackerLib
  The <see cref="T:System.Net.HttpStatusCode"/> of the last <see cref="M:RestrictionLibrary.WebClientCore.GetWebResponse(System.Net.WebRequest)"/> event after any redirection.
  </summary>
 	<returns>Initially, the value will be <c>Nothing</c> until a <see cref="M:RestrictionLibrary.WebClientCore.GetWebResponse(System.Net.WebRequest)"/> event occurs.</returns>
+</member><member name="P:RestrictionLibrary.WebClientCore.ResponseHeaders">
+	<summary>
+ The <see cref="T:System.Net.WebHeaderCollection"/> of the last <see cref="M:RestrictionLibrary.WebClientCore.GetWebResponse(System.Net.WebRequest)"/> event after any redirection.
+ </summary>
+	<returns>Initially, the value will be <c>Nothing</c> until a <see cref="M:RestrictionLibrary.WebClientCore.GetWebResponse(System.Net.WebRequest)"/> event occurs.</returns>
 </member><member name="P:RestrictionLibrary.WebClientCore.Timeout">
 	<summary>
  Gets or sets the time-out value in seconds for the <see cref="M:System.Net.HttpWebRequest.GetResponse"/> and <see cref="M:System.Net.HttpWebRequest.GetRequestStream"/> methods.
@@ -886,6 +891,11 @@ RestrictionTrackerLib
 </member><member name="P:RestrictionLibrary.WebClientEx.ResponseCode">
 	<summary>
  The <see cref="T:System.Net.HttpStatusCode"/> of the last <see cref="M:RestrictionLibrary.WebClientCore.GetWebResponse(System.Net.WebRequest)"/> event after any redirection.
+ </summary>
+	<returns>Initially, the value will be <c>Nothing</c> until a <see cref="M:RestrictionLibrary.WebClientCore.GetWebResponse(System.Net.WebRequest)"/> event occurs.</returns>
+</member><member name="P:RestrictionLibrary.WebClientEx.ResponseHeaders">
+	<summary>
+ The <see cref="T:System.Net.WebHeaderCollection"/> of the last <see cref="M:RestrictionLibrary.WebClientCore.GetWebResponse(System.Net.WebRequest)"/> event after any redirection.
  </summary>
 	<returns>Initially, the value will be <c>Nothing</c> until a <see cref="M:RestrictionLibrary.WebClientCore.GetWebResponse(System.Net.WebRequest)"/> event occurs.</returns>
 </member><member name="P:RestrictionLibrary.WebClientEx.ErrorBypass">
