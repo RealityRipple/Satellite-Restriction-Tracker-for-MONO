@@ -99,6 +99,20 @@ namespace RestrictionTrackerGTK
       wsCheck.Proxy = mySettings.Proxy;
       wsCheck.Timeout = mySettings.Timeout;
       sVerStr = wsCheck.DownloadString(VersionURL);
+      string sHash = null;
+      foreach(string sKey in wsCheck.ResponseHeaders)
+      {
+        if (sKey.ToLower() == "x-update-signature")
+        {
+          sHash = wsCheck.ResponseHeaders[sKey];
+          break;
+        }
+      }
+      if (!VerifySignature(sVerStr, sHash))
+      {
+        mySettings = null;
+        return ResultType.NoUpdate;
+      }
       if (sVerStr.StartsWith("Error: "))
       {
         mySettings = null;
@@ -193,6 +207,20 @@ namespace RestrictionTrackerGTK
         try
         {
           string sVerStr = e.Result;
+          string sHash = null;
+          foreach(string sKey in wsVer.ResponseHeaders )
+          {
+            if (sKey.ToLower() == "x-update-signature")
+            {
+              sHash = wsVer.ResponseHeaders[sKey];
+              break;
+            }
+          }
+          if (!VerifySignature(sVerStr ,sHash ))
+          {
+            CheckResult(sender, new CheckEventArgs(ResultType.NoUpdate, VerNumber, new Exception("Invalid Server Response"), e.Cancelled, e.UserState));
+            return;
+          }
           char[] sSplit = { ' ' };
           if (sVerStr.Contains("\r\n"))
           {
@@ -270,6 +298,33 @@ namespace RestrictionTrackerGTK
     {
       if (DownloadResult != null)
         DownloadResult(sender, e);
+    }
+    private static bool VerifySignature(string Message, string Signature)
+    {
+      if (String.IsNullOrEmpty(Signature))
+        return false;
+      byte[] bMsg = System.Text.Encoding.GetEncoding(srlFunctions.LATIN_1).GetBytes(Message);
+      byte[] bSig = null;
+      try
+      {
+        bSig = System.Convert.FromBase64String(Signature);
+      }
+      catch(Exception)
+      {
+        return false;
+      }
+      string key = null;
+      System.Security.Cryptography.RSACryptoServiceProvider rsa = new System.Security.Cryptography.RSACryptoServiceProvider();
+      System.Reflection.Assembly asm = System.Reflection.Assembly.GetExecutingAssembly();
+      using (System.IO.Stream s = asm.GetManifestResourceStream("RestrictionTrackerGTK.Resources.pubkey"))
+      {
+        using (System.IO.StreamReader r = new System.IO.StreamReader(s))
+        {
+          key = r.ReadToEnd();
+        }
+      }
+      rsa.FromXmlString(key);
+      return rsa.VerifyData(bMsg, System.Security.Cryptography.CryptoConfig.MapNameToOID("SHA1"), bSig);
     }
     #region "IDisposable Support"
     private bool disposedValue;
