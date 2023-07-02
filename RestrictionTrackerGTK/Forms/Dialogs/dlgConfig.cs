@@ -85,14 +85,7 @@ namespace RestrictionTrackerGTK
       AddEventHandlers();
       mySettings = new AppSettings();
       string Username = mySettings.Account;
-      if (!string.IsNullOrEmpty(Username) && (Username.Contains("@") & Username.Contains(".")))
-      {
-        txtAccount.Text = Username.Substring(0, Username.LastIndexOf("@"));
-      }
-      else
-      {
-        txtAccount.Text = Username;
-      }
+      txtAccount.Text = Username;
       if (mySettings.PassCrypt != null)
       {
         if (string.IsNullOrEmpty(mySettings.PassKey) | string.IsNullOrEmpty(mySettings.PassSalt))

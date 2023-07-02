@@ -1258,13 +1258,6 @@ namespace RestrictionTrackerGTK
         else
           sPassword = StoredPassword.Decrypt(mySettings.PassCrypt, mySettings.PassKey, mySettings.PassSalt);
       }
-      if (!string.IsNullOrEmpty(sAccount))
-      {
-        if (sAccount.Contains("@") & sAccount.Contains("."))
-        {
-          sAccount = sAccount.Substring(0, sAccount.LastIndexOf("@"));
-        }
-      }
     }
     #endregion
     #region "Login Functions"
