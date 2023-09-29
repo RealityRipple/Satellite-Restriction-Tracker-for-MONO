@@ -566,7 +566,7 @@ namespace RestrictionTrackerGTK
       {
         GLib.Source.Remove(pChecker);
         pChecker = 0;
-        remoteTest = new RestrictionLibrary.Remote.ServiceConnection(txtAccount.Text + "@exede.net", "", checkKey, mySettings.Proxy, mySettings.Timeout, new DateTime(2001, 1, 1), modFunctions.AppData);
+        remoteTest = new RestrictionLibrary.Remote.ServiceConnection(txtAccount.Text, "", checkKey, mySettings.Proxy, mySettings.Timeout, new DateTime(2001, 1, 1), modFunctions.AppData);
         remoteTest.Failure += remoteTest_Failure;
         remoteTest.OKKey += remoteTest_OKKey;
       }
@@ -1454,7 +1454,7 @@ namespace RestrictionTrackerGTK
       pctKeyState.PixbufAnimation = null;
       pctKeyState.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.ok.png");
       pctKeyState.TooltipText = "Your key has been verified!";
-      lblPurchaseKey.Markup = "<a href=\"http://wb.realityripple.com?wbEMail=" + txtAccount.Text + "@exede.net&amp;wbKey=" + txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text + "&amp;wbSubmit=\">" + LINK_PANEL + "</a>";
+      lblPurchaseKey.Markup = "<a href=\"http://wb.realityripple.com?wbEMail=" + txtAccount.Text + "&amp;wbKey=" + txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text + "&amp;wbSubmit=\">" + LINK_PANEL + "</a>";
       if (pChecker != 0)
       {
         GLib.Source.Remove(pChecker);
