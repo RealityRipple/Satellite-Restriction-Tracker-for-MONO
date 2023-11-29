@@ -14,26 +14,10 @@ namespace RestrictionTrackerGTK
   public partial class dlgConfig:
     Gtk.Dialog
   {
-    private RestrictionLibrary.Remote.ServiceConnection remoteTest;
-    private bool bSaved, bAccount, bLoaded, bHardChange, bRemoteAcct;
-    private bool bKeyPasting = false;
+    private bool bSaved, bAccount, bLoaded, bHardChange;
     private AppSettings mySettings;
-    private uint pChecker;
     private uint pIcoWait;
     private Gdk.Pixbuf icoNetTest;
-    private string checkKey;
-    private Gtk.Menu mnuKey;
-    private Gtk.MenuItem mnuKeyCut;
-    private Gtk.MenuItem mnuKeyCopy;
-    private Gtk.MenuItem mnuKeyPaste;
-    private Gtk.SeparatorMenuItem mnuKeySpacer;
-    private Gtk.MenuItem mnuKeyDelete;
-    private Gtk.MenuItem mnuKeyClear;
-    private Gtk.Entry txtMenuKeyItem;
-    private const string LINK_PURCHASE = "<a href=\"http://srt.realityripple.com/c_signup.php\">Purchase a Remote Usage Service Subscription</a>";
-    private const string LINK_PURCHASE_TT = "If you do not have a Product Key for the Remote Usage Service, you can purchase one online for as little as $15.00 a year.";
-    private const string LINK_PANEL = "Visit the Remote Usage Service User Panel Page";
-    private const string LINK_PANEL_TT = "Manage your Remote Usage Service account online.";
     private delegate void MethodInvoker();
     #region "Form Events"
     public dlgConfig()
@@ -44,7 +28,6 @@ namespace RestrictionTrackerGTK
       {
         pctAccountViaSatIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.account_user.png");
         ((Gtk.Image)((Gtk.HBox)((Gtk.Alignment)cmdPassDisplay.Child).Child).Children[0]).Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.pass.png");
-        pctAccountKeyIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.account_key.png");
         pctPrefStartIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.prefs_power.png");
         pctPrefAccuracyIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.prefs_accuracy.png");
         pctPrefAlertIcon.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.config.os_x.prefs_notify.png");
@@ -94,72 +77,6 @@ namespace RestrictionTrackerGTK
           txtPassword.Text = RestrictionLibrary.StoredPassword.Decrypt(mySettings.PassCrypt, mySettings.PassKey, mySettings.PassSalt);
       }
       txtPassword.Visibility = false;
-      mnuKey = new Menu();
-      mnuKeyCut = new MenuItem("C_ut");
-      mnuKeyCopy = new MenuItem("_Copy");
-      mnuKeyPaste = new MenuItem("_Paste");
-      mnuKeySpacer = new SeparatorMenuItem();
-      mnuKeyDelete = new MenuItem("_Delete");
-      mnuKeyClear = new MenuItem("C_lear");
-      mnuKey.Append(mnuKeyCut);
-      mnuKey.Append(mnuKeyCopy);
-      mnuKey.Append(mnuKeyPaste);
-      mnuKey.Append(mnuKeySpacer);
-      mnuKey.Append(mnuKeyDelete);
-      mnuKey.Append(mnuKeyClear);
-      mnuKey.ShowAll();
-      mnuKeyCut.Activated += mnuKeyCut_Click;
-      mnuKeyCopy.Activated += mnuKeyCopy_Click;
-      mnuKeyPaste.Activated += mnuKeyPaste_Click;
-      mnuKeyDelete.Activated += mnuKeyDelete_Click;
-      mnuKeyClear.Activated += mnuKeyClear_Click;
-      string sKey = mySettings.RemoteKey;
-      if (sKey.Contains("-"))
-      {
-        string[] sKeys = sKey.Split('-');
-        if (sKeys.Length == 5)
-        {
-          txtKey1.Text = sKeys[0].Trim();
-          txtKey2.Text = sKeys[1].Trim();
-          txtKey3.Text = sKeys[2].Trim();
-          txtKey4.Text = sKeys[3].Trim();
-          txtKey5.Text = sKeys[4].Trim();
-        }
-        else
-        {
-          txtKey1.Text = "";
-          txtKey2.Text = "";
-          txtKey3.Text = "";
-          txtKey4.Text = "";
-          txtKey5.Text = "";
-        }
-      }
-      else
-      {
-        txtKey1.Text = "";
-        txtKey2.Text = "";
-        txtKey3.Text = "";
-        txtKey4.Text = "";
-        txtKey5.Text = "";
-      }
-      modFunctions.PrepareLink(lblPurchaseKey);
-      if (txtKey1.Text.Length == txtKey1.MaxLength & txtKey2.Text.Length == txtKey2.MaxLength & txtKey3.Text.Length == txtKey3.MaxLength & txtKey4.Text.Length == txtKey4.MaxLength & txtKey5.Text.Length == txtKey5.MaxLength)
-      {
-        bRemoteAcct = true;
-        pctKeyState.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.ok.png");
-        pctKeyState.TooltipText = "Thank you for purchasing the Remote Usage Service for " + modFunctions.ProductName + "!";
-        lblPurchaseKey.Markup = "<a href=\"http://wb.realityripple.com?wbEMail=" + mySettings.Account + "&amp;wbKey=" + mySettings.RemoteKey + "&amp;wbSubmit=\">" + LINK_PANEL + "</a>";
-        lblPurchaseKey.TooltipText = LINK_PANEL_TT;
-      }
-      else
-      {
-        bRemoteAcct = false;
-        pctKeyState.Pixbuf = null;
-        pctKeyState.PixbufAnimation = null;
-        pctKeyState.TooltipText = "";
-        lblPurchaseKey.Markup = LINK_PURCHASE;
-        lblPurchaseKey.TooltipText = LINK_PURCHASE_TT;
-      }
       if (mySettings.StartWait > (int)txtStartWait.Adjustment.Upper)
       {
         mySettings.StartWait = (int)txtStartWait.Adjustment.Upper;
@@ -461,33 +378,6 @@ namespace RestrictionTrackerGTK
       txtPassword.Changed += ValuesChanged;
       cmdPassDisplay.Toggled += cmdPassDisplay_Toggled;
       //
-      txtKey1.AddEvents((int)Gdk.EventType.KeyPress);
-      txtKey1.Changed += txtProductKey_Changed;
-      txtKey1.KeyPressEvent += txtProductKey_KeyPressEvent;
-      txtKey1.TextInserted += txtProductKey_InsertText;
-      txtKey1.ButtonPressEvent += txtProductKey_Clicked;
-      txtKey2.AddEvents((int)Gdk.EventType.KeyPress);
-      txtKey2.Changed += txtProductKey_Changed;
-      txtKey2.KeyPressEvent += txtProductKey_KeyPressEvent;
-      txtKey2.TextInserted += txtProductKey_InsertText;
-      txtKey2.ButtonPressEvent += txtProductKey_Clicked;
-      txtKey3.AddEvents((int)Gdk.EventType.KeyPress);
-      txtKey3.Changed += txtProductKey_Changed;
-      txtKey3.KeyPressEvent += txtProductKey_KeyPressEvent;
-      txtKey3.TextInserted += txtProductKey_InsertText;
-      txtKey3.ButtonPressEvent += txtProductKey_Clicked;
-      txtKey4.AddEvents((int)Gdk.EventType.KeyPress);
-      txtKey4.Changed += txtProductKey_Changed;
-      txtKey4.KeyPressEvent += txtProductKey_KeyPressEvent;
-      txtKey4.TextInserted += txtProductKey_InsertText;
-      txtKey4.ButtonPressEvent += txtProductKey_Clicked;
-      txtKey5.AddEvents((int)Gdk.EventType.KeyPress);
-      txtKey5.Changed += txtProductKey_Changed;
-      txtKey5.KeyPressEvent += txtProductKey_KeyPressEvent;
-      txtKey5.TextInserted += txtProductKey_InsertText;
-      txtKey5.ButtonPressEvent += txtProductKey_Clicked;
-      evnKeyState.ButtonPressEvent += evnKeyState_ButtonPressEvent;
-      //
       // Preferences
       //
       chkStartup.Clicked += ValuesChanged;
@@ -560,51 +450,8 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-    private bool RunAccountTest()
-    {
-      if (pChecker != 0)
-      {
-        GLib.Source.Remove(pChecker);
-        pChecker = 0;
-        remoteTest = new RestrictionLibrary.Remote.ServiceConnection(txtAccount.Text, "", checkKey, mySettings.Proxy, mySettings.Timeout, new DateTime(2001, 1, 1), modFunctions.AppData);
-        remoteTest.Failure += remoteTest_Failure;
-        remoteTest.OKKey += remoteTest_OKKey;
-      }
-      else
-      {
-        return false;
-      }
-
-      return false;
-    }
     private void RunNetworkProtocolTest()
     {
-      if (bRemoteAcct)
-      {
-        chkNetworkSecurityEnforce.Active = false;
-        chkNetworkSecurityEnforce.Sensitive = false;
-        chkNetworkSecurityEnforce.TooltipText = "The Remote Usage Service uses its own security and verification methods.";
-        chkTLSProxy.Active = false;
-        chkTLSProxy.Sensitive = false;
-        chkTLSProxy.TooltipText = "The TLS Proxy is disabled when using the Remote Usage Service.";
-        chkNetworkProtocolSSL3.Active = false;
-        chkNetworkProtocolSSL3.Sensitive = false;
-        chkNetworkProtocolSSL3.TooltipText = "SSL 3.0 is disabled when using the Remote Usage Service.";
-        chkNetworkProtocolTLS10.Active = false;
-        chkNetworkProtocolTLS10.Sensitive = false;
-        chkNetworkProtocolTLS10.TooltipText = "TLS 1.0 is disabled when using the Remote Usage Service.";
-        chkNetworkProtocolTLS11.Active = false;
-        chkNetworkProtocolTLS11.Sensitive = false;
-        chkNetworkProtocolTLS11.TooltipText = "TLS 1.1 is disabled when using the Remote Usage Service.";
-        chkNetworkProtocolTLS12.Active = false;
-        chkNetworkProtocolTLS12.Sensitive = false;
-        chkNetworkProtocolTLS12.TooltipText = "TLS 1.2 is disabled when using the Remote Usage Service.";
-        lblRetries1.Sensitive = false;
-        txtRetries.Sensitive = false;
-        lblRetries2.Sensitive = false;
-        txtRetries.TooltipText = "Automatic Retry is not implemented for the Remote Usage Service at this time.";
-        return;
-      }
       lblRetries1.Sensitive = true;
       txtRetries.Sensitive = true;
       lblRetries2.Sensitive = true;
@@ -823,229 +670,7 @@ namespace RestrictionTrackerGTK
       {
         return;
       }
-      if (pChecker != 0)
-      {
-        bRemoteAcct = CheckState;
-        GLib.Source.Remove(pChecker);
-        pChecker = 0;
-      }
-      if (remoteTest != null)
-      {
-        bRemoteAcct = CheckState;
-        remoteTest.Dispose();
-        remoteTest = null;
-      }
-      lblPurchaseKey.Markup = LINK_PURCHASE;
-      lblPurchaseKey.TooltipText = LINK_PURCHASE_TT;
-      if (txtKey1.Text.Length == txtKey1.MaxLength & txtKey2.Text.Length == txtKey2.MaxLength & txtKey3.Text.Length == txtKey3.MaxLength & txtKey4.Text.Length == txtKey4.MaxLength & txtKey5.Text.Length == txtKey5.MaxLength)
-      {
-        KeyCheck();
-      }
-      else
-      {
-        cmdSave.Sensitive = SettingsChanged();
-      }
-    }
-    protected void txtProductKey_InsertText(object o, Gtk.TextInsertedArgs e)
-    {
-      e.RetVal = true;
-      Gtk.Entry txtSender = (Gtk.Entry)o;
-      txtSender.TextInserted -= txtProductKey_InsertText;
-      txtSender.Text = txtSender.Text.ToUpperInvariant();
-      txtSender.TextInserted += txtProductKey_InsertText;
-    }
-    [GLib.ConnectBefore]
-    protected void txtProductKey_KeyPressEvent(object o, Gtk.KeyPressEventArgs e)
-    {
-      Gtk.Entry txtSender = (Gtk.Entry)o;
-      if ((e.Event.Key == Gdk.Key.v) & ((e.Event.State & Gdk.ModifierType.ControlMask) == Gdk.ModifierType.ControlMask))
-      {
-        Gtk.Clipboard cb = Gtk.Clipboard.Get(Gdk.Selection.Clipboard);
-
-        if (!string.IsNullOrEmpty(cb.WaitForText()))
-        {
-          string sKey = cb.WaitForText();
-          if (sKey.Contains("-"))
-          {
-            string[] sKeys = sKey.Split('-');
-            if (sKeys.Length == 5)
-            {
-              txtKey1.Text = sKeys[0];
-              txtKey2.Text = sKeys[1];
-              txtKey3.Text = sKeys[2];
-              txtKey4.Text = sKeys[3];
-              txtKey5.Text = sKeys[4];
-            }
-            else
-            {
-              txtSender.Text = sKey;
-            }
-          }
-          else
-          {
-            txtSender.Text = sKey;
-          }
-        }
-        e.RetVal = true;
-      }
-      else if ((e.Event.Key == Gdk.Key.a) & ((e.Event.State & Gdk.ModifierType.ControlMask) == Gdk.ModifierType.ControlMask))
-      {
-        txtSender.SelectRegion(0, txtSender.Text.Length);
-        e.RetVal = true;
-      }
-      else if ((e.Event.Key == Gdk.Key.Delete) | ((e.Event.Key == Gdk.Key.x) & ((e.Event.State & Gdk.ModifierType.ControlMask) == Gdk.ModifierType.ControlMask)) | ((e.Event.Key == Gdk.Key.c) & ((e.Event.State & Gdk.ModifierType.ControlMask) == Gdk.ModifierType.ControlMask)) | (e.Event.Key == Gdk.Key.End) | (e.Event.Key == Gdk.Key.Home) | (e.Event.Key == Gdk.Key.leftarrow) | (e.Event.Key == Gdk.Key.rightarrow) | (e.Event.Key == Gdk.Key.Tab) | (e.Event.Key == Gdk.Key.Shift_L) | (e.Event.Key == Gdk.Key.Shift_R) | (e.Event.Key == Gdk.Key.Alt_L) | (e.Event.Key == Gdk.Key.Alt_R) | (e.Event.Key == Gdk.Key.Control_L) | (e.Event.Key == Gdk.Key.Control_R))
-      {
-        e.RetVal = false;
-      }
-      else if (e.Event.Key == Gdk.Key.BackSpace)
-      {
-        int start, end;
-        txtSender.GetSelectionBounds(out start, out end);
-        if ((string.IsNullOrEmpty(txtSender.Text)) & (Math.Abs(end - start) == 0))
-        {
-          if (txtSender == txtKey1)
-          {
-            e.RetVal = true;
-          }
-          else if (txtSender == txtKey2)
-          {
-            txtKey1.GrabFocus();
-            txtKey1.DeleteText(txtKey1.Text.Length - 1, txtKey1.Text.Length);
-            txtKey1.SelectRegion(txtKey1.Text.Length, txtKey1.Text.Length);
-            e.RetVal = true;
-          }
-          else if (txtSender == txtKey3)
-          {
-            txtKey2.GrabFocus();
-            txtKey2.DeleteText(txtKey2.Text.Length - 1, txtKey2.Text.Length);
-            txtKey2.SelectRegion(txtKey2.Text.Length, txtKey2.Text.Length);
-            e.RetVal = true;
-          }
-          else if (txtSender == txtKey4)
-          {
-            txtKey3.GrabFocus();
-            txtKey3.DeleteText(txtKey3.Text.Length - 1, txtKey3.Text.Length);
-            txtKey3.SelectRegion(txtKey3.Text.Length, txtKey3.Text.Length);
-            e.RetVal = true;
-          }
-          else if (txtSender == txtKey5)
-          {
-            txtKey4.GrabFocus();
-            txtKey4.DeleteText(txtKey4.Text.Length - 1, txtKey4.Text.Length);
-            txtKey4.SelectRegion(txtKey4.Text.Length, txtKey4.Text.Length);
-            e.RetVal = true;
-          }
-
-        }
-      }
-      else
-      {
-        int start, end;
-        txtSender.GetSelectionBounds(out start, out end);
-        if ((txtSender.Text.Length == txtSender.MaxLength) & (Math.Abs(end - start) == 0))
-        {
-          if (txtSender == txtKey1)
-          {
-            txtKey2.GrabFocus();
-            txtKey2.Text = Convert.ToChar(e.Event.KeyValue).ToString();
-            txtKey2.SelectRegion(txtKey2.Text.Length, txtKey2.Text.Length);
-          }
-          else if (txtSender == txtKey2)
-          {
-            txtKey3.GrabFocus();
-            txtKey3.Text = Convert.ToChar(e.Event.KeyValue).ToString();
-            txtKey3.SelectRegion(txtKey3.Text.Length, txtKey3.Text.Length);
-          }
-          else if (txtSender == txtKey3)
-          {
-            txtKey4.GrabFocus();
-            txtKey4.Text = Convert.ToChar(e.Event.KeyValue).ToString();
-            txtKey4.SelectRegion(txtKey4.Text.Length, txtKey4.Text.Length);
-          }
-          else if (txtSender == txtKey4)
-          {
-            txtKey5.GrabFocus();
-            txtKey5.Text = Convert.ToChar(e.Event.KeyValue).ToString();
-            txtKey5.SelectRegion(txtKey5.Text.Length, txtKey5.Text.Length);
-          }
-          e.RetVal = true;
-        }
-      }
-    }
-    protected void txtProductKey_Changed(object o, EventArgs e)
-    {
-      if (!bLoaded)
-      {
-        return;
-      }
-      if (bKeyPasting)
-      {
-        return;
-      }
-      if (pChecker != 0)
-      {
-        bRemoteAcct = CheckState;
-        GLib.Source.Remove(pChecker);
-        pChecker = 0;
-      }
-      if (remoteTest != null)
-      {
-        bRemoteAcct = CheckState;
-        remoteTest.Dispose();
-        remoteTest = null;
-      }
-      lblPurchaseKey.Markup = LINK_PURCHASE;
-      lblPurchaseKey.TooltipText = LINK_PURCHASE_TT;
-      if (txtKey1.Text.Length == txtKey1.MaxLength & txtKey2.Text.Length == txtKey2.MaxLength & txtKey3.Text.Length == txtKey3.MaxLength & txtKey4.Text.Length == txtKey4.MaxLength & txtKey5.Text.Length == txtKey5.MaxLength)
-      {
-        KeyCheck();
-      }
-      else
-      {
-        bRemoteAcct = false;
-        pctKeyState.Pixbuf = null;
-        pctKeyState.PixbufAnimation = null;
-        pctKeyState.TooltipText = "";
-        cmdSave.Sensitive = SettingsChanged();
-        DoCheck();
-      }
-    }
-    [GLib.ConnectBefore]
-    protected void txtProductKey_Clicked(object o, ButtonPressEventArgs e)
-    {
-      if (e.Event.Button == 3)
-      {
-        txtMenuKeyItem = (Entry)o;
-        Gtk.Clipboard cb = Gtk.Clipboard.Get(Gdk.Selection.Clipboard);
-        if (string.IsNullOrEmpty(txtKey1.Text) | string.IsNullOrEmpty(txtKey2.Text) | string.IsNullOrEmpty(txtKey3.Text) | string.IsNullOrEmpty(txtKey4.Text) | string.IsNullOrEmpty(txtKey5.Text))
-        {
-          int selStart, selEnd;
-          txtMenuKeyItem.GetSelectionBounds(out selStart, out selEnd);
-          if ((!string.IsNullOrEmpty(txtMenuKeyItem.Text)) && (selStart != selEnd))
-          {
-            mnuKeyCut.Sensitive = true;
-            mnuKeyCopy.Sensitive = true;
-          }
-          else
-          {
-            mnuKeyCut.Sensitive = false;
-            mnuKeyCopy.Sensitive = false;
-          }
-        }
-        else
-        {
-          mnuKeyCut.Sensitive = true;
-          mnuKeyCopy.Sensitive = true;
-        }
-
-        //mnuKeyCut.Sensitive = !(string.IsNullOrEmpty(txtKey1.Text) & string.IsNullOrEmpty(txtKey2.Text) | string.IsNullOrEmpty(txtKey3.Text) | string.IsNullOrEmpty(txtKey4.Text) | string.IsNullOrEmpty(txtKey5.Text));
-        //mnuKeyCopy.Sensitive = !(string.IsNullOrEmpty(txtKey1.Text) | string.IsNullOrEmpty(txtKey2.Text) | string.IsNullOrEmpty(txtKey3.Text) | string.IsNullOrEmpty(txtKey4.Text) | string.IsNullOrEmpty(txtKey5.Text));
-        mnuKeyPaste.Sensitive = !(string.IsNullOrEmpty(cb.WaitForText()));
-        mnuKeyDelete.Sensitive = !(string.IsNullOrEmpty(txtMenuKeyItem.Text));
-        mnuKeyClear.Sensitive = !(string.IsNullOrEmpty(txtKey1.Text) & string.IsNullOrEmpty(txtKey2.Text) & string.IsNullOrEmpty(txtKey3.Text) & string.IsNullOrEmpty(txtKey4.Text) & string.IsNullOrEmpty(txtKey5.Text));
-        mnuKey.Popup();
-        e.RetVal = true;
-      }
+      cmdSave.Sensitive = SettingsChanged();
     }
     protected void cmdPassDisplay_Toggled(object sender, EventArgs e)
     {
@@ -1296,180 +921,6 @@ namespace RestrictionTrackerGTK
         cmdSave.Sensitive = SettingsChanged();
       }
     }
-    #region "Context Menu"
-    protected void mnuKeyPaste_Click(object sender, EventArgs e)
-    {
-      Gtk.Clipboard cb = Gtk.Clipboard.Get(Gdk.Selection.Clipboard);
-      string cbText = cb.WaitForText();
-      if (!(string.IsNullOrEmpty(cbText)))
-      {
-        string sKey = cbText.Trim();
-        if (sKey.Contains("-"))
-        {
-          string[] sKeys = sKey.Split('-');
-          if (sKeys.Length == 5)
-          {
-            bKeyPasting = true;
-            txtKey1.Text = sKeys[0];
-            txtKey2.Text = sKeys[1];
-            txtKey3.Text = sKeys[2];
-            txtKey4.Text = sKeys[3];
-            txtKey5.Text = sKeys[4];
-            bKeyPasting = false;
-            txtProductKey_Changed(sender, e);
-          }
-          else
-          {
-            if (sKey.Length > txtMenuKeyItem.MaxLength)
-              sKey = sKey.Substring(0, txtMenuKeyItem.MaxLength);
-            txtMenuKeyItem.Text = sKey;
-          }
-        }
-        else
-        {
-          if (sKey.Length > txtMenuKeyItem.MaxLength)
-            sKey = sKey.Substring(0, txtMenuKeyItem.MaxLength);
-          txtMenuKeyItem.Text = sKey;
-        }
-      }
-      txtMenuKeyItem = null;
-    }
-    protected void mnuKeyCut_Click(object sender, EventArgs e)
-    {
-      if (!(string.IsNullOrEmpty(txtKey1.Text) & string.IsNullOrEmpty(txtKey2.Text) & string.IsNullOrEmpty(txtKey3.Text) & string.IsNullOrEmpty(txtKey4.Text) & string.IsNullOrEmpty(txtKey5.Text)))
-      {
-        if (txtKey1.Text.Length == txtKey1.MaxLength & txtKey2.Text.Length == txtKey2.MaxLength & txtKey3.Text.Length == txtKey3.MaxLength & txtKey4.Text.Length == txtKey4.MaxLength & txtKey5.Text.Length == txtKey5.MaxLength)
-        {
-          string sKey = txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text;
-          Gtk.Clipboard cb = Gtk.Clipboard.Get(Gdk.Selection.Clipboard);
-          cb.Text = sKey;
-          txtKey1.Text = "";
-          txtKey2.Text = "";
-          txtKey3.Text = "";
-          txtKey4.Text = "";
-          txtKey5.Text = "";
-          return;
-        }
-      }
-      txtMenuKeyItem.CutClipboard();
-      txtMenuKeyItem = null;
-    }
-    protected void mnuKeyCopy_Click(object sender, EventArgs e)
-    {
-      if (!(string.IsNullOrEmpty(txtKey1.Text) & string.IsNullOrEmpty(txtKey2.Text) & string.IsNullOrEmpty(txtKey3.Text) & string.IsNullOrEmpty(txtKey4.Text) & string.IsNullOrEmpty(txtKey5.Text)))
-      {
-        if (txtKey1.Text.Length == txtKey1.MaxLength & txtKey2.Text.Length == txtKey2.MaxLength & txtKey3.Text.Length == txtKey3.MaxLength & txtKey4.Text.Length == txtKey4.MaxLength & txtKey5.Text.Length == txtKey5.MaxLength)
-        {
-          string sKey = txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text;
-          Gtk.Clipboard cb = Gtk.Clipboard.Get(Gdk.Selection.Clipboard);
-          cb.Text = sKey;
-          return;
-        }
-      }
-      txtMenuKeyItem.CopyClipboard();
-      txtMenuKeyItem = null;
-    }
-    protected void mnuKeyDelete_Click(object sender, EventArgs e)
-    {
-      txtMenuKeyItem.Text = "";
-      txtMenuKeyItem = null;
-    }
-    protected void mnuKeyClear_Click(object sender, EventArgs e)
-    {
-      txtKey1.Text = "";
-      txtKey2.Text = "";
-      txtKey3.Text = "";
-      txtKey4.Text = "";
-      txtKey5.Text = "";
-      txtMenuKeyItem = null;
-    }
-    #endregion
-    #region "Remote Service"
-    protected void remoteTest_Failure(object sender, RestrictionLibrary.Remote.ServiceFailureEventArgs e)
-    {
-      Gtk.Application.Invoke(sender, (EventArgs)e, Main_RemoteTestFailure);
-    }
-    private void Main_RemoteTestFailure(object sender, EventArgs ea)
-    {
-      RestrictionLibrary.Remote.ServiceFailureEventArgs e = (RestrictionLibrary.Remote.ServiceFailureEventArgs)ea;
-      bool bToSave = true;
-      if (!CheckState)
-        bToSave = false;
-      if (SettingsChanged())
-        bToSave = false;
-      bRemoteAcct = false;
-      pctKeyState.PixbufAnimation = null;
-      pctKeyState.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.error.png");
-      string sErr = "There was an error verifying your key!";
-      switch (e.Type)
-      {
-        case RestrictionLibrary.Remote.ServiceFailType.BadLogin:
-          sErr = "There was a server error. Please try again later.";
-          break;
-        case RestrictionLibrary.Remote.ServiceFailType.BadProduct:
-          sErr = "Your Product Key is incorrect!";
-          break;
-        case RestrictionLibrary.Remote.ServiceFailType.BadServer:
-          sErr = "There was a fault double-checking the server. You may have a security issue.";
-          break;
-        case RestrictionLibrary.Remote.ServiceFailType.NoData:
-          sErr = "There server did not receive login negotiation data!";
-          break;
-        case RestrictionLibrary.Remote.ServiceFailType.NoUsername:
-          sErr = "Your account is not registered!";
-          break;
-        case RestrictionLibrary.Remote.ServiceFailType.Network:
-          sErr = "There was a connection related error. Please check your Internet connection." + (string.IsNullOrEmpty(e.Details) ? "." : ": " + e.Details);
-          break;
-        case RestrictionLibrary.Remote.ServiceFailType.NotBase64:
-          sErr = "The server did not respond in the right manner. Please check your Internet connection." + (string.IsNullOrEmpty(e.Details) ? "." : ": " + e.Details);
-          break;
-      }
-      if (pChecker != 0)
-      {
-        GLib.Source.Remove(pChecker);
-        pChecker = 0;
-      }
-      if (remoteTest != null)
-      {
-        remoteTest.Dispose();
-        remoteTest = null;
-      }
-      pctKeyState.TooltipText = sErr;
-      DoCheck();
-      cmdSave.Sensitive = bToSave;
-    }
-    protected void remoteTest_OKKey(object sender, EventArgs e)
-    {
-      Gtk.Application.Invoke(sender, e, Main_RemoteTestOKKey);
-    }
-    private void Main_RemoteTestOKKey(object sender, EventArgs e)
-    {
-      bool bToSave = true;
-      if (CheckState)
-        bToSave = false;
-      if (SettingsChanged())
-        bToSave = true;
-      bRemoteAcct = true;
-      pctKeyState.PixbufAnimation = null;
-      pctKeyState.Pixbuf = Gdk.Pixbuf.LoadFromResource("RestrictionTrackerGTK.Resources.ok.png");
-      pctKeyState.TooltipText = "Your key has been verified!";
-      lblPurchaseKey.Markup = "<a href=\"http://wb.realityripple.com?wbEMail=" + txtAccount.Text + "&amp;wbKey=" + txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text + "&amp;wbSubmit=\">" + LINK_PANEL + "</a>";
-      if (pChecker != 0)
-      {
-        GLib.Source.Remove(pChecker);
-        pChecker = 0;
-      }
-      if (remoteTest != null)
-      {
-        remoteTest.Dispose();
-        remoteTest = null;
-      }
-      lblPurchaseKey.TooltipText = LINK_PANEL_TT;
-      DoCheck();
-      cmdSave.Sensitive = bToSave;
-    }
-    #endregion
     #region "Net Test"
     private class FaviconDownloadIconCompletedEventArgs: EventArgs
     {
@@ -1563,30 +1014,6 @@ namespace RestrictionTrackerGTK
     }
     #endregion
     #endregion
-    #region "Remote Service Results"
-    protected void evnKeyState_ButtonPressEvent(object sender, Gtk.ButtonPressEventArgs e)
-    {
-      if (txtKey1.Text.Length == txtKey1.MaxLength & txtKey2.Text.Length == txtKey2.MaxLength & txtKey3.Text.Length == txtKey3.MaxLength & txtKey4.Text.Length == txtKey4.MaxLength & txtKey5.Text.Length == txtKey5.MaxLength)
-        KeyCheck();
-    }
-    bool CheckState;
-    private void KeyCheck()
-    {
-      pctKeyState.PixbufAnimation = new Gdk.PixbufAnimation(null, "RestrictionTrackerGTK.Resources.throbber.gif");
-      CheckState = bRemoteAcct;
-      bRemoteAcct = false;
-      pctKeyState.TooltipText = "Verifying your key...";
-      string sKeyTest = txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text;
-      cmdSave.Sensitive = false;
-      if (pChecker != 0)
-      {
-        GLib.Source.Remove(pChecker);
-        pChecker = 0;
-      }
-      checkKey = sKeyTest;
-      pChecker = GLib.Timeout.Add(500, RunAccountTest);
-    }
-    #endregion
     #region "Save/Close Buttons"
     protected void cmdAlertStyle_Click(object sender, EventArgs e)
     {
@@ -1653,7 +1080,7 @@ namespace RestrictionTrackerGTK
         txtPassword.GrabFocus();
         return;
       }
-      if (!bRemoteAcct & !(chkNetworkProtocolSSL3.Active | chkNetworkProtocolTLS10.Active | chkNetworkProtocolTLS11.Active | chkNetworkProtocolTLS12.Active))
+      if (!(chkNetworkProtocolSSL3.Active | chkNetworkProtocolTLS10.Active | chkNetworkProtocolTLS11.Active | chkNetworkProtocolTLS12.Active))
       {
         modFunctions.ShowMessageBox(this, "Please select at least one Security Protocol type to connect with before saving the configuration.", "", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
         if (chkNetworkProtocolTLS12.CanFocus)
@@ -1708,21 +1135,6 @@ namespace RestrictionTrackerGTK
         mySettings.PassCrypt = StoredPassword.Encrypt(txtPassword.Text, newKey, newSalt);
         mySettings.PassKey = Convert.ToBase64String(newKey);
         mySettings.PassSalt = Convert.ToBase64String(newSalt);
-        bAccount = true;
-      }
-      string sKey = "";
-      if (txtKey1.Text.Length == txtKey1.MaxLength & txtKey2.Text.Length == txtKey2.MaxLength & txtKey3.Text.Length == txtKey3.MaxLength & txtKey4.Text.Length == txtKey4.MaxLength & txtKey5.Text.Length == txtKey5.MaxLength)
-        sKey = txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text;
-      if (mySettings.RemoteKey != sKey)
-      {
-        if (bRemoteAcct)
-        {
-          mySettings.RemoteKey = sKey;
-        }
-        else
-        {
-          mySettings.RemoteKey = "";
-        }
         bAccount = true;
       }
       modFunctions.RunOnStartup = chkStartup.Active;
@@ -2081,11 +1493,6 @@ namespace RestrictionTrackerGTK
         if (RestrictionLibrary.StoredPassword.Decrypt(mySettings.PassCrypt, mySettings.PassKey, mySettings.PassSalt) != txtPassword.Text)
           return true;
       }
-      string sKey = txtKey1.Text + "-" + txtKey2.Text + "-" + txtKey3.Text + "-" + txtKey4.Text + "-" + txtKey5.Text;
-      if (sKey.Contains("--"))
-        sKey = "";
-      if (string.Compare(mySettings.RemoteKey, sKey, StringComparison.OrdinalIgnoreCase) != 0)
-        return true;
       if ((int)mySettings.StartWait - txtStartWait.Value != 0)
         return true;
       if ((int)mySettings.Interval - txtInterval.Value != 0)

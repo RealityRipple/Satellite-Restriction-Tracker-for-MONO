@@ -1049,34 +1049,13 @@
           <widget class="Gtk.Notebook" id="tbsConfig">
             <property name="MemberName" />
             <property name="CanFocus">True</property>
-            <property name="CurrentPage">1</property>
+            <property name="CurrentPage">0</property>
             <child>
               <widget class="Gtk.Table" id="pnlAccount">
                 <property name="MemberName" />
-                <property name="NRows">5</property>
+                <property name="NRows">3</property>
                 <property name="RowSpacing">2</property>
                 <property name="ColumnSpacing">2</property>
-                <child>
-                  <widget class="Gtk.Label" id="lblAccountKeyTitle">
-                    <property name="MemberName" />
-                    <property name="Xalign">0</property>
-                    <property name="LabelProp" translatable="yes">&lt;span weight="bold"&gt;Remote Usage Service (Optional)&lt;/span&gt;</property>
-                    <property name="UseMarkup">True</property>
-                  </widget>
-                  <packing>
-                    <property name="TopAttach">3</property>
-                    <property name="BottomAttach">4</property>
-                    <property name="AutoSize">True</property>
-                    <property name="XOptions">Fill</property>
-                    <property name="YOptions">Fill</property>
-                    <property name="XExpand">False</property>
-                    <property name="XFill">True</property>
-                    <property name="XShrink">False</property>
-                    <property name="YExpand">False</property>
-                    <property name="YFill">True</property>
-                    <property name="YShrink">False</property>
-                  </packing>
-                </child>
                 <child>
                   <widget class="Gtk.Label" id="lblAccountViaSatTitle">
                     <property name="MemberName" />
@@ -1085,256 +1064,6 @@
                     <property name="UseMarkup">True</property>
                   </widget>
                   <packing>
-                    <property name="AutoSize">True</property>
-                    <property name="XOptions">Fill</property>
-                    <property name="YOptions">Fill</property>
-                    <property name="XExpand">False</property>
-                    <property name="XFill">True</property>
-                    <property name="XShrink">False</property>
-                    <property name="YExpand">False</property>
-                    <property name="YFill">True</property>
-                    <property name="YShrink">False</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="Gtk.Table" id="pnlAccountKey">
-                    <property name="MemberName" />
-                    <property name="NRows">3</property>
-                    <property name="NColumns">4</property>
-                    <property name="RowSpacing">2</property>
-                    <property name="ColumnSpacing">2</property>
-                    <child>
-                      <placeholder />
-                    </child>
-                    <child>
-                      <placeholder />
-                    </child>
-                    <child>
-                      <widget class="Gtk.Label" id="lblAccountKeyDescription">
-                        <property name="MemberName" />
-                        <property name="Xalign">0</property>
-                        <property name="LabelProp" translatable="yes">Let us track your usage for you! 24-hour meter information at your fingertips, provided by RealityRipple Software.</property>
-                        <property name="Wrap">True</property>
-                      </widget>
-                      <packing>
-                        <property name="LeftAttach">1</property>
-                        <property name="RightAttach">4</property>
-                        <property name="AutoSize">True</property>
-                        <property name="XOptions">Fill</property>
-                        <property name="YOptions">Fill</property>
-                        <property name="XExpand">False</property>
-                        <property name="XFill">True</property>
-                        <property name="XShrink">False</property>
-                        <property name="YExpand">False</property>
-                        <property name="YFill">True</property>
-                        <property name="YShrink">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="Gtk.Label" id="lblKey">
-                        <property name="MemberName" />
-                        <property name="Xalign">0</property>
-                        <property name="LabelProp" translatable="yes">Product _Key:</property>
-                        <property name="UseUnderline">True</property>
-                        <property name="MnemonicWidget">txtKey1</property>
-                      </widget>
-                      <packing>
-                        <property name="TopAttach">1</property>
-                        <property name="BottomAttach">2</property>
-                        <property name="LeftAttach">1</property>
-                        <property name="RightAttach">2</property>
-                        <property name="AutoSize">True</property>
-                        <property name="XOptions">Fill</property>
-                        <property name="YOptions">Fill</property>
-                        <property name="XExpand">False</property>
-                        <property name="XFill">True</property>
-                        <property name="XShrink">False</property>
-                        <property name="YExpand">False</property>
-                        <property name="YFill">True</property>
-                        <property name="YShrink">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="Gtk.Label" id="lblPurchaseKey">
-                        <property name="MemberName" />
-                        <property name="CanFocus">True</property>
-                        <property name="Xalign">1</property>
-                        <property name="Yalign">0</property>
-                        <property name="LabelProp" translatable="yes">Purchase a Remote Usage Service Subscription</property>
-                      </widget>
-                      <packing>
-                        <property name="TopAttach">2</property>
-                        <property name="BottomAttach">3</property>
-                        <property name="LeftAttach">1</property>
-                        <property name="RightAttach">3</property>
-                        <property name="AutoSize">True</property>
-                        <property name="XOptions">Fill</property>
-                        <property name="YOptions">Fill</property>
-                        <property name="XExpand">False</property>
-                        <property name="XFill">True</property>
-                        <property name="XShrink">False</property>
-                        <property name="YExpand">False</property>
-                        <property name="YFill">True</property>
-                        <property name="YShrink">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="Gtk.Image" id="pctAccountKeyIcon">
-                        <property name="MemberName" />
-                        <property name="WidthRequest">48</property>
-                        <property name="Xpad">4</property>
-                        <property name="Ypad">4</property>
-                        <property name="Xalign">1</property>
-                        <property name="Yalign">0</property>
-                        <property name="Pixbuf">resource:RestrictionTrackerGTK.Resources.config.linux.account_key.png</property>
-                      </widget>
-                      <packing>
-                        <property name="BottomAttach">3</property>
-                        <property name="AutoSize">True</property>
-                        <property name="XOptions">Fill</property>
-                        <property name="YOptions">Fill</property>
-                        <property name="XExpand">False</property>
-                        <property name="XFill">True</property>
-                        <property name="XShrink">False</property>
-                        <property name="YExpand">False</property>
-                        <property name="YFill">True</property>
-                        <property name="YShrink">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="Gtk.HBox" id="pnlKey">
-                        <property name="MemberName" />
-                        <property name="Spacing">2</property>
-                        <child>
-                          <widget class="Gtk.Entry" id="txtKey1">
-                            <property name="MemberName" />
-                            <property name="Tooltip" translatable="yes">Your Remote Usage Service Product Key.</property>
-                            <property name="CanFocus">True</property>
-                            <property name="IsEditable">True</property>
-                            <property name="WidthChars">7</property>
-                            <property name="MaxLength">6</property>
-                            <property name="InvisibleChar">●</property>
-                            <property name="Xalign">0.5</property>
-                          </widget>
-                          <packing>
-                            <property name="Position">0</property>
-                            <property name="AutoSize">False</property>
-                            <property name="Expand">False</property>
-                            <property name="Fill">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="Gtk.Entry" id="txtKey2">
-                            <property name="MemberName" />
-                            <property name="Tooltip" translatable="yes">Your Remote Usage Service Product Key.</property>
-                            <property name="CanFocus">True</property>
-                            <property name="IsEditable">True</property>
-                            <property name="WidthChars">5</property>
-                            <property name="MaxLength">4</property>
-                            <property name="InvisibleChar">●</property>
-                            <property name="Xalign">0.5</property>
-                          </widget>
-                          <packing>
-                            <property name="Position">1</property>
-                            <property name="AutoSize">False</property>
-                            <property name="Expand">False</property>
-                            <property name="Fill">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="Gtk.Entry" id="txtKey3">
-                            <property name="MemberName" />
-                            <property name="Tooltip" translatable="yes">Your Remote Usage Service Product Key.</property>
-                            <property name="CanFocus">True</property>
-                            <property name="IsEditable">True</property>
-                            <property name="WidthChars">5</property>
-                            <property name="MaxLength">4</property>
-                            <property name="InvisibleChar">●</property>
-                            <property name="Xalign">0.5</property>
-                          </widget>
-                          <packing>
-                            <property name="Position">2</property>
-                            <property name="AutoSize">False</property>
-                            <property name="Expand">False</property>
-                            <property name="Fill">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="Gtk.Entry" id="txtKey4">
-                            <property name="MemberName" />
-                            <property name="Tooltip" translatable="yes">Your Remote Usage Service Product Key.</property>
-                            <property name="CanFocus">True</property>
-                            <property name="IsEditable">True</property>
-                            <property name="WidthChars">5</property>
-                            <property name="MaxLength">4</property>
-                            <property name="InvisibleChar">●</property>
-                            <property name="Xalign">0.5</property>
-                          </widget>
-                          <packing>
-                            <property name="Position">3</property>
-                            <property name="AutoSize">False</property>
-                            <property name="Expand">False</property>
-                            <property name="Fill">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="Gtk.Entry" id="txtKey5">
-                            <property name="MemberName" />
-                            <property name="Tooltip" translatable="yes">Your Remote Usage Service Product Key.</property>
-                            <property name="CanFocus">True</property>
-                            <property name="IsEditable">True</property>
-                            <property name="WidthChars">7</property>
-                            <property name="MaxLength">6</property>
-                            <property name="InvisibleChar">●</property>
-                            <property name="Xalign">0.5</property>
-                          </widget>
-                          <packing>
-                            <property name="Position">4</property>
-                            <property name="AutoSize">False</property>
-                            <property name="Expand">False</property>
-                            <property name="Fill">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="Gtk.EventBox" id="evnKeyState">
-                            <property name="MemberName" />
-                            <child>
-                              <widget class="Gtk.Image" id="pctKeyState">
-                                <property name="MemberName" />
-                                <property name="WidthRequest">16</property>
-                                <property name="HeightRequest">16</property>
-                                <property name="Pixbuf">resource:RestrictionTrackerGTK.Resources.error.png</property>
-                              </widget>
-                            </child>
-                          </widget>
-                          <packing>
-                            <property name="Position">5</property>
-                            <property name="AutoSize">False</property>
-                            <property name="Expand">False</property>
-                            <property name="Fill">False</property>
-                          </packing>
-                        </child>
-                      </widget>
-                      <packing>
-                        <property name="TopAttach">1</property>
-                        <property name="BottomAttach">2</property>
-                        <property name="LeftAttach">2</property>
-                        <property name="RightAttach">3</property>
-                        <property name="AutoSize">True</property>
-                        <property name="XOptions">Fill</property>
-                        <property name="YOptions">Fill</property>
-                        <property name="XExpand">False</property>
-                        <property name="XFill">True</property>
-                        <property name="XShrink">False</property>
-                        <property name="YExpand">False</property>
-                        <property name="YFill">True</property>
-                        <property name="YShrink">False</property>
-                      </packing>
-                    </child>
-                  </widget>
-                  <packing>
-                    <property name="TopAttach">4</property>
-                    <property name="BottomAttach">5</property>
                     <property name="AutoSize">True</property>
                     <property name="XOptions">Fill</property>
                     <property name="YOptions">Fill</property>
@@ -3968,7 +3697,6 @@ By default, data is stored in the ~/.config directory.</property>
                         <property name="Tooltip" translatable="yes">Save History Data to a custom directory.</property>
                         <property name="CanFocus">True</property>
                         <property name="Label" translatable="yes">_Custom:</property>
-                        <property name="Active">True</property>
                         <property name="DrawIndicator">True</property>
                         <property name="HasLabel">True</property>
                         <property name="UseUnderline">True</property>
@@ -4124,7 +3852,6 @@ By default, data is stored in the ~/.config directory.</property>
                         <property name="Tooltip" translatable="yes">Show a link to a custom website on the Main window.</property>
                         <property name="CanFocus">True</property>
                         <property name="Label" translatable="yes">C_ustom:</property>
-                        <property name="Active">True</property>
                         <property name="DrawIndicator">True</property>
                         <property name="HasLabel">True</property>
                         <property name="UseUnderline">True</property>

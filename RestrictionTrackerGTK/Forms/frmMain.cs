@@ -121,22 +121,6 @@ namespace RestrictionTrackerGTK
         taskNotifier.CloseClick -= taskNotifier_CloseClick;
       }
     }
-    private RestrictionLibrary.Remote.ServiceConnection remoteData;
-    private void remoteDataEvent(bool Add)
-    {
-      if (Add)
-      {
-        remoteData.Failure += remoteData_Failure;
-        remoteData.OKKey += remoteData_OKKey;
-        remoteData.Success += remoteData_Success;
-      }
-      else
-      {
-        remoteData.Failure -= remoteData_Failure;
-        remoteData.OKKey -= remoteData_OKKey;
-        remoteData.Success -= remoteData_Success;
-      }
-    }
     private RestrictionLibrary.Local.SiteConnection localData;
     private void localDataEvent(bool Add)
     {
@@ -174,14 +158,12 @@ namespace RestrictionTrackerGTK
     private string sPassword;
     private bool imSlowed;
     private bool imFree = false;
-    private bool FullCheck = true;
     private long NextGrabTick;
     private int GrabAttempt;
     private bool ClosingTime;
     private string sFailTray;
     private byte bAlert;
     private long uCache_used, uCache_lim;
-    private bool updateFull;
     private long lastBalloon;
     private bool firstRestore;
     private Dictionary<string, string> markupList = new Dictionary<string, string>();
@@ -940,12 +922,6 @@ namespace RestrictionTrackerGTK
         localData.Dispose();
         localData = null;
       }
-      if (remoteData != null)
-      {
-        remoteDataEvent(false);
-        remoteData.Dispose();
-        remoteData = null;
-      }
       if (mySettings != null)
       {
         mySettings.Save();
@@ -984,32 +960,25 @@ namespace RestrictionTrackerGTK
         }
         if (useProtocol == SecurityProtocolTypeEx.None)
         {
-          if (string.IsNullOrEmpty(mySettings.RemoteKey))
+          foreach (SecurityProtocolTypeEx protocolTest in Enum.GetValues(typeof(SecurityProtocolTypeEx)))
           {
-            foreach (SecurityProtocolTypeEx protocolTest in Enum.GetValues(typeof(SecurityProtocolTypeEx)))
-            {
-              try
-              {
-                System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType)protocolTest;
-                useProtocol |= protocolTest;
-              }
-              catch (Exception)
-              {
-              }
-            }
             try
             {
-              System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType)useProtocol;
-              mySettings.SecurityProtocol = (System.Net.SecurityProtocolType)useProtocol;
-              mySettings.Save();
+              System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType)protocolTest;
+              useProtocol |= protocolTest;
             }
             catch (Exception)
             {
             }
           }
-          else
+          try
           {
-            System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType)SecurityProtocolTypeEx.None;
+            System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType)useProtocol;
+            mySettings.SecurityProtocol = (System.Net.SecurityProtocolType)useProtocol;
+            mySettings.Save();
+          }
+          catch (Exception)
+          {
           }
         }
         else
@@ -1167,12 +1136,6 @@ namespace RestrictionTrackerGTK
         localDataEvent(false);
         localData = null;
       }
-      if (remoteData != null)
-      {
-        remoteDataEvent(false);
-        remoteData.Dispose();
-        remoteData = null;
-      }
       InitAccount();
       if (!string.IsNullOrEmpty(sAccount))
       {
@@ -1320,7 +1283,6 @@ namespace RestrictionTrackerGTK
               {
                 if (!string.IsNullOrEmpty(sPassword))
                 {
-                  updateFull = false;
                   NextGrabTick = long.MaxValue;
                   PauseActivity = "Preparing Connection";
                   EnableProgressIcon();
@@ -1358,32 +1320,18 @@ namespace RestrictionTrackerGTK
         {
           cmdRefresh.Sensitive = false;
           NextGrabTick = srlFunctions.TickCount() + (mySettings.Timeout * 1000);
-          if (KeyCheck(mySettings.RemoteKey))
+          if (localData != null)
           {
-            MethodInvoker remoteInvoker = GetRemoteUsage;
-            remoteInvoker.BeginInvoke(null, null);
+            localDataEvent(false);
+            localData.Dispose();
+            localData = null;
           }
-          else
-          {
-            if (localData != null)
-            {
-              localDataEvent(false);
-              localData.Dispose();
-              localData = null;
-            }
-            GrabAttempt = 0;
-            localData = new RestrictionLibrary.Local.SiteConnection(modFunctions.AppData);
-            localDataEvent(true);
-          }
+          GrabAttempt = 0;
+          localData = new RestrictionLibrary.Local.SiteConnection(modFunctions.AppData);
+          localDataEvent(true);
         }
         else
         {
-          if (remoteData != null)
-          {
-            remoteDataEvent(false);
-            remoteData.Dispose();
-            remoteData = null;
-          }
           if (localData != null)
           {
             localDataEvent(false);
@@ -1395,35 +1343,6 @@ namespace RestrictionTrackerGTK
           NextGrabTick = srlFunctions.TickCount() + 5000;
         }
       }
-    }
-    private static bool KeyCheck(string TestKey)
-    {
-      if (string.IsNullOrEmpty(TestKey.Trim()))
-      {
-        return false;
-      }
-      if (TestKey.Contains("-"))
-      {
-        string[] sKeys = TestKey.Split('-');
-        if (sKeys.Length == 5)
-        {
-          if (sKeys[0].Trim().Length == 6 & sKeys[1].Trim().Length == 4 & sKeys[2].Trim().Length == 4 & sKeys[3].Trim().Length == 4 & sKeys[4].Trim().Length == 6)
-          {
-            return true;
-          }
-        }
-      }
-      return false;
-    }
-    private void GetRemoteUsage()
-    {
-      DateTime syncTime = mySettings.LastSyncTime;
-      if (updateFull)
-      {
-        syncTime = new DateTime(2001, 1, 1);
-      }
-      remoteData = new RestrictionLibrary.Remote.ServiceConnection(sAccount, sPassword, mySettings.RemoteKey, mySettings.Proxy, mySettings.Timeout, syncTime, modFunctions.AppData);
-      remoteDataEvent(true);
     }
     private class DisplayUsageEventArgs
       : EventArgs
@@ -1486,12 +1405,6 @@ namespace RestrictionTrackerGTK
         localDataEvent(false);
         localData.Dispose();
         localData = null;
-      }
-      if (remoteData != null)
-      {
-        remoteDataEvent(false);
-        remoteData.Dispose();
-        remoteData = null;
       }
       if (MinutesAhead > -1)
       {
@@ -1700,145 +1613,6 @@ namespace RestrictionTrackerGTK
         localDataEvent(false);
         localData.Dispose();
         localData = null;
-      }
-    }
-    #endregion
-    #region "Remote Usage Events"
-    private void remoteData_Failure(object sender, RestrictionLibrary.Remote.ServiceFailureEventArgs e)
-    {
-      Gtk.Application.Invoke(sender, (EventArgs)e, Main_RemoteDataFailure);
-    }
-    private void Main_RemoteDataFailure(object o, EventArgs ea)
-    {
-      RestrictionLibrary.Remote.ServiceFailureEventArgs e = (RestrictionLibrary.Remote.ServiceFailureEventArgs)ea;
-      string sErr = "There was an error verifying your Product Key.";
-      switch (e.Type)
-      {
-        case RestrictionLibrary.Remote.ServiceFailType.BadLogin:
-          sErr = "There was a server error. Please try again later.";
-          break;
-        case RestrictionLibrary.Remote.ServiceFailType.BadPassword:
-          sErr = "Your Password is incorrect.";
-          break;
-        case RestrictionLibrary.Remote.ServiceFailType.BadProduct:
-          sErr = "Your Product Key has been disabled.";
-          mySettings.RemoteKey = string.Empty;
-          MethodInvoker UsageInvoker = GetUsage;
-          UsageInvoker.BeginInvoke(null, null);
-          break;
-        case RestrictionLibrary.Remote.ServiceFailType.BadServer:
-          sErr = "There was a fault double-checking the server. You may have a security issue.";
-          break;
-        case RestrictionLibrary.Remote.ServiceFailType.NoData:
-          sErr = "There is no usage data." + (string.IsNullOrEmpty(e.Details) ? "Please wait 15 minutes." : " " + e.Details);
-          break;
-        case RestrictionLibrary.Remote.ServiceFailType.NoPassword:
-          sErr = "Your Password has not been Registered on the Remote Service.";
-          break;
-        case RestrictionLibrary.Remote.ServiceFailType.NoUsername:
-          sErr = "Your Account is not Registered for the Remote Service.";
-          mySettings.RemoteKey = string.Empty;
-          MethodInvoker GetUsageInvoker = GetUsage;
-          GetUsageInvoker.BeginInvoke(null, null);
-          break;
-        case RestrictionLibrary.Remote.ServiceFailType.Network:
-          sErr = "Network Connection Error" + (string.IsNullOrEmpty(e.Details) ? "." : ": " + e.Details);
-          break;
-        case RestrictionLibrary.Remote.ServiceFailType.NotBase64:
-          sErr = "The server did not respond in the right manner. Please check your Internet connection" + (string.IsNullOrEmpty(e.Details) ? "." : ": " + e.Details);
-          break;
-      }
-      if (remoteData != null)
-      {
-        remoteDataEvent(false);
-        remoteData.Dispose();
-        remoteData = null;
-      }
-      DisplayUsage(false, true);
-      SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Service Failure: " + sErr, true);
-    }
-    private void remoteData_OKKey(object sender, System.EventArgs e)
-    {
-      Gtk.Application.Invoke(sender, (EventArgs)e, Main_RemoteDataOKKey);
-    }
-    private void Main_RemoteDataOKKey(object o, EventArgs e)
-    {
-      NextGrabTick = srlFunctions.TickCount() + (mySettings.Timeout * 1000);
-      SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Account Accessed! Getting Usage...", false);
-    }
-    private void remoteData_Success(object sender, RestrictionLibrary.Remote.ServiceSuccessEventArgs e)
-    {
-      Gtk.Application.Invoke(sender, (EventArgs)e, Main_RemoteDataSuccess);
-    }
-    private void Main_RemoteDataSuccess(object o, EventArgs ea)
-    {
-      RestrictionLibrary.Remote.ServiceSuccessEventArgs e = (RestrictionLibrary.Remote.ServiceSuccessEventArgs)ea;
-      string LastTime = srlFunctions.TimeToString(modDB.LOG_GetLast());
-      NextGrabTick = srlFunctions.TickCount() + (mySettings.Interval * 60 * 1000);
-      if (FullCheck)
-      {
-        SetStatusText(LastTime, "Synchronizing History...", false);
-      }
-      else
-      {
-        SetStatusText(LastTime, "Saving History...", false);
-      }
-      if (e != null)
-      {
-        modFunctions.ScreenDefaultColors(ref mySettings.Colors);
-        mySettings.Save();
-        int iPercent = 0;
-        int iInterval = 1;
-        long iStart = srlFunctions.TickCount();
-        for (int I = 0; I <= e.Results.Count - 1; I++)
-        {
-          RestrictionLibrary.Remote.ServiceResult Row = e.Results[I];
-          if (FullCheck)
-          {
-            if (Math.Abs(iPercent - Math.Floor(((double)I / (e.Results.Count - 1)) * 100d)) >= iInterval)
-            {
-              iPercent = (int)Math.Floor(((double)I / (e.Results.Count - 1)) * 100d);
-              Gtk.Main.Iteration();
-              SetStatusText(LastTime, "Synchronizing History [" + iPercent + "%]...", false);
-              Gtk.Main.Iteration();
-              Gtk.Main.IterationDo(false);
-              System.Threading.Thread.Sleep(0);
-              Gtk.Main.Iteration();
-              if ((iPercent == 4))
-              {
-                long iDur = srlFunctions.TickCount() - iStart;
-                if (iDur <= 700)
-                {
-                  iInterval = 2;
-                }
-              }
-            }
-            modDB.LOG_Add(Row.Time, Row.Used, Row.Limit, (I == e.Results.Count - 1));
-          }
-          else
-          {
-            if (modFunctions.DateDiff(DateInterval.Minute, modDB.LOG_GetLast(), Row.Time) > 1)
-            {
-              modDB.LOG_Add(Row.Time, Row.Used, Row.Limit, (I == e.Results.Count - 1));
-            }
-          }
-        }
-        FullCheck = false;
-        mySettings.LastSyncTime = modDB.LOG_GetLast();
-        mySettings.Save();
-        DisplayUsage(true, true);
-      }
-      else
-      {
-        if (modDB.LOG_GetCount() == 0)
-          SetStatusText("No History", "No data received from the server!", true);
-        DisplayUsage(true, true);
-      }
-      if (remoteData != null)
-      {
-        remoteDataEvent(false);
-        remoteData.Dispose();
-        remoteData = null;
       }
     }
     #endregion
@@ -2179,8 +1953,6 @@ namespace RestrictionTrackerGTK
         {
           if ((e.Event.State & Gtk.Accelerator.DefaultModMask) == Gdk.ModifierType.ControlMask)
           {
-            updateFull = true;
-            FullCheck = true;
             cmdRefresh.Sensitive = false;
             SetStatusText("Reloading", "Reloading History...", false);
             ShowProgress("Reloading History...", "Reading DataBase...", true);
@@ -2192,14 +1964,6 @@ namespace RestrictionTrackerGTK
             }
             cmdRefresh.Sensitive = true;
           }
-          else
-          {
-            updateFull = false;
-          }
-        }
-        else
-        {
-          updateFull = false;
         }
         SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), "Reading Usage...", false);
         MethodInvoker UsageInvoker = GetUsage;
@@ -2234,15 +1998,7 @@ namespace RestrictionTrackerGTK
     public void cmdConfig_Click(object sender, EventArgs e)
     {
       bool bReRun = false;
-      if (remoteData != null)
-      {
-        bReRun = true;
-        remoteDataEvent(false);
-        remoteData.Dispose();
-        remoteData = null;
-        DisplayUsage(true, false);
-      }
-      else if (localData != null)
+      if (localData != null)
       {
         localDataEvent(false);
         localData.Dispose();
@@ -2798,12 +2554,6 @@ namespace RestrictionTrackerGTK
               switch ((Gtk.ResponseType)fUpdate.Run())
               {
                 case ResponseType.Yes:
-                  if (remoteData != null)
-                  {
-                    remoteDataEvent(false);
-                    remoteData.Dispose();
-                    remoteData = null;
-                  }
                   if (localData != null)
                   {
                     localDataEvent(false);
@@ -2822,12 +2572,6 @@ namespace RestrictionTrackerGTK
                   NextGrabTick = long.MinValue;
                   break;
                 case ResponseType.Ok:
-                  if (remoteData != null)
-                  {
-                    remoteDataEvent(false);
-                    remoteData.Dispose();
-                    remoteData = null;
-                  }
                   if (localData != null)
                   {
                     localDataEvent(false);
@@ -2871,12 +2615,6 @@ namespace RestrictionTrackerGTK
                 switch ((Gtk.ResponseType)fUpdate.Run())
                 {
                   case ResponseType.Yes:
-                    if (remoteData != null)
-                    {
-                      remoteDataEvent(false);
-                      remoteData.Dispose();
-                      remoteData = null;
-                    }
                     if (localData != null)
                     {
                       localDataEvent(false);
@@ -2895,12 +2633,6 @@ namespace RestrictionTrackerGTK
                     NextGrabTick = long.MinValue;
                     break;
                   case ResponseType.Ok:
-                    if (remoteData != null)
-                    {
-                      remoteDataEvent(false);
-                      remoteData.Dispose();
-                      remoteData = null;
-                    }
                     if (localData != null)
                     {
                       localDataEvent(false);
@@ -2954,12 +2686,6 @@ namespace RestrictionTrackerGTK
           switch (e.Result)
           {
             case ResultType.NewUpdate:
-              if (remoteData != null)
-              {
-                remoteDataEvent(false);
-                remoteData.Dispose();
-                remoteData = null;
-              }
               if (localData != null)
               {
                 localDataEvent(false);
@@ -2971,12 +2697,6 @@ namespace RestrictionTrackerGTK
             case ResultType.NewBeta:
               if (mySettings.UpdateBETA)
               {
-                if (remoteData != null)
-                {
-                  remoteDataEvent(false);
-                  remoteData.Dispose();
-                  remoteData = null;
-                }
                 if (localData != null)
                 {
                   localDataEvent(false);

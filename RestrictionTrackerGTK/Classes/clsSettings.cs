@@ -25,7 +25,6 @@ namespace RestrictionTrackerGTK
     private byte m_UpdateTime;
     private bool m_ScaleScreen;
     private Gdk.Size m_MainSize;
-    private string m_RemoteKey;
     private string m_PassCrypt;
     private string m_PassKey;
     private string m_PassSalt;
@@ -230,10 +229,6 @@ namespace RestrictionTrackerGTK
             iHeight = 200;
           }
           m_MainSize = new Gdk.Size(iWidth, iHeight);
-        }
-        else if (xName.CompareTo("RemoteKey") == 0)
-        {
-          m_RemoteKey = xValue;
         }
         else if (xName.CompareTo("PassCrypt") == 0)
         {
@@ -515,7 +510,6 @@ namespace RestrictionTrackerGTK
       m_UpdateTime = 15;
       m_ScaleScreen = false;
       m_MainSize = new Gdk.Size(450, 200);
-      m_RemoteKey = null;
       m_PassCrypt = null;
       m_PassKey = "";
       m_PassSalt = "";
@@ -668,9 +662,6 @@ namespace RestrictionTrackerGTK
         "      </setting>\n" +
         "      <setting name=\"MainSize\">\n" +
         "        <value>" + m_MainSize.Width.ToString() + "," + m_MainSize.Height.ToString() + "</value>\n" +
-        "      </setting>\n" +
-        "      <setting name=\"RemoteKey\">\n" +
-        "        <value>" + m_RemoteKey + "</value>\n" +
         "      </setting>\n" +
         "      <setting name=\"Timeout\">\n" +
         "        <value>" + m_Timeout.ToString() + "</value>\n" +
@@ -1073,17 +1064,6 @@ namespace RestrictionTrackerGTK
       set
       {
         m_MainSize = value;
-      }
-    }
-    public string RemoteKey
-    {
-      get
-      {
-        return m_RemoteKey;
-      }
-      set
-      {
-        m_RemoteKey = value;
       }
     }
     public int Timeout
