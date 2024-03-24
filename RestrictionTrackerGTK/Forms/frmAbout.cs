@@ -106,7 +106,9 @@ namespace RestrictionTrackerGTK
     }
     protected void cmdDonate_Click(object sender, EventArgs e)
     {
-      System.Diagnostics.Process.Start("http://realityripple.com/donate.php?itm=Satellite+Restriction+Tracker");
+      TaskbarNotifier taskNotifier = null;
+      modFunctions.MakeNotifier(ref taskNotifier, false);
+      modFunctions.OpenURL("http://realityripple.com/donate.php?itm=Satellite+Restriction+Tracker", ref taskNotifier);
     }
     #endregion
     #region "Updates"

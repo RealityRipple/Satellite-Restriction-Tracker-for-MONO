@@ -2950,23 +2950,7 @@ namespace RestrictionTrackerGTK
     }
     protected void cmdNetTest_Clicked(object sender, EventArgs e)
     {
-      try
-      {
-        if (mySettings.NetTestURL.Contains(Uri.SchemeDelimiter))
-        {
-          System.Diagnostics.Process.Start(mySettings.NetTestURL);
-        }
-        else
-        {
-          System.Diagnostics.Process.Start("http://" + mySettings.NetTestURL);
-        }
-      }
-      catch (Exception ex)
-      {
-        modFunctions.MakeNotifier(ref taskNotifier, false);
-        if (taskNotifier != null)
-          taskNotifier.Show("Failed to run Web Browser", modFunctions.ProductName + " could not navigate to \"" + mySettings.NetTestURL + "\"!\n" + ex.Message, 200, 3000, 100);
-      }
+      modFunctions.OpenURL(mySettings.NetTestURL, ref taskNotifier);
     }
     #endregion
   }

@@ -723,13 +723,42 @@ namespace RestrictionTrackerGTK
     [GLib.ConnectBefore]
     static void HandleActivateLink(object o, ActivateLinkEventArgs e)
     {
-      System.Diagnostics.Process.Start(e.Url);
+      TaskbarNotifier taskNotifier = null;
+      modFunctions.MakeNotifier(ref taskNotifier, false);
+      modFunctions.OpenURL(e.Url, ref taskNotifier);
       e.RetVal = true;
     }
     public static void PrepareLink(Gtk.Label label)
     {
       var signal = GLib.Signal.Lookup(label, "activate-link", typeof(ActivateLinkEventArgs));
       signal.AddDelegate(new EventHandler<ActivateLinkEventArgs>(HandleActivateLink));
+    }
+    public static void OpenURL(string sURL, ref TaskbarNotifier taskNotifier)
+    {
+      string sOpen = sURL;
+      if (!sOpen.Contains(Uri.SchemeDelimiter))
+        sOpen = "http://" + sURL;
+      try
+      {
+        System.Diagnostics.Process.Start(sOpen);
+      }
+      catch (Exception ex)
+      {
+        MakeNotifier(ref taskNotifier, false);
+        try
+        {
+          Gtk.Clipboard cb = Gtk.Clipboard.Get(Gdk.Selection.Clipboard);
+          cb.Text = sOpen;
+        }
+        catch (Exception)
+        {
+          if (taskNotifier != null)
+            taskNotifier.Show("Failed to run Web Browser", modFunctions.ProductName + " could not navigate to \"" + sURL + "\"!\n" + ex.Message, 200, 3000, 100);
+          return;
+        }
+        if (taskNotifier != null)
+          taskNotifier.Show("URL Copied to Clipboard", modFunctions.ProductName + " could not navigate to \"" + sURL + "\", so the URL was copied to your clipboard!", 200, 3000, 100);
+      }
     }
     #region "Graphs"
     #region "History"

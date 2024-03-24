@@ -108,7 +108,9 @@ namespace RestrictionTrackerGTK
           MenuItem mnuFAQ = new MenuItem("Frequently Asked Questions");
           mnuFAQ.Activated += delegate (object sender, EventArgs e)
           {
-            System.Diagnostics.Process.Start("http://srt.realityripple.com/faq.php");
+            TaskbarNotifier taskNotifier = null;
+            modFunctions.MakeNotifier(ref taskNotifier, false);
+            modFunctions.OpenURL("http://srt.realityripple.com/faq.php", ref taskNotifier);
           };
           helpMenu.Append(mnuFAQ);
           mnuFAQ.Show();
@@ -116,7 +118,9 @@ namespace RestrictionTrackerGTK
           MenuItem mnuChanges = new MenuItem("What's New in " + modFunctions.ProductName + " v" + modFunctions.ProductVersion);
           mnuChanges.Activated += delegate (object sender, EventArgs e)
           {
-            System.Diagnostics.Process.Start("http://srt.realityripple.com/For-MONO/changes.php");
+            TaskbarNotifier taskNotifier = null;
+            modFunctions.MakeNotifier(ref taskNotifier, false);
+            modFunctions.OpenURL("http://srt.realityripple.com/For-macOS/changes.php", ref taskNotifier);
           };
           helpMenu.Append(mnuChanges);
           mnuChanges.Show();
@@ -128,7 +132,9 @@ namespace RestrictionTrackerGTK
           MenuItem mnuWebsite = new MenuItem("Visit the " + modFunctions.ProductName + " Home Page");
           mnuWebsite.Activated += delegate (object sender, EventArgs e)
           {
-            System.Diagnostics.Process.Start("http://srt.realityripple.com/For-MONO/mac.php");
+            TaskbarNotifier taskNotifier = null;
+            modFunctions.MakeNotifier(ref taskNotifier, false);
+            modFunctions.OpenURL("http://srt.realityripple.com/For-macOS/", ref taskNotifier);
           };
           helpMenu.Append(mnuWebsite);
           mnuWebsite.Show();
@@ -136,7 +142,9 @@ namespace RestrictionTrackerGTK
           MenuItem mnuBug = new MenuItem("Report a Bug");
           mnuBug.Activated += delegate (object sender, EventArgs e)
           {
-            System.Diagnostics.Process.Start("http://bugs.realityripple.com/bug_report_page.php?project_id=2");
+            TaskbarNotifier taskNotifier = null;
+            modFunctions.MakeNotifier(ref taskNotifier, false);
+            modFunctions.OpenURL("http://github.com/RealityRipple/Satellite-Restriction-Tracker-for-MONO/issues", ref taskNotifier);
           };
           helpMenu.Append(mnuBug);
           mnuBug.Show();
@@ -164,7 +172,9 @@ namespace RestrictionTrackerGTK
             MenuItem mnuFAQ = new MenuItem("Frequently Asked Questions");
             mnuFAQ.Activated += delegate (object sender, EventArgs e)
             {
-              System.Diagnostics.Process.Start("http://srt.realityripple.com/faq.php");
+              TaskbarNotifier taskNotifier = null;
+              modFunctions.MakeNotifier(ref taskNotifier, false);
+              modFunctions.OpenURL("http://srt.realityripple.com/faq.php", ref taskNotifier);
             };
             helpMenu.Append(mnuFAQ);
             mnuFAQ.Show();
@@ -172,7 +182,9 @@ namespace RestrictionTrackerGTK
             MenuItem mnuChanges = new MenuItem("What's New in " + modFunctions.ProductName + " v" + modFunctions.ProductVersion);
             mnuChanges.Activated += delegate (object sender, EventArgs e)
             {
-              System.Diagnostics.Process.Start("http://srt.realityripple.com/For-MONO/changes.php");
+              TaskbarNotifier taskNotifier = null;
+              modFunctions.MakeNotifier(ref taskNotifier, false);
+              modFunctions.OpenURL("http://srt.realityripple.com/For-macOS/changes.php", ref taskNotifier);
             };
             helpMenu.Append(mnuChanges);
             mnuChanges.Show();
@@ -184,7 +196,9 @@ namespace RestrictionTrackerGTK
             MenuItem mnuWebsite = new MenuItem("Visit the " + modFunctions.ProductName + " Home Page");
             mnuWebsite.Activated += delegate (object sender, EventArgs e)
             {
-              System.Diagnostics.Process.Start("http://srt.realityripple.com/For-MONO/mac.php");
+              TaskbarNotifier taskNotifier = null;
+              modFunctions.MakeNotifier(ref taskNotifier, false);
+              modFunctions.OpenURL("http://srt.realityripple.com/For-macOS/", ref taskNotifier);
             };
             helpMenu.Append(mnuWebsite);
             mnuWebsite.Show();
@@ -192,7 +206,9 @@ namespace RestrictionTrackerGTK
             MenuItem mnuBug = new MenuItem("Report a Bug");
             mnuBug.Activated += delegate (object sender, EventArgs e)
             {
-              System.Diagnostics.Process.Start("http://bugs.realityripple.com/bug_report_page.php?project_id=2");
+              TaskbarNotifier taskNotifier = null;
+              modFunctions.MakeNotifier(ref taskNotifier, false);
+              modFunctions.OpenURL("http://github.com/RealityRipple/Satellite-Restriction-Tracker-for-MONO/issues", ref taskNotifier);
             };
             helpMenu.Append(mnuBug);
             mnuBug.Show();
@@ -258,7 +274,11 @@ namespace RestrictionTrackerGTK
         if (sRet.StartsWith("https://") || sRet.StartsWith("http://"))
         {
           if (modFunctions.ShowMessageBox(null, "Thank you for reporting the error.\nYou can find details on the Bug Report page.\n\nDo you wish to visit the Bug Report?", modFunctions.ProductName + " Error Report Sent!", (DialogFlags)0, MessageType.Question, ButtonsType.YesNo) == ResponseType.Yes)
-            System.Diagnostics.Process.Start(sRet);
+          {
+            TaskbarNotifier taskNotifier = null;
+            modFunctions.MakeNotifier(ref taskNotifier, false);
+            modFunctions.OpenURL(sRet, ref taskNotifier);
+          }
           return;
         }
         string sErrRep = "https://github.com/RealityRipple/" + GitHubReporter.ProjectID + "/issues/new";
@@ -266,7 +286,9 @@ namespace RestrictionTrackerGTK
         sErrRep += "&body=" + srlFunctions.PercentEncode(GitHubReporter.MakeIssueBody(ex));
         if (modFunctions.ShowMessageBox(null, sRet + "\n\nWould you like to report the error manually?", modFunctions.ProductName + " Error Report Failed!", (DialogFlags)0, MessageType.Error, ButtonsType.YesNo) == ResponseType.Yes)
         {
-          System.Diagnostics.Process.Start(sErrRep);
+          TaskbarNotifier taskNotifier = null;
+          modFunctions.MakeNotifier(ref taskNotifier, false);
+          modFunctions.OpenURL(sErrRep, ref taskNotifier);
         }
       }
       else if (ret == ResponseType.Reject)
