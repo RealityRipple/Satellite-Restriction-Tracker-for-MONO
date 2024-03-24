@@ -108,19 +108,6 @@ namespace RestrictionTrackerGTK
       }
     }
     private TaskbarNotifier taskNotifier;
-    private void taskNotifierEvent(bool Add)
-    {
-      if (Add)
-      {
-        taskNotifier.ContentClick += taskNotifier_ContentClick;
-        taskNotifier.CloseClick += taskNotifier_CloseClick;
-      }
-      else
-      {
-        taskNotifier.ContentClick -= taskNotifier_ContentClick;
-        taskNotifier.CloseClick -= taskNotifier_CloseClick;
-      }
-    }
     private RestrictionLibrary.Local.SiteConnection localData;
     private void localDataEvent(bool Add)
     {
@@ -161,7 +148,6 @@ namespace RestrictionTrackerGTK
     private long NextGrabTick;
     private int GrabAttempt;
     private bool ClosingTime;
-    private string sFailTray;
     private byte bAlert;
     private long uCache_used, uCache_lim;
     private long lastBalloon;
@@ -1494,10 +1480,6 @@ namespace RestrictionTrackerGTK
         case RestrictionLibrary.Local.SiteConnectionFailureType.LoginIssue:
           GrabAttempt = 0;
           SetStatusText(srlFunctions.TimeToString(modDB.LOG_GetLast()), e.Message, true);
-          if (!string.IsNullOrEmpty(e.Fail))
-          {
-            FailFile(e.Fail, true);
-          }
           DisplayUsage(false, false);
           return;
         case RestrictionLibrary.Local.SiteConnectionFailureType.ConnectionTimeout:
@@ -1551,10 +1533,6 @@ namespace RestrictionTrackerGTK
           }
           break;
         case RestrictionLibrary.Local.SiteConnectionFailureType.LoginFailure:
-          if (!string.IsNullOrEmpty(e.Fail))
-          {
-            FailFile(e.Fail);
-          }
           if (e.Message.EndsWith("Please try again.") && GrabAttempt < mySettings.Retries)
           {
             GrabAttempt++;
@@ -1889,7 +1867,6 @@ namespace RestrictionTrackerGTK
               modFunctions.MakeNotifier(ref taskNotifier, false);
               if (taskNotifier != null)
               {
-                taskNotifierEvent(true);
                 taskNotifier.Show("Excessive Usage Detected", modFunctions.ProductName + " has logged a usage change of " + MBorGB(ChangeSize) + " in " + modFunctions.ConvertTime(ChangeTime, false, true) + "!", 200, 0, 100);
               }
               lastBalloon = srlFunctions.TickCount();
@@ -2443,19 +2420,6 @@ namespace RestrictionTrackerGTK
         }
       }
     }
-    private void taskNotifier_CloseClick(object sender, EventArgs e)
-    {
-      sFailTray = "";
-    }
-    private void taskNotifier_ContentClick(object sender, EventArgs e)
-    {
-      if (!string.IsNullOrEmpty(sFailTray))
-      {
-        ParamaterizedInvoker tFTP = modFunctions.SaveToFTP;
-        tFTP.BeginInvoke((object)sFailTray, null, null);
-      }
-      sFailTray = "";
-    }
     #region "Graphs"
     private Gdk.Pixbuf CreateUsageTrayIcon(long lUsed, long lLim, bool bSlow, bool bFree)
     {
@@ -2850,84 +2814,6 @@ namespace RestrictionTrackerGTK
       result = result.Replace("\r", "");
       result = result.Trim();
     }
-    #region "Failure Reports"
-    private int previousFail = 0;
-    private string previousFailS = null;
-    public void FailResponse(string Ret)
-    {
-      ResolveEventArgs ea = new ResolveEventArgs(Ret);
-      Gtk.Application.Invoke(null, (EventArgs)ea, Main_FailResponse);
-    }
-    private void Main_FailResponse(object sender, EventArgs ea)
-    {
-      ResolveEventArgs e = (ResolveEventArgs)ea;
-      string Ret = e.Name;
-      modFunctions.MakeNotifier(ref taskNotifier, false);
-      if (taskNotifier != null)
-      {
-        taskNotifierEvent(true);
-        if (Ret == "added")
-          taskNotifier.Show("Error Report Sent", "Your report has been received by " + modFunctions.CompanyName + ".\nThank you for helping to improve " + modFunctions.ProductName + "!", 200, 15 * 1000, 100);
-        else if (Ret == "exists")
-          taskNotifier.Show("Error Already Reported", "This error has already been reported. It should be fixed in the next release.\nThank you anyway!", 200, 15 * 1000, 100);
-        else
-          taskNotifier.Show("Error Reporting Error", modFunctions.ProductName + " was unable to contact the " + modFunctions.CompanyName + " servers. Please check your internet connection.", 200, 30 * 1000, 100);
-      }
-    }
-    private void FailFile(string sFail)
-    {
-      if (clsUpdate.QuickCheckVersion() == ResultType.NoUpdate)
-      {
-        if (previousFailS == sFail && previousFail == DateTime.Now.DayOfYear)
-          return;
-        if (previousFailS == sFail && previousFail > 0)
-        {
-          int nextDay = previousFail + 1;
-          if (nextDay == 366)
-            nextDay = 1;
-          if (DateTime.Now.DayOfYear == nextDay && DateTime.Now.Hour < 9)
-            return;
-        }
-        sFailTray = sFail;
-        modFunctions.MakeNotifier(ref taskNotifier, true);
-        if (taskNotifier != null)
-        {
-          taskNotifierEvent(true);
-          taskNotifier.Show("Error Reading Page Data", modFunctions.ProductName + " encountered data it does not understand.\nClick this alert to report the problem to " + modFunctions.CompanyName + ".", 200, 3 * 60 * 1000, 100);
-        }
-        previousFail = DateTime.Now.DayOfYear;
-        previousFailS = sFail;
-      }
-    }
-    private void FailFile(string sFail, bool bJustFeedback)
-    {
-      if (clsUpdate.QuickCheckVersion() == ResultType.NoUpdate)
-      {
-        if (previousFailS == sFail && previousFail == DateTime.Now.DayOfYear)
-          return;
-        if (previousFailS == sFail && previousFail > 0)
-        {
-          int nextDay = previousFail + 1;
-          if (nextDay == 366)
-            nextDay = 1;
-          if (DateTime.Now.DayOfYear == nextDay && DateTime.Now.Hour < 9)
-            return;
-        }
-        sFailTray = sFail;
-        modFunctions.MakeNotifier(ref taskNotifier, true);
-        if (taskNotifier != null)
-        {
-          taskNotifierEvent(true);
-          if (bJustFeedback)
-            taskNotifier.Show("Page Data Feedback Request", modFunctions.CompanyName + " has requested that information from your connection be sent back to the servers for further analysis.\nClick this alert if you'd like to help out.", 200, 1 * 60 * 1000, 100);
-          else
-            taskNotifier.Show("Error Reading Page Data", modFunctions.ProductName + " encountered data it does not understand.\nClick this alert to report the problem to " + modFunctions.CompanyName + ".", 200, 3 * 60 * 1000, 100);
-        }
-        previousFail = DateTime.Now.DayOfYear;
-        previousFailS = sFail;
-      }
-    }
-    #endregion
     private class SetStatusTextEventArgs: EventArgs
     {
       public string Status;

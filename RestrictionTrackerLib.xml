@@ -60,33 +60,6 @@ RestrictionTrackerLib
 	<param name="string">The string you wish to decode.</param>
 	<returns>A string identical to <paramref name="string"/> except that all encoded values have been decoded.</returns>
 	<remarks>A hexadecimal HTML entity is in the form of &amp;#xNN;, where NN is a hexadecimal ASCII value for the character it represents.</remarks>
-</member><member name="M:RestrictionLibrary.srlFunctions.NetworkErrorToString(System.Exception,System.String)">
-	<summary>
- Converts an <see cref="T:System.Exception"/> to a more pleasant and human-readable network error message.
- </summary>
-	<param name="ex">The network exception which should be converted. Any exceptions which are not recognized will be reported.</param>
-	<param name="dataPath">The folder where socket errors will be saved to if they are not recognized.</param>
-	<returns>A simpler and cleaner description of the network error passed in <paramref name="ex"/>.</returns>
-	<remarks>See Also: <seealso cref="M:RestrictionLibrary.srlFunctions.ReportSocketError(System.Exception,System.String)"/></remarks>
-</member><member name="M:RestrictionLibrary.srlFunctions.ReportSocketError(System.Exception,System.String)">
-	<summary>
- Saves an <see cref="T:System.Exception"/> to a network error log which will later be reported.
- </summary>
-	<param name="ex">The exception which needs to be reported.</param>
-	<param name="dataPath">The folder where socket errors will be saved to.</param>
-	<remarks>See Also: <seealso cref="M:RestrictionLibrary.srlFunctions.NetworkErrorToString(System.Exception,System.String)"/>, <seealso cref="M:RestrictionLibrary.srlFunctions.SendSocketErrors(System.String)"/>.</remarks>
-</member><member name="M:RestrictionLibrary.srlFunctions.SendSocketErrors(System.String)">
-	<summary>
- Loads network errors from a log file and reports them to the RealityRipple.com server.
- </summary>
-	<param name="dataPath">The folder where socket errors will be loaded from.</param>
-	<remarks>See Also: <seealso cref="M:RestrictionLibrary.srlFunctions.ReportSocketError(System.Exception,System.String)"/></remarks>
-</member><member name="M:RestrictionLibrary.srlFunctions.TruncateAddress(System.Uri)">
-	<summary>
- Clip down the length of a URL to arround 125 characters.
- </summary>
-	<param name="url">The address you'd like to cut down.</param>
-	<returns>A smaller version of the address.</returns>
 </member><member name="M:RestrictionLibrary.srlFunctions.InUseChecker(System.String,System.IO.FileAccess)">
 	<summary>
  Attempts to see if a file is in use, waiting for it to be freed.
