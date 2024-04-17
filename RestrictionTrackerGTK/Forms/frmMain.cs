@@ -367,10 +367,6 @@ namespace RestrictionTrackerGTK
       long iStart = RestrictionLibrary.srlFunctions.TickCount();
       do
       {
-        Gtk.Main.Iteration();
-        Gtk.Main.IterationDo(false);
-        System.Threading.Thread.Sleep(0);
-        Gtk.Main.Iteration();
         bool stillMissing = false;
         foreach (string[] ico in icoNames)
         {
@@ -379,6 +375,10 @@ namespace RestrictionTrackerGTK
         }
         if (!stillMissing)
           break;
+        Gtk.Main.Iteration();
+        Gtk.Main.IterationDo(false);
+        System.Threading.Thread.Sleep(0);
+        Gtk.Main.Iteration();
       } while (iStart + 1000 > RestrictionLibrary.srlFunctions.TickCount());
       MakeCustomIconListing();
     }
@@ -444,10 +444,6 @@ namespace RestrictionTrackerGTK
       long iStart = RestrictionLibrary.srlFunctions.TickCount();
       do
       {
-        Gtk.Main.Iteration();
-        Gtk.Main.IterationDo(false);
-        System.Threading.Thread.Sleep(0);
-        Gtk.Main.Iteration();
         bool stillMissing = false;
         foreach (string ico in icoNames)
         {
@@ -456,6 +452,10 @@ namespace RestrictionTrackerGTK
         }
         if (!stillMissing)
           break;
+        Gtk.Main.Iteration();
+        Gtk.Main.IterationDo(false);
+        System.Threading.Thread.Sleep(0);
+        Gtk.Main.Iteration();
       } while (iStart + 1000 > RestrictionLibrary.srlFunctions.TickCount());
       ResizePanels();
     }
