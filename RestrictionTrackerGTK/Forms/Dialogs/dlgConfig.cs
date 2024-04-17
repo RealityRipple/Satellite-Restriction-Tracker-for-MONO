@@ -638,7 +638,21 @@ namespace RestrictionTrackerGTK
           }
           catch (Exception ex)
           {
-            modFunctions.ShowMessageBox(this, "The directory \"" + modFunctions.AppDataPath + "\" could not be opened.\n\n" + ex.Message, "Unable to Launch File Explorer", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+            TaskbarNotifier taskNotifier = null;
+            modFunctions.MakeNotifier(ref taskNotifier, false);
+            try
+            {
+              Gtk.Clipboard cb = Gtk.Clipboard.Get(Gdk.Selection.Clipboard);
+              cb.Text = modFunctions.AppDataPath;
+            }
+            catch (Exception)
+            {
+              if (taskNotifier != null)
+                taskNotifier.Show("Failed to run File Manager", modFunctions.ProductName + " could not navigate to \"" + modFunctions.AppDataPath + "\"!\n" + ex.Message, 200, 3000, 100);
+              return;
+            }
+            if (taskNotifier != null)
+              taskNotifier.Show("Path Copied to Clipboard", modFunctions.ProductName + " could not navigate to \"" + modFunctions.AppDataPath + "\", so the path was copied to your clipboard instead!", 200, 3000, 100);
           }
         }
         else
@@ -651,7 +665,21 @@ namespace RestrictionTrackerGTK
         }
         catch (Exception ex)
         {
-          modFunctions.ShowMessageBox(this, "The directory \"" + txtHistoryDir.CurrentFolder + "\" could not be opened.\n\n" + ex.Message, "Unable to Launch File Explorer", Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Ok);
+          TaskbarNotifier taskNotifier = null;
+          modFunctions.MakeNotifier(ref taskNotifier, false);
+          try
+          {
+            Gtk.Clipboard cb = Gtk.Clipboard.Get(Gdk.Selection.Clipboard);
+            cb.Text = modFunctions.AppDataPath;
+          }
+          catch (Exception)
+          {
+            if (taskNotifier != null)
+              taskNotifier.Show("Failed to run File Manager", modFunctions.ProductName + " could not navigate to \"" + txtHistoryDir.CurrentFolder + "\"!\n" + ex.Message, 200, 3000, 100);
+            return;
+          }
+          if (taskNotifier != null)
+            taskNotifier.Show("Path Copied to Clipboard", modFunctions.ProductName + " could not navigate to \"" + txtHistoryDir.CurrentFolder + "\", so the path was copied to your clipboard instead!", 200, 3000, 100);
         }
       }
       else
